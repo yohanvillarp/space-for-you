@@ -1,15 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
-import {
-  ArrowLeft,
-  RotateCcw,
-  Check,
-  Layers,
-  SlidersHorizontal,
-  Trash2,
-  Save,
-} from 'lucide-react'
+import { SlidersHorizontal } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
+import type { AudioTrack } from '@/entities/audio'
 import type { SpatialItem, SpatialItemType } from '../model/spatial-stage.types'
 import {
   getDefaultItemsForTemplate,
@@ -18,8 +10,8 @@ import {
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { SpatialStageCanvas } from './SpatialStageCanvas'
 import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
-import { ROUTES } from '@/shared/config'
-import { Button } from '@/shared/ui'
+import { EditorTopHeader } from './editor/EditorTopHeader'
+import { useSidebarResize } from './editor/useSidebarResize'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -35,18 +27,24 @@ export function FullscreenSpatialEditor({
     getDefaultItemsForTemplate(templateId),
   )
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [showSidebar, setShowSidebar] = useState(true)
+
+  const {
+    showSidebar,
+    sidebarWidth,
+    isResizingSidebar,
+    handleResizeStart,
+    handleToggleSidebar,
+    handleOpenSidebar,
+  } = useSidebarResize()
 
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
-  // Item Position Update
   const handleUpdatePosition = (id: string, x: number, y: number) => {
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, x, y } : item)),
     )
   }
 
-  // Item Rotation Update
   const handleRotateItem = (id: string, delta: number) => {
     setItems((prev) =>
       prev.map((item) => {
@@ -57,7 +55,6 @@ export function FullscreenSpatialEditor({
     )
   }
 
-  // Bring to Front
   const handleBringToFront = (id: string) => {
     setItems((prev) => {
       const maxZ = prev.reduce((max, it) => Math.max(max, it.zIndex), 10)
@@ -67,13 +64,11 @@ export function FullscreenSpatialEditor({
     })
   }
 
-  // Delete Item
   const handleDeleteItem = (id: string) => {
     setItems((prev) => prev.filter((it) => it.id !== id))
     if (selectedId === id) setSelectedId(null)
   }
 
-  // Update Data
   const handleUpdateItemData = (
     id: string,
     updates: Partial<SpatialItem['data']>,
@@ -85,7 +80,6 @@ export function FullscreenSpatialEditor({
     )
   }
 
-  // Add Item
   const handleAddItem = (
     type: SpatialItemType,
     dropX?: number,
@@ -123,125 +117,105 @@ export function FullscreenSpatialEditor({
     setSelectedId(null)
   }
 
+  const selectedItem = items.find((it) => it.id === selectedId)
+  const isMusicSelected =
+    selectedItem?.type === 'music-box' ||
+    selectedItem?.type === 'vinyl-player' ||
+    selectedItem?.type === 'cassette-tape'
+  const selectedMusicItem = isMusicSelected ? selectedItem : null
+
+  const handleAssignTrack = (track: AudioTrack) => {
+    const target =
+      selectedMusicItem ||
+      items.find(
+        (it) =>
+          it.type === 'music-box' ||
+          it.type === 'vinyl-player' ||
+          it.type === 'cassette-tape',
+      )
+
+    if (target) {
+      handleUpdateItemData(target.id, {
+        title: track.title,
+        artist: track.artist,
+        audioUrl: track.url,
+        photoUrl: track.albumArt || track.coverUrl,
+      })
+      setSelectedId(target.id)
+    }
+  }
+
   return (
     <div
       className={cn(
-        'selection:bg-primary relative flex min-h-dvh w-full flex-col justify-between overflow-x-hidden selection:text-white',
+        'selection:bg-primary relative flex h-dvh max-h-dvh w-full flex-col overflow-hidden selection:text-white',
         className,
       )}
     >
-      {/* Top Floating Pro Header Bar */}
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/80 px-4 py-3 backdrop-blur-md sm:px-6">
-        <div className="flex items-center gap-3">
-          <Link
-            to={ROUTES.NEW_SPACE}
-            className="group inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 font-sans text-xs text-stone-200 transition-colors hover:bg-white/20"
-          >
-            <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-            <span>Return to Studio</span>
-          </Link>
-
-          <div className="hidden items-center gap-2 font-sans text-xs text-stone-300 sm:flex">
-            <span
-              className="h-2 w-2 rounded-full shadow-xs"
-              style={{ backgroundColor: activeTheme.accentColor }}
-            />
-            <span className="font-heading text-stone-200 italic">
-              {activeTheme.title} — {activeTheme.stageName}
-            </span>
-          </div>
-        </div>
-
-        {/* Center / Right Pro Controls */}
-        <div className="flex items-center gap-2.5">
-          {/* Toggle Sidebar Tool Button */}
-          <button
-            type="button"
-            onClick={() => setShowSidebar(!showSidebar)}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1.5 font-sans text-xs text-stone-300 transition-colors hover:bg-white/10"
-          >
-            <SlidersHorizontal className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">
-              {showSidebar ? 'Hide Tools' : 'Show Tools'}
-            </span>
-          </button>
-
-          {/* Item Counter */}
-          <div className="hidden items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 font-sans text-xs text-stone-400 md:flex">
-            <Layers className="h-3.5 w-3.5" />
-            <span>{items.length} artifacts</span>
-          </div>
-
-          {/* Delete Selected Item Button */}
-          {selectedId && (
-            <button
-              type="button"
-              onClick={() => handleDeleteItem(selectedId)}
-              title="Delete selected element (Delete or Backspace key)"
-              className="animate-fade-in inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/20 px-2.5 py-1.5 font-sans text-xs text-rose-300 shadow-xs transition-colors hover:bg-rose-500 hover:text-white"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-              <span>Delete</span>
-              <kbd className="py-0.2 hidden rounded bg-black/40 px-1 font-mono text-[9px] text-rose-200 sm:inline-block">
-                Del
-              </kbd>
-            </button>
-          )}
-
-          {/* Reset Stage to Defaults */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={handleResetToDefaults}
-            className="cursor-pointer gap-1 text-xs text-stone-400 hover:bg-white/10 hover:text-stone-200"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Reset</span>
-          </Button>
-
-          {/* Save Button (UI only, logic pending) */}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => {}}
-            className="cursor-pointer gap-1.5 border-white/20 text-xs text-[#F3EAE1] shadow-xs transition-colors hover:border-white/30 hover:bg-white/10"
-          >
-            <Save className="h-3.5 w-3.5 text-[#CF7056]" />
-            <span>Save Space</span>
-          </Button>
-
-          {/* Primary Action: Use This Stage */}
-          <Button
-            asChild
-            variant="primary"
-            size="sm"
-            className="cursor-pointer gap-1.5 text-xs shadow-md"
-          >
-            <Link to={ROUTES.NEW_SPACE}>
-              <Check className="h-3.5 w-3.5" />
-              <span>Use this Setting</span>
-            </Link>
-          </Button>
-        </div>
-      </header>
+      <EditorTopHeader
+        activeTheme={activeTheme}
+        showSidebar={showSidebar}
+        onToggleSidebar={handleToggleSidebar}
+        itemCount={items.length}
+        selectedId={selectedId}
+        onDeleteSelected={handleDeleteItem}
+        onResetToDefaults={handleResetToDefaults}
+      />
 
       {/* Main Fullscreen Workspace Area */}
-      <div className="relative flex flex-1 overflow-hidden">
-        {/* Left Side: Professional Sidebar Tool (collapsible) */}
-        {showSidebar && (
-          <div className="animate-fade-in relative z-30 w-72 shrink-0 border-r border-[#3B302A] bg-[#14110F] p-2.5 shadow-2xl sm:w-80">
-            <SpatialToolboxSidebar
-              templateId={templateId}
-              onAddItem={handleAddItem}
-              className="h-full border border-[#3B302A]"
-            />
-          </div>
+      <div className="relative flex min-h-0 w-full flex-1 overflow-hidden">
+        {!showSidebar && (
+          <button
+            type="button"
+            onClick={handleOpenSidebar}
+            className="animate-fade-in group absolute top-4 left-4 z-40 flex cursor-pointer items-center gap-2 rounded-xl border border-[#3B302A] bg-[#14110F]/95 px-3 py-2 font-sans text-xs font-medium text-[#F3EAE1] shadow-2xl backdrop-blur-md transition-all hover:scale-105 hover:border-[#CF7056] hover:text-[#CF7056]"
+            title="Open Studio Library"
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
+            <span>Studio Library</span>
+          </button>
         )}
 
+        {/* Left Side: Resizable Toolbox Sidebar */}
+        <div
+          style={{ width: `${sidebarWidth}px` }}
+          className={cn(
+            'relative z-30 flex h-full min-h-0 shrink-0 flex-col border-r border-[#3B302A] bg-[#14110F] shadow-2xl transition-[width] duration-75',
+            !showSidebar && 'hidden',
+            isResizingSidebar && 'transition-none select-none',
+          )}
+        >
+          <SpatialToolboxSidebar
+            templateId={templateId}
+            onAddItem={handleAddItem}
+            onAssignTrack={handleAssignTrack}
+            selectedMusicItem={selectedMusicItem}
+            isCompact={sidebarWidth < 280}
+            className="h-full w-full"
+          />
+
+          {/* Draggable Resizer Handle */}
+          <div
+            onPointerDown={handleResizeStart}
+            role="separator"
+            aria-orientation="vertical"
+            title="Drag to resize · Drag left to collapse"
+            className={cn(
+              'group absolute top-0 -right-2 bottom-0 z-50 flex w-4 cursor-col-resize items-center justify-center transition-colors',
+              isResizingSidebar && 'bg-[#CF7056]/20',
+            )}
+          >
+            <div
+              className={cn(
+                'h-8 w-1 rounded-full bg-[#3B302A] transition-all group-hover:h-14 group-hover:w-1.5 group-hover:bg-[#CF7056]',
+                isResizingSidebar && 'h-20 w-1.5 bg-[#CF7056]',
+              )}
+            />
+          </div>
+        </div>
+
         {/* Center / Full Canvas: Wide Spatial Stage Canvas */}
-        <main className="relative flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
+        <main className="relative min-h-0 flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
           <SpatialStageCanvas
             templateId={templateId}
             items={items}
@@ -253,7 +227,7 @@ export function FullscreenSpatialEditor({
             onDeleteItem={handleDeleteItem}
             onUpdateItemData={handleUpdateItemData}
             onAddItem={handleAddItem}
-            className="min-h-[calc(100dvh-120px)] w-full rounded-2xl"
+            className="min-h-full w-full rounded-2xl"
           />
         </main>
       </div>

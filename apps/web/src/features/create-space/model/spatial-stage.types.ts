@@ -5,6 +5,7 @@ export type SpatialItemType =
   | 'wax-envelope'
   | 'vinyl-player'
   | 'cassette-tape'
+  | 'music-box'
   | 'polaroid'
   | 'greeting-card'
   | 'airmail-postcard'
@@ -28,6 +29,9 @@ export interface SpatialItemData {
   svgUrl?: string
   stickerName?: string
   scale?: number
+  audioUrl?: string
+  artist?: string
+  subtitle?: string
 }
 
 export interface SpatialItem {
