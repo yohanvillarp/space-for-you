@@ -42,6 +42,7 @@ export interface SpatialItem {
   y: number // percentage 0 - 100 relative to stage canvas
   rotation: number // degrees (-25 to +25)
   zIndex: number
+  isLocked?: boolean
   data: SpatialItemData
 }
 

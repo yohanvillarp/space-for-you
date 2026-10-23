@@ -1,5 +1,9 @@
 import { useState } from 'react'
-import type { PointerEvent as ReactPointerEvent } from 'react'
+import type {
+  PointerEvent as ReactPointerEvent,
+  MouseEvent as ReactMouseEvent,
+} from 'react'
+import { Lock } from 'lucide-react'
 import type { SpatialItem } from '../model/spatial-stage.types'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import { CanvasItemToolbar } from './canvas/CanvasItemToolbar'
@@ -17,6 +21,7 @@ export interface SpatialCanvasItemProps {
   onBringToFront: (id: string) => void
   onDelete: (id: string) => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
+  onContextMenu?: (item: SpatialItem, e: ReactMouseEvent) => void
 }
 
 export function SpatialCanvasItem({
@@ -29,6 +34,7 @@ export function SpatialCanvasItem({
   onBringToFront,
   onDelete,
   onUpdateData,
+  onContextMenu,
 }: SpatialCanvasItemProps) {
   const [isEditingText, setIsEditingText] = useState(false)
   const [localText, setLocalText] = useState(
@@ -59,10 +65,18 @@ export function SpatialCanvasItem({
 
   return (
     <div
-      onPointerDown={(e) => onStartDrag(item.id, e)}
+      onPointerDown={(e) => {
+        if (!item.isLocked) onStartDrag(item.id, e)
+      }}
       onClick={(e) => {
         e.stopPropagation()
         onSelect(item.id)
+      }}
+      onContextMenu={(e: ReactMouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        onSelect(item.id)
+        onContextMenu?.(item, e)
       }}
       style={{
         left: `${item.x}%`,
@@ -71,12 +85,22 @@ export function SpatialCanvasItem({
         zIndex: item.zIndex,
       }}
       className={cn(
-        'group absolute cursor-grab touch-none transition-shadow select-none',
+        'group absolute touch-none transition-shadow select-none',
+        item.isLocked ? 'cursor-default' : 'cursor-grab',
         isDragging && 'cursor-grabbing opacity-90 shadow-2xl',
         isSelected &&
           'ring-primary/80 ring-offset-bg-surface rounded-2xl ring-2 ring-offset-2',
       )}
     >
+      {/* Locked Badge indicator */}
+      {item.isLocked && isSelected && (
+        <div
+          title="Item is locked"
+          className="absolute -top-3 -left-3 z-30 flex h-6 w-6 items-center justify-center rounded-full border border-amber-400/60 bg-[#1C1613] text-amber-300 shadow-md backdrop-blur-md"
+        >
+          <Lock className="h-3 w-3" />
+        </div>
+      )}
       {/* Micro Floating Toolbar when Item is Selected */}
       {isSelected && (
         <CanvasItemToolbar
