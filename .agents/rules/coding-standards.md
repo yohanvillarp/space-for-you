@@ -20,4 +20,5 @@
 
 1. **English Language Standard:** All user-facing UI copy, labels, placeholders, buttons, error messages, and documentation must be written strictly in professional English.
 2. **Zero Implementation Jargon in UI:** Never expose internal architecture, backend provider names (e.g., Appwrite, Vite, Oxlint), or design token names in public/end-user visible text.
-3. **Human-Centric Copy:** User-facing strings must speak directly to intimacy, emotional connection, and user privacy, avoiding tech stack self-referential labels.
+3. **No Procedural or Meta-Labels:** Avoid artificial process badges, workflow labels, and self-describing scaffolding (e.g., `"Creator Workshop • Step-by-Step"`, `"Personal Sanctuary"`, `"Preview Snapshot"`, `"Step 1 of 3"` badge pills). Let natural headings, clean layouts, and intuitive visuals communicate context without cluttering screens with procedural tags.
+4. **Human-Centric Copy:** User-facing strings must speak directly to intimacy, emotional connection, and user privacy, avoiding tech stack self-referential labels.

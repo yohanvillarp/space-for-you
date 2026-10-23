@@ -1,12 +1,10 @@
-import { Link, useParams } from 'react-router'
+import { Link } from 'react-router'
 import { ProtectedRoute } from '@/features'
 import { ROUTES } from '@/shared/config'
-import { Container, Card, Button, Badge } from '@/shared/ui'
+import { Container, Card, Button } from '@/shared/ui'
 import { ArrowLeft, Settings } from 'lucide-react'
 
 export function EditSpacePage() {
-  const { id } = useParams<{ id: string }>()
-
   return (
     <ProtectedRoute>
       {() => (
@@ -21,9 +19,6 @@ export function EditSpacePage() {
             </Link>
 
             <div className="space-y-2">
-              <Badge variant="outline" className="font-sans text-xs">
-                Editor • Space #{id || '—'}
-              </Badge>
               <h1 className="font-heading text-text-primary text-3xl font-medium tracking-tight sm:text-4xl">
                 Edit Space
               </h1>
