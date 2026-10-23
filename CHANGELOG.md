@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.3.0...space-for-you-v0.4.0) (2026-10-23)
+
+
+### Features
+
+* **create-space:** add qr code, keepsake card and studio layout ([3dcf968](https://github.com/yohanvillarp/space-for-you/commit/3dcf9687081ef2915b68be0dec186fb5e6b7249e))
+* **shared:** add centered animated gift box keepsake loader ([30361aa](https://github.com/yohanvillarp/space-for-you/commit/30361aa59b07fe57dcd2ca56de8924fa34d69b68))
+* **space-themes:** add tangible physical stages and theme registry ([65c1890](https://github.com/yohanvillarp/space-for-you/commit/65c1890b297661c37af48af5abe82d76869144ce))
+* **spaces:** add standalone full-bleed stage preview route ([2412b40](https://github.com/yohanvillarp/space-for-you/commit/2412b40f2bcd9feaa9c17ae14e2299fa5438b90e))
+* **spaces:** add tangible stage preview, qr keepsake card, and studio layout ([9c6dda2](https://github.com/yohanvillarp/space-for-you/commit/9c6dda212054f54b944fe303d0ffd2c8cb501727))
+
 ## [0.3.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.2.1...space-for-you-v0.3.0) (2026-10-23)
 
 
