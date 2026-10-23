@@ -1,0 +1,168 @@
+/**
+ * Design Tokens & Theme Mapping
+ * 
+ * Paleta de colores oficial:
+ * - Marfil cálido (#FAF6F0): Fondo principal
+ * - Terracota oscuro (#A34835): Botones principales y acentos
+ * - Arcilla suave (#EACABC): Superficies seleccionadas y detalles
+ * - Espresso (#302621): Texto principal
+ * - Verde oliva (#687052): Acento secundario
+ * - Arena (#E8DED2): Bordes y superficies del editor
+ * 
+ * Tipografías:
+ * - Lora: Títulos de portada, encabezados y frases especiales (peso 400-500)
+ * - DM Sans: Botones, navegación, formularios y textos del editor (peso 400-600)
+ */
+
+:root {
+  /* Primitive Brand Palette */
+  --color-marfil: #FAF6F0;
+  --color-terracota: #A34835;
+  --color-terracota-hover: #8F3E2D;
+  --color-arcilla: #EACABC;
+  --color-espresso: #302621;
+  --color-verde-oliva: #687052;
+  --color-verde-oliva-hover: #586044;
+  --color-arena: #E8DED2;
+
+  /* Typography Stacks */
+  --font-sans: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-heading);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Semantic - Light Theme (Default) */
+  --color-bg-base: var(--color-marfil);
+  --color-bg-surface: #FFFFFF;
+  --color-bg-subtle: #F4EDE3;
+  --color-bg-selected: var(--color-arcilla);
+  --color-bg-editor: var(--color-arena);
+  --color-bg-overlay: rgba(48, 38, 33, 0.45);
+
+  --color-border-base: var(--color-arena);
+  --color-border-subtle: #F1E9DE;
+  --color-border-focus: var(--color-terracota);
+
+  --color-text-primary: var(--color-espresso);
+  --color-text-secondary: #57463E;
+  --color-text-muted: #847268;
+
+  --color-primary-base: var(--color-terracota);
+  --color-primary-hover: var(--color-terracota-hover);
+  --color-primary-text: var(--color-marfil);
+
+  --color-accent-base: var(--color-verde-oliva);
+  --color-accent-hover: var(--color-verde-oliva-hover);
+  --color-accent-text: #FFFFFF;
+
+  --color-surface-selected: var(--color-arcilla);
+  --color-surface-editor: var(--color-arena);
+
+  --color-destructive-base: #C2412D;
+  --color-destructive-hover: #A73524;
+  --color-destructive-text: #FFFFFF;
+  --color-success-base: #4E6B4E;
+  --color-warning-base: #C27D38;
+
+  /* Radii */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+}
+
+[data-theme='dark'] {
+  /* Semantic - Dark Theme (Harmonized with Espresso & Earthy Tones) */
+  --color-bg-base: #1C1714;
+  --color-bg-surface: #26201B;
+  --color-bg-subtle: #332A24;
+  --color-bg-selected: #45342A;
+  --color-bg-editor: #241D18;
+  --color-bg-overlay: rgba(0, 0, 0, 0.75);
+
+  --color-border-base: #3B3028;
+  --color-border-subtle: #2D251F;
+  --color-border-focus: #C4624D;
+
+  --color-text-primary: #FAF6F0;
+  --color-text-secondary: #D4C9BC;
+  --color-text-muted: #9C8E82;
+
+  --color-primary-base: #C4624D;
+  --color-primary-hover: #D77560;
+  --color-primary-text: #1C1714;
+
+  --color-accent-base: #86926B;
+  --color-accent-hover: #98A47A;
+  --color-accent-text: #1C1714;
+
+  --color-surface-selected: #45342A;
+  --color-surface-editor: #2A221C;
+
+  --color-destructive-base: #E0604A;
+  --color-destructive-hover: #EA7561;
+  --color-destructive-text: #1C1714;
+  --color-success-base: #6E8F6E;
+  --color-warning-base: #DC9A54;
+}
+
+@theme {
+  /* Named Primitive Palette Tokens */
+  --color-marfil: var(--color-marfil);
+  --color-terracota: var(--color-terracota);
+  --color-terracota-hover: var(--color-terracota-hover);
+  --color-arcilla: var(--color-arcilla);
+  --color-espresso: var(--color-espresso);
+  --color-verde-oliva: var(--color-verde-oliva);
+  --color-arena: var(--color-arena);
+
+  /* Semantic Theme Tokens */
+  --color-bg-base: var(--color-bg-base);
+  --color-bg-surface: var(--color-bg-surface);
+  --color-bg-subtle: var(--color-bg-subtle);
+  --color-bg-selected: var(--color-bg-selected);
+  --color-bg-editor: var(--color-bg-editor);
+  --color-bg-overlay: var(--color-bg-overlay);
+
+  --color-border-base: var(--color-border-base);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-focus: var(--color-border-focus);
+
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+
+  --color-primary: var(--color-primary-base);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-foreground: var(--color-primary-text);
+
+  --color-accent: var(--color-accent-base);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-foreground: var(--color-accent-text);
+
+  --color-surface-selected: var(--color-surface-selected);
+  --color-surface-editor: var(--color-surface-editor);
+
+  --color-destructive: var(--color-destructive-base);
+  --color-destructive-hover: var(--color-destructive-hover);
+  --color-destructive-foreground: var(--color-destructive-text);
+
+  --color-success: var(--color-success-base);
+  --color-warning: var(--color-warning-base);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  /* Radii */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+}
