@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.2.0...space-for-you-v0.2.1) (2026-10-23)
+
+
+### Bug Fixes
+
+* **vercel:** remove cleanUrls to allow SPA rewrites to index.html ([8e3ec76](https://github.com/yohanvillarp/space-for-you/commit/8e3ec76f3d3ba049e7217e8fd9443eed4b3dc952))
+* **vercel:** resolve 404 on SPA client-side routes ([fffa2af](https://github.com/yohanvillarp/space-for-you/commit/fffa2af9c3fc056153efd3a8951b230bc5297499))
+
 ## [0.2.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.1.0...space-for-you-v0.2.0) (2026-10-23)
 
 
