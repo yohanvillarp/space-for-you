@@ -46,23 +46,23 @@ export function SpatialToolboxSidebar({
   const [activeCategory, setActiveCategory] = useState<
     'objects' | 'stickers' | 'music'
   >('objects')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [objectFilter, setObjectFilter] = useState<
+    'all' | 'stage' | 'universal'
+  >('all')
 
   // Automatically activate Music when a music object is selected, and return to objects when deselected
   const [prevSelectedMusicItem, setPrevSelectedMusicItem] =
     useState(selectedMusicItem)
   if (selectedMusicItem !== prevSelectedMusicItem) {
     setPrevSelectedMusicItem(selectedMusicItem)
+    setSearchQuery('')
     if (selectedMusicItem) {
       setActiveCategory('music')
     } else if (activeCategory === 'music') {
       setActiveCategory('objects')
     }
   }
-
-  const [searchQuery, setSearchQuery] = useState('')
-  const [objectFilter, setObjectFilter] = useState<
-    'all' | 'stage' | 'universal'
-  >('all')
 
   const {
     displayedStickers,
@@ -172,11 +172,11 @@ export function SpatialToolboxSidebar({
         objectFilter={objectFilter}
         onSelectObjectFilter={setObjectFilter}
         onSelectStickerChip={(query) => {
-          setSearchQuery(query)
+          setSearchQuery((prev) => (prev === query ? '' : query))
           setIsSearchingStickers(true)
         }}
         onSelectMusicChip={(query) => {
-          setSearchQuery(query)
+          setSearchQuery((prev) => (prev === query ? '' : query))
         }}
         hasMusicOption={hasMusicOption}
         selectedMusicItemName={selectedMusicItem?.label}
