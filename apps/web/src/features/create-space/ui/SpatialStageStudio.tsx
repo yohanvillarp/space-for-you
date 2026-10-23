@@ -8,16 +8,12 @@ import {
   Layers,
 } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
-import type { SpatialItem, SpatialItemType } from '../model/spatial-stage.types'
-import {
-  getDefaultItemsForTemplate,
-  TOOLBOX_ITEMS,
-} from '../lib/spatial-stage-defaults'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { SpatialStageCanvas } from './SpatialStageCanvas'
 import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
 import { Button } from '@/shared/ui'
 import { cn } from '@/shared/lib'
+import { useSpatialStageItems } from './editor/useSpatialStageItems'
 
 export interface SpatialStageStudioProps {
   templateId: SpaceTemplateId
@@ -28,12 +24,20 @@ export function SpatialStageStudio({
   templateId,
   className,
 }: SpatialStageStudioProps) {
-  const [items, setItems] = useState<SpatialItem[]>(() =>
-    getDefaultItemsForTemplate(templateId),
-  )
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [copiedLink, setCopiedLink] = useState(false)
+  const {
+    items,
+    selectedId,
+    setSelectedId,
+    handleUpdatePosition,
+    handleRotateItem,
+    handleBringToFront,
+    handleDeleteItem,
+    handleUpdateItemData,
+    handleAddItem,
+    handleResetToDefaults,
+  } = useSpatialStageItems(templateId)
 
+  const [copiedLink, setCopiedLink] = useState(false)
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const previewPath = `/spaces/preview/${templateId}`
@@ -50,92 +54,6 @@ export function SpatialStageStudio({
     } catch {
       // Fallback
     }
-  }
-
-  // Item Position Update
-  const handleUpdatePosition = (id: string, x: number, y: number) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, x, y } : item)),
-    )
-  }
-
-  // Item Rotation Update
-  const handleRotateItem = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) return item
-        const newRotation = Math.max(-25, Math.min(25, item.rotation + delta))
-        return { ...item, rotation: newRotation }
-      }),
-    )
-  }
-
-  // Bring Item to Front (raise zIndex)
-  const handleBringToFront = (id: string) => {
-    setItems((prev) => {
-      const maxZ = prev.reduce((max, it) => Math.max(max, it.zIndex), 10)
-      return prev.map((item) =>
-        item.id === id ? { ...item, zIndex: maxZ + 1 } : item,
-      )
-    })
-  }
-
-  // Delete Item
-  const handleDeleteItem = (id: string) => {
-    setItems((prev) => prev.filter((it) => it.id !== id))
-    if (selectedId === id) setSelectedId(null)
-  }
-
-  // Update Data (caption, text, isLit, etc.)
-  const handleUpdateItemData = (
-    id: string,
-    updates: Partial<SpatialItem['data']>,
-  ) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, data: { ...item.data, ...updates } } : item,
-      ),
-    )
-  }
-
-  // Add Item to Stage
-  const handleAddItem = (
-    type: SpatialItemType,
-    dropX?: number,
-    dropY?: number,
-    customData?: Partial<SpatialItem['data']>,
-  ) => {
-    const itemDef = TOOLBOX_ITEMS.find((it) => it.type === type)
-    const newId = `${type}-${Date.now()}`
-    const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
-
-    // Calculate natural default coordinates if not dropped explicitly
-    const defaultX = dropX ?? Math.round(35 + Math.random() * 30)
-    const defaultY = dropY ?? Math.round(40 + Math.random() * 25)
-    const randomTilt = Math.round((Math.random() * 8 - 4) * 10) / 10
-
-    const newItem: SpatialItem = {
-      id: newId,
-      type,
-      label: itemDef?.label || 'Keepsake Item',
-      x: defaultX,
-      y: defaultY,
-      rotation: randomTilt,
-      zIndex: maxZ + 1,
-      data: {
-        ...(itemDef?.defaultData || {}),
-        ...(customData || {}),
-      },
-    }
-
-    setItems((prev) => [...prev, newItem])
-    setSelectedId(newId)
-  }
-
-  // Reset stage to defaults
-  const handleResetToDefaults = () => {
-    setItems(getDefaultItemsForTemplate(templateId))
-    setSelectedId(null)
   }
 
   return (

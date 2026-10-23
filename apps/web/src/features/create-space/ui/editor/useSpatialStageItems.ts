@@ -9,6 +9,7 @@ import {
   getDefaultItemsForTemplate,
   TOOLBOX_ITEMS,
 } from '../../lib/spatial-stage-defaults'
+import { getNextItemLabel } from '../../lib/stage-item-naming'
 
 export function useSpatialStageItems(templateId: SpaceTemplateId) {
   const [items, setItems] = useState<SpatialItem[]>(() =>
@@ -122,10 +123,11 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
 
     const newId = `${target.type}-${Date.now()}`
     const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
+    const nextLabel = getNextItemLabel(target.label, items)
     const clone: SpatialItem = {
       ...target,
       id: newId,
-      label: `${target.label} (Copy)`,
+      label: nextLabel,
       x: Math.min(90, target.x + 3),
       y: Math.min(90, target.y + 3),
       zIndex: maxZ + 1,
@@ -146,11 +148,12 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
     const pasteX = x ?? Math.min(90, copiedItem.x + 4)
     const pasteY = y ?? Math.min(90, copiedItem.y + 4)
+    const nextLabel = getNextItemLabel(copiedItem.label, items)
 
     const newItem: SpatialItem = {
       ...copiedItem,
       id: newId,
-      label: `${copiedItem.label} (Copy)`,
+      label: nextLabel,
       x: pasteX,
       y: pasteY,
       zIndex: maxZ + 1,
