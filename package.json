@@ -1,7 +1,7 @@
 {
   "name": "space-for-you",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "npm --prefix apps/web run dev",
@@ -10,9 +10,12 @@
     "typecheck": "npm --prefix apps/web run typecheck",
     "preview": "npm --prefix apps/web run preview",
     "generate:favicons": "node scripts/generate-favicons.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@changesets/cli": "^3.0.3",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "husky": "^9.1.7",
