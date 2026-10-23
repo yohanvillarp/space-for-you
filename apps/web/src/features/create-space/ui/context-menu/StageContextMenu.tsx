@@ -10,6 +10,7 @@ import { CanvasContextMenuContent } from './CanvasContextMenuContent'
 export interface StageContextMenuProps {
   state: ContextMenuState
   menuRef: RefObject<HTMLDivElement | null>
+  items?: SpatialItem[]
   copiedItem: SpatialItem | null
   onClose: () => void
   onBringToFront: (id: string) => void
@@ -22,7 +23,7 @@ export interface StageContextMenuProps {
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onStartEditText?: (item: SpatialItem) => void
   onAddItem: (type: SpatialItemType, x: number, y: number) => void
-  onPasteItem: (x: number, y: number) => void
+  onPasteItem: (x?: number, y?: number) => void
   onResetToDefaults: () => void
   onClearCanvas: () => void
 }
@@ -30,6 +31,7 @@ export interface StageContextMenuProps {
 export function StageContextMenu({
   state,
   menuRef,
+  items,
   copiedItem,
   onClose,
   onBringToFront,
@@ -46,7 +48,17 @@ export function StageContextMenu({
   onResetToDefaults,
   onClearCanvas,
 }: StageContextMenuProps) {
-  if (!state.isOpen || !state.target) return null
+  const target = state.target
+  if (!state.isOpen || !target) return null
+
+  // Immediately hide menu if the targeted item was removed from the stage
+  if (
+    target.type === 'item' &&
+    items &&
+    !items.some((it) => it.id === target.item.id)
+  ) {
+    return null
+  }
 
   return (
     <div
@@ -57,9 +69,10 @@ export function StageContextMenu({
       }}
       className="animate-in fade-in zoom-in-95 fixed z-50 max-w-[260px] min-w-[210px] rounded-2xl border border-[#3B302A] bg-[#1A1411]/95 shadow-2xl ring-1 ring-white/10 backdrop-blur-xl duration-100 select-none"
     >
-      {state.target.type === 'item' ? (
+      {target.type === 'item' ? (
         <ItemContextMenuContent
-          item={state.target.item}
+          item={target.item}
+          copiedItem={copiedItem}
           onClose={onClose}
           onBringToFront={onBringToFront}
           onSendToBack={onSendToBack}
@@ -67,13 +80,14 @@ export function StageContextMenu({
           onResetRotation={onResetRotation}
           onToggleLock={onToggleLock}
           onCopyItem={onCopyItem}
+          onPasteItem={onPasteItem}
           onDelete={onDelete}
           onUpdateData={onUpdateData}
           onStartEditText={onStartEditText}
         />
       ) : (
         <CanvasContextMenuContent
-          coords={state.target.coords}
+          coords={target.coords}
           copiedItem={copiedItem}
           onClose={onClose}
           onAddItem={onAddItem}

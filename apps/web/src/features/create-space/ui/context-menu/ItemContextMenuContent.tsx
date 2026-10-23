@@ -11,15 +11,16 @@ import {
   Lock,
   Unlock,
   Copy,
+  Clipboard,
   Trash2,
 } from 'lucide-react'
 import type { SpatialItem } from '../../model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
-
 import type { SpatialSfxName } from '@/shared/lib'
 
 export interface ItemContextMenuContentProps {
   item: SpatialItem
+  copiedItem?: SpatialItem | null
   onClose: () => void
   onBringToFront: (id: string) => void
   onSendToBack: (id: string) => void
@@ -27,6 +28,7 @@ export interface ItemContextMenuContentProps {
   onResetRotation: (id: string) => void
   onToggleLock: (id: string) => void
   onCopyItem: (item: SpatialItem) => void
+  onPasteItem?: (x?: number, y?: number) => void
   onDelete: (id: string) => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onStartEditText?: (item: SpatialItem) => void
@@ -34,6 +36,7 @@ export interface ItemContextMenuContentProps {
 
 export function ItemContextMenuContent({
   item,
+  copiedItem,
   onClose,
   onBringToFront,
   onSendToBack,
@@ -41,6 +44,7 @@ export function ItemContextMenuContent({
   onResetRotation,
   onToggleLock,
   onCopyItem,
+  onPasteItem,
   onDelete,
   onUpdateData,
   onStartEditText,
@@ -170,7 +174,7 @@ export function ItemContextMenuContent({
 
       <div className="my-0.5 border-t border-[#3B302A]" />
 
-      {/* Transform Actions */}
+      {/* Transform & Clipboard Actions */}
       <button
         type="button"
         onClick={() => executeAction(() => onDuplicate(item.id))}
@@ -224,12 +228,31 @@ export function ItemContextMenuContent({
         <span className="font-mono text-[9px] text-[#A99B90]">Ctrl+C</span>
       </button>
 
+      {onPasteItem && (
+        <button
+          type="button"
+          disabled={!copiedItem}
+          onClick={() =>
+            executeAction(() => onPasteItem(item.x + 3, item.y + 3))
+          }
+          className="flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors hover:bg-[#2A221E] hover:text-[#F3EAE1] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <div className="flex items-center gap-2">
+            <Clipboard className="h-3.5 w-3.5 text-[#A99B90]" />
+            <span>
+              {copiedItem ? `Paste "${copiedItem.label}"` : 'Paste Keepsake'}
+            </span>
+          </div>
+          <span className="font-mono text-[9px] text-[#A99B90]">Ctrl+V</span>
+        </button>
+      )}
+
       <div className="my-0.5 border-t border-[#3B302A]" />
 
       {/* Danger Zone */}
       <button
         type="button"
-        onClick={() => executeAction(() => onDelete(item.id))}
+        onClick={() => executeAction(() => onDelete(item.id), 'pop-snap')}
         className="flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-rose-300 transition-colors hover:bg-rose-500/15 hover:text-rose-200"
       >
         <div className="flex items-center gap-2">

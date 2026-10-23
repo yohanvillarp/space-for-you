@@ -7,6 +7,7 @@ import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
 import { EditorTopHeader } from './editor/EditorTopHeader'
 import { useSidebarResize } from './editor/useSidebarResize'
 import { useSpatialStageItems } from './editor/useSpatialStageItems'
+import { useStageKeyboardShortcuts } from './editor/useStageKeyboardShortcuts'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -56,6 +57,19 @@ export function FullscreenSpatialEditor({
     selectedItem?.type === 'vinyl-player' ||
     selectedItem?.type === 'cassette-tape'
   const selectedMusicItem = isMusicSelected ? selectedItem : null
+
+  // Enable global keyboard shortcuts (Ctrl+C, Ctrl+V, Ctrl+D, Delete, ], [, R)
+  useStageKeyboardShortcuts({
+    selectedItem: selectedItem ?? null,
+    copiedItem,
+    onCopyItem: handleCopyItem,
+    onPasteItem: handlePasteItem,
+    onDuplicateItem: handleDuplicateItem,
+    onDeleteItem: handleDeleteItem,
+    onBringToFront: handleBringToFront,
+    onSendToBack: handleSendToBack,
+    onResetRotation: handleResetRotation,
+  })
 
   const handleAssignTrack = (track: AudioTrack) => {
     const target =

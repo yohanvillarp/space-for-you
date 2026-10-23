@@ -60,9 +60,7 @@ export function useToolboxAssets(
 
     if (selectedMusicItem?.data?.audioUrl && selectedMusicItem.data.title) {
       const exists = CURATED_SOUNDSCAPES.some(
-        (t) =>
-          t.url === selectedMusicItem.data.audioUrl ||
-          t.title.toLowerCase() === selectedMusicItem.data.title?.toLowerCase(),
+        (t) => t.url === selectedMusicItem.data.audioUrl,
       )
       if (!exists) {
         const activeTrack: AudioTrack = {

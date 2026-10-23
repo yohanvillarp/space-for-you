@@ -65,10 +65,10 @@ export function MusicTabContent({
           const isPreviewingThis =
             previewTrackUrl === track.url && isPreviewPlaying
           const isJustAssigned = assignedTrackId === track.id
-          const isCurrentTrack =
-            (Boolean(currentTrackUrl) && track.url === currentTrackUrl) ||
-            (Boolean(currentTrackTitle) &&
-              track.title.toLowerCase() === currentTrackTitle?.toLowerCase())
+          const isCurrentTrack = currentTrackUrl
+            ? track.url === currentTrackUrl
+            : Boolean(currentTrackTitle) &&
+              track.title.toLowerCase() === currentTrackTitle?.toLowerCase()
 
           return (
             <div

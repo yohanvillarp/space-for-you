@@ -19,7 +19,7 @@ export interface CanvasContextMenuContentProps {
   copiedItem: SpatialItem | null
   onClose: () => void
   onAddItem: (type: SpatialItemType, x: number, y: number) => void
-  onPasteItem: (x: number, y: number) => void
+  onPasteItem: (x?: number, y?: number) => void
   onResetToDefaults: () => void
   onClearCanvas: () => void
 }

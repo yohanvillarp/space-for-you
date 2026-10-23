@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
 import type { SpatialItem, SpatialItemType } from '../model/spatial-stage.types'
@@ -60,6 +61,29 @@ export function SpatialStageCanvas({
   onAddItem,
   className,
 }: SpatialStageCanvasProps) {
+  const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
+
+  // Automatically close context menu if the targeted item was deleted
+  useEffect(() => {
+    if (menuState.isOpen && menuState.target?.type === 'item') {
+      const targetId = menuState.target.item.id
+      if (!items.some((it) => it.id === targetId)) {
+        closeMenu()
+      }
+    }
+  }, [items, menuState, closeMenu])
+
+  const handleDeleteItem = (id: string) => {
+    if (
+      menuState.isOpen &&
+      menuState.target?.type === 'item' &&
+      menuState.target.item.id === id
+    ) {
+      closeMenu()
+    }
+    onDeleteItem(id)
+  }
+
   const {
     containerRef,
     draggingId,
@@ -73,11 +97,9 @@ export function SpatialStageCanvas({
     selectedId,
     onSelectItem,
     onUpdateItemPosition,
-    onDeleteItem,
+    onDeleteItem: handleDeleteItem,
     onAddItem,
   })
-
-  const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
 
   const handleCanvasContextMenu = (e: ReactMouseEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -143,7 +165,7 @@ export function SpatialStageCanvas({
           onStartDrag={handleStartDrag}
           onRotate={onRotateItem}
           onBringToFront={onBringToFront}
-          onDelete={onDeleteItem}
+          onDelete={handleDeleteItem}
           onUpdateData={onUpdateItemData}
           onContextMenu={handleItemContextMenu}
         />
@@ -153,6 +175,7 @@ export function SpatialStageCanvas({
       <StageContextMenu
         state={menuState}
         menuRef={menuRef}
+        items={items}
         copiedItem={copiedItem}
         onClose={closeMenu}
         onBringToFront={onBringToFront}
@@ -161,7 +184,7 @@ export function SpatialStageCanvas({
         onResetRotation={onResetRotation || (() => {})}
         onToggleLock={onToggleLock || (() => {})}
         onCopyItem={onCopyItem || (() => {})}
-        onDelete={onDeleteItem}
+        onDelete={handleDeleteItem}
         onUpdateData={onUpdateItemData}
         onAddItem={(type, x, y) => onAddItem(type, x, y)}
         onPasteItem={(x, y) => onPasteItem?.(x, y)}
