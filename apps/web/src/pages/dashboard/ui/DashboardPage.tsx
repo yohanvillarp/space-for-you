@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { ProtectedRoute } from '@/features'
+import { ProtectedRoute, ThemeToggle } from '@/features'
 import { signOut } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
 import { Button, Card, Container, Badge } from '@/shared/ui'
@@ -25,7 +25,7 @@ export function DashboardPage() {
         const displayName = user.name || user.email
 
         return (
-          <div className="py-8 sm:py-12 md:py-16">
+          <div className="animate-fade-in py-8 sm:py-12 md:py-16">
             <Container className="max-w-6xl space-y-10">
               {/* Header section with user greeting and sign out */}
               <div className="border-border-base flex flex-col gap-6 border-b pb-6 sm:flex-row sm:items-center sm:justify-between">
@@ -34,7 +34,7 @@ export function DashboardPage() {
                     <span className="font-heading text-primary text-lg italic">
                       Welcome back,
                     </span>
-                    <Badge variant="outline">Signed in via Google</Badge>
+                    <Badge variant="outline">Personal Sanctuary</Badge>
                   </div>
                   <h1 className="font-heading text-text-primary text-3xl font-medium tracking-tight sm:text-4xl">
                     {displayName}
@@ -46,16 +46,16 @@ export function DashboardPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Button asChild variant="outline" size="md">
-                    <Link to={ROUTES.HOME}>View Landing</Link>
+                  <Button asChild variant="primary" size="md">
+                    <Link to={ROUTES.NEW_SPACE}>+ Create space</Link>
                   </Button>
                   <Button
                     type="button"
-                    variant="ghost"
+                    variant="outline"
                     size="md"
                     onClick={handleSignOut}
                     disabled={isSigningOut}
-                    className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                    className="text-red-600 hover:border-red-200 hover:bg-red-50 dark:text-red-400 dark:hover:border-red-900/50 dark:hover:bg-red-950/30"
                   >
                     {isSigningOut ? 'Signing out...' : 'Sign out'}
                   </Button>
@@ -70,8 +70,8 @@ export function DashboardPage() {
                     <h2 className="font-heading text-text-primary text-xl font-medium">
                       Your Spaces
                     </h2>
-                    <Button variant="primary" size="sm">
-                      + Create a space
+                    <Button asChild variant="primary" size="sm">
+                      <Link to={ROUTES.NEW_SPACE}>+ Create a space</Link>
                     </Button>
                   </div>
 
@@ -89,8 +89,10 @@ export function DashboardPage() {
                       </p>
                     </div>
                     <div className="pt-2">
-                      <Button variant="primary" size="md">
-                        Start your first space
+                      <Button asChild variant="primary" size="md">
+                        <Link to={ROUTES.NEW_SPACE}>
+                          Start your first space
+                        </Link>
                       </Button>
                     </div>
                   </Card>
@@ -99,7 +101,7 @@ export function DashboardPage() {
                 {/* Right: Account & Session Profile Card */}
                 <div className="space-y-6 lg:col-span-4">
                   <h2 className="font-heading text-text-primary text-xl font-medium">
-                    Profile & Session
+                    Profile & Settings
                   </h2>
 
                   <Card className="bg-bg-surface space-y-4 p-5">
@@ -119,7 +121,7 @@ export function DashboardPage() {
 
                     <div className="text-text-secondary space-y-2.5 font-sans text-xs">
                       <div className="border-border-base/30 flex justify-between border-b py-1">
-                        <span>User ID:</span>
+                        <span>Account ID:</span>
                         <span className="text-text-primary max-w-[150px] truncate font-mono">
                           {user.$id}
                         </span>
@@ -131,10 +133,25 @@ export function DashboardPage() {
                         </span>
                       </div>
                       <div className="flex justify-between py-1">
-                        <span>Created:</span>
+                        <span>Member Since:</span>
                         <span className="text-text-primary">
                           {new Date(user.$createdAt).toLocaleDateString()}
                         </span>
+                      </div>
+                    </div>
+
+                    {/* Theme Appearance Setting in User Settings */}
+                    <div className="border-border-base/40 space-y-2 border-t pt-3.5">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-text-primary font-sans text-xs font-medium">
+                            Appearance
+                          </p>
+                          <p className="text-text-muted font-sans text-[11px]">
+                            Auto-detects from machine by default
+                          </p>
+                        </div>
+                        <ThemeToggle variant="segmented" size="sm" />
                       </div>
                     </div>
                   </Card>
