@@ -17,3 +17,5 @@ export {
 export type { CardProps } from './card'
 export { Logomark, Logo } from './logo'
 export type { LogomarkProps, LogoProps } from './logo'
+export { GiftLoader } from './loader'
+export type { GiftLoaderProps } from './loader'
