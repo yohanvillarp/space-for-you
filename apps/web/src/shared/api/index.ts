@@ -10,8 +10,13 @@ export {
   APPWRITE_PROJECT_ID,
   APPWRITE_PROJECT_NAME,
   signInWithGoogle,
+  signInWithEmail,
+  signUpWithEmail,
+  formatAuthError,
   handleOAuthSuccess,
   getCurrentUser,
   signOut,
+  hasSessionHint,
+  setSessionHint,
 } from './appwrite.ts'
-export type { AppwriteUser } from './appwrite.ts'
+export type { AppwriteUser, EmailAuthCredentials } from './appwrite.ts'

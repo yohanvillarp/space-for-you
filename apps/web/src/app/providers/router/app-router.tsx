@@ -7,6 +7,12 @@ import {
   AuthSuccessPage,
   AuthFailurePage,
   DashboardPage,
+  ExamplesPage,
+  HowItWorksPage,
+  PrivacyPage,
+  NewSpacePage,
+  EditSpacePage,
+  PublicSpacePage,
 } from '@/pages'
 import { ROUTES } from '@/shared/config'
 
@@ -34,6 +40,30 @@ export const appRouter = createBrowserRouter([
       {
         path: ROUTES.DASHBOARD,
         element: <DashboardPage />,
+      },
+      {
+        path: ROUTES.EXAMPLES,
+        element: <ExamplesPage />,
+      },
+      {
+        path: ROUTES.HOW_IT_WORKS,
+        element: <HowItWorksPage />,
+      },
+      {
+        path: ROUTES.PRIVACY,
+        element: <PrivacyPage />,
+      },
+      {
+        path: ROUTES.NEW_SPACE,
+        element: <NewSpacePage />,
+      },
+      {
+        path: ROUTES.EDIT_SPACE,
+        element: <EditSpacePage />,
+      },
+      {
+        path: ROUTES.PUBLIC_SPACE,
+        element: <PublicSpacePage />,
       },
       {
         path: ROUTES.NOT_FOUND,

@@ -78,3 +78,5 @@ The repository is organized as a monorepo containing:
 - Warm ivory (`#FAF6F0`), dark terracotta (`#A34835`), soft clay (`#EACABC`), espresso (`#302621`).
 - Typography: `Lora` for headings and `DM Sans` for UI and body text.
 - Avoid generic stock illustrations; prefer clean conceptual miniature digital spaces.
+- **Language Standard:** All UI copy, buttons, labels, and text must be in fluent, professional English.
+- **No Implementation Jargon in UI:** Never expose internal tech stack names (e.g., Appwrite, Vite, Oxlint) or design token terminology in end-user facing text. Focus on emotional intimacy, human value, and genuine privacy.
