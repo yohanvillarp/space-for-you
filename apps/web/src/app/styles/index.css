@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "./tokens.css";
+@import 'tailwindcss';
+@import './tokens.css';
+@import './animations.css';
 
 @layer base {
   *,

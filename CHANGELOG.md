@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.4.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.3.0...space-for-you-v0.4.0) (2026-10-23)
+
+
+### Features
+
+* **create-space:** add qr code, keepsake card and studio layout ([3dcf968](https://github.com/yohanvillarp/space-for-you/commit/3dcf9687081ef2915b68be0dec186fb5e6b7249e))
+* **shared:** add centered animated gift box keepsake loader ([30361aa](https://github.com/yohanvillarp/space-for-you/commit/30361aa59b07fe57dcd2ca56de8924fa34d69b68))
+* **space-themes:** add tangible physical stages and theme registry ([65c1890](https://github.com/yohanvillarp/space-for-you/commit/65c1890b297661c37af48af5abe82d76869144ce))
+* **spaces:** add standalone full-bleed stage preview route ([2412b40](https://github.com/yohanvillarp/space-for-you/commit/2412b40f2bcd9feaa9c17ae14e2299fa5438b90e))
+* **spaces:** add tangible stage preview, qr keepsake card, and studio layout ([9c6dda2](https://github.com/yohanvillarp/space-for-you/commit/9c6dda212054f54b944fe303d0ffd2c8cb501727))
+
+## [0.3.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.2.1...space-for-you-v0.3.0) (2026-10-23)
+
+
+### Features
+
+* **auth:** add email password auth and responsive editorial layout ([0767611](https://github.com/yohanvillarp/space-for-you/commit/0767611680259023f2cc66e747ec117c54db870c))
+* enhance public header, email auth flow, and smart dashboard routing ([ebb7206](https://github.com/yohanvillarp/space-for-you/commit/ebb720656f3032feb65f010131bf44c0ff3dba54))
+* **layout:** upgrade header with mobile drawer and isolate app views ([e5e0fc4](https://github.com/yohanvillarp/space-for-you/commit/e5e0fc46d752525a48e00f87446ce27110007bfd))
+* **router:** register expansion pages and public navigation links ([d4c23a4](https://github.com/yohanvillarp/space-for-you/commit/d4c23a4f0b9a39a49ec7e10cad92200826b09360))
+* **ui:** add input component modular animations and logo lockup ([c3f2a7c](https://github.com/yohanvillarp/space-for-you/commit/c3f2a7cb08c2dd1e474ed0584ed37d53e5543923))
+
 ## [0.2.1](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.2.0...space-for-you-v0.2.1) (2026-10-23)
 
 

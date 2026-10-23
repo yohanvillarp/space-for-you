@@ -1,0 +1,196 @@
+/**
+ * Modular & Scalable Micro-animations for Space for You
+ * Designed for an intimate, calm, and responsive experience.
+ */
+
+@keyframes sfyFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sfySlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sfySlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sfyScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sfyFloatSlow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes sfyPulseGlow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.03);
+  }
+}
+
+/* Reusable animation utility classes */
+.animate-fade-in {
+  animation: sfyFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: sfySlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-down {
+  animation: sfySlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: sfyScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: sfyFloatSlow 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: sfyPulseGlow 4s ease-in-out infinite;
+}
+
+/* Gift loader animations */
+@keyframes sfyGiftFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes sfyGiftLid {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  40% {
+    transform: translateY(-4px) rotate(-1.5deg);
+  }
+  70% {
+    transform: translateY(-5px) rotate(1.5deg);
+  }
+}
+
+@keyframes sfyGiftShadow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(0.78);
+    opacity: 0.16;
+  }
+}
+
+@keyframes sfyGiftSparkle {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.5);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.4);
+  }
+}
+
+.animate-gift-box {
+  animation: sfyGiftFloat 3.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-gift-lid {
+  animation: sfyGiftLid 3.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-gift-shadow {
+  animation: sfyGiftShadow 3.2s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+.animate-sparkle-1 {
+  animation: sfyGiftSparkle 2.6s ease-in-out infinite 0.2s;
+  transform-origin: center center;
+}
+
+.animate-sparkle-2 {
+  animation: sfyGiftSparkle 2.6s ease-in-out infinite 1s;
+  transform-origin: center center;
+}
+
+.animate-sparkle-3 {
+  animation: sfyGiftSparkle 2.6s ease-in-out infinite 1.8s;
+  transform-origin: center center;
+}
+
+/* Stagger delay helpers for sequential entrance */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Transition speed and easing presets */
+.transition-smooth {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
