@@ -1,35 +1,50 @@
-# React + TypeScript + Vite
+# @space-for-you/web
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+> Web frontend for **Space for You** (*"A platform to create personalized digital spaces for someone special"*).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Architecture & Technologies
 
-## React Compiler
+- **Architecture**: [Feature-Sliced Design (FSD)](https://feature-sliced.design/)
+  - `src/app`: Application-wide providers, routing configuration, global styles and tokens.
+  - `src/pages`: Application views (`HomePage`, `NotFoundPage`).
+  - `src/widgets`: Compositional layout blocks (`Header`, `Navbar`, `Footer`, `RootLayout`).
+  - `src/features`: Interactive user features (`theme-toggle`).
+  - `src/entities`: Business domain models and session entities.
+  - `src/shared`: Reusable atomic UI elements (`Button`, `Card`, `Badge`, `Container`), API clients, assets, and utilities.
+- **Framework & Runtime**: React 19 + TypeScript 6 (`verbatimModuleSyntax: true`)
+- **Styling**: Tailwind CSS v4 with custom warm editorial design tokens and light/dark theme support.
+- **Routing**: React Router 8.
+- **Linting & Code Quality**: [Oxlint](https://oxc.rs/) for ultra-fast static analysis.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Available Scripts
 
-## Expanding the Oxlint configuration
+From the repository root:
+```bash
+# Run web development server
+npm run dev
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+# Run static analysis (Oxlint)
+npm run lint
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# Run TypeScript type check
+npm run typecheck
+
+# Build web package for production
+npm run build
+
+# Preview production build locally
+npm run preview
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Or from `apps/web`:
+```bash
+cd apps/web
+npm run dev
+npm run build
+npm run lint
+npm run typecheck
+```
