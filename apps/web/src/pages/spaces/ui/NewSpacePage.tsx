@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { ArrowLeft, ArrowRight, Sparkles, Check } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Sparkles,
+  Check,
+  ExternalLink,
+} from 'lucide-react'
 import {
   ProtectedRoute,
   ThemeSelectorList,
-  StageExperienceHub,
+  StagePreviewPanel,
   ShareableKeepsakeCard,
   THEME_REGISTRY,
 } from '@/features'
@@ -95,7 +101,7 @@ export function NewSpacePage() {
             aria-hidden="true"
           />
 
-          <Container className="max-w-7xl space-y-6">
+          <Container className="max-w-[1520px] space-y-6">
             {/* Minimalist Top Studio Bar */}
             <div className="border-border-base/40 flex items-center justify-between border-b pb-4">
               <Link
@@ -113,9 +119,9 @@ export function NewSpacePage() {
             </div>
 
             {/* Studio Lateral Layout Grid */}
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start xl:gap-10">
-              {/* Left Column: Clean Sidebar Controls (Col-Span 5) */}
-              <aside className="space-y-6 lg:col-span-5 xl:col-span-4">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start xl:gap-8">
+              {/* Left Column: Clean Sidebar Controls (Col-Span 4/3) */}
+              <aside className="space-y-6 lg:col-span-4 xl:col-span-3">
                 {/* Title Narrative */}
                 <div className="space-y-1">
                   <h1 className="font-heading text-text-primary text-2xl font-medium tracking-tight sm:text-3xl">
@@ -130,7 +136,7 @@ export function NewSpacePage() {
                   </p>
                 </div>
 
-                {/* Step 1 Controls: Theme Setting Options */}
+                {/* Step 1 Controls: Theme Setting Options & Studio Tools */}
                 {currentStep === 'template' && (
                   <div className="animate-fade-in space-y-4">
                     <ThemeSelectorList
@@ -138,8 +144,29 @@ export function NewSpacePage() {
                       onSelectTemplate={setSelectedTemplateId}
                     />
 
-                    {/* Action Button to proceed */}
-                    <div className="pt-2">
+                    {/* Setting Inclusions Panel */}
+                    <div className="border-border-base/70 bg-bg-surface/80 rounded-2xl border p-4 backdrop-blur-md">
+                      <div className="flex items-center justify-between pb-2">
+                        <span className="font-heading text-primary text-xs font-semibold italic">
+                          Included Artifacts
+                        </span>
+                        <span
+                          className="h-2 w-2 rounded-full"
+                          style={{ backgroundColor: activeTheme.accentColor }}
+                        />
+                      </div>
+                      <p className="text-text-secondary font-sans text-xs leading-relaxed">
+                        {selectedTemplateId === 'birthday' &&
+                          'Interactive candle with extinguishable flame, deckled cotton card, polaroid photo frame, and acoustic guitar melody.'}
+                        {selectedTemplateId === 'anniversary' &&
+                          'Wax-sealed private envelope, instant couple polaroid, spinning vinyl turntable, and scattered rose petals.'}
+                        {selectedTemplateId === 'friendship' &&
+                          'Airmail roadtrip postcard with push pins, retro cassette tape player, polaroid memory, and washi tape.'}
+                      </p>
+                    </div>
+
+                    {/* Action Buttons: Fullscreen Workspace & Continue */}
+                    <div className="space-y-2 pt-1">
                       <Button
                         type="button"
                         variant="primary"
@@ -149,6 +176,22 @@ export function NewSpacePage() {
                       >
                         <span>Continue to Personalize</span>
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Button>
+
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="w-full cursor-pointer justify-center gap-1.5 text-xs"
+                      >
+                        <a
+                          href={`/spaces/preview/${selectedTemplateId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>Launch Fullscreen Studio</span>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
                       </Button>
                     </div>
                   </div>
@@ -243,8 +286,8 @@ export function NewSpacePage() {
                 )}
               </aside>
 
-              {/* Right Column: Central Step Progress + Content (Col-Span 7 or 8) */}
-              <main className="animate-fade-in space-y-5 lg:col-span-7 xl:col-span-8">
+              {/* Right Column: Central Step Progress + Content (Col-Span 8 or 9) */}
+              <main className="animate-fade-in space-y-5 lg:col-span-8 xl:col-span-9">
                 {/* Central Step Progress Bar positioned right above the main area */}
                 <div className="border-border-base/70 bg-bg-surface/80 rounded-2xl border p-3.5 px-5 shadow-xs backdrop-blur-md">
                   <div className="flex items-center justify-between gap-3">
@@ -314,9 +357,12 @@ export function NewSpacePage() {
                   </div>
                 </div>
 
-                {/* Step 1 View: Live Stage Experience Hub */}
+                {/* Step 1 View: Pure Live Stage Setting Preview (No inline editor clutter) */}
                 {currentStep === 'template' && (
-                  <StageExperienceHub templateId={selectedTemplateId} />
+                  <StagePreviewPanel
+                    key={selectedTemplateId}
+                    templateId={selectedTemplateId}
+                  />
                 )}
 
                 {/* Step 2 View: Story placeholder hub */}
