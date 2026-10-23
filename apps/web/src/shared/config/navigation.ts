@@ -7,7 +7,15 @@ export interface NavItem {
 
 export const MAIN_NAV_ITEMS: readonly NavItem[] = [
   {
-    label: 'Inicio',
-    path: ROUTES.HOME,
+    label: 'Examples',
+    path: ROUTES.EXAMPLES,
+  },
+  {
+    label: 'How it works',
+    path: ROUTES.HOW_IT_WORKS,
+  },
+  {
+    label: 'Privacy',
+    path: ROUTES.PRIVACY,
   },
 ] as const

@@ -37,7 +37,7 @@ export function HeroSection() {
               size="lg"
               className="justify-center"
             >
-              <a href="#examples">Explore examples</a>
+              <Link to={ROUTES.EXAMPLES}>Explore examples</Link>
             </Button>
           </div>
         </div>
