@@ -1,0 +1,46 @@
+/**
+ * Scoped styles for the Birthday Celebration Stage
+ */
+.universe-birthday {
+  --theme-primary: #d97706;
+  --theme-accent: #f59e0b;
+  --theme-glow: rgba(217, 119, 6, 0.25);
+}
+
+/* Fullscreen authentic celebration tabletop surface */
+.universe-birthday .celebration-table-surface,
+.celebration-table-surface {
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(217, 119, 6, 0.22) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(245, 158, 11, 0.12) 0%,
+      transparent 55%
+    ),
+    #1b130e;
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.75);
+}
+
+.universe-birthday .deckled-card {
+  background: #fffdf9;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  box-shadow:
+    0 10px 25px -4px rgba(0, 0, 0, 0.35),
+    0 4px 10px -2px rgba(217, 119, 6, 0.15);
+}
+
+.dark .universe-birthday .deckled-card {
+  background: #251d18;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  box-shadow: 0 12px 35px -4px rgba(0, 0, 0, 0.6);
+}
+
+.universe-birthday .gold-foil-text {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

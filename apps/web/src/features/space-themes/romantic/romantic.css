@@ -1,0 +1,46 @@
+/**
+ * Scoped styles for the Romantic Journey Stage
+ */
+.universe-romantic {
+  --theme-primary: #a34835;
+  --theme-accent: #c25e48;
+  --theme-glow: rgba(163, 72, 53, 0.25);
+}
+
+/* Fullscreen authentic dark walnut romantic desk surface */
+.universe-romantic .romantic-desk-surface,
+.romantic-desk-surface {
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(163, 72, 53, 0.25) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(194, 94, 72, 0.15) 0%,
+      transparent 60%
+    ),
+    #18100f;
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.75);
+}
+
+.universe-romantic .linen-envelope {
+  background: #faf5f0;
+  border: 1px solid rgba(163, 72, 53, 0.25);
+  box-shadow:
+    0 10px 25px -4px rgba(0, 0, 0, 0.4),
+    0 4px 10px -2px rgba(163, 72, 53, 0.15);
+}
+
+.dark .universe-romantic .linen-envelope {
+  background: #251b18;
+  border: 1px solid rgba(163, 72, 53, 0.4);
+  box-shadow: 0 12px 35px -4px rgba(0, 0, 0, 0.6);
+}
+
+.universe-romantic .rose-foil-text {
+  background: linear-gradient(135deg, #e88b77 0%, #a34835 50%, #6e2619 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
