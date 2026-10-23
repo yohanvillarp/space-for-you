@@ -9,6 +9,7 @@
     "lint": "npm --prefix apps/web run lint",
     "typecheck": "npm --prefix apps/web run typecheck",
     "preview": "npm --prefix apps/web run preview",
+    "generate:favicons": "node scripts/generate-favicons.mjs",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -17,6 +18,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
-    "prettier-plugin-tailwindcss": "^0.8.1"
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.5"
   }
 }

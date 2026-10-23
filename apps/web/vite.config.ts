@@ -12,12 +12,12 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    babel({ presets: [reactCompilerPreset()] })
+    babel({ presets: [reactCompilerPreset()] }),
   ],
+  envPrefix: ['VITE_', 'APPWRITE_'],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
 })
-
