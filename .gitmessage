@@ -1,0 +1,26 @@
+# <type>(<scope>): <short summary in imperative mood>
+# │<----                   Max 72 characters                    ---->│
+#
+# ─── TYPES ─────────────────────────────────────────────────────────
+# feat     : A new feature for the user
+# fix      : A bug fix for the user
+# docs     : Changes to documentation only
+# style    : Formatting, missing semi-colons, no code logic changes
+# refactor : Refactoring production code without changing behavior
+# perf     : Code change that improves performance
+# test     : Adding missing tests or correcting existing tests
+# build    : Changes affecting build system, vite, npm, or dependencies
+# ci       : Changes to CI/CD workflows and configuration files
+# chore    : Routine maintenance, config tweaks, tool configurations
+# revert   : Reverts a previous commit
+#
+# ─── SCOPES (optional) ─────────────────────────────────────────────
+# web, ui, layout, theme, seo, assets, config, deps, root
+#
+# ─── BODY (optional) ───────────────────────────────────────────────
+# Motivation for the change and contrast with previous behavior.
+# Wrap lines at 72 characters.
+#
+# ─── FOOTER (optional) ─────────────────────────────────────────────
+# BREAKING CHANGE: <description of breaking change>
+# Closes #<issue-number>
