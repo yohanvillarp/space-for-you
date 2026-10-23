@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.2.1...space-for-you-v0.3.0) (2026-10-23)
+
+
+### Features
+
+* **auth:** add email password auth and responsive editorial layout ([0767611](https://github.com/yohanvillarp/space-for-you/commit/0767611680259023f2cc66e747ec117c54db870c))
+* enhance public header, email auth flow, and smart dashboard routing ([ebb7206](https://github.com/yohanvillarp/space-for-you/commit/ebb720656f3032feb65f010131bf44c0ff3dba54))
+* **layout:** upgrade header with mobile drawer and isolate app views ([e5e0fc4](https://github.com/yohanvillarp/space-for-you/commit/e5e0fc46d752525a48e00f87446ce27110007bfd))
+* **router:** register expansion pages and public navigation links ([d4c23a4](https://github.com/yohanvillarp/space-for-you/commit/d4c23a4f0b9a39a49ec7e10cad92200826b09360))
+* **ui:** add input component modular animations and logo lockup ([c3f2a7c](https://github.com/yohanvillarp/space-for-you/commit/c3f2a7cb08c2dd1e474ed0584ed37d53e5543923))
+
 ## [0.2.1](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.2.0...space-for-you-v0.2.1) (2026-10-23)
 
 
