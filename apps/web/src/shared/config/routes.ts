@@ -9,6 +9,7 @@ export const ROUTES = {
   PRIVACY: '/privacy',
   NEW_SPACE: '/spaces/new',
   EDIT_SPACE: '/spaces/:id/edit',
+  STAGE_PREVIEW: '/spaces/preview/:templateId',
   PUBLIC_SPACE: '/s/:slug',
   NOT_FOUND: '*',
 } as const
