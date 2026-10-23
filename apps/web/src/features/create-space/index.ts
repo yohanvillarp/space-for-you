@@ -8,7 +8,22 @@ export { LiveSpaceCanvas } from './ui/LiveSpaceCanvas'
 export type { LiveSpaceCanvasProps } from './ui/LiveSpaceCanvas'
 export { StageExperienceHub } from './ui/StageExperienceHub'
 export type { StageExperienceHubProps } from './ui/StageExperienceHub'
+export { StagePreviewPanel } from './ui/StagePreviewPanel'
+export type { StagePreviewPanelProps } from './ui/StagePreviewPanel'
 export { StylizedQrCode } from './ui/StylizedQrCode'
 export type { StylizedQrCodeProps } from './ui/StylizedQrCode'
 export { ShareableKeepsakeCard } from './ui/ShareableKeepsakeCard'
 export type { ShareableKeepsakeCardProps } from './ui/ShareableKeepsakeCard'
+export { SpatialStageStudio } from './ui/SpatialStageStudio'
+export type { SpatialStageStudioProps } from './ui/SpatialStageStudio'
+export { FullscreenSpatialEditor } from './ui/FullscreenSpatialEditor'
+export type { FullscreenSpatialEditorProps } from './ui/FullscreenSpatialEditor'
+export { SpatialStageCanvas } from './ui/SpatialStageCanvas'
+export type { SpatialStageCanvasProps } from './ui/SpatialStageCanvas'
+export { SpatialToolboxSidebar } from './ui/SpatialToolboxSidebar'
+export type { SpatialToolboxSidebarProps } from './ui/SpatialToolboxSidebar'
+export type {
+  SpatialItem,
+  SpatialItemType,
+  ToolboxItemDef,
+} from './model/spatial-stage.types'
