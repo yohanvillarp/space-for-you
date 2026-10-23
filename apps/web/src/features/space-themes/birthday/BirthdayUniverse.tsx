@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { Sparkles, Music, Volume2 } from 'lucide-react'
-import { CandleFlame, PolaroidFrame, WashiTape } from '../shared'
+import { Sparkles } from 'lucide-react'
+import { CandleFlame, PolaroidFrame, WashiTape, MusicBox } from '../shared'
+import { getPresetTrackForTemplate } from '@/entities/audio'
+import { playSpatialSfx } from '@/shared/lib'
 import './birthday.css'
 
 export function BirthdayUniverse() {
   const [candleLit, setCandleLit] = useState(true)
+  const birthdayTrack = getPresetTrackForTemplate('birthday')
 
   return (
     <div className="universe-birthday celebration-table-surface animate-fade-in relative flex min-h-[calc(100dvh-57px)] w-full flex-1 flex-col justify-between overflow-hidden px-4 py-8 select-none sm:px-8 sm:py-12 md:px-12">
@@ -49,7 +52,10 @@ export function BirthdayUniverse() {
             {/* Candle Body & Flame */}
             <button
               type="button"
-              onClick={() => setCandleLit(!candleLit)}
+              onClick={() => {
+                playSpatialSfx(candleLit ? 'candle-blow' : 'candle-spark')
+                setCandleLit(!candleLit)
+              }}
               className="group flex cursor-pointer flex-col items-center transition-transform outline-none hover:scale-105"
               title={
                 candleLit
@@ -131,26 +137,14 @@ export function BirthdayUniverse() {
           </div>
         </div>
 
-        {/* Ambient Acoustic Soundscape Bar on Table */}
-        <div className="pt-6">
-          <div className="flex items-center justify-between rounded-xl border border-amber-500/30 bg-black/50 px-5 py-3.5 font-sans text-xs shadow-inner backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
-                <Music className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="font-medium text-stone-200">
-                  Acoustic Guitar & Gentle Celebration Chimes
-                </p>
-                <p className="text-[10px] text-stone-400">
-                  Soft background melody waiting for your recipient
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1.5 text-amber-400">
-              <Volume2 className="h-4 w-4 animate-pulse" />
-            </div>
-          </div>
+        {/* Handcrafted Celebration Music Box on Table */}
+        <div className="flex justify-center pt-6">
+          <MusicBox
+            title={birthdayTrack.title}
+            artist={birthdayTrack.artist}
+            trackUrl={birthdayTrack.url}
+            className="w-full max-w-md shadow-2xl"
+          />
         </div>
       </div>
 

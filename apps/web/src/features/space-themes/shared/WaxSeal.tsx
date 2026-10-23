@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { HTMLAttributes } from 'react'
 import { Heart, Sparkles, Check } from 'lucide-react'
-import { cn } from '@/shared/lib'
+import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface WaxSealProps extends Omit<
   HTMLAttributes<HTMLButtonElement>,
@@ -27,6 +27,7 @@ export function WaxSeal({
 
   const handleToggle = () => {
     const next = !isOpen
+    playSpatialSfx(next ? 'wax-crack' : 'seal-stamp')
     setIsOpen(next)
     onToggle?.(next)
   }
