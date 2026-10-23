@@ -77,6 +77,6 @@ The repository is organized as a monorepo containing:
 - Aesthetic direction: Intimate, warm digital workshop with contemporary editorial design.
 - Warm ivory (`#FAF6F0`), dark terracotta (`#A34835`), soft clay (`#EACABC`), espresso (`#302621`).
 - Typography: `Lora` for headings and `DM Sans` for UI and body text.
-- Avoid generic stock illustrations; prefer clean conceptual miniature digital spaces.
 - **Language Standard:** All UI copy, buttons, labels, and text must be in fluent, professional English.
 - **No Implementation Jargon in UI:** Never expose internal tech stack names (e.g., Appwrite, Vite, Oxlint) or design token terminology in end-user facing text. Focus on emotional intimacy, human value, and genuine privacy.
+- **No Procedural or Meta-Labels:** Strictly avoid artificial process badges, workflow labels, and self-describing scaffolding (such as `"Creator Workshop • Step-by-Step"`, `"Personal Sanctuary"`, or `"Preview Snapshot"`). Rely on clean hierarchy, modern whitespace, and intuitive context rather than instructional label tags.

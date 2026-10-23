@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { appwriteAccount } from '@/shared/api'
 import type { AppwriteUser } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
+import { GiftLoader } from '@/shared/ui'
 
 interface ProtectedRouteProps {
   children: (user: AppwriteUser) => ReactNode
@@ -40,11 +41,11 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (isChecking) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3">
-        <div className="border-primary/30 border-t-primary h-8 w-8 animate-spin rounded-full border-2" />
-        <p className="text-text-secondary font-sans text-sm">
-          Verifying session...
-        </p>
+      <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
+        <GiftLoader
+          label="Opening your sanctuary..."
+          hint="Gathering your spaces and cherished memories."
+        />
       </div>
     )
   }

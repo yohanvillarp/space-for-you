@@ -17,7 +17,7 @@ export function RootLayout() {
 
   if (isStandaloneView) {
     return (
-      <div className="bg-bg-base text-text-primary min-h-screen">
+      <div className="bg-bg-base text-text-primary flex min-h-screen flex-col">
         <Outlet />
       </div>
     )

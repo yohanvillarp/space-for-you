@@ -13,10 +13,16 @@ import {
   NewSpacePage,
   EditSpacePage,
   PublicSpacePage,
+  SpaceStagePreviewPage,
 } from '@/pages'
 import { ROUTES } from '@/shared/config'
 
 export const appRouter = createBrowserRouter([
+  // Standalone Immersive Stage Preview (Full bleed, 0% dashboard scaffolding)
+  {
+    path: ROUTES.STAGE_PREVIEW,
+    element: <SpaceStagePreviewPage />,
+  },
   {
     path: ROUTES.HOME,
     element: <RootLayout />,

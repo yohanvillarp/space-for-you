@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 import { appwriteAccount, hasSessionHint, setSessionHint } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
+import { GiftLoader } from '@/shared/ui'
 
 interface PublicOnlyRouteProps {
   children: ReactNode
@@ -41,11 +42,11 @@ export function PublicOnlyRoute({ children }: PublicOnlyRouteProps) {
 
   if (isChecking) {
     return (
-      <div className="animate-fade-in flex min-h-[60vh] flex-col items-center justify-center gap-4">
-        <div className="border-primary/20 border-t-primary h-8 w-8 animate-spin rounded-full border-2" />
-        <p className="font-heading text-text-secondary text-sm italic">
-          Entering your sanctuary...
-        </p>
+      <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
+        <GiftLoader
+          label="Entering your sanctuary..."
+          hint="Opening the doors to your digital workshop."
+        />
       </div>
     )
   }
