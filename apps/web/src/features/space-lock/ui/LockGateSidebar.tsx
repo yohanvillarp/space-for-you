@@ -1,6 +1,7 @@
-import { Lock, KeyRound, Shield, ShieldCheck } from 'lucide-react'
+import { Lock, KeyRound, SlidersHorizontal } from 'lucide-react'
 import type { SpaceProtectionConfig } from '@/features/space-lock/model/lock.types'
 import { useLockGateToolbox } from '@/features/space-lock/model/useLockGateToolbox'
+import { LockGateCollapsibleSection } from '@/features/space-lock/ui/sidebar/LockGateCollapsibleSection'
 import { LockGateToolboxHeader } from '@/features/space-lock/ui/sidebar/LockGateToolboxHeader'
 import { BackgroundAtmosphereGrid } from '@/features/space-lock/ui/sidebar/BackgroundAtmosphereGrid'
 import { VaultObjectsGrid } from '@/features/space-lock/ui/sidebar/VaultObjectsGrid'
@@ -44,57 +45,31 @@ export function LockGateSidebar({
         className,
       )}
     >
-      {/* Sidebar Header */}
-      <div className="flex shrink-0 items-center justify-between border-b border-[#3B302A] bg-[#1A1411] px-4 py-3">
+      {/* Sidebar Header without description or badges */}
+      <div className="flex shrink-0 items-center border-b border-[#3B302A] bg-[#1A1411] px-4 py-3">
         <div className="flex items-center gap-2.5">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-400/10 text-amber-300">
             <KeyRound className="h-4 w-4" />
           </div>
-          <div>
-            <h3 className="font-heading text-xs font-semibold tracking-wide text-amber-200">
-              Lock Gate Workshop
-            </h3>
-            <p className="font-sans text-[10px] text-[#A99B90]">
-              Secret vault & passcode entrance
-            </p>
-          </div>
-        </div>
-
-        <div
-          className={cn(
-            'inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-sans text-[10px] font-medium',
-            config.enabled
-              ? 'border border-emerald-400/40 bg-emerald-500/15 text-emerald-300'
-              : 'border border-stone-600/40 bg-stone-700/20 text-stone-400',
-          )}
-        >
-          {config.enabled ? (
-            <>
-              <ShieldCheck className="h-3 w-3" />
-              <span>Protected</span>
-            </>
-          ) : (
-            <>
-              <Shield className="h-3 w-3" />
-              <span>Open</span>
-            </>
-          )}
+          <h3 className="font-heading text-xs font-semibold tracking-wide text-amber-200">
+            Lock Gate Workshop
+          </h3>
         </div>
       </div>
 
       {/* Main Settings Body */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4 font-sans text-xs">
-        {/* Toggle Protection Card */}
-        <div className="space-y-2 rounded-xl border border-[#3B302A] bg-[#1E1815] p-3.5">
+        {/* Collapsible Passcode Settings Section */}
+        <LockGateCollapsibleSection
+          title="Passcode Settings"
+          icon={SlidersHorizontal}
+          defaultOpen={true}
+        >
+          {/* Require Passcode Toggle Row */}
           <div className="flex items-center justify-between">
-            <div>
-              <span className="font-medium text-amber-100">
-                Require Passcode
-              </span>
-              <p className="text-[11px] text-[#A99B90]">
-                Gate your space with a secret combination
-              </p>
-            </div>
+            <span className="text-xs font-medium text-amber-100">
+              Require Passcode
+            </span>
             <button
               type="button"
               onClick={handleToggle}
@@ -113,12 +88,10 @@ export function LockGateSidebar({
               />
             </button>
           </div>
-        </div>
 
-        {config.enabled && (
-          <div className="animate-fade-in space-y-4">
-            {/* Passcode Input */}
-            <div className="space-y-1.5">
+          {/* Passcode Input (when enabled) */}
+          {config.enabled && (
+            <div className="space-y-1.5 pt-1">
               <label className="text-[11px] font-medium text-amber-200">
                 Secret Passcode (PIN or word)
               </label>
@@ -134,7 +107,11 @@ export function LockGateSidebar({
                 <Lock className="absolute top-2.5 right-3 h-3.5 w-3.5 text-[#A99B90]" />
               </div>
             </div>
+          )}
+        </LockGateCollapsibleSection>
 
+        {config.enabled && (
+          <div className="animate-fade-in space-y-4">
             {/* Modular Search & Category Switcher Header */}
             <LockGateToolboxHeader
               activeCategory={activeCategory}
