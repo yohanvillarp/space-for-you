@@ -32,10 +32,16 @@ export interface UseMultiSceneStateReturn {
   ) => void
   handleDuplicateScene: (sceneId: string) => void
   handleMoveScene: (sceneId: string, direction: 'left' | 'right') => void
+  handleReorderScenes: (fromIndex: number, toIndex: number) => void
   handleUpdateLetter: (updatedLetter: LetterItem) => void
   handleAddLetter: () => void
   handleDuplicateLetter: (id: string) => void
   handleDeleteLetter: (id: string) => void
+  handleReorderLetters: (
+    fromIndex: number,
+    toIndex: number,
+    sceneId?: string,
+  ) => void
 }
 
 export function loadFromStorage<T>(key: string, fallback: T): T {

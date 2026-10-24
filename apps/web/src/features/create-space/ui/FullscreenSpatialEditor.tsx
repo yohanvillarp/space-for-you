@@ -16,24 +16,30 @@ import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSc
 import { useEditorMediaAssignment } from '@/features/create-space/ui/editor/useEditorMediaAssignment'
 import { countStagePhotos } from '@/features/create-space/lib/stage-photo-limit'
 import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/StudioBehaviorProvider'
-import { useConfirmDialog } from '@/shared/ui'
+import { useStudioReset } from '@/features/create-space/ui/editor/useStudioReset'
+import { useShareCardCustomizer } from '@/features/create-space/ui/share/useShareCardCustomizer'
+import { useStudioSave } from '@/features/create-space/ui/editor/useStudioSave'
+import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
   templateId: SpaceTemplateId
+  initialSceneId?: string
+  spaceId?: string
   className?: string
 }
 
 export function FullscreenSpatialEditor({
   templateId,
+  initialSceneId,
+  spaceId,
   className,
 }: FullscreenSpatialEditorProps) {
-  const { confirm } = useConfirmDialog()
   const [protectionConfig, setProtectionConfig] =
     useState<SpaceProtectionConfig>(DEFAULT_PROTECTION_CONFIG)
   const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false)
 
-  const multiScene = useMultiSceneState()
+  const multiScene = useMultiSceneState(initialSceneId)
   const {
     activeSceneId,
     setActiveSceneId,
@@ -54,6 +60,8 @@ export function FullscreenSpatialEditor({
     handleAddLetter,
     handleDuplicateLetter,
     handleDeleteLetter,
+    handleReorderScenes,
+    handleReorderLetters,
   } = multiScene
 
   const stage = useSpatialStageItems(templateId)
@@ -103,26 +111,26 @@ export function FullscreenSpatialEditor({
   const handleUpdateSpaceMeta = (u: Partial<SpaceMeta>) =>
     setSpaceMeta((p) => ({ ...p, ...u }))
 
-  const handleResetToDefaults = async () => {
-    const ok = await confirm({
-      title: 'Reset workspace to defaults?',
-      description:
-        'This will restore all stage elements, letter drafts, and layout back to their initial template settings. Any unsaved custom work will be removed.',
-      confirmText: 'Reset workspace',
-      cancelText: 'Keep working',
-      type: 'danger',
-    })
-    if (!ok) return
-    stage.handleResetToDefaults()
-    try {
-      localStorage.removeItem('sfy_scenes_draft')
-      localStorage.removeItem('sfy_space_meta_draft')
-      localStorage.removeItem('sfy_active_scene_id')
-    } catch {
-      // ignore
-    }
-    setActiveSceneId('hub')
-  }
+  const { handleResetToDefaults } = useStudioReset({
+    onResetStage: stage.handleResetToDefaults,
+    onResetScene: () => setActiveSceneId('hub'),
+  })
+
+  const shareUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+      : `${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+
+  const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
+
+  const { isSaved, handleSave } = useStudioSave({
+    spaceId,
+    templateId,
+    spaceMeta,
+    scenesCount: scenes.length,
+    artifactsCount: items.length,
+    fallbackTitle: `${activeTheme.title} Space`,
+  })
 
   return (
     <StudioBehaviorProvider initialMode="editor">
@@ -140,6 +148,9 @@ export function FullscreenSpatialEditor({
           selectedId={selectedId}
           onDeleteSelected={stage.handleDeleteItem}
           onResetToDefaults={handleResetToDefaults}
+          onOpenShare={() => setActiveSceneId('share')}
+          onSave={handleSave}
+          isSaved={isSaved}
         />
 
         <div className="relative flex flex-1 overflow-hidden">
@@ -179,6 +190,7 @@ export function FullscreenSpatialEditor({
               onUpdateLetter={handleUpdateLetter}
               onDeleteLetter={handleDeleteLetter}
               isCompact={sidebarWidth < 280}
+              shareCustomizer={shareCustomizer}
             />
           </EditorSidebarDrawer>
 
@@ -233,7 +245,11 @@ export function FullscreenSpatialEditor({
             onAddLetter={handleAddLetter}
             onDuplicateLetter={handleDuplicateLetter}
             onDeleteLetter={handleDeleteLetter}
+            onReorderLetters={handleReorderLetters}
+            onReorderScenes={handleReorderScenes}
             onUpdateLetter={handleUpdateLetter}
+            shareUrl={shareUrl}
+            shareCustomizer={shareCustomizer}
           />
         </div>
 

@@ -30,12 +30,16 @@ function resolveInitialTemplate(paramTemplate: string | null): SpaceTemplateId {
 export function SpaceStudioPage() {
   const [searchParams] = useSearchParams()
   const rawParam = searchParams.get('template')
+  const rawScene = searchParams.get('scene') ?? undefined
+  const rawSpaceId = searchParams.get('spaceId') ?? undefined
   const validTemplateId = resolveInitialTemplate(rawParam)
 
   return (
     <FullscreenSpatialEditor
-      key={validTemplateId}
+      key={`${validTemplateId}_${rawSpaceId ?? 'default'}`}
       templateId={validTemplateId}
+      initialSceneId={rawScene}
+      spaceId={rawSpaceId}
     />
   )
 }
