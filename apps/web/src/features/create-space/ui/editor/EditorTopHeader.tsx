@@ -11,6 +11,7 @@ import {
 import type { ThemeRegistryEntry } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
 import { Button } from '@/shared/ui'
+import { StudioModeSwitch } from '@/features/create-space/ui/editor/StudioModeSwitch'
 
 export interface EditorTopHeaderProps {
   activeTheme: ThemeRegistryEntry
@@ -55,6 +56,9 @@ export function EditorTopHeader({
 
       {/* Center / Right Pro Controls */}
       <div className="flex items-center gap-2.5">
+        {/* Studio Mode Switcher (Editor vs User Behavior) */}
+        <StudioModeSwitch />
+
         {/* Toggle Studio Library Sidebar Button */}
         <Button
           type="button"
