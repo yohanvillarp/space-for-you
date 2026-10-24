@@ -8,11 +8,20 @@ import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface LetterEnvelopeProps {
   letter: LetterItem
+  index?: number
   onOpen: (letter: LetterItem) => void
   onDoubleClick?: (letter: LetterItem) => void
   onContextMenu?: (e: React.MouseEvent) => void
   isSelected?: boolean
   className?: string
+  isDraggable?: boolean
+  onDragStart?: (e: React.DragEvent, index: number) => void
+  onDragOver?: (e: React.DragEvent, index: number) => void
+  onDragLeave?: (e: React.DragEvent, index: number) => void
+  onDrop?: (e: React.DragEvent, index: number) => void
+  onDragEnd?: (e?: React.DragEvent) => void
+  isDragging?: boolean
+  isDragOver?: boolean
 }
 
 const ENVELOPE_STYLES: Record<
@@ -64,11 +73,20 @@ const ENVELOPE_STYLES: Record<
 
 export function LetterEnvelope({
   letter,
+  index = 0,
   onOpen,
   onDoubleClick,
   onContextMenu,
   isSelected = false,
   className,
+  isDraggable = false,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onDragEnd,
+  isDragging = false,
+  isDragOver = false,
 }: LetterEnvelopeProps) {
   const style = ENVELOPE_STYLES[letter.envelopeColor] ?? ENVELOPE_STYLES.rose
 
@@ -87,6 +105,7 @@ export function LetterEnvelope({
   }
 
   const handleClick = () => {
+    if (isDragging) return
     playSpatialSfx('tactile-tap')
     onOpen(letter)
   }
@@ -98,13 +117,31 @@ export function LetterEnvelope({
   }
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
+      draggable={isDraggable}
+      onDragStart={(e) => onDragStart?.(e, index)}
+      onDragOver={(e) => onDragOver?.(e, index)}
+      onDragLeave={(e) => onDragLeave?.(e, index)}
+      onDrop={(e) => onDrop?.(e, index)}
+      onDragEnd={onDragEnd}
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleClick()
+        }
+      }}
       onDoubleClick={handleDoubleClick}
       onContextMenu={onContextMenu}
       className={cn(
-        'group relative flex w-full max-w-[240px] cursor-pointer flex-col items-center transition-all duration-300 hover:-translate-y-1.5 focus:outline-hidden',
+        'group relative flex w-full max-w-[240px] flex-col items-center transition-all duration-300 focus:outline-hidden',
+        isDraggable ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer',
+        isDragging && 'scale-95 rotate-2 opacity-30',
+        isDragOver &&
+          'scale-105 rounded-2xl ring-2 ring-amber-400 ring-offset-4 ring-offset-black',
+        !isDragging && 'hover:-translate-y-1.5',
         className,
       )}
     >
@@ -164,6 +201,6 @@ export function LetterEnvelope({
           </p>
         )}
       </div>
-    </button>
+    </div>
   )
 }

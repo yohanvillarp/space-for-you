@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import type { ContextMenuSection } from '@/features/create-space/shared/context-menu/ContextMenuAction'
 import { playSpatialSfx, cn } from '@/shared/lib'
 
@@ -22,6 +23,34 @@ export function FloatingContextMenu({
   minWidth = 195,
   className,
 }: FloatingContextMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null)
+  const [position, setPosition] = useState({ x, y })
+
+  useLayoutEffect(() => {
+    if (!menuRef.current) return
+    const rect = menuRef.current.getBoundingClientRect()
+    const padding = 12
+
+    let adjustedX = x
+    let adjustedY = y
+
+    // Check right edge overflow
+    if (adjustedX + rect.width > window.innerWidth - padding) {
+      adjustedX = Math.max(padding, window.innerWidth - rect.width - padding)
+    }
+
+    // Check bottom edge overflow: flip upward by actual measured menu height
+    if (adjustedY + rect.height > window.innerHeight - padding) {
+      adjustedY = Math.max(padding, adjustedY - rect.height)
+    }
+
+    // Ensure it doesn't overflow top or left edges
+    adjustedX = Math.max(padding, adjustedX)
+    adjustedY = Math.max(padding, adjustedY)
+
+    setPosition({ x: adjustedX, y: adjustedY })
+  }, [x, y, sections])
+
   if (!isOpen || sections.length === 0) return null
 
   const handleActionClick = (actionHandler: () => void) => {
@@ -34,8 +63,13 @@ export function FloatingContextMenu({
 
   return (
     <div
+      ref={menuRef}
       {...customAttrs}
-      style={{ left: `${x}px`, top: `${y}px`, minWidth: `${minWidth}px` }}
+      style={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        minWidth: `${minWidth}px`,
+      }}
       className={cn(
         'animate-in fade-in zoom-in-95 fixed z-50 rounded-xl border border-[#3B302A] bg-[#16120F]/95 p-1.5 shadow-2xl ring-1 ring-white/10 backdrop-blur-md duration-100 select-none',
         className,

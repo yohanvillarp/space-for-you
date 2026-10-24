@@ -11,6 +11,7 @@ import { AddLetterCard } from '@/features/create-space/ui/letters/AddLetterCard'
 import { LetterReaderModal } from '@/features/create-space/ui/letters/LetterReaderModal'
 import { useLettersContextMenu } from '@/features/create-space/ui/letters/useLettersContextMenu'
 import { LettersContextMenu } from '@/features/create-space/ui/letters/LettersContextMenu'
+import { useLettersDragReorder } from '@/features/create-space/ui/letters/useLettersDragReorder'
 import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
@@ -26,29 +27,42 @@ export interface LettersSceneProps {
   onAddLetter?: () => void
   onDuplicateLetter?: (letterId: string) => void
   onDeleteLetter?: (letterId: string) => void
+  onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateScene?: (updates: { title?: string; subtitle?: string }) => void
   onBackToHub: () => void
   className?: string
 }
 
-export function LettersScene({
-  scene,
-  templateId = 'birthday',
-  isStudioPreview = false,
-  selectedLetterId,
-  openLetterId,
-  onSelectLetter,
-  onOpenLetter,
-  onUpdateLetter,
-  onAddLetter,
-  onDuplicateLetter,
-  onDeleteLetter,
-  onUpdateScene,
-  onBackToHub,
-  className,
-}: LettersSceneProps) {
+export function LettersScene(props: LettersSceneProps) {
+  const {
+    scene,
+    templateId = 'birthday',
+    isStudioPreview = false,
+    selectedLetterId,
+    openLetterId,
+    onSelectLetter,
+    onOpenLetter,
+    onUpdateLetter,
+    onAddLetter,
+    onDuplicateLetter,
+    onDeleteLetter,
+    onReorderLetters,
+    onUpdateScene,
+    onBackToHub,
+    className,
+  } = props
   const { isEditorMode } = useStudioBehavior()
   const isEffectiveEditor = isStudioPreview && isEditorMode
+
+  const {
+    draggedIndex,
+    dragOverIndex,
+    handleDragStart,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleDragEnd,
+  } = useLettersDragReorder({ onReorderLetters, enabled: isEffectiveEditor })
 
   const [internalActiveLetter, setInternalActiveLetter] =
     useState<LetterItem | null>(null)
@@ -113,7 +127,7 @@ export function LettersScene({
     onDuplicateLetter,
     onDeleteLetter,
     onAddLetter,
-    onBackToHub,
+    onBackToHub: !isEffectiveEditor ? onBackToHub : undefined,
   }
 
   return (
@@ -180,10 +194,19 @@ export function LettersScene({
 
           {/* Envelopes Desk Grid: Responsive with breathing room */}
           <div className="grid w-full grid-cols-1 justify-items-center gap-8 @2xl:grid-cols-2 @2xl:gap-12 @5xl:grid-cols-3 @5xl:gap-14">
-            {scene.letters.map((letter) => (
+            {scene.letters.map((letter, index) => (
               <LetterEnvelope
                 key={letter.id}
                 letter={letter}
+                index={index}
+                isDraggable={isEffectiveEditor}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                isDragging={draggedIndex === index}
+                isDragOver={dragOverIndex === index}
                 isSelected={currentSelectedLetterId === letter.id}
                 onOpen={handleEnvelopeClick}
                 onDoubleClick={handleEnvelopeDoubleClick}
@@ -198,20 +221,22 @@ export function LettersScene({
           </div>
         </div>
 
-        {/* Bottom Floating Return Button (Matching "Explorar" from reference) */}
-        <div className="relative z-10 mt-10 pt-4">
-          <button
-            type="button"
-            onClick={() => {
-              playSpatialSfx('tactile-tap')
-              onBackToHub()
-            }}
-            className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/15 bg-[#17120F]/90 px-5 py-2 font-sans text-xs font-medium text-stone-200 shadow-xl backdrop-blur-md transition-all hover:border-amber-400 hover:text-amber-200 hover:shadow-2xl"
-          >
-            <Compass className="h-4 w-4 text-amber-300" />
-            <span>Explore Space Hub</span>
-          </button>
-        </div>
+        {/* Bottom Floating Return Button (Visible strictly in user mode) */}
+        {!isEffectiveEditor && (
+          <div className="relative z-10 mt-10 pt-4">
+            <button
+              type="button"
+              onClick={() => {
+                playSpatialSfx('tactile-tap')
+                onBackToHub()
+              }}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/15 bg-[#17120F]/90 px-5 py-2 font-sans text-xs font-medium text-stone-200 shadow-xl backdrop-blur-md transition-all hover:border-amber-400 hover:text-amber-200 hover:shadow-2xl"
+            >
+              <Compass className="h-4 w-4 text-amber-300" />
+              <span>Explore Space Hub</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Letter Reading & Writing View - Scoped strictly to this right space panel */}

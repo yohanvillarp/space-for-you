@@ -18,30 +18,11 @@ export function useSpaceHubContextMenu() {
       e.preventDefault()
       e.stopPropagation()
 
-      const menuWidth = 210
-      const menuHeight = 250
-      const padding = 16
-
-      const clientX = e.clientX
-      const clientY = e.clientY
-
-      // Clamp horizontally
-      const x = Math.min(
-        Math.max(padding, clientX),
-        window.innerWidth - menuWidth - padding,
-      )
-
-      // Position below cursor, or flip upward if overflowing bottom
-      const y =
-        clientY + menuHeight > window.innerHeight - padding
-          ? Math.max(padding, clientY - menuHeight)
-          : clientY
-
       playSpatialSfx('tactile-tap')
       setState({
         isOpen: true,
-        x,
-        y,
+        x: e.clientX,
+        y: e.clientY,
         target,
       })
     },
