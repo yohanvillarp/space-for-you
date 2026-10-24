@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { DEFAULT_PROTECTION_CONFIG } from '@/features/space-lock'
@@ -123,10 +123,16 @@ export function FullscreenSpatialEditor({
 
   const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
 
-  const { isSaved, handleSave } = useStudioSave({
+  const resolvedScenes = useMemo(
+    () => scenes.map((s) => (s.type === 'free-canvas' ? { ...s, items } : s)),
+    [scenes, items],
+  )
+
+  const { isSaved, isSaving, handleSave } = useStudioSave({
     spaceId,
     templateId,
     spaceMeta,
+    scenes: resolvedScenes,
     scenesCount: scenes.length,
     artifactsCount: items.length,
     fallbackTitle: `${activeTheme.title} Space`,
@@ -151,6 +157,7 @@ export function FullscreenSpatialEditor({
           onOpenShare={() => setActiveSceneId('share')}
           onSave={handleSave}
           isSaved={isSaved}
+          isSaving={isSaving}
         />
 
         <div className="relative flex flex-1 overflow-hidden">
