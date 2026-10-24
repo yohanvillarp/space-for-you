@@ -1,10 +1,17 @@
-import { Outlet, useLocation } from 'react-router'
+import { useEffect } from 'react'
+import { Outlet, useLocation, ScrollRestoration } from 'react-router'
 import { ROUTES } from '@/shared/config'
 import { Header } from './Header'
 import { Footer } from './Footer'
 
 export function RootLayout() {
   const location = useLocation()
+
+  // Reset scroll to top upon navigating to a new route
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [location.pathname])
+
   // Authenticated workspaces, creation flows, distraction-free auth, and public shared spaces
   // do not render the public marketing Header & Footer.
   const isStandaloneView =
@@ -18,6 +25,7 @@ export function RootLayout() {
   if (isStandaloneView) {
     return (
       <div className="bg-bg-base text-text-primary flex min-h-screen flex-col">
+        <ScrollRestoration />
         <Outlet />
       </div>
     )
@@ -25,6 +33,7 @@ export function RootLayout() {
 
   return (
     <div className="bg-bg-base text-text-primary flex min-h-screen flex-col">
+      <ScrollRestoration />
       <Header />
       <main className="flex flex-1 flex-col">
         <Outlet />

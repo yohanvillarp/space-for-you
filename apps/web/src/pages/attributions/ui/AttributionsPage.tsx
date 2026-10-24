@@ -7,7 +7,7 @@ import {
   ExternalLink,
   Heart,
 } from 'lucide-react'
-import { Container, Card, Badge } from '@/shared/ui'
+import { Container, Card } from '@/shared/ui'
 
 interface AttributionResource {
   name: string
@@ -78,9 +78,6 @@ export function AttributionsPage() {
       <Container className="max-w-5xl space-y-12">
         {/* Editorial Header */}
         <div className="space-y-4 text-center">
-          <Badge variant="accent" className="font-sans text-xs">
-            Open Web & Grateful Craft
-          </Badge>
           <h1 className="font-heading text-text-primary text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl">
             Attributions & Open Resources
           </h1>

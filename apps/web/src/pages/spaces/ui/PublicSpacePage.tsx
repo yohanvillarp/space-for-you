@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '@/shared/config'
-import { Container, Card, Button, Badge } from '@/shared/ui'
+import { Container, Card, Button } from '@/shared/ui'
 import { Heart, Sparkles, Home } from 'lucide-react'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -18,9 +18,6 @@ export function PublicSpacePage() {
           <Home className="h-4 w-4" />
           <span>Space For You</span>
         </Link>
-        <Badge variant="accent" className="text-[10px]">
-          Dedicated Sanctuary
-        </Badge>
       </div>
 
       <Container className="my-auto max-w-2xl space-y-6 py-8 text-center">
