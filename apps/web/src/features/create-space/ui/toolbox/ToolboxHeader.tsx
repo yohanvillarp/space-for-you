@@ -1,6 +1,6 @@
 import type { ChangeEvent } from 'react'
 import { Search, X, Sparkles, Layers, Disc, Camera } from 'lucide-react'
-import { cn } from '@/shared/lib'
+import { cn, getSearchShortcutLabel } from '@/shared/lib'
 import { ToolboxFilterChips } from './ToolboxFilterChips'
 
 export type ToolboxCategory = 'objects' | 'stickers' | 'music' | 'photos'
@@ -102,22 +102,35 @@ export function ToolboxHeader({
         <div className="relative">
           <Search className="pointer-events-none absolute top-2.5 left-2.5 h-3.5 w-3.5 text-[#A99B90]" />
           <input
+            data-search-input
             type="text"
             value={searchQuery}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               onSearchChange(e.target.value)
             }
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                if (searchQuery) onClearSearch()
+                else e.currentTarget.blur()
+              }
+            }}
             placeholder={getSearchPlaceholder()}
-            className="font-heading w-full rounded-lg border border-[#3B302A] bg-[#211B18] py-2 pr-8 pl-8 text-xs text-[#F3EAE1] placeholder-[#A99B90] transition-all outline-none focus:border-[#CF7056] focus:bg-[#2A221E] focus:ring-1 focus:ring-[#CF7056]"
+            aria-label="Search studio assets"
+            className="font-heading w-full rounded-lg border border-[#3B302A] bg-[#211B18] py-2 pr-14 pl-8 text-xs text-[#F3EAE1] placeholder-[#A99B90] transition-all outline-none focus:border-[#CF7056] focus:bg-[#2A221E] focus:ring-1 focus:ring-[#CF7056]"
           />
-          {searchQuery && (
+          {searchQuery ? (
             <button
               type="button"
               onClick={onClearSearch}
-              className="absolute top-2.5 right-2.5 text-[#A99B90] hover:text-[#F3EAE1]"
+              aria-label="Clear search"
+              className="absolute top-2.5 right-2.5 cursor-pointer text-[#A99B90] hover:text-[#F3EAE1]"
             >
               <X className="h-3.5 w-3.5" />
             </button>
+          ) : (
+            <kbd className="pointer-events-none absolute top-2.5 right-2.5 hidden items-center rounded border border-[#3B302A] bg-[#2A221E] px-1.5 py-0.5 font-sans text-[10px] text-[#A99B90] select-none sm:inline-flex">
+              {getSearchShortcutLabel()}
+            </kbd>
           )}
         </div>
 

@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.7.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.6.0...space-for-you-v0.7.0) (2026-10-24)
+
+
+### Features
+
+* **dock:** add bottom dock scene management and context menu ([c042746](https://github.com/yohanvillarp/space-for-you/commit/c042746f4734453dfde4ddac1fae64cf7ae7e516))
+* **domain:** introduce space scene entity collection and models ([8470e6e](https://github.com/yohanvillarp/space-for-you/commit/8470e6eea122fc0e34a5d356b0329d9489074bb4))
+* **editor:** decompose stage viewport and add multi-scene state ([9f53650](https://github.com/yohanvillarp/space-for-you/commit/9f5365054c98346b132128781f78119eecd2c017))
+* **editor:** integrate studio behavior provider and scene viewport ([26cfd03](https://github.com/yohanvillarp/space-for-you/commit/26cfd03480a96acc6a1fde471023605355a25579))
+* **hub:** add space hub scene, hero editor, and specimen sidebar ([eb6f20d](https://github.com/yohanvillarp/space-for-you/commit/eb6f20de932a0f94a4c1a7f723f78da47119eba7))
+* **hub:** multi-scene architecture, space hub, and bottom dock ([7e721b3](https://github.com/yohanvillarp/space-for-you/commit/7e721b3dfe84bd5dbc94d6b046cc84798feb3533))
+* **letters:** add letters desk, reader modal, and customization toolbox ([2cc9afb](https://github.com/yohanvillarp/space-for-you/commit/2cc9afb5177f48778be5314c72e41f106b1a82be))
+* **letters:** studio behavior mode, letters workshop, and reading experience ([76ea18e](https://github.com/yohanvillarp/space-for-you/commit/76ea18e601036758b714bb4c5bd5bec06f7791c3))
+* **shortcuts:** add universal Ctrl+K / Cmd+K search focus and platform detection ([144f05c](https://github.com/yohanvillarp/space-for-you/commit/144f05c5558acd57cb66da78ca177ce7701aca0b))
+* **shortcuts:** add universal search shortcut and mac detection ([c84dbdc](https://github.com/yohanvillarp/space-for-you/commit/c84dbdc8c6ca7ef015feceaede78d06f8ef0be4c))
+* **studio:** add global studio behavior mode and header switcher ([7ea381f](https://github.com/yohanvillarp/space-for-you/commit/7ea381f48671061267123a100712a875e9d900cd))
+
 ## [0.6.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.5.0...space-for-you-v0.6.0) (2026-10-24)
 
 

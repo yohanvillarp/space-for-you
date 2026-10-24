@@ -9,6 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![React Router](https://img.shields.io/badge/React_Router-v8-CA4245?logo=reactrouter&logoColor=white)](https://reactrouter.com/)
 [![Oxlint](https://img.shields.io/badge/Linter-Oxlint-orange)](https://oxc.rs/)
+[![Production](https://img.shields.io/badge/Production-spaceforyou.nikelyh.tech-A34835?style=flat&logo=vercel&logoColor=white)](https://spaceforyou.nikelyh.tech)
 
 ---
 
@@ -16,22 +17,24 @@
 
 **Space for You** is an intimate digital platform featuring contemporary editorial design, built to facilitate the creation of personalized digital spaces for someone special. The project follows Feature-Sliced Design (FSD) principles and is engineered for scalability, accessibility, and high performance.
 
+Live production application: **[spaceforyou.nikelyh.tech](https://spaceforyou.nikelyh.tech)**
+
 ---
 
 ## Tech Stack
 
-| Category                 | Technology                                    | Version | Purpose                                                               |
-| :----------------------- | :-------------------------------------------- | :------ | :-------------------------------------------------------------------- |
-| **Runtime & UI**         | [React](https://react.dev/)                   | 19.3.1  | Core UI library with modern compiler support                          |
-| **Language**             | [TypeScript](https://www.typescriptlang.org/) | 6.0.3   | Strict static typing with `verbatimModuleSyntax`                      |
-| **Bundler & Tooling**    | [Vite](https://vite.dev/)                     | 8.3.4   | Development server with instant HMR and optimized production bundling |
-| **Styling**              | [Tailwind CSS](https://tailwindcss.com/)      | 4.3.3   | CSS engine using customized editorial `@theme` design tokens          |
-| **Routing**              | [React Router](https://reactrouter.com/)      | 8.5.0   | Declarative client-side routing and layout hierarchies                |
-| **Iconography**          | [Lucide React](https://lucide.dev/)           | 1.61.0  | Consistent, lightweight vector icon set                               |
-| **Static Analysis**      | [Oxlint](https://oxc.rs/)                     | 1.88.0  | Rust-based high-performance linter                                    |
-| **Git Automation**       | [Husky](https://typicode.github.io/husky/)    | 9.1.7   | Automated local pre-commit and commit-msg quality gates               |
-| **Commit Specification** | [Commitlint](https://commitlint.js.org/)      | 21.2.4  | Conventional Commits standard enforcement                             |
-| **Hosting & Deployment** | [Vercel](https://vercel.com/)                 | Cloud   | Production hosting configured with SPA fallback rewrite rules         |
+| Category                 | Technology                                    | Version | Purpose                                                                               |
+| :----------------------- | :-------------------------------------------- | :------ | :------------------------------------------------------------------------------------ |
+| **Runtime & UI**         | [React](https://react.dev/)                   | 19.3.1  | Core UI library with modern compiler support                                          |
+| **Language**             | [TypeScript](https://www.typescriptlang.org/) | 6.0.3   | Strict static typing with `verbatimModuleSyntax`                                      |
+| **Bundler & Tooling**    | [Vite](https://vite.dev/)                     | 8.3.4   | Development server with instant HMR and optimized production bundling                 |
+| **Styling**              | [Tailwind CSS](https://tailwindcss.com/)      | 4.3.3   | CSS engine using customized editorial `@theme` design tokens                          |
+| **Routing**              | [React Router](https://reactrouter.com/)      | 8.5.0   | Declarative client-side routing and layout hierarchies                                |
+| **Iconography**          | [Lucide React](https://lucide.dev/)           | 1.61.0  | Consistent, lightweight vector icon set                                               |
+| **Static Analysis**      | [Oxlint](https://oxc.rs/)                     | 1.88.0  | Rust-based high-performance linter                                                    |
+| **Git Automation**       | [Husky](https://typicode.github.io/husky/)    | 9.1.7   | Automated local pre-commit and commit-msg quality gates                               |
+| **Commit Specification** | [Commitlint](https://commitlint.js.org/)      | 21.2.4  | Conventional Commits standard enforcement                                             |
+| **Hosting & Deployment** | [Vercel](https://vercel.com/)                 | Cloud   | Production deployment at [spaceforyou.nikelyh.tech](https://spaceforyou.nikelyh.tech) |
 
 ---
 
@@ -103,7 +106,7 @@ Space for You is shaped with gratitude to the open web and generous developer pl
 - **[Appwrite](https://appwrite.io/):** Secure open-source backend, authentication, and cloud storage engine.
 - **[Google Fonts](https://fonts.google.com/):** Contemporary editorial typography (`Lora` & `DM Sans`).
 
-For full details, visit the dedicated [/attributions](https://spaceforyou.app/attributions) page within the application.
+For full details, visit the dedicated [/attributions](https://spaceforyou.nikelyh.tech/attributions) page within the application.
 
 ---
 

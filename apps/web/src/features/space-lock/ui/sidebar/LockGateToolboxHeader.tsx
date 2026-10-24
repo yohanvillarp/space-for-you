@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import { Search, X, Layers, Hash, Sparkles } from 'lucide-react'
 import type { LockGateCategory } from '@/features/space-lock/model/useLockGateToolbox'
-import { cn } from '@/shared/lib'
+import { cn, getSearchShortcutLabel } from '@/shared/lib'
 
 export interface LockGateToolboxHeaderProps {
   activeCategory: LockGateCategory
@@ -28,16 +28,23 @@ export function LockGateToolboxHeader({
       <div className="relative">
         <Search className="pointer-events-none absolute top-2.5 left-2.5 h-3.5 w-3.5 text-[#A99B90]" />
         <input
+          data-search-input
           type="text"
           value={searchQuery}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onSearchChange(e.target.value)
           }
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              if (searchQuery) onClearSearch()
+              else e.currentTarget.blur()
+            }
+          }}
           placeholder={searchPlaceholder}
           aria-label="Search entrance catalog"
-          className="font-heading w-full rounded-lg border border-[#3B302A] bg-[#211B18] py-2 pr-8 pl-8 text-xs text-[#F3EAE1] placeholder-[#A99B90] transition-all outline-none focus:border-[#CF7056] focus:bg-[#2A221E] focus:ring-1 focus:ring-[#CF7056]"
+          className="font-heading w-full rounded-lg border border-[#3B302A] bg-[#211B18] py-2 pr-14 pl-8 text-xs text-[#F3EAE1] placeholder-[#A99B90] transition-all outline-none focus:border-[#CF7056] focus:bg-[#2A221E] focus:ring-1 focus:ring-[#CF7056]"
         />
-        {searchQuery && (
+        {searchQuery ? (
           <button
             type="button"
             onClick={onClearSearch}
@@ -46,6 +53,10 @@ export function LockGateToolboxHeader({
           >
             <X className="h-3.5 w-3.5" />
           </button>
+        ) : (
+          <kbd className="pointer-events-none absolute top-2.5 right-2.5 hidden items-center rounded border border-[#3B302A] bg-[#2A221E] px-1.5 py-0.5 font-sans text-[10px] text-[#A99B90] select-none sm:inline-flex">
+            {getSearchShortcutLabel()}
+          </kbd>
         )}
       </div>
 

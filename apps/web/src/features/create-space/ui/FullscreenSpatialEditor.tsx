@@ -1,22 +1,20 @@
 import { useState } from 'react'
 import { SlidersHorizontal } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
-import type { AudioTrack } from '@/entities/audio'
 import { THEME_REGISTRY } from '@/features/space-themes'
-import {
-  LockGateScene,
-  LockGateSidebar,
-  DEFAULT_PROTECTION_CONFIG,
-} from '@/features/space-lock'
+import { DEFAULT_PROTECTION_CONFIG } from '@/features/space-lock'
 import type { SpaceProtectionConfig } from '@/features/space-lock'
-import { SpatialStageCanvas } from './SpatialStageCanvas'
-import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
-import { StageBottomDock, type StudioScene } from './dock/StageBottomDock'
-import { EditorTopHeader } from './editor/EditorTopHeader'
-import { useSidebarResize } from './editor/useSidebarResize'
-import { useSpatialStageItems } from './editor/useSpatialStageItems'
-import { useStageKeyboardShortcuts } from './editor/useStageKeyboardShortcuts'
-import { countStagePhotos } from '../lib/stage-photo-limit'
+import { EditorTopHeader } from '@/features/create-space/ui/editor/EditorTopHeader'
+import { EditorSidebarRenderer } from '@/features/create-space/ui/editor/EditorSidebarRenderer'
+import { EditorStageViewport } from '@/features/create-space/ui/editor/EditorStageViewport'
+import { AddSceneModal } from '@/features/create-space/ui/hub/AddSceneModal'
+import { useSidebarResize } from '@/features/create-space/ui/editor/useSidebarResize'
+import { useSpatialStageItems } from '@/features/create-space/ui/editor/useSpatialStageItems'
+import { useStageKeyboardShortcuts } from '@/features/create-space/ui/editor/useStageKeyboardShortcuts'
+import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSceneState'
+import { useEditorMediaAssignment } from '@/features/create-space/ui/editor/useEditorMediaAssignment'
+import { countStagePhotos } from '@/features/create-space/lib/stage-photo-limit'
+import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/StudioBehaviorProvider'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -28,12 +26,48 @@ export function FullscreenSpatialEditor({
   templateId,
   className,
 }: FullscreenSpatialEditorProps) {
-  const [activeScene, setActiveScene] = useState<StudioScene>('stage')
   const [protectionConfig, setProtectionConfig] =
     useState<SpaceProtectionConfig>(DEFAULT_PROTECTION_CONFIG)
+  const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false)
+
+  const multiScene = useMultiSceneState()
+  const {
+    activeSceneId,
+    setActiveSceneId,
+    spaceMeta,
+    setSpaceMeta,
+    scenes,
+    selectedLetterId,
+    setSelectedLetterId,
+    openLetterId,
+    setOpenLetterId,
+    handleAddScene,
+    handleDeleteScene,
+    handleRenameScene,
+    handleUpdateScene,
+    handleDuplicateScene,
+    handleMoveScene,
+    handleUpdateLetter,
+    handleAddLetter,
+    handleDuplicateLetter,
+    handleDeleteLetter,
+  } = multiScene
 
   const stage = useSpatialStageItems(templateId)
   const { items, selectedId, setSelectedId, copiedItem } = stage
+
+  const {
+    selectedItem,
+    selectedMusicItem,
+    selectedPhotoItem,
+    handleAssignTrack,
+    handleAssignPhoto,
+  } = useEditorMediaAssignment({
+    items,
+    selectedId,
+    onUpdateItemData: stage.handleUpdateItemData,
+    onAssignItemPhoto: stage.handleAssignItemPhoto,
+  })
 
   const {
     showSidebar,
@@ -45,13 +79,7 @@ export function FullscreenSpatialEditor({
   } = useSidebarResize()
 
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
-  const selectedItem = items.find((it) => it.id === selectedId)
-  const isMusic = ['music-box', 'vinyl-player', 'cassette-tape'].includes(
-    selectedItem?.type || '',
-  )
-  const selectedMusicItem = isMusic ? selectedItem : null
-  const selectedPhotoItem =
-    selectedItem?.type === 'polaroid' ? selectedItem : null
+  const activeScene = scenes.find((s) => s.id === activeSceneId)
 
   useStageKeyboardShortcuts({
     selectedItem: selectedItem ?? null,
@@ -63,82 +91,71 @@ export function FullscreenSpatialEditor({
     onBringToFront: stage.handleBringToFront,
     onSendToBack: stage.handleSendToBack,
     onResetRotation: stage.handleResetRotation,
+    showSidebar,
+    onOpenSidebar: handleOpenSidebar,
   })
 
-  const handleAssignTrack = (track: AudioTrack) => {
-    const target =
-      selectedMusicItem ||
-      items.find((it) =>
-        ['music-box', 'vinyl-player', 'cassette-tape'].includes(it.type),
-      )
-    if (target) {
-      stage.handleUpdateItemData(target.id, {
-        title: track.title,
-        artist: track.artist,
-        audioUrl: track.url,
-        photoUrl: track.albumArt || track.coverUrl,
-      })
-    }
-  }
-
-  const handleAssignPhoto = (photoUrl: string, file?: File) => {
-    const target =
-      selectedPhotoItem || items.find((it) => it.type === 'polaroid')
-    if (target) stage.handleAssignItemPhoto(target.id, photoUrl, file)
-  }
-
   return (
-    <div
-      className={cn(
-        'relative flex h-screen w-screen flex-col overflow-hidden bg-[#0F0B09]',
-        className,
-      )}
-    >
-      <EditorTopHeader
-        activeTheme={activeTheme}
-        showSidebar={showSidebar}
-        onToggleSidebar={handleToggleSidebar}
-        itemCount={items.length}
-        selectedId={selectedId}
-        onDeleteSelected={stage.handleDeleteItem}
-        onResetToDefaults={stage.handleResetToDefaults}
-      />
-
-      <div className="relative flex flex-1 overflow-hidden">
-        {/* Left Toggle Floating Cue */}
-        {!showSidebar && (
-          <button
-            type="button"
-            onClick={handleToggleSidebar}
-            title="Open Workshop Sidebar"
-            className="group absolute top-6 left-0 z-40 flex cursor-pointer items-center gap-1.5 rounded-r-xl border-t border-r border-b border-[#3B302A] bg-[#16120F]/90 px-2.5 py-2 text-xs font-medium text-[#F3EAE1] shadow-xl backdrop-blur-md transition-all hover:bg-[#1C1613] hover:pl-3.5"
-          >
-            <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
-            <span className="hidden font-sans text-[11px] sm:inline">
-              {activeScene === 'gate' ? 'Lock Gate' : 'Library'}
-            </span>
-          </button>
+    <StudioBehaviorProvider initialMode="editor">
+      <div
+        className={cn(
+          'relative flex h-screen w-screen flex-col overflow-hidden bg-[#0F0B09]',
+          className,
         )}
+      >
+        <EditorTopHeader
+          activeTheme={activeTheme}
+          showSidebar={showSidebar}
+          onToggleSidebar={handleToggleSidebar}
+          itemCount={items.length}
+          selectedId={selectedId}
+          onDeleteSelected={stage.handleDeleteItem}
+          onResetToDefaults={stage.handleResetToDefaults}
+        />
 
-        {/* Resizable Sidebar */}
-        <div
-          style={{ width: showSidebar ? `${sidebarWidth}px` : '0px' }}
-          className={cn(
-            'relative h-full shrink-0 overflow-hidden transition-[width] duration-150 ease-out',
-            !showSidebar && 'pointer-events-none invisible border-none',
+        <div className="relative flex flex-1 overflow-hidden">
+          {/* Left Toggle Floating Cue */}
+          {!showSidebar && (
+            <button
+              type="button"
+              onClick={handleToggleSidebar}
+              title="Open Workshop Sidebar"
+              className="group absolute top-6 left-0 z-40 flex cursor-pointer items-center gap-1.5 rounded-r-xl border-t border-r border-b border-[#3B302A] bg-[#16120F]/90 px-2.5 py-2 text-xs font-medium text-[#F3EAE1] shadow-xl backdrop-blur-md transition-all hover:bg-[#1C1613] hover:pl-3.5"
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
+              <span className="hidden font-sans text-[11px] sm:inline">
+                {activeSceneId === 'gate'
+                  ? 'Lock Gate'
+                  : activeSceneId === 'hub'
+                    ? 'Space'
+                    : 'Workshop'}
+              </span>
+            </button>
           )}
-        >
-          {activeScene === 'gate' ? (
-            <LockGateSidebar
-              config={protectionConfig}
-              onChangeConfig={(updates) =>
-                setProtectionConfig((prev) => ({ ...prev, ...updates }))
+
+          {/* Left Resizable Sidebar */}
+          <div
+            style={{ width: showSidebar ? `${sidebarWidth}px` : '0px' }}
+            className={cn(
+              'relative h-full shrink-0 overflow-hidden border-r border-[#3B302A] transition-[width] duration-150 ease-out',
+              !showSidebar && 'pointer-events-none invisible border-none',
+            )}
+          >
+            <EditorSidebarRenderer
+              activeSceneId={activeSceneId}
+              protectionConfig={protectionConfig}
+              onChangeProtectionConfig={(u) =>
+                setProtectionConfig((p) => ({ ...p, ...u }))
               }
-              isCompact={sidebarWidth < 280}
-              className="h-full w-full"
-            />
-          ) : (
-            <SpatialToolboxSidebar
+              spaceMeta={spaceMeta}
+              onChangeSpaceMeta={(u) => setSpaceMeta((p) => ({ ...p, ...u }))}
+              scenes={scenes}
+              activeScene={activeScene}
+              onOpenScene={setActiveSceneId}
+              onAddScene={handleAddScene}
+              onOpenAddScene={() => setIsAddSceneModalOpen(true)}
+              onDeleteScene={handleDeleteScene}
+              onOpenVault={() => setActiveSceneId('gate')}
               templateId={templateId}
               onAddItem={stage.handleAddItem}
               onAssignTrack={handleAssignTrack}
@@ -146,90 +163,102 @@ export function FullscreenSpatialEditor({
               selectedPhotoItem={selectedPhotoItem}
               onAssignPhoto={handleAssignPhoto}
               photoCount={countStagePhotos(items)}
+              selectedLetterId={selectedLetterId}
+              openLetterId={openLetterId}
+              onSelectLetter={setSelectedLetterId}
+              onOpenLetter={setOpenLetterId}
+              onAddLetter={handleAddLetter}
+              onUpdateLetter={handleUpdateLetter}
+              onDeleteLetter={handleDeleteLetter}
               isCompact={sidebarWidth < 280}
-              className="h-full w-full"
             />
-          )}
 
-          {/* Resizer Handle */}
-          <div
-            onPointerDown={handleResizeStart}
-            role="separator"
-            aria-orientation="vertical"
-            title="Drag to resize"
-            className={cn(
-              'group absolute top-0 -right-2 bottom-0 z-50 flex w-4 cursor-col-resize items-center justify-center transition-colors',
-              isResizingSidebar && 'bg-[#CF7056]/20',
-            )}
-          >
+            {/* Resizer Handle on Right Edge of Left Sidebar */}
             <div
+              onPointerDown={handleResizeStart}
+              role="separator"
+              aria-orientation="vertical"
+              title="Drag to resize"
               className={cn(
-                'h-8 w-1 rounded-full bg-[#3B302A] transition-all group-hover:h-14 group-hover:w-1.5 group-hover:bg-[#CF7056]',
-                isResizingSidebar && 'h-20 w-1.5 bg-[#CF7056]',
+                'group absolute top-0 -right-2 bottom-0 z-50 flex w-4 cursor-col-resize items-center justify-center transition-colors',
+                isResizingSidebar && 'bg-[#CF7056]/20',
               )}
-            />
-          </div>
-        </div>
-
-        {/* Center / Full Canvas: Scene Switcher Dock at Bottom */}
-        <main
-          className={cn(
-            'relative min-h-0 flex-1',
-            activeScene === 'stage'
-              ? 'overflow-auto p-4 sm:p-6 lg:p-8'
-              : 'overflow-hidden p-0',
-          )}
-        >
-          {activeScene === 'gate' ? (
-            <div className="relative flex h-full w-full items-center justify-center">
-              <LockGateScene
-                config={protectionConfig}
-                spaceTitle="A Secret Keepsake"
-                isStudioPreview={true}
-                onChangeConfig={(updates) =>
-                  setProtectionConfig((prev) => ({ ...prev, ...updates }))
-                }
-                onProceedToStage={() => setActiveScene('stage')}
+            >
+              <div
+                className={cn(
+                  'h-8 w-1 rounded-full bg-[#3B302A] transition-all group-hover:h-14 group-hover:w-1.5 group-hover:bg-[#CF7056]',
+                  isResizingSidebar && 'h-20 w-1.5 bg-[#CF7056]',
+                )}
               />
             </div>
-          ) : (
-            <SpatialStageCanvas
-              templateId={templateId}
-              items={items}
-              selectedId={selectedId}
-              copiedItem={copiedItem}
-              onSelectItem={setSelectedId}
-              onUpdateItemPosition={stage.handleUpdatePosition}
-              onRotateItem={stage.handleRotateItem}
-              onSetRotation={stage.handleSetItemRotation}
-              onResetRotation={stage.handleResetRotation}
-              onBringToFront={stage.handleBringToFront}
-              onSendToBack={stage.handleSendToBack}
-              onDeleteItem={stage.handleDeleteItem}
-              onDuplicateItem={stage.handleDuplicateItem}
-              onToggleLock={stage.handleToggleLock}
-              onCopyItem={stage.handleCopyItem}
-              onPasteItem={stage.handlePasteItem}
-              onResetToDefaults={stage.handleResetToDefaults}
-              onClearCanvas={stage.handleClearCanvas}
-              onUpdateItemData={stage.handleUpdateItemData}
-              onAddItem={stage.handleAddItem}
-              onOpenPhotoPicker={(item) => {
-                setSelectedId(item.id)
-                handleOpenSidebar()
-              }}
-              className="min-h-full w-full rounded-2xl"
-            />
-          )}
+          </div>
 
-          {/* Bottom Dock: Scene Switcher placed at canvas bottom */}
-          <StageBottomDock
+          {/* Right Canvas / Space Viewport */}
+          <EditorStageViewport
+            activeSceneId={activeSceneId}
             activeScene={activeScene}
-            onSelectScene={setActiveScene}
-            isProtectionEnabled={protectionConfig.enabled}
+            scenes={scenes}
+            spaceMeta={spaceMeta}
+            protectionConfig={protectionConfig}
+            templateId={templateId}
+            onChangeProtectionConfig={(u) =>
+              setProtectionConfig((p) => ({ ...p, ...u }))
+            }
+            onChangeSpaceMeta={(u) => setSpaceMeta((p) => ({ ...p, ...u }))}
+            onOpenScene={setActiveSceneId}
+            onOpenAddScene={() => setIsAddSceneModalOpen(true)}
+            onOpenVault={() => setActiveSceneId('gate')}
+            onAddScene={handleAddScene}
+            onRenameScene={handleRenameScene}
+            onUpdateScene={handleUpdateScene}
+            onDuplicateScene={handleDuplicateScene}
+            onMoveScene={handleMoveScene}
+            onDeleteScene={handleDeleteScene}
+            onToggleProtection={() =>
+              setProtectionConfig((p) => ({ ...p, enabled: !p.enabled }))
+            }
+            items={items}
+            selectedId={selectedId}
+            copiedItem={copiedItem}
+            onSelectItem={setSelectedId}
+            onUpdateItemPosition={stage.handleUpdatePosition}
+            onRotateItem={stage.handleRotateItem}
+            onSetRotation={stage.handleSetItemRotation}
+            onResetRotation={stage.handleResetRotation}
+            onBringToFront={stage.handleBringToFront}
+            onSendToBack={stage.handleSendToBack}
+            onDeleteItem={stage.handleDeleteItem}
+            onDuplicateItem={stage.handleDuplicateItem}
+            onToggleLock={stage.handleToggleLock}
+            onCopyItem={stage.handleCopyItem}
+            onPasteItem={stage.handlePasteItem}
+            onResetToDefaults={stage.handleResetToDefaults}
+            onClearCanvas={stage.handleClearCanvas}
+            onUpdateItemData={stage.handleUpdateItemData}
+            onAddItem={stage.handleAddItem}
+            onOpenPhotoPicker={(item) => {
+              setSelectedId(item.id)
+              handleOpenSidebar()
+            }}
+            selectedLetterId={selectedLetterId}
+            openLetterId={openLetterId}
+            onSelectLetter={setSelectedLetterId}
+            onOpenLetter={setOpenLetterId}
+            onAddLetter={handleAddLetter}
+            onDuplicateLetter={handleDuplicateLetter}
+            onDeleteLetter={handleDeleteLetter}
+            onUpdateLetter={handleUpdateLetter}
           />
-        </main>
+        </div>
+
+        {/* Add Scene Modal Dialog */}
+        <AddSceneModal
+          isOpen={isAddSceneModalOpen}
+          onClose={() => setIsAddSceneModalOpen(false)}
+          onAddScene={handleAddScene}
+          existingScenesCount={scenes.length}
+        />
       </div>
-    </div>
+    </StudioBehaviorProvider>
   )
 }
