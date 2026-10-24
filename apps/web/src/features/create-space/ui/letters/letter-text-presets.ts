@@ -7,6 +7,7 @@ import type {
 export interface FontStyleOption {
   id: LetterFontStyle
   name: string
+  mood: string
   sample: string
   className: string
 }
@@ -15,71 +16,54 @@ export const FONT_STYLE_OPTIONS: FontStyleOption[] = [
   {
     id: 'serif',
     name: 'Editorial Serif',
+    mood: 'Timeless & Editorial',
     sample: 'Ag',
     className: 'font-serif font-medium',
   },
   {
     id: 'handwriting',
     name: 'Handwritten Script',
+    mood: 'Intimate & Poetic',
     sample: 'Ag',
     className: 'font-serif italic tracking-wide',
   },
   {
     id: 'sans',
     name: 'Clean Modern',
+    mood: 'Minimal & Crisp',
     sample: 'Ag',
     className: 'font-sans font-medium',
   },
   {
     id: 'mono',
     name: 'Typewriter',
+    mood: 'Vintage Mechanical',
     sample: 'Ag',
     className: 'font-mono font-medium',
   },
 ]
 
-export const TEXT_ALIGN_OPTIONS: { id: LetterTextAlign; label: string }[] = [
-  { id: 'left', label: 'Left' },
-  { id: 'center', label: 'Center' },
-  { id: 'justify', label: 'Justified' },
+export interface TextAlignOption {
+  id: LetterTextAlign
+  label: string
+  desc: string
+}
+
+export const TEXT_ALIGN_OPTIONS: TextAlignOption[] = [
+  { id: 'left', label: 'Left', desc: 'Natural margin' },
+  { id: 'center', label: 'Center', desc: 'Poetic symmetry' },
+  { id: 'justify', label: 'Justify', desc: 'Editorial block' },
 ]
 
-export const FONT_SIZE_OPTIONS: { id: LetterFontSize; label: string }[] = [
-  { id: 'sm', label: 'Compact' },
-  { id: 'base', label: 'Normal' },
-  { id: 'lg', label: 'Elegant' },
-]
+export interface FontSizeOption {
+  id: LetterFontSize
+  label: string
+  scale: string
+  desc: string
+}
 
-export const TITLE_PRESETS: string[] = [
-  'A quiet promise for your days ahead',
-  'The moments I treasure most',
-  'Words I never want to leave unsaid',
-  'To the one who makes everything brighter',
-  'A reminder of how deeply you are loved',
-]
-
-export const MESSAGE_SNIPPETS: { label: string; text: string }[] = [
-  {
-    label: 'Gentle opening',
-    text: 'I wanted to write these words down so you could return to them whenever you need a quiet reminder of how much you mean to me.',
-  },
-  {
-    label: 'Gratitude',
-    text: 'Thank you for your warmth, your gentleness, and the way you make the world feel softer and kinder just by being in it.',
-  },
-  {
-    label: 'Quiet promise',
-    text: 'No matter what changes or where our paths lead, my love and appreciation for you remain unwavering and unconditional.',
-  },
-  {
-    label: 'Closing blessing',
-    text: 'May your days be filled with peaceful moments, gentle laughter, and the certainty that you are deeply cherished.',
-  },
-]
-
-export const SIGNATURE_PRESETS: string[] = [
-  'With all my love and devotion,',
-  'Always by your side,',
-  'Forever your safe harbor,',
-  'With gentle affection,',
+export const FONT_SIZE_OPTIONS: FontSizeOption[] = [
+  { id: 'sm', label: 'Compact', scale: '14px', desc: 'Intimate' },
+  { id: 'base', label: 'Normal', scale: '16px', desc: 'Balanced' },
+  { id: 'lg', label: 'Elegant', scale: '18px', desc: 'Generous' },
 ]

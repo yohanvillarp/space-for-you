@@ -33,29 +33,32 @@ export function EditorTopHeader({
   onResetToDefaults,
 }: EditorTopHeaderProps) {
   return (
-    <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-white/10 bg-black/90 px-4 py-3 backdrop-blur-md sm:px-6">
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-white/10 bg-black/90 px-3 py-3 backdrop-blur-md sm:px-6">
+      <div className="flex items-center gap-2 sm:gap-3">
         <Link
-          to={ROUTES.NEW_SPACE}
-          className="group inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 font-sans text-xs text-stone-200 transition-colors hover:bg-white/20"
+          to={ROUTES.DASHBOARD}
+          title="Back to Dashboard"
+          aria-label="Back to Dashboard"
+          className="group inline-flex items-center gap-1.5 rounded-full bg-white/10 p-2 font-sans text-xs text-stone-200 transition-colors hover:bg-white/20 sm:px-3 sm:py-1.5"
         >
           <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-          <span>Return to Studio</span>
+          <span className="hidden md:inline">Dashboard</span>
         </Link>
 
-        <div className="hidden items-center gap-2 font-sans text-xs text-stone-300 sm:flex">
+        {/* Space & Stage Title: hidden on small/medium screens to prevent multi-line overflow */}
+        <div className="hidden min-w-0 items-center gap-2 font-sans text-xs text-stone-300 xl:flex">
           <span
-            className="h-2 w-2 rounded-full shadow-xs"
+            className="h-2 w-2 shrink-0 rounded-full shadow-xs"
             style={{ backgroundColor: activeTheme.accentColor }}
           />
-          <span className="font-heading text-stone-200 italic">
+          <span className="font-heading truncate text-stone-200 italic">
             {activeTheme.title} — {activeTheme.stageName}
           </span>
         </div>
       </div>
 
       {/* Center / Right Pro Controls */}
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-1.5 sm:gap-2.5">
         {/* Studio Mode Switcher (Editor vs User Behavior) */}
         <StudioModeSwitch />
 
@@ -65,16 +68,18 @@ export function EditorTopHeader({
           variant="outline"
           size="sm"
           onClick={onToggleSidebar}
-          className="cursor-pointer gap-1.5 border-white/20 text-xs text-stone-300 transition-colors hover:bg-white/10"
+          title={showSidebar ? 'Hide Library' : 'Open Library'}
+          aria-label={showSidebar ? 'Hide Library' : 'Open Library'}
+          className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-stone-300 transition-colors hover:bg-white/10 sm:px-3"
         >
           <SlidersHorizontal className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">
+          <span className="hidden lg:inline">
             {showSidebar ? 'Hide Library' : 'Open Library'}
           </span>
         </Button>
 
         {/* Item Counter */}
-        <div className="hidden items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 font-sans text-xs text-stone-400 md:flex">
+        <div className="hidden items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 font-sans text-xs text-stone-400 xl:flex">
           <Layers className="h-3.5 w-3.5" />
           <span>{itemCount} artifacts</span>
         </div>
@@ -101,34 +106,42 @@ export function EditorTopHeader({
           variant="ghost"
           size="sm"
           onClick={onResetToDefaults}
+          title="Reset Stage to Defaults"
+          aria-label="Reset Stage to Defaults"
           className="cursor-pointer gap-1 text-xs text-stone-400 hover:bg-white/10 hover:text-stone-200"
         >
           <RotateCcw className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Reset</span>
+          <span className="hidden xl:inline">Reset</span>
         </Button>
 
-        {/* Save Button (UI only, logic pending) */}
+        {/* Save Button */}
         <Button
           type="button"
           variant="outline"
           size="sm"
           onClick={() => {}}
-          className="cursor-pointer gap-1.5 border-white/20 text-xs text-[#F3EAE1] shadow-xs transition-colors hover:border-white/30 hover:bg-white/10"
+          title="Save Space"
+          aria-label="Save Space"
+          className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-[#F3EAE1] shadow-xs transition-colors hover:border-white/30 hover:bg-white/10 sm:px-3"
         >
           <Save className="h-3.5 w-3.5 text-[#CF7056]" />
-          <span>Save Space</span>
+          <span className="hidden md:inline">Save Space</span>
         </Button>
 
-        {/* Primary Action: Use This Stage */}
+        {/* Primary Action: Done / Dashboard */}
         <Button
           asChild
           variant="primary"
           size="sm"
-          className="cursor-pointer gap-1.5 text-xs shadow-md"
+          className="cursor-pointer gap-1.5 px-2.5 text-xs shadow-md sm:px-3"
         >
-          <Link to={ROUTES.NEW_SPACE}>
+          <Link
+            to={ROUTES.DASHBOARD}
+            title="Finish & Return to Dashboard"
+            aria-label="Finish & Return to Dashboard"
+          >
             <Check className="h-3.5 w-3.5" />
-            <span>Use this Setting</span>
+            <span className="hidden sm:inline">Done</span>
           </Link>
         </Button>
       </div>

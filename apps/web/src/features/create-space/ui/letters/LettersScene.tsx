@@ -52,6 +52,12 @@ export function LettersScene({
 
   const [internalActiveLetter, setInternalActiveLetter] =
     useState<LetterItem | null>(null)
+  const [internalSelectedLetterId, setInternalSelectedLetterId] = useState<
+    string | null
+  >(null)
+  const currentSelectedLetterId =
+    selectedLetterId !== undefined ? selectedLetterId : internalSelectedLetterId
+
   const activeReadingLetter =
     openLetterId !== undefined
       ? (scene.letters.find((l) => l.id === openLetterId) ?? null)
@@ -61,11 +67,22 @@ export function LettersScene({
   const { state: menuState, openMenu, closeMenu } = useLettersContextMenu()
 
   const handleEnvelopeClick = (letter: LetterItem) => {
-    onSelectLetter?.(letter.id)
     if (!isEffectiveEditor) {
       // In user/preview mode, clicking directly opens the letter
+      onSelectLetter?.(letter.id)
       onOpenLetter?.(letter.id)
       setInternalActiveLetter(letter)
+      return
+    }
+
+    // In editor mode: if the letter is already selected and pressed again, open it
+    if (currentSelectedLetterId === letter.id) {
+      playSpatialSfx('paper-rustle')
+      handleOpenLetterModal(letter)
+    } else {
+      // First click: select the envelope to customize in sidebar
+      onSelectLetter?.(letter.id)
+      setInternalSelectedLetterId(letter.id)
     }
   }
 
@@ -120,7 +137,7 @@ export function LettersScene({
         onContextMenu={(e) =>
           isEffectiveEditor && openMenu(e, { type: 'desk' })
         }
-        className="relative flex h-full w-full flex-col items-center justify-between overflow-y-auto px-4 py-8 pb-24 sm:px-6 sm:py-10 sm:pb-28 lg:px-12"
+        className="@container relative flex h-full w-full flex-col items-center justify-between overflow-y-auto px-4 py-8 pb-24 sm:px-6 sm:py-10 sm:pb-28 lg:px-12"
       >
         {/* Main Scene Body */}
         <div className="relative z-10 flex w-full max-w-5xl flex-col items-center space-y-8 sm:space-y-12">
@@ -161,13 +178,13 @@ export function LettersScene({
             )}
           </div>
 
-          {/* Envelopes Desk Grid */}
-          <div className="grid w-full grid-cols-1 justify-items-center gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3 lg:gap-12">
+          {/* Envelopes Desk Grid: Responsive with breathing room */}
+          <div className="grid w-full grid-cols-1 justify-items-center gap-8 @2xl:grid-cols-2 @2xl:gap-12 @5xl:grid-cols-3 @5xl:gap-14">
             {scene.letters.map((letter) => (
               <LetterEnvelope
                 key={letter.id}
                 letter={letter}
-                isSelected={selectedLetterId === letter.id}
+                isSelected={currentSelectedLetterId === letter.id}
                 onOpen={handleEnvelopeClick}
                 onDoubleClick={handleEnvelopeDoubleClick}
                 onContextMenu={(e) =>

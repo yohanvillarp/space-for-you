@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
+import { ROUTES } from '@/shared/config'
 import { SpatialStageCanvas } from './SpatialStageCanvas'
 import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
 import { Button } from '@/shared/ui'
@@ -54,15 +55,15 @@ export function SpatialStageStudio({
   const isPhotoSelected = selectedItem?.type === 'polaroid'
   const selectedPhotoItem = isPhotoSelected ? selectedItem : null
 
-  const previewPath = `/spaces/preview/${templateId}`
-  const fullPreviewUrl =
+  const studioPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+  const fullStudioUrl =
     typeof window !== 'undefined'
-      ? `${window.location.origin}${previewPath}`
-      : previewPath
+      ? `${window.location.origin}${studioPath}`
+      : studioPath
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(fullPreviewUrl)
+      await navigator.clipboard.writeText(fullStudioUrl)
       setCopiedLink(true)
       setTimeout(() => setCopiedLink(false), 2500)
     } catch {
@@ -164,8 +165,8 @@ export function SpatialStageStudio({
             size="sm"
             className="cursor-pointer gap-1.5 text-xs shadow-xs"
           >
-            <a href={previewPath} target="_blank" rel="noopener noreferrer">
-              <span>Fullscreen Preview</span>
+            <a href={studioPath} target="_blank" rel="noopener noreferrer">
+              <span>Fullscreen Studio</span>
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </Button>

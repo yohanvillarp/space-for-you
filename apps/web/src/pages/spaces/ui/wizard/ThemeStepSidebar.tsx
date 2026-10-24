@@ -2,6 +2,7 @@ import { ArrowRight, ExternalLink } from 'lucide-react'
 import { ThemeSelectorList } from '@/features'
 import type { ThemeRegistryEntry } from '@/features/space-themes'
 import type { SpaceTemplateId } from '@/entities/space'
+import { ROUTES } from '@/shared/config'
 import { Button } from '@/shared/ui'
 
 export interface ThemeStepSidebarProps {
@@ -17,6 +18,8 @@ export function ThemeStepSidebar({
   activeTheme,
   onNextStep,
 }: ThemeStepSidebarProps) {
+  const studioPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(selectedTemplateId)}`
+
   return (
     <div className="animate-fade-in space-y-4">
       <ThemeSelectorList
@@ -64,11 +67,7 @@ export function ThemeStepSidebar({
           size="sm"
           className="w-full cursor-pointer justify-center gap-1.5 text-xs"
         >
-          <a
-            href={`/spaces/preview/${selectedTemplateId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={studioPath} target="_blank" rel="noopener noreferrer">
             <span>Launch Fullscreen Studio</span>
             <ExternalLink className="h-3.5 w-3.5" />
           </a>

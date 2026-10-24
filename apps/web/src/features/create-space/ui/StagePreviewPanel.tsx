@@ -1,6 +1,7 @@
 import { ExternalLink, Sparkles } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
+import { ROUTES } from '@/shared/config'
 import { Button } from '@/shared/ui'
 import { cn } from '@/shared/lib'
 
@@ -15,7 +16,7 @@ export function StagePreviewPanel({
 }: StagePreviewPanelProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const ThemeUniverse = activeTheme.component
-  const previewPath = `/spaces/preview/${templateId}`
+  const studioPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
 
   return (
     <div className={cn('relative w-full space-y-4', className)}>
@@ -62,7 +63,7 @@ export function StagePreviewPanel({
               size="sm"
               className="cursor-pointer gap-1.5 text-xs shadow-xs"
             >
-              <a href={previewPath} target="_blank" rel="noopener noreferrer">
+              <a href={studioPath} target="_blank" rel="noopener noreferrer">
                 <span>Open Fullscreen Studio</span>
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>

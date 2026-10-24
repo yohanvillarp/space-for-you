@@ -1,75 +1,71 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type {
   SpaceScene,
   SpaceMeta,
   LetterItem,
 } from '@/features/create-space/model/scenes.types'
 import {
-  DEFAULT_SPACE_META,
-  INITIAL_LETTERS_DATA,
-} from '@/features/create-space/model/scenes.types'
-import {
   SpaceSceneCollection,
   SpaceSceneEntity,
 } from '@/features/create-space/model/domain'
+import {
+  SCENE_STORAGE_KEY,
+  SCENES_STORAGE_KEY,
+  META_STORAGE_KEY,
+  INITIAL_SCENES,
+  DEFAULT_SPACE_META,
+  loadFromStorage,
+  saveToStorage,
+} from './multi-scene-storage'
+import type { UseMultiSceneStateReturn } from './multi-scene-storage'
 
-export interface UseMultiSceneStateReturn {
-  activeSceneId: string
-  setActiveSceneId: (id: string) => void
-  spaceMeta: SpaceMeta
-  setSpaceMeta: React.Dispatch<React.SetStateAction<SpaceMeta>>
-  scenes: SpaceScene[]
-  setScenes: React.Dispatch<React.SetStateAction<SpaceScene[]>>
-  selectedLetterId: string | null
-  setSelectedLetterId: (id: string | null) => void
-  openLetterId: string | null
-  setOpenLetterId: (id: string | null) => void
-  handleAddScene: (newScene: SpaceScene) => void
-  handleDeleteScene: (sceneId: string) => void
-  handleRenameScene: (sceneId: string, newTitle: string) => void
-  handleUpdateScene: (
-    sceneId: string,
-    updates: { title?: string; subtitle?: string },
-  ) => void
-  handleDuplicateScene: (sceneId: string) => void
-  handleMoveScene: (sceneId: string, direction: 'left' | 'right') => void
-  handleUpdateLetter: (updatedLetter: LetterItem) => void
-  handleAddLetter: () => void
-  handleDuplicateLetter: (id: string) => void
-  handleDeleteLetter: (id: string) => void
-}
-
-const INITIAL_SCENES: SpaceScene[] = [
-  {
-    id: 'scene-canvas',
-    type: 'free-canvas',
-    title: 'Memory Canvas',
-    subtitle: 'Creative stage for keepsakes & moments',
-    icon: 'Sparkles',
-    order: 1,
-    items: [],
-  },
-  {
-    id: 'scene-letters',
-    type: 'letters',
-    title: 'Heartfelt Letters',
-    subtitle: 'Read what I wrote for you',
-    icon: 'Mail',
-    order: 2,
-    letters: [...INITIAL_LETTERS_DATA],
-  },
-]
+export type { UseMultiSceneStateReturn }
 
 export function useMultiSceneState(): UseMultiSceneStateReturn {
-  const [activeSceneId, setActiveSceneId] = useState<string>('hub')
-  const [spaceMeta, setSpaceMeta] = useState<SpaceMeta>(DEFAULT_SPACE_META)
-  const [selectedLetterId, setSelectedLetterId] = useState<string | null>(null)
-  const [openLetterId, setOpenLetterId] = useState<string | null>(null)
-  const [collection, setCollection] = useState<SpaceSceneCollection>(() =>
-    SpaceSceneCollection.fromDTOs(INITIAL_SCENES),
+  const [collection, setCollection] = useState<SpaceSceneCollection>(() => {
+    const saved = loadFromStorage<SpaceScene[]>(
+      SCENES_STORAGE_KEY,
+      INITIAL_SCENES,
+    )
+    return SpaceSceneCollection.fromDTOs(
+      Array.isArray(saved) && saved.length > 0 ? saved : INITIAL_SCENES,
+    )
+  })
+
+  const [spaceMeta, setSpaceMeta] = useState<SpaceMeta>(() =>
+    loadFromStorage<SpaceMeta>(META_STORAGE_KEY, DEFAULT_SPACE_META),
   )
 
+  const [activeSceneId, setActiveSceneIdState] = useState<string>(() => {
+    const saved = loadFromStorage<string>(SCENE_STORAGE_KEY, 'hub')
+    if (saved === 'hub' || saved === 'gate') return saved
+    const savedScenes = loadFromStorage<SpaceScene[]>(
+      SCENES_STORAGE_KEY,
+      INITIAL_SCENES,
+    )
+    if (Array.isArray(savedScenes) && savedScenes.some((s) => s.id === saved)) {
+      return saved
+    }
+    return 'hub'
+  })
+
+  const setActiveSceneId = useCallback((id: string) => {
+    setActiveSceneIdState(id)
+    saveToStorage(SCENE_STORAGE_KEY, id)
+  }, [])
+
+  const [selectedLetterId, setSelectedLetterId] = useState<string | null>(null)
+  const [openLetterId, setOpenLetterId] = useState<string | null>(null)
+
   const scenes = collection.toDTOs()
+
+  useEffect(() => {
+    saveToStorage(SCENES_STORAGE_KEY, collection.toDTOs())
+  }, [collection])
+
+  useEffect(() => {
+    saveToStorage(META_STORAGE_KEY, spaceMeta)
+  }, [spaceMeta])
 
   const setScenes: React.Dispatch<React.SetStateAction<SpaceScene[]>> =
     useCallback((action) => {
@@ -80,27 +76,30 @@ export function useMultiSceneState(): UseMultiSceneStateReturn {
       })
     }, [])
 
-  const handleAddScene = useCallback((newScene: SpaceScene) => {
-    setCollection((prev) => {
-      const next = prev.clone()
-      next.add(SpaceSceneEntity.fromDTO(newScene))
-      return next
-    })
-    setActiveSceneId(newScene.id)
-  }, [])
+  const handleAddScene = useCallback(
+    (newScene: SpaceScene) => {
+      setCollection((prev) => {
+        const next = prev.clone()
+        next.add(SpaceSceneEntity.fromDTO(newScene))
+        return next
+      })
+      setActiveSceneId(newScene.id)
+    },
+    [setActiveSceneId],
+  )
 
   const handleDeleteScene = useCallback(
     (sceneId: string) => {
       setCollection((prev) => {
         const next = prev.clone()
-        const removed = next.remove(sceneId)
-        if (removed && activeSceneId === sceneId) {
-          setActiveSceneId('hub')
-        }
+        next.remove(sceneId)
         return next
       })
+      if (activeSceneId === sceneId) {
+        setActiveSceneId('hub')
+      }
     },
-    [activeSceneId],
+    [activeSceneId, setActiveSceneId],
   )
 
   const handleRenameScene = useCallback((sceneId: string, newTitle: string) => {
@@ -122,16 +121,19 @@ export function useMultiSceneState(): UseMultiSceneStateReturn {
     [],
   )
 
-  const handleDuplicateScene = useCallback((sceneId: string) => {
-    setCollection((prev) => {
-      const next = prev.clone()
-      const duplicated = next.duplicate(sceneId)
-      if (duplicated) {
-        setActiveSceneId(duplicated.id)
-      }
-      return next
-    })
-  }, [])
+  const handleDuplicateScene = useCallback(
+    (sceneId: string) => {
+      setCollection((prev) => {
+        const next = prev.clone()
+        const duplicated = next.duplicate(sceneId)
+        if (duplicated) {
+          setActiveSceneId(duplicated.id)
+        }
+        return next
+      })
+    },
+    [setActiveSceneId],
+  )
 
   const handleMoveScene = useCallback(
     (sceneId: string, direction: 'left' | 'right') => {

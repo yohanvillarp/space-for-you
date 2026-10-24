@@ -19,3 +19,9 @@ export { Logomark, Logo } from './logo'
 export type { LogomarkProps, LogoProps } from './logo'
 export { GiftLoader } from './loader'
 export type { GiftLoaderProps } from './loader'
+export { AlertModal, ConfirmProvider, useConfirmDialog } from './alert-modal'
+export type {
+  AlertModalProps,
+  AlertModalType,
+  ConfirmOptions,
+} from './alert-modal'

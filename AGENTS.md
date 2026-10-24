@@ -7,8 +7,7 @@ Please refer to the comprehensive rules and architectural constraints documented
 
 ### Key Rules at a Glance
 
-1. **PowerShell Quirk:** Always execute commands with:
-   `cd "c:\Users\yohan\myspace\lab\active\space-for-you" ; <command>`
+1. **Workspace Root:** Always execute build, lint, and development commands from the repository root.
 2. **No Hardcoded Credentials:** Keep all Appwrite IDs and secrets in `apps/web/.env`.
 3. **Branching Model:** `main` is production; `develop` is development. Integrate via Pull Requests.
 4. **Commits:** Strictly use Conventional Commits (max 72 chars header).
