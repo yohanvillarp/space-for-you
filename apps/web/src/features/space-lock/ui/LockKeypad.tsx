@@ -1,23 +1,76 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Delete, AlertCircle } from 'lucide-react'
+import type { LockKeypadTheme } from '../model/lock.types'
 import { playSpatialSfx, cn } from '@/shared/lib'
 
 export interface LockKeypadProps {
   expectedPasscode: string
   isUnlocked: boolean
   onUnlockSuccess: () => void
-  accentColor?: string
+  theme?: LockKeypadTheme
+}
+
+const KEYPAD_STYLES: Record<
+  LockKeypadTheme,
+  {
+    button: string
+    slotBase: string
+    slotFilled: string
+    sfx: 'tactile-tap' | 'cassette-click' | 'pop-snap' | 'pin-thud'
+  }
+> = {
+  classic: {
+    button:
+      'rounded-xl border border-white/10 bg-white/5 font-mono text-base font-medium text-stone-200 shadow-sm hover:border-white/30 hover:bg-white/15 active:scale-95',
+    slotBase: 'rounded-xl border-white/10 bg-black/40 text-stone-500',
+    slotFilled: 'border-white/50 bg-white/20 text-white shadow-md',
+    sfx: 'tactile-tap',
+  },
+  'vintage-typewriter': {
+    button:
+      'rounded-full border-2 border-[#8C6239] bg-[#221711] font-serif text-base font-bold text-[#E8D7C3] shadow-md ring-1 ring-amber-600/30 hover:border-amber-500 hover:bg-[#2C1E16] active:translate-y-0.5',
+    slotBase:
+      'rounded-full border-2 border-[#8C6239]/60 bg-[#160E0A] font-serif text-[#E8D7C3]',
+    slotFilled: 'border-amber-500 bg-[#382317] text-amber-200 shadow-md',
+    sfx: 'cassette-click',
+  },
+  'golden-luxury': {
+    button:
+      'rounded-xl border border-amber-400/80 bg-gradient-to-b from-[#2A1D15] via-[#20150F] to-[#17100B] font-heading text-base font-semibold text-amber-200 shadow-md hover:border-amber-300 hover:shadow-amber-900/40 active:scale-95',
+    slotBase:
+      'rounded-xl border border-amber-400/50 bg-[#1A120D] text-amber-300',
+    slotFilled:
+      'border-amber-300 bg-amber-500/25 text-amber-100 shadow-md shadow-amber-400/20',
+    sfx: 'pop-snap',
+  },
+  'celestial-crystal': {
+    button:
+      'rounded-2xl border border-pink-400/40 bg-gradient-to-tr from-purple-950/60 to-pink-900/40 font-sans text-base font-semibold text-pink-100 shadow-md hover:border-pink-300 hover:shadow-pink-500/30 active:scale-95',
+    slotBase:
+      'rounded-2xl border border-pink-400/40 bg-purple-950/70 text-pink-300',
+    slotFilled:
+      'border-pink-300 bg-pink-500/30 text-white shadow-md shadow-pink-400/30',
+    sfx: 'pop-snap',
+  },
+  'clay-terracotta': {
+    button:
+      'rounded-xl border-2 border-[#A34835]/70 bg-gradient-to-b from-[#3D1A13] to-[#2B120D] font-mono text-base font-bold text-[#EACABC] shadow-md hover:border-[#CF7056] active:scale-95',
+    slotBase: 'rounded-xl border border-[#A34835] bg-[#1E0C08] text-[#CF7056]',
+    slotFilled: 'border-[#CF7056] bg-[#A34835]/30 text-[#FAF6F0] shadow-md',
+    sfx: 'pin-thud',
+  },
 }
 
 export function LockKeypad({
   expectedPasscode,
   isUnlocked,
   onUnlockSuccess,
-  accentColor: _accentColor = '#EACABC',
+  theme = 'classic',
 }: LockKeypadProps) {
   const [digits, setDigits] = useState<string>('')
   const [hasError, setHasError] = useState(false)
   const targetLength = Math.max(3, expectedPasscode.length || 4)
+  const style = KEYPAD_STYLES[theme] || KEYPAD_STYLES.classic
 
   const handleVerify = useCallback(
     (codeToTest: string) => {
@@ -40,7 +93,7 @@ export function LockKeypad({
   const handlePressDigit = useCallback(
     (d: string) => {
       if (isUnlocked || hasError) return
-      playSpatialSfx('tactile-tap')
+      playSpatialSfx(style.sfx)
 
       setDigits((prev) => {
         if (prev.length >= targetLength) return prev
@@ -51,7 +104,7 @@ export function LockKeypad({
         return next
       })
     },
-    [isUnlocked, hasError, targetLength, handleVerify],
+    [isUnlocked, hasError, targetLength, handleVerify, style.sfx],
   )
 
   const handleDelete = useCallback(() => {
@@ -100,10 +153,8 @@ export function LockKeypad({
             <div
               key={idx}
               className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-xl border font-mono text-sm font-semibold transition-all duration-200',
-                isFilled
-                  ? 'border-white/50 bg-white/20 text-white shadow-md'
-                  : 'border-white/10 bg-black/40 text-stone-500',
+                'flex h-10 w-10 items-center justify-center border font-mono text-sm font-semibold transition-all duration-200',
+                isFilled ? style.slotFilled : style.slotBase,
                 hasError && 'border-rose-500 bg-rose-500/20 text-rose-300',
               )}
             >
@@ -129,7 +180,10 @@ export function LockKeypad({
             type="button"
             onClick={() => handlePressDigit(key)}
             disabled={isUnlocked}
-            className="flex h-12 w-14 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 font-mono text-base font-medium text-stone-200 shadow-sm transition-all hover:border-white/30 hover:bg-white/15 active:scale-95"
+            className={cn(
+              'flex h-12 w-14 cursor-pointer items-center justify-center transition-all',
+              style.button,
+            )}
           >
             {key}
           </button>
@@ -153,7 +207,10 @@ export function LockKeypad({
           type="button"
           onClick={() => handlePressDigit('0')}
           disabled={isUnlocked}
-          className="flex h-12 w-14 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 font-mono text-base font-medium text-stone-200 shadow-sm transition-all hover:border-white/30 hover:bg-white/15 active:scale-95"
+          className={cn(
+            'flex h-12 w-14 cursor-pointer items-center justify-center transition-all',
+            style.button,
+          )}
         >
           0
         </button>
