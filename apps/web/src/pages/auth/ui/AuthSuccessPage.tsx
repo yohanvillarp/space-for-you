@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router'
-import { appwriteAccount } from '@/shared/api'
+import { appwriteAccount, setSessionHint } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
 import { Card, Container, Button } from '@/shared/ui'
 
 export function AuthSuccessPage() {
   const [error, setError] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(true)
+  const isExecutingRef = useRef(false)
 
   useEffect(() => {
+    if (isExecutingRef.current) return
+    isExecutingRef.current = true
+
     let isMounted = true
 
     async function processOAuthCallback() {
@@ -17,17 +21,41 @@ export function AuthSuccessPage() {
         const secret = url.searchParams.get('secret')
         const userId = url.searchParams.get('userId')
 
-        if (!secret || !userId) {
-          throw new Error('Missing OAuth credentials in callback URL.')
+        // 1. If token credentials are present, exchange them for a session
+        if (secret && userId) {
+          try {
+            await appwriteAccount.createSession({ userId, secret })
+          } catch (sessionErr) {
+            // Secret might have already been consumed or session already active
+            console.warn('OAuth token exchange notice:', sessionErr)
+          }
         }
 
-        await appwriteAccount.createSession({ userId, secret })
-
-        if (isMounted) {
-          window.location.assign(ROUTES.DASHBOARD)
+        // 2. Verify that an active session exists in Appwrite
+        const user = await appwriteAccount.get()
+        if (user) {
+          setSessionHint(true)
+          if (isMounted) {
+            window.location.assign(ROUTES.DASHBOARD)
+            return
+          }
         }
+
+        throw new Error('Missing active session. Please sign in again.')
       } catch (err) {
         if (isMounted) {
+          // Fallback check: verify if the session was established despite token exchange warning
+          try {
+            const user = await appwriteAccount.get()
+            if (user) {
+              setSessionHint(true)
+              window.location.assign(ROUTES.DASHBOARD)
+              return
+            }
+          } catch {
+            // Truly unauthenticated
+          }
+
           setIsProcessing(false)
           setError(
             err instanceof Error

@@ -46,8 +46,8 @@ export async function signInWithGoogle(): Promise<void> {
   const success = `${window.location.origin}/auth/success`
   const failure = `${window.location.origin}/auth/failure`
 
-  // createOAuth2Token navigates the browser to the provider; do not redirect manually.
-  await account.createOAuth2Token({
+  // createOAuth2Session directly navigates to provider and sets session cookie upon completion
+  await account.createOAuth2Session({
     provider: OAuthProvider.Google,
     success,
     failure,
@@ -90,10 +90,16 @@ export async function handleOAuthSuccess(): Promise<void> {
   const url = new URL(window.location.href)
   const secret = url.searchParams.get('secret')
   const userId = url.searchParams.get('userId')
-  if (!secret || !userId) {
-    throw new Error('Missing OAuth credentials')
+
+  if (secret && userId) {
+    try {
+      await account.createSession({ userId, secret })
+    } catch {
+      // Ignore if session was already established
+    }
   }
-  await account.createSession({ userId, secret })
+
+  await account.get()
   setSessionHint(true)
   window.location.assign('/dashboard')
 }
