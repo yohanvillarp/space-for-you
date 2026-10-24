@@ -36,13 +36,13 @@ export function EditorTopHeader({
     <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-white/10 bg-black/90 px-3 py-3 backdrop-blur-md sm:px-6">
       <div className="flex items-center gap-2 sm:gap-3">
         <Link
-          to={ROUTES.NEW_SPACE}
-          title="Return to Studio"
-          aria-label="Return to Studio"
+          to={ROUTES.DASHBOARD}
+          title="Back to Dashboard"
+          aria-label="Back to Dashboard"
           className="group inline-flex items-center gap-1.5 rounded-full bg-white/10 p-2 font-sans text-xs text-stone-200 transition-colors hover:bg-white/20 sm:px-3 sm:py-1.5"
         >
           <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-          <span className="hidden md:inline">Return to Studio</span>
+          <span className="hidden md:inline">Dashboard</span>
         </Link>
 
         {/* Space & Stage Title: hidden on small/medium screens to prevent multi-line overflow */}
@@ -128,7 +128,7 @@ export function EditorTopHeader({
           <span className="hidden md:inline">Save Space</span>
         </Button>
 
-        {/* Primary Action: Use This Stage */}
+        {/* Primary Action: Done / Dashboard */}
         <Button
           asChild
           variant="primary"
@@ -136,12 +136,12 @@ export function EditorTopHeader({
           className="cursor-pointer gap-1.5 px-2.5 text-xs shadow-md sm:px-3"
         >
           <Link
-            to={ROUTES.NEW_SPACE}
-            title="Use this Setting"
-            aria-label="Use this Setting"
+            to={ROUTES.DASHBOARD}
+            title="Finish & Return to Dashboard"
+            aria-label="Finish & Return to Dashboard"
           >
             <Check className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Use this Setting</span>
+            <span className="hidden sm:inline">Done</span>
           </Link>
         </Button>
       </div>

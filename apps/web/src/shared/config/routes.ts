@@ -10,6 +10,7 @@ export const ROUTES = {
   ATTRIBUTIONS: '/attributions',
   NEW_SPACE: '/spaces/new',
   EDIT_SPACE: '/spaces/:id/edit',
+  STUDIO: '/spaces/studio',
   STAGE_PREVIEW: '/spaces/preview/:templateId',
   PUBLIC_SPACE: '/s/:slug',
   NOT_FOUND: '*',

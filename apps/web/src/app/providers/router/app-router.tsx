@@ -15,11 +15,17 @@ import {
   EditSpacePage,
   PublicSpacePage,
   SpaceStagePreviewPage,
+  SpaceStudioPage,
 } from '@/pages'
 import { ROUTES } from '@/shared/config'
 
 export const appRouter = createBrowserRouter([
-  // Standalone Immersive Stage Preview (Full bleed, 0% dashboard scaffolding)
+  // Fullscreen Unified Spatial Studio
+  {
+    path: ROUTES.STUDIO,
+    element: <SpaceStudioPage />,
+  },
+  // Backward compatibility: redirect /spaces/preview/:templateId to /spaces/studio?template=:templateId
   {
     path: ROUTES.STAGE_PREVIEW,
     element: <SpaceStagePreviewPage />,

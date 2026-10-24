@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ExternalLink, Copy, Check, Smartphone, Sparkles } from 'lucide-react'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import type { SpaceTemplateId } from '@/entities/space'
+import { ROUTES } from '@/shared/config'
 import { StylizedQrCode } from './StylizedQrCode'
 import { WashiTape } from '@/features/space-themes/shared'
 import { Button } from '@/shared/ui'
@@ -19,16 +20,16 @@ export function StageExperienceHub({
   const [copied, setCopied] = useState(false)
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
-  // Construct the absolute preview URL
-  const previewPath = `/spaces/preview/${templateId}`
-  const fullPreviewUrl =
+  // Construct the absolute studio URL
+  const studioPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+  const fullStudioUrl =
     typeof window !== 'undefined'
-      ? `${window.location.origin}${previewPath}`
-      : previewPath
+      ? `${window.location.origin}${studioPath}`
+      : studioPath
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(fullPreviewUrl)
+      await navigator.clipboard.writeText(fullStudioUrl)
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
     } catch {
@@ -95,7 +96,7 @@ export function StageExperienceHub({
 
             {/* Stylized QR Code Component */}
             <StylizedQrCode
-              url={fullPreviewUrl}
+              url={fullStudioUrl}
               accentColor={activeTheme.accentColor}
               size={210}
             />
@@ -118,7 +119,7 @@ export function StageExperienceHub({
             size="md"
             className="w-full cursor-pointer gap-2 shadow-xs sm:w-auto"
           >
-            <a href={previewPath} target="_blank" rel="noopener noreferrer">
+            <a href={studioPath} target="_blank" rel="noopener noreferrer">
               <span>Open in Fullscreen</span>
               <ExternalLink className="h-4 w-4" />
             </a>
