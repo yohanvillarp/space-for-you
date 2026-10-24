@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.6.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.5.0...space-for-you-v0.6.0) (2026-10-24)
+
+
+### Features
+
+* **lock:** add 4 selectable entrance atmospheres ([8e01723](https://github.com/yohanvillarp/space-for-you/commit/8e017239f28ad368d80d5201b7c05053b9502905))
+* **lock:** add 5 tactile keypad design objects including classic style ([19817e6](https://github.com/yohanvillarp/space-for-you/commit/19817e6d0e54038893cd969467c10f78b60e81e8))
+* **lock:** add collapsible passcode section and clean sidebar header ([d5a0ea2](https://github.com/yohanvillarp/space-for-you/commit/d5a0ea292f9c393f943c556dbcb945b1d3d8367d))
+* **lock:** add segmented category switcher and search in sidebar ([2e9fbd1](https://github.com/yohanvillarp/space-for-you/commit/2e9fbd1dbea4ac7b28ff3ef0b902585d5e22b4b3))
+* **lock:** entrance lock gate scene and scene switcher ([f1cb73e](https://github.com/yohanvillarp/space-for-you/commit/f1cb73ec8a3c9a5aecf0a0d8a25f3288b76a1296))
+* **lock:** integrate spatial vault objects and object-style grid ([464fb1c](https://github.com/yohanvillarp/space-for-you/commit/464fb1c2b62678c4eaf406018a9fde75f49c6158))
+* **lock:** make gate scene generic and editable on canvas ([e116274](https://github.com/yohanvillarp/space-for-you/commit/e1162747bb5e5b106839dd948ea184577dab9627))
+* **studio:** add fluid rotation handle with magnetic snap and angle badge ([9a16ce7](https://github.com/yohanvillarp/space-for-you/commit/9a16ce78855eba465e36db2b69aad654e2691f9a))
+* **studio:** add fluid rotation handle with magnetic snap and badge ([cdc12ee](https://github.com/yohanvillarp/space-for-you/commit/cdc12eee38a1ff4837e5eddc1737d970a97e6115))
+
+
+### Bug Fixes
+
+* **lock:** ignore keyboard events while typing in form inputs ([b0d36d7](https://github.com/yohanvillarp/space-for-you/commit/b0d36d7dfb7170a714265c9f1a702338e2b89091))
+
 ## [0.5.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.4.0...space-for-you-v0.5.0) (2026-10-24)
 
 

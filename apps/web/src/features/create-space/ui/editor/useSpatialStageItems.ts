@@ -31,12 +31,24 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     )
   }
 
+  const handleSetItemRotation = (id: string, angle: number) => {
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item.id !== id || item.isLocked) return item
+        let normalized = ((angle + 180) % 360) - 180
+        if (normalized < -180) normalized += 360
+        return { ...item, rotation: Math.round(normalized * 10) / 10 }
+      }),
+    )
+  }
+
   const handleRotateItem = (id: string, delta: number) => {
     setItems((prev) =>
       prev.map((item) => {
         if (item.id !== id || item.isLocked) return item
-        const nextRotation = Math.max(-30, Math.min(30, item.rotation + delta))
-        return { ...item, rotation: nextRotation }
+        let normalized = ((item.rotation + delta + 180) % 360) - 180
+        if (normalized < -180) normalized += 360
+        return { ...item, rotation: Math.round(normalized * 10) / 10 }
       }),
     )
   }
@@ -205,6 +217,7 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     pendingPhotos,
     handleUpdatePosition,
     handleRotateItem,
+    handleSetItemRotation,
     handleResetRotation,
     handleBringToFront,
     handleSendToBack,

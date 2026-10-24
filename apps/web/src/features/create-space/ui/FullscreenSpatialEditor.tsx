@@ -1,9 +1,17 @@
+import { useState } from 'react'
 import { SlidersHorizontal } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import type { AudioTrack } from '@/entities/audio'
 import { THEME_REGISTRY } from '@/features/space-themes'
+import {
+  LockGateScene,
+  LockGateSidebar,
+  DEFAULT_PROTECTION_CONFIG,
+} from '@/features/space-lock'
+import type { SpaceProtectionConfig } from '@/features/space-lock'
 import { SpatialStageCanvas } from './SpatialStageCanvas'
 import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
+import { StageBottomDock, type StudioScene } from './dock/StageBottomDock'
 import { EditorTopHeader } from './editor/EditorTopHeader'
 import { useSidebarResize } from './editor/useSidebarResize'
 import { useSpatialStageItems } from './editor/useSpatialStageItems'
@@ -20,27 +28,12 @@ export function FullscreenSpatialEditor({
   templateId,
   className,
 }: FullscreenSpatialEditorProps) {
-  const {
-    items,
-    selectedId,
-    setSelectedId,
-    copiedItem,
-    handleUpdatePosition,
-    handleRotateItem,
-    handleResetRotation,
-    handleBringToFront,
-    handleSendToBack,
-    handleDeleteItem,
-    handleToggleLock,
-    handleUpdateItemData,
-    handleAssignItemPhoto,
-    handleAddItem,
-    handleDuplicateItem,
-    handleCopyItem,
-    handlePasteItem,
-    handleResetToDefaults,
-    handleClearCanvas,
-  } = useSpatialStageItems(templateId)
+  const [activeScene, setActiveScene] = useState<StudioScene>('stage')
+  const [protectionConfig, setProtectionConfig] =
+    useState<SpaceProtectionConfig>(DEFAULT_PROTECTION_CONFIG)
+
+  const stage = useSpatialStageItems(templateId)
+  const { items, selectedId, setSelectedId, copiedItem } = stage
 
   const {
     showSidebar,
@@ -51,41 +44,35 @@ export function FullscreenSpatialEditor({
     handleOpenSidebar,
   } = useSidebarResize()
 
+  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const selectedItem = items.find((it) => it.id === selectedId)
-  const isMusicSelected =
-    selectedItem?.type === 'music-box' ||
-    selectedItem?.type === 'vinyl-player' ||
-    selectedItem?.type === 'cassette-tape'
-  const selectedMusicItem = isMusicSelected ? selectedItem : null
+  const isMusic = ['music-box', 'vinyl-player', 'cassette-tape'].includes(
+    selectedItem?.type || '',
+  )
+  const selectedMusicItem = isMusic ? selectedItem : null
+  const selectedPhotoItem =
+    selectedItem?.type === 'polaroid' ? selectedItem : null
 
-  const isPhotoSelected = selectedItem?.type === 'polaroid'
-  const selectedPhotoItem = isPhotoSelected ? selectedItem : null
-
-  // Enable global keyboard shortcuts (Ctrl+C, Ctrl+V, Ctrl+D, Delete, ], [, R)
   useStageKeyboardShortcuts({
     selectedItem: selectedItem ?? null,
     copiedItem,
-    onCopyItem: handleCopyItem,
-    onPasteItem: handlePasteItem,
-    onDuplicateItem: handleDuplicateItem,
-    onDeleteItem: handleDeleteItem,
-    onBringToFront: handleBringToFront,
-    onSendToBack: handleSendToBack,
-    onResetRotation: handleResetRotation,
+    onCopyItem: stage.handleCopyItem,
+    onPasteItem: stage.handlePasteItem,
+    onDuplicateItem: stage.handleDuplicateItem,
+    onDeleteItem: stage.handleDeleteItem,
+    onBringToFront: stage.handleBringToFront,
+    onSendToBack: stage.handleSendToBack,
+    onResetRotation: stage.handleResetRotation,
   })
 
   const handleAssignTrack = (track: AudioTrack) => {
     const target =
       selectedMusicItem ||
-      items.find(
-        (it) =>
-          it.type === 'music-box' ||
-          it.type === 'vinyl-player' ||
-          it.type === 'cassette-tape',
+      items.find((it) =>
+        ['music-box', 'vinyl-player', 'cassette-tape'].includes(it.type),
       )
-
     if (target) {
-      handleUpdateItemData(target.id, {
+      stage.handleUpdateItemData(target.id, {
         title: track.title,
         artist: track.artist,
         audioUrl: track.url,
@@ -97,74 +84,79 @@ export function FullscreenSpatialEditor({
   const handleAssignPhoto = (photoUrl: string, file?: File) => {
     const target =
       selectedPhotoItem || items.find((it) => it.type === 'polaroid')
-
-    if (target) {
-      handleAssignItemPhoto(target.id, photoUrl, file)
-    }
+    if (target) stage.handleAssignItemPhoto(target.id, photoUrl, file)
   }
-
-  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   return (
     <div
       className={cn(
-        'relative flex h-screen w-screen flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] select-none',
+        'relative flex h-screen w-screen flex-col overflow-hidden bg-[#0F0B09]',
         className,
       )}
     >
-      {/* Top Controls Header */}
       <EditorTopHeader
         activeTheme={activeTheme}
         showSidebar={showSidebar}
         onToggleSidebar={handleToggleSidebar}
         itemCount={items.length}
         selectedId={selectedId}
-        onDeleteSelected={handleDeleteItem}
-        onResetToDefaults={handleResetToDefaults}
+        onDeleteSelected={stage.handleDeleteItem}
+        onResetToDefaults={stage.handleResetToDefaults}
       />
 
-      {/* Main Workspace: Resizable Sidebar & Full Stage Canvas */}
-      <div className="relative flex min-h-0 flex-1 overflow-hidden">
-        {/* Collapsed State Toggle Pill */}
+      <div className="relative flex flex-1 overflow-hidden">
+        {/* Left Toggle Floating Cue */}
         {!showSidebar && (
           <button
             type="button"
-            onClick={handleOpenSidebar}
-            title="Open Studio Library"
-            className="group absolute top-4 left-4 z-40 flex cursor-pointer items-center gap-2 rounded-xl border border-[#3B302A] bg-[#1A1411]/95 px-3 py-2 font-sans text-xs text-[#F3EAE1] shadow-2xl backdrop-blur-md transition-all hover:border-[#CF7056] hover:bg-[#251E1A]"
+            onClick={handleToggleSidebar}
+            title="Open Workshop Sidebar"
+            className="group absolute top-6 left-0 z-40 flex cursor-pointer items-center gap-1.5 rounded-r-xl border-t border-r border-b border-[#3B302A] bg-[#16120F]/90 px-2.5 py-2 text-xs font-medium text-[#F3EAE1] shadow-xl backdrop-blur-md transition-all hover:bg-[#1C1613] hover:pl-3.5"
           >
             <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
-            <span>Studio Library</span>
+            <span className="hidden font-sans text-[11px] sm:inline">
+              {activeScene === 'gate' ? 'Lock Gate' : 'Library'}
+            </span>
           </button>
         )}
 
-        {/* Left Side: Resizable Toolbox Sidebar */}
+        {/* Resizable Sidebar */}
         <div
-          style={{ width: `${sidebarWidth}px` }}
+          style={{ width: showSidebar ? `${sidebarWidth}px` : '0px' }}
           className={cn(
-            'relative z-30 flex h-full min-h-0 shrink-0 flex-col border-r border-[#3B302A] bg-[#14110F] shadow-2xl transition-[width] duration-75',
-            !showSidebar && 'hidden',
-            isResizingSidebar && 'transition-none select-none',
+            'relative h-full shrink-0 overflow-hidden transition-[width] duration-150 ease-out',
+            !showSidebar && 'pointer-events-none invisible border-none',
           )}
         >
-          <SpatialToolboxSidebar
-            templateId={templateId}
-            onAddItem={handleAddItem}
-            onAssignTrack={handleAssignTrack}
-            selectedMusicItem={selectedMusicItem}
-            selectedPhotoItem={selectedPhotoItem}
-            onAssignPhoto={handleAssignPhoto}
-            photoCount={countStagePhotos(items)}
-            isCompact={sidebarWidth < 280}
-            className="h-full w-full"
-          />
+          {activeScene === 'gate' ? (
+            <LockGateSidebar
+              config={protectionConfig}
+              onChangeConfig={(updates) =>
+                setProtectionConfig((prev) => ({ ...prev, ...updates }))
+              }
+              isCompact={sidebarWidth < 280}
+              className="h-full w-full"
+            />
+          ) : (
+            <SpatialToolboxSidebar
+              templateId={templateId}
+              onAddItem={stage.handleAddItem}
+              onAssignTrack={handleAssignTrack}
+              selectedMusicItem={selectedMusicItem}
+              selectedPhotoItem={selectedPhotoItem}
+              onAssignPhoto={handleAssignPhoto}
+              photoCount={countStagePhotos(items)}
+              isCompact={sidebarWidth < 280}
+              className="h-full w-full"
+            />
+          )}
 
-          {/* Draggable Resizer Handle */}
+          {/* Resizer Handle */}
           <div
             onPointerDown={handleResizeStart}
             role="separator"
             aria-orientation="vertical"
-            title="Drag to resize · Drag left to collapse"
+            title="Drag to resize"
             className={cn(
               'group absolute top-0 -right-2 bottom-0 z-50 flex w-4 cursor-col-resize items-center justify-center transition-colors',
               isResizingSidebar && 'bg-[#CF7056]/20',
@@ -179,33 +171,62 @@ export function FullscreenSpatialEditor({
           </div>
         </div>
 
-        {/* Center / Full Canvas: Wide Spatial Stage Canvas */}
-        <main className="relative min-h-0 flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
-          <SpatialStageCanvas
-            templateId={templateId}
-            items={items}
-            selectedId={selectedId}
-            copiedItem={copiedItem}
-            onSelectItem={setSelectedId}
-            onUpdateItemPosition={handleUpdatePosition}
-            onRotateItem={handleRotateItem}
-            onResetRotation={handleResetRotation}
-            onBringToFront={handleBringToFront}
-            onSendToBack={handleSendToBack}
-            onDeleteItem={handleDeleteItem}
-            onDuplicateItem={handleDuplicateItem}
-            onToggleLock={handleToggleLock}
-            onCopyItem={handleCopyItem}
-            onPasteItem={handlePasteItem}
-            onResetToDefaults={handleResetToDefaults}
-            onClearCanvas={handleClearCanvas}
-            onUpdateItemData={handleUpdateItemData}
-            onAddItem={handleAddItem}
-            onOpenPhotoPicker={(item) => {
-              setSelectedId(item.id)
-              handleOpenSidebar()
-            }}
-            className="min-h-full w-full rounded-2xl"
+        {/* Center / Full Canvas: Scene Switcher Dock at Bottom */}
+        <main
+          className={cn(
+            'relative min-h-0 flex-1',
+            activeScene === 'stage'
+              ? 'overflow-auto p-4 sm:p-6 lg:p-8'
+              : 'overflow-hidden p-0',
+          )}
+        >
+          {activeScene === 'gate' ? (
+            <div className="relative flex h-full w-full items-center justify-center">
+              <LockGateScene
+                config={protectionConfig}
+                spaceTitle="A Secret Keepsake"
+                isStudioPreview={true}
+                onChangeConfig={(updates) =>
+                  setProtectionConfig((prev) => ({ ...prev, ...updates }))
+                }
+                onProceedToStage={() => setActiveScene('stage')}
+              />
+            </div>
+          ) : (
+            <SpatialStageCanvas
+              templateId={templateId}
+              items={items}
+              selectedId={selectedId}
+              copiedItem={copiedItem}
+              onSelectItem={setSelectedId}
+              onUpdateItemPosition={stage.handleUpdatePosition}
+              onRotateItem={stage.handleRotateItem}
+              onSetRotation={stage.handleSetItemRotation}
+              onResetRotation={stage.handleResetRotation}
+              onBringToFront={stage.handleBringToFront}
+              onSendToBack={stage.handleSendToBack}
+              onDeleteItem={stage.handleDeleteItem}
+              onDuplicateItem={stage.handleDuplicateItem}
+              onToggleLock={stage.handleToggleLock}
+              onCopyItem={stage.handleCopyItem}
+              onPasteItem={stage.handlePasteItem}
+              onResetToDefaults={stage.handleResetToDefaults}
+              onClearCanvas={stage.handleClearCanvas}
+              onUpdateItemData={stage.handleUpdateItemData}
+              onAddItem={stage.handleAddItem}
+              onOpenPhotoPicker={(item) => {
+                setSelectedId(item.id)
+                handleOpenSidebar()
+              }}
+              className="min-h-full w-full rounded-2xl"
+            />
+          )}
+
+          {/* Bottom Dock: Scene Switcher placed at canvas bottom */}
+          <StageBottomDock
+            activeScene={activeScene}
+            onSelectScene={setActiveScene}
+            isProtectionEnabled={protectionConfig.enabled}
           />
         </main>
       </div>

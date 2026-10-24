@@ -16,3 +16,4 @@ Please refer to the comprehensive rules and architectural constraints documented
 6. **Versioning:** Automated via Google Release Please on `develop` + local Changesets (`@changesets/cli`).
 7. **Modularity & File Limits:** Strictly max 250 lines of code per file. Decompose into focused sub-components and modular hooks.
 8. **Deferred Cloud Upload:** Keep user media in client memory during drafting; upload to Appwrite Storage (`space-photos`) only on final space save.
+9. **Path Aliases & Imports:** Strictly use `@/` path alias for all internal imports across the application (e.g. `@/features/...`, `@/shared/...`, `@/entities/...`, `@/widgets/...`, `@/pages/...`). Never promote or use deep relative paths (e.g. `../../model/...`, `../ui/...`).
