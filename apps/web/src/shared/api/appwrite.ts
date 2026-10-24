@@ -1,4 +1,4 @@
-import { Account, ID, OAuthProvider } from 'appwrite'
+import { Account, ID, OAuthProvider, Storage } from 'appwrite'
 import type { Models } from 'appwrite'
 import {
   client,
@@ -10,6 +10,7 @@ import {
 export { client, APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, APPWRITE_PROJECT_NAME }
 
 export const account = new Account(client)
+export const storage = new Storage(client)
 
 export type AppwriteUser = Models.User<Models.Preferences>
 

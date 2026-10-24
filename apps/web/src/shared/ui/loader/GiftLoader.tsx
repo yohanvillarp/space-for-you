@@ -2,25 +2,9 @@ import type { HTMLAttributes } from 'react'
 import { cn } from '@/shared/lib'
 
 export interface GiftLoaderProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Primary loading label.
-   * @default 'Preparing your sanctuary...'
-   */
   label?: string
-  /**
-   * Optional secondary subtitle hint.
-   * @default 'Crafted with care, just for them.'
-   */
   hint?: string
-  /**
-   * Size variant of the gift illustration.
-   * @default 'md'
-   */
   size?: 'sm' | 'md' | 'lg'
-  /**
-   * Whether to display as a full-viewport centered overlay.
-   * @default false
-   */
   fullScreen?: boolean
 }
 

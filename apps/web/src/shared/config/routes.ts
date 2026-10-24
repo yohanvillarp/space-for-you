@@ -7,6 +7,7 @@ export const ROUTES = {
   EXAMPLES: '/examples',
   HOW_IT_WORKS: '/how-it-works',
   PRIVACY: '/privacy',
+  ATTRIBUTIONS: '/attributions',
   NEW_SPACE: '/spaces/new',
   EDIT_SPACE: '/spaces/:id/edit',
   STAGE_PREVIEW: '/spaces/preview/:templateId',

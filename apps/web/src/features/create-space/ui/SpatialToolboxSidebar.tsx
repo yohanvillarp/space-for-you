@@ -1,20 +1,26 @@
 import { useState } from 'react'
-import type { DragEvent } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
 import type { AudioTrack } from '@/entities/audio'
 import type {
   SpatialItem,
   SpatialItemType,
-  ToolboxItemDef,
   SpatialItemData,
 } from '../model/spatial-stage.types'
 import { getToolboxItemsForTemplate } from '../lib/spatial-stage-defaults'
 import { cn } from '@/shared/lib'
 import { ToolboxHeader } from './toolbox/ToolboxHeader'
+import type { ToolboxCategory } from './toolbox/ToolboxHeader'
 import { ObjectsTabContent } from './toolbox/ObjectsTabContent'
 import { StickersTabContent } from './toolbox/StickersTabContent'
 import { MusicTabContent } from './toolbox/MusicTabContent'
+import { PhotosTabContent } from './toolbox/PhotosTabContent'
 import { useToolboxAssets } from './toolbox/useToolboxAssets'
+import {
+  handleDragKeepsake,
+  handleDragSticker,
+  handleDragTrack,
+  getIconSvgUrl,
+} from './toolbox/toolboxDragPayloads'
 
 export interface SpatialToolboxSidebarProps {
   templateId: SpaceTemplateId
@@ -26,6 +32,9 @@ export interface SpatialToolboxSidebarProps {
   ) => void
   onAssignTrack?: (track: AudioTrack) => void
   selectedMusicItem?: SpatialItem | null
+  selectedPhotoItem?: SpatialItem | null
+  onAssignPhoto?: (photoUrl: string, file?: File) => void
+  photoCount?: number
   isCompact?: boolean
   className?: string
 }
@@ -37,21 +46,28 @@ export function SpatialToolboxSidebar({
   onAddItem,
   onAssignTrack,
   selectedMusicItem,
+  selectedPhotoItem,
+  onAssignPhoto,
+  photoCount = 0,
   isCompact = false,
   className,
 }: SpatialToolboxSidebarProps) {
   const hasMusicOption = Boolean(selectedMusicItem)
+  const hasPhotoOption = Boolean(selectedPhotoItem) || photoCount > 0
 
-  // Navigation: Objects vs Stickers vs Music
-  const [activeCategory, setActiveCategory] = useState<
-    'objects' | 'stickers' | 'music'
-  >('objects')
+  const [activeCategory, setActiveCategory] =
+    useState<ToolboxCategory>('objects')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [objectFilter, setObjectFilter] = useState<
+    'all' | 'stage' | 'universal'
+  >('all')
 
-  // Automatically activate Music when a music object is selected, and return to objects when deselected
+  // Auto-switch to Music when a music item is selected
   const [prevSelectedMusicItem, setPrevSelectedMusicItem] =
     useState(selectedMusicItem)
   if (selectedMusicItem !== prevSelectedMusicItem) {
     setPrevSelectedMusicItem(selectedMusicItem)
+    setSearchQuery('')
     if (selectedMusicItem) {
       setActiveCategory('music')
     } else if (activeCategory === 'music') {
@@ -59,10 +75,18 @@ export function SpatialToolboxSidebar({
     }
   }
 
-  const [searchQuery, setSearchQuery] = useState('')
-  const [objectFilter, setObjectFilter] = useState<
-    'all' | 'stage' | 'universal'
-  >('all')
+  // Auto-switch to Photos when a Polaroid item is selected
+  const [prevSelectedPhotoItem, setPrevSelectedPhotoItem] =
+    useState(selectedPhotoItem)
+  if (selectedPhotoItem !== prevSelectedPhotoItem) {
+    setPrevSelectedPhotoItem(selectedPhotoItem)
+    setSearchQuery('')
+    if (selectedPhotoItem) {
+      setActiveCategory('photos')
+    } else if (activeCategory === 'photos') {
+      setActiveCategory('objects')
+    }
+  }
 
   const {
     displayedStickers,
@@ -83,7 +107,7 @@ export function SpatialToolboxSidebar({
     selectedMusicItem,
   )
 
-  const handleSelectCategory = (cat: 'objects' | 'stickers' | 'music') => {
+  const handleSelectCategory = (cat: ToolboxCategory) => {
     setActiveCategory(cat)
     setSearchQuery('')
     try {
@@ -93,7 +117,6 @@ export function SpatialToolboxSidebar({
     }
   }
 
-  // Filter Objects by Search & Category Sub-filter
   const rawItems = getToolboxItemsForTemplate(templateId)
   const filteredObjects = rawItems.filter((item) => {
     const matchesCategory =
@@ -104,54 +127,6 @@ export function SpatialToolboxSidebar({
       item.description.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
-
-  const getIconSvgUrl = (iconKey: string) => {
-    const [prefix, name] = iconKey.split(':')
-    return `https://api.iconify.design/${prefix}/${name}.svg`
-  }
-
-  // Drag start handlers
-  const handleDragKeepsake = (
-    e: DragEvent<HTMLDivElement>,
-    item: ToolboxItemDef,
-  ) => {
-    e.dataTransfer.setData('application/json', JSON.stringify(item))
-    e.dataTransfer.effectAllowed = 'copy'
-  }
-
-  const handleDragSticker = (
-    e: DragEvent<HTMLDivElement>,
-    sticker: { id: string; name: string },
-  ) => {
-    const svgUrl = getIconSvgUrl(sticker.id)
-    const payload = {
-      type: 'vector-sticker' as SpatialItemType,
-      label: sticker.name,
-      category: 'universal',
-      description: 'Decorative SVG sticker element',
-      defaultData: { svgUrl, stickerName: sticker.name, title: sticker.name },
-    }
-    e.dataTransfer.setData('application/json', JSON.stringify(payload))
-    e.dataTransfer.effectAllowed = 'copy'
-  }
-
-  const handleDragTrack = (e: DragEvent<HTMLDivElement>, track: AudioTrack) => {
-    const payload = {
-      type: 'vinyl-player' as SpatialItemType,
-      label: track.title,
-      category: 'stage',
-      description: track.artist,
-      defaultData: {
-        title: track.title,
-        artist: track.artist,
-        audioUrl: track.url,
-        photoUrl: track.albumArt || track.coverUrl,
-        isPlaying: false,
-      },
-    }
-    e.dataTransfer.setData('application/json', JSON.stringify(payload))
-    e.dataTransfer.effectAllowed = 'copy'
-  }
 
   return (
     <aside
@@ -172,14 +147,16 @@ export function SpatialToolboxSidebar({
         objectFilter={objectFilter}
         onSelectObjectFilter={setObjectFilter}
         onSelectStickerChip={(query) => {
-          setSearchQuery(query)
+          setSearchQuery((prev) => (prev === query ? '' : query))
           setIsSearchingStickers(true)
         }}
         onSelectMusicChip={(query) => {
-          setSearchQuery(query)
+          setSearchQuery((prev) => (prev === query ? '' : query))
         }}
         hasMusicOption={hasMusicOption}
         selectedMusicItemName={selectedMusicItem?.label}
+        hasPhotoOption={hasPhotoOption}
+        selectedPhotoItemName={selectedPhotoItem?.label}
         isCompact={isCompact}
       />
 
@@ -189,6 +166,19 @@ export function SpatialToolboxSidebar({
             items={filteredObjects}
             onAddItem={onAddItem}
             onDragStart={handleDragKeepsake}
+          />
+        )}
+
+        {activeCategory === 'photos' && (
+          <PhotosTabContent
+            selectedItemName={selectedPhotoItem?.label}
+            currentPhotoUrl={selectedPhotoItem?.data?.photoUrl}
+            photoCount={photoCount}
+            isPolaroidSelected={Boolean(selectedPhotoItem)}
+            onAssignPhoto={(url, file) => onAssignPhoto?.(url, file)}
+            onAddPolaroidWithPhoto={(url) => {
+              onAddItem('polaroid', undefined, undefined, { photoUrl: url })
+            }}
           />
         )}
 
@@ -219,12 +209,25 @@ export function SpatialToolboxSidebar({
         )}
       </div>
 
-      <div className="shrink-0 border-t border-[#3B302A] bg-[#171310] px-3 py-2 text-center font-sans text-[10px] text-[#A99B90]">
-        <span>
-          {activeCategory === 'music'
-            ? 'Click ▶ to preview · Click Use or drag to place'
-            : 'Drag onto canvas · Click to add'}
-        </span>
+      <div className="shrink-0 space-y-0.5 border-t border-[#3B302A] bg-[#171310] px-3 py-1.5 text-center font-sans text-[10px] text-[#A99B90]">
+        <p>
+          {activeCategory === 'photos'
+            ? selectedPhotoItem
+              ? 'Click or upload to replace photo for selected frame'
+              : 'Click or upload photo to place a Polaroid'
+            : activeCategory === 'music'
+              ? 'Click ▶ to preview · Click Use or drag to place'
+              : 'Drag onto canvas · Click to add'}
+        </p>
+        <p className="text-[9px] text-[#786C64]">
+          {activeCategory === 'photos'
+            ? 'Photos powered by Pexels & Unsplash'
+            : activeCategory === 'music'
+              ? '30s previews via Apple Music API'
+              : activeCategory === 'stickers'
+                ? 'Stickers powered by Iconify'
+                : 'Interactive keepsakes'}
+        </p>
       </div>
     </aside>
   )

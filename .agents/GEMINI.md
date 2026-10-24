@@ -46,6 +46,7 @@ The repository is organized as a monorepo containing:
   - `apps/web/.env` (untracked, ignored by `.gitignore`).
   - Template keys in `apps/web/.env.example`.
 - Vite exposes variables with `envPrefix: ['VITE_', 'APPWRITE_']` via `import.meta.env`.
+- **Deferred Cloud Upload Rule:** During space editing and drafting, user-uploaded media (photos) remain strictly in client memory (compressed WebP Blob/DataURL). Assets are uploaded to Appwrite Storage (`space-photos` bucket) only upon final save/publishing to prevent orphan cloud files.
 
 ---
 

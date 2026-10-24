@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Camera } from 'lucide-react'
 import type { SpatialItem } from '../../model/spatial-stage.types'
 import {
   PolaroidFrame,
@@ -14,6 +14,7 @@ export interface StationeryItemRendererProps {
   onSetLocalText: (text: string) => void
   onSaveText: () => void
   onStartEditText: () => void
+  onOpenPhotoPicker?: (item: SpatialItem) => void
 }
 
 export function StationeryItemRenderer({
@@ -23,6 +24,7 @@ export function StationeryItemRenderer({
   onSetLocalText,
   onSaveText,
   onStartEditText,
+  onOpenPhotoPicker,
 }: StationeryItemRendererProps) {
   switch (item.type) {
     case 'polaroid':
@@ -34,40 +36,47 @@ export function StationeryItemRenderer({
             tapeColor={item.data.tapeColor || 'gold'}
             className="shadow-2xl"
           >
-            <div
-              onClick={() => playSpatialSfx('camera-shutter')}
-              className="flex h-36 w-full cursor-pointer flex-col items-center justify-center space-y-1.5 bg-gradient-to-tr from-amber-500/20 via-orange-400/15 to-rose-400/20 p-4 text-center transition-transform hover:scale-[1.02]"
-            >
-              <span className="text-2xl drop-shadow-xs">📷</span>
-              {isEditingText ? (
-                <div className="space-y-1">
-                  <input
-                    type="text"
-                    value={localText}
-                    onChange={(e) => onSetLocalText(e.target.value)}
-                    className="font-heading w-full rounded border border-amber-500/40 bg-white/80 px-1 py-0.5 text-center text-[11px] text-stone-800 outline-none dark:bg-stone-900/80 dark:text-stone-200"
-                  />
-                  <button
-                    type="button"
-                    onClick={onSaveText}
-                    className="bg-primary text-text-inverse rounded px-1.5 py-0.5 text-[9px]"
-                  >
-                    Save
-                  </button>
+            {item.data.photoUrl ? (
+              <div
+                onClick={() => {
+                  playSpatialSfx('camera-shutter')
+                  onOpenPhotoPicker?.(item)
+                }}
+                className="group relative flex h-36 w-full cursor-pointer items-center justify-center overflow-hidden bg-black/40"
+                title="Click to change photo"
+              >
+                <img
+                  src={item.data.photoUrl}
+                  alt={item.data.caption || 'Memory'}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <div className="flex items-center gap-1.5 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white shadow-md backdrop-blur-xs">
+                    <Camera className="h-3.5 w-3.5 text-amber-300" />
+                    <span>Change Photo</span>
+                  </div>
                 </div>
-              ) : (
-                <p
-                  onDoubleClick={onStartEditText}
-                  className="font-heading cursor-text text-xs font-medium text-stone-700 italic dark:text-stone-200"
-                  title="Double click caption to edit"
-                >
-                  {item.data.caption || 'Your Memory Here'}
-                </p>
-              )}
-              <span className="font-sans text-[10px] text-stone-400">
-                Step 2 Photo
-              </span>
-            </div>
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  playSpatialSfx('camera-shutter')
+                  onOpenPhotoPicker?.(item)
+                }}
+                className="group flex h-36 w-full cursor-pointer flex-col items-center justify-center space-y-1.5 bg-gradient-to-tr from-amber-500/15 via-orange-400/10 to-rose-400/15 p-4 text-center transition-all hover:bg-amber-500/25"
+                title="Click to add photo"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/20 text-amber-300 transition-transform group-hover:scale-110">
+                  <Camera className="h-5 w-5" />
+                </div>
+                <span className="font-heading text-xs font-medium text-stone-700 dark:text-stone-200">
+                  Add Photograph
+                </span>
+                <span className="font-sans text-[10px] text-stone-400">
+                  Select from web or device
+                </span>
+              </div>
+            )}
           </PolaroidFrame>
         </div>
       )

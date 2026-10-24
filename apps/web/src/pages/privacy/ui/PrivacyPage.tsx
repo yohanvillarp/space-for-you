@@ -1,4 +1,4 @@
-import { Container, Card, Badge } from '@/shared/ui'
+import { Container, Card } from '@/shared/ui'
 
 export function PrivacyPage() {
   const commitments = [
@@ -23,9 +23,6 @@ export function PrivacyPage() {
     <div className="animate-fade-in py-12 sm:py-20">
       <Container className="max-w-4xl space-y-12">
         <div className="space-y-3 text-center">
-          <Badge variant="accent" className="font-sans text-xs">
-            Our Promise
-          </Badge>
           <h1 className="font-heading text-text-primary text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl">
             Privacy & The Sacred Space
           </h1>

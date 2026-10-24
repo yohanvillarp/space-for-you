@@ -1,17 +1,14 @@
-import { useState } from 'react'
 import { SlidersHorizontal } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import type { AudioTrack } from '@/entities/audio'
-import type { SpatialItem, SpatialItemType } from '../model/spatial-stage.types'
-import {
-  getDefaultItemsForTemplate,
-  TOOLBOX_ITEMS,
-} from '../lib/spatial-stage-defaults'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { SpatialStageCanvas } from './SpatialStageCanvas'
 import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
 import { EditorTopHeader } from './editor/EditorTopHeader'
 import { useSidebarResize } from './editor/useSidebarResize'
+import { useSpatialStageItems } from './editor/useSpatialStageItems'
+import { useStageKeyboardShortcuts } from './editor/useStageKeyboardShortcuts'
+import { countStagePhotos } from '../lib/stage-photo-limit'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -23,10 +20,27 @@ export function FullscreenSpatialEditor({
   templateId,
   className,
 }: FullscreenSpatialEditorProps) {
-  const [items, setItems] = useState<SpatialItem[]>(() =>
-    getDefaultItemsForTemplate(templateId),
-  )
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const {
+    items,
+    selectedId,
+    setSelectedId,
+    copiedItem,
+    handleUpdatePosition,
+    handleRotateItem,
+    handleResetRotation,
+    handleBringToFront,
+    handleSendToBack,
+    handleDeleteItem,
+    handleToggleLock,
+    handleUpdateItemData,
+    handleAssignItemPhoto,
+    handleAddItem,
+    handleDuplicateItem,
+    handleCopyItem,
+    handlePasteItem,
+    handleResetToDefaults,
+    handleClearCanvas,
+  } = useSpatialStageItems(templateId)
 
   const {
     showSidebar,
@@ -37,92 +51,28 @@ export function FullscreenSpatialEditor({
     handleOpenSidebar,
   } = useSidebarResize()
 
-  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
-
-  const handleUpdatePosition = (id: string, x: number, y: number) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, x, y } : item)),
-    )
-  }
-
-  const handleRotateItem = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) return item
-        const newRotation = Math.max(-25, Math.min(25, item.rotation + delta))
-        return { ...item, rotation: newRotation }
-      }),
-    )
-  }
-
-  const handleBringToFront = (id: string) => {
-    setItems((prev) => {
-      const maxZ = prev.reduce((max, it) => Math.max(max, it.zIndex), 10)
-      return prev.map((item) =>
-        item.id === id ? { ...item, zIndex: maxZ + 1 } : item,
-      )
-    })
-  }
-
-  const handleDeleteItem = (id: string) => {
-    setItems((prev) => prev.filter((it) => it.id !== id))
-    if (selectedId === id) setSelectedId(null)
-  }
-
-  const handleUpdateItemData = (
-    id: string,
-    updates: Partial<SpatialItem['data']>,
-  ) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, data: { ...item.data, ...updates } } : item,
-      ),
-    )
-  }
-
-  const handleAddItem = (
-    type: SpatialItemType,
-    dropX?: number,
-    dropY?: number,
-    customData?: Partial<SpatialItem['data']>,
-  ) => {
-    const itemDef = TOOLBOX_ITEMS.find((it) => it.type === type)
-    const newId = `${type}-${Date.now()}`
-    const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
-
-    const defaultX = dropX ?? Math.round(35 + Math.random() * 30)
-    const defaultY = dropY ?? Math.round(40 + Math.random() * 25)
-    const randomTilt = Math.round((Math.random() * 8 - 4) * 10) / 10
-
-    const newItem: SpatialItem = {
-      id: newId,
-      type,
-      label: itemDef?.label || 'Keepsake Item',
-      x: defaultX,
-      y: defaultY,
-      rotation: randomTilt,
-      zIndex: maxZ + 1,
-      data: {
-        ...(itemDef?.defaultData || {}),
-        ...(customData || {}),
-      },
-    }
-
-    setItems((prev) => [...prev, newItem])
-    setSelectedId(newId)
-  }
-
-  const handleResetToDefaults = () => {
-    setItems(getDefaultItemsForTemplate(templateId))
-    setSelectedId(null)
-  }
-
   const selectedItem = items.find((it) => it.id === selectedId)
   const isMusicSelected =
     selectedItem?.type === 'music-box' ||
     selectedItem?.type === 'vinyl-player' ||
     selectedItem?.type === 'cassette-tape'
   const selectedMusicItem = isMusicSelected ? selectedItem : null
+
+  const isPhotoSelected = selectedItem?.type === 'polaroid'
+  const selectedPhotoItem = isPhotoSelected ? selectedItem : null
+
+  // Enable global keyboard shortcuts (Ctrl+C, Ctrl+V, Ctrl+D, Delete, ], [, R)
+  useStageKeyboardShortcuts({
+    selectedItem: selectedItem ?? null,
+    copiedItem,
+    onCopyItem: handleCopyItem,
+    onPasteItem: handlePasteItem,
+    onDuplicateItem: handleDuplicateItem,
+    onDeleteItem: handleDeleteItem,
+    onBringToFront: handleBringToFront,
+    onSendToBack: handleSendToBack,
+    onResetRotation: handleResetRotation,
+  })
 
   const handleAssignTrack = (track: AudioTrack) => {
     const target =
@@ -141,17 +91,28 @@ export function FullscreenSpatialEditor({
         audioUrl: track.url,
         photoUrl: track.albumArt || track.coverUrl,
       })
-      setSelectedId(target.id)
     }
   }
+
+  const handleAssignPhoto = (photoUrl: string, file?: File) => {
+    const target =
+      selectedPhotoItem || items.find((it) => it.type === 'polaroid')
+
+    if (target) {
+      handleAssignItemPhoto(target.id, photoUrl, file)
+    }
+  }
+
+  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   return (
     <div
       className={cn(
-        'selection:bg-primary relative flex h-dvh max-h-dvh w-full flex-col overflow-hidden selection:text-white',
+        'relative flex h-screen w-screen flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] select-none',
         className,
       )}
     >
+      {/* Top Controls Header */}
       <EditorTopHeader
         activeTheme={activeTheme}
         showSidebar={showSidebar}
@@ -162,14 +123,15 @@ export function FullscreenSpatialEditor({
         onResetToDefaults={handleResetToDefaults}
       />
 
-      {/* Main Fullscreen Workspace Area */}
-      <div className="relative flex min-h-0 w-full flex-1 overflow-hidden">
+      {/* Main Workspace: Resizable Sidebar & Full Stage Canvas */}
+      <div className="relative flex min-h-0 flex-1 overflow-hidden">
+        {/* Collapsed State Toggle Pill */}
         {!showSidebar && (
           <button
             type="button"
             onClick={handleOpenSidebar}
-            className="animate-fade-in group absolute top-4 left-4 z-40 flex cursor-pointer items-center gap-2 rounded-xl border border-[#3B302A] bg-[#14110F]/95 px-3 py-2 font-sans text-xs font-medium text-[#F3EAE1] shadow-2xl backdrop-blur-md transition-all hover:scale-105 hover:border-[#CF7056] hover:text-[#CF7056]"
             title="Open Studio Library"
+            className="group absolute top-4 left-4 z-40 flex cursor-pointer items-center gap-2 rounded-xl border border-[#3B302A] bg-[#1A1411]/95 px-3 py-2 font-sans text-xs text-[#F3EAE1] shadow-2xl backdrop-blur-md transition-all hover:border-[#CF7056] hover:bg-[#251E1A]"
           >
             <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
             <span>Studio Library</span>
@@ -190,6 +152,9 @@ export function FullscreenSpatialEditor({
             onAddItem={handleAddItem}
             onAssignTrack={handleAssignTrack}
             selectedMusicItem={selectedMusicItem}
+            selectedPhotoItem={selectedPhotoItem}
+            onAssignPhoto={handleAssignPhoto}
+            photoCount={countStagePhotos(items)}
             isCompact={sidebarWidth < 280}
             className="h-full w-full"
           />
@@ -220,13 +185,26 @@ export function FullscreenSpatialEditor({
             templateId={templateId}
             items={items}
             selectedId={selectedId}
+            copiedItem={copiedItem}
             onSelectItem={setSelectedId}
             onUpdateItemPosition={handleUpdatePosition}
             onRotateItem={handleRotateItem}
+            onResetRotation={handleResetRotation}
             onBringToFront={handleBringToFront}
+            onSendToBack={handleSendToBack}
             onDeleteItem={handleDeleteItem}
+            onDuplicateItem={handleDuplicateItem}
+            onToggleLock={handleToggleLock}
+            onCopyItem={handleCopyItem}
+            onPasteItem={handlePasteItem}
+            onResetToDefaults={handleResetToDefaults}
+            onClearCanvas={handleClearCanvas}
             onUpdateItemData={handleUpdateItemData}
             onAddItem={handleAddItem}
+            onOpenPhotoPicker={(item) => {
+              setSelectedId(item.id)
+              handleOpenSidebar()
+            }}
             className="min-h-full w-full rounded-2xl"
           />
         </main>

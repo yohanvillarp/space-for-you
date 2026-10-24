@@ -27,7 +27,7 @@ export const INITIAL_POPULAR_STICKERS = [
 ]
 
 export function useToolboxAssets(
-  activeCategory: 'objects' | 'stickers' | 'music',
+  activeCategory: 'objects' | 'stickers' | 'music' | 'photos',
   searchQuery: string,
   onAddItem: (
     type: SpatialItemType,
@@ -60,9 +60,7 @@ export function useToolboxAssets(
 
     if (selectedMusicItem?.data?.audioUrl && selectedMusicItem.data.title) {
       const exists = CURATED_SOUNDSCAPES.some(
-        (t) =>
-          t.url === selectedMusicItem.data.audioUrl ||
-          t.title.toLowerCase() === selectedMusicItem.data.title?.toLowerCase(),
+        (t) => t.url === selectedMusicItem.data.audioUrl,
       )
       if (!exists) {
         const activeTrack: AudioTrack = {

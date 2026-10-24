@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useId } from 'react'
 
 export interface UseSpatialAudioPlayerOptions {
   trackUrl?: string
@@ -8,6 +8,20 @@ export interface UseSpatialAudioPlayerOptions {
   onEnded?: () => void
 }
 
+type ActiveSpatialPlayer = {
+  id: string
+  pause: () => void
+}
+
+let activeSpatialPlayer: ActiveSpatialPlayer | null = null
+
+export function stopAllSpatialAudioExcept(id?: string) {
+  if (activeSpatialPlayer && activeSpatialPlayer.id !== id) {
+    activeSpatialPlayer.pause()
+    activeSpatialPlayer = null
+  }
+}
+
 export function useSpatialAudioPlayer({
   trackUrl,
   initialVolume = 0.8,
@@ -15,6 +29,7 @@ export function useSpatialAudioPlayer({
   autoPlay = false,
   onEnded,
 }: UseSpatialAudioPlayerOptions = {}) {
+  const playerId = useId()
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const [isPlaying, setIsPlaying] = useState(false)
@@ -81,21 +96,40 @@ export function useSpatialAudioPlayer({
     }
 
     const handlePlay = () => {
+      if (activeSpatialPlayer && activeSpatialPlayer.id !== playerId) {
+        activeSpatialPlayer.pause()
+      }
+      activeSpatialPlayer = {
+        id: playerId,
+        pause: () => {
+          if (audioRef.current) audioRef.current.pause()
+          setIsPlaying(false)
+        },
+      }
       setIsPlaying(true)
       setIsLoading(false)
     }
 
     const handlePause = () => {
+      if (activeSpatialPlayer?.id === playerId) {
+        activeSpatialPlayer = null
+      }
       setIsPlaying(false)
     }
 
     const handleEnded = () => {
+      if (activeSpatialPlayer?.id === playerId) {
+        activeSpatialPlayer = null
+      }
       setIsPlaying(false)
       setCurrentTime(0)
       onEndedRef.current?.()
     }
 
     const handleError = () => {
+      if (activeSpatialPlayer?.id === playerId) {
+        activeSpatialPlayer = null
+      }
       setHasError(true)
       setIsLoading(false)
       setIsPlaying(false)
@@ -115,6 +149,9 @@ export function useSpatialAudioPlayer({
     }
 
     return () => {
+      if (activeSpatialPlayer?.id === playerId) {
+        activeSpatialPlayer = null
+      }
       audio.pause()
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
@@ -125,10 +162,14 @@ export function useSpatialAudioPlayer({
       audio.src = ''
       audioRef.current = null
     }
-  }, [trackUrl, autoPlay])
+  }, [trackUrl, autoPlay, playerId])
 
   const play = useCallback(async () => {
     if (!audioRef.current) return
+    if (activeSpatialPlayer && activeSpatialPlayer.id !== playerId) {
+      activeSpatialPlayer.pause()
+      activeSpatialPlayer = null
+    }
     try {
       setIsLoading(true)
       await audioRef.current.play()
@@ -138,13 +179,16 @@ export function useSpatialAudioPlayer({
       setIsPlaying(false)
       setIsLoading(false)
     }
-  }, [])
+  }, [playerId])
 
   const pause = useCallback(() => {
+    if (activeSpatialPlayer?.id === playerId) {
+      activeSpatialPlayer = null
+    }
     if (!audioRef.current) return
     audioRef.current.pause()
     setIsPlaying(false)
-  }, [])
+  }, [playerId])
 
   const togglePlay = useCallback(() => {
     if (isPlaying) {
