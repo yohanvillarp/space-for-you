@@ -29,6 +29,12 @@ export function Footer() {
           >
             Privacy
           </Link>
+          <Link
+            to={ROUTES.ATTRIBUTIONS}
+            className="hover:text-text-primary transition-colors"
+          >
+            Attributions
+          </Link>
         </nav>
       </Container>
     </footer>

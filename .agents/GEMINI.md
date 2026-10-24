@@ -46,6 +46,7 @@ The repository is organized as a monorepo containing:
   - `apps/web/.env` (untracked, ignored by `.gitignore`).
   - Template keys in `apps/web/.env.example`.
 - Vite exposes variables with `envPrefix: ['VITE_', 'APPWRITE_']` via `import.meta.env`.
+- **Deferred Cloud Upload Rule:** During space editing and drafting, user-uploaded media (photos) remain strictly in client memory (compressed WebP Blob/DataURL). Assets are uploaded to Appwrite Storage (`space-photos` bucket) only upon final save/publishing to prevent orphan cloud files.
 
 ---
 
@@ -80,3 +81,15 @@ The repository is organized as a monorepo containing:
 - **Language Standard:** All UI copy, buttons, labels, and text must be in fluent, professional English.
 - **No Implementation Jargon in UI:** Never expose internal tech stack names (e.g., Appwrite, Vite, Oxlint) or design token terminology in end-user facing text. Focus on emotional intimacy, human value, and genuine privacy.
 - **No Procedural or Meta-Labels:** Strictly avoid artificial process badges, workflow labels, and self-describing scaffolding (such as `"Creator Workshop • Step-by-Step"`, `"Personal Sanctuary"`, or `"Preview Snapshot"`). Rely on clean hierarchy, modern whitespace, and intuitive context rather than instructional label tags.
+
+---
+
+## 7. Code Modularity & File Size Limits
+
+- **Strict File Length Limit:** No source file must exceed **250 lines of code**.
+- **Component Decomposition:** Promote high component modularity. Break down large components into focused, single-responsibility sub-components:
+  - Sub-views and UI sections (e.g., dedicated drawer headers, search bars, category switchers, specimen previewers).
+  - Dedicated custom hooks for stateful workflows or external API logic.
+  - Dedicated configurations, defaults, and audio synthesis modules.
+  - Reusable atomic primitives in `src/shared/`.
+- **Barrel Exports:** Use clean `index.ts` files in feature directories to export clean public APIs without monolithic file structures.

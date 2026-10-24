@@ -10,6 +10,7 @@ import {
   ExamplesPage,
   HowItWorksPage,
   PrivacyPage,
+  AttributionsPage,
   NewSpacePage,
   EditSpacePage,
   PublicSpacePage,
@@ -58,6 +59,10 @@ export const appRouter = createBrowserRouter([
       {
         path: ROUTES.PRIVACY,
         element: <PrivacyPage />,
+      },
+      {
+        path: ROUTES.ATTRIBUTIONS,
+        element: <AttributionsPage />,
       },
       {
         path: ROUTES.NEW_SPACE,

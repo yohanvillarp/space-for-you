@@ -42,11 +42,8 @@ export function AuthPage() {
             <div className="animate-fade-in hidden space-y-8 lg:col-span-6 lg:block xl:col-span-7">
               {/* Brand Identity & Tagline */}
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2.5">
+                <div>
                   <Logo markSize={36} textClassName="text-2xl font-medium" />
-                  <Badge variant="accent" className="font-sans text-[11px]">
-                    Private & Personal
-                  </Badge>
                 </div>
 
                 <h1 className="font-heading text-text-primary text-3xl leading-tight font-medium tracking-tight xl:text-4xl">

@@ -1,20 +1,36 @@
-import { useState } from 'react'
 import type { HTMLAttributes } from 'react'
-import { Play, Pause } from 'lucide-react'
-import { cn } from '@/shared/lib'
+import { Play, Pause, Loader2 } from 'lucide-react'
+import { getPresetTrackForTemplate } from '@/entities/audio'
+import { cn, useSpatialAudioPlayer, playSpatialSfx } from '@/shared/lib'
 
 export interface CassetteTapeProps extends HTMLAttributes<HTMLDivElement> {
   label?: string
   subtitle?: string
+  trackUrl?: string
+  autoPlay?: boolean
 }
 
 export function CassetteTape({
   label = 'Roadtrip Mixtape • Side A',
-  subtitle = 'Waiting for your playlist in Step 2',
+  subtitle = 'Memories & Melodies',
+  trackUrl,
+  autoPlay = false,
   className,
   ...props
 }: CassetteTapeProps) {
-  const [isPlaying, setIsPlaying] = useState(true)
+  const defaultTrack = getPresetTrackForTemplate('friendship')
+  const activeUrl = trackUrl || defaultTrack.url
+
+  const { isPlaying, isLoading, togglePlay } = useSpatialAudioPlayer({
+    trackUrl: activeUrl,
+    loop: true,
+    autoPlay,
+  })
+
+  const handleToggle = () => {
+    playSpatialSfx('cassette-click')
+    togglePlay()
+  }
 
   return (
     <div
@@ -42,20 +58,37 @@ export function CassetteTape({
 
         {/* Handwritten Label Header */}
         <div className="flex items-center justify-between">
-          <span className="font-heading text-xs font-bold tracking-tight text-stone-900 italic">
-            {label}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-heading text-xs font-bold tracking-tight text-stone-900 italic">
+              {label}
+            </span>
+            {isPlaying && (
+              <span className="flex h-2.5 items-end gap-0.5">
+                <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-teal-600" />
+                <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-teal-600 [animation-delay:150ms]" />
+                <span className="h-1 w-0.5 animate-pulse rounded-full bg-teal-600 [animation-delay:300ms]" />
+              </span>
+            )}
+          </div>
           <span className="font-mono text-[9px] font-bold tracking-widest text-stone-500 uppercase">
             60 MIN
           </span>
         </div>
 
         {/* Center Transparent Tape Window with Spools */}
-        <div className="my-2.5 flex items-center justify-between rounded-md border border-stone-700/60 bg-[#181B1D] px-4 py-2 shadow-inner">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleToggle()
+          }}
+          title={isPlaying ? 'Click to pause mixtape' : 'Click to play mixtape'}
+          className="my-2.5 flex w-full cursor-pointer items-center justify-between rounded-md border border-stone-700/60 bg-[#181B1D] px-4 py-2 shadow-inner transition-opacity hover:opacity-90 active:scale-[0.99]"
+        >
           {/* Left Spool */}
           <div
             className={cn(
-              'flex h-7 w-7 items-center justify-center rounded-full border-2 border-dashed border-stone-300 bg-[#E2E8F0]',
+              'flex h-7 w-7 items-center justify-center rounded-full border-2 border-dashed border-stone-300 bg-[#E2E8F0] transition-transform',
               isPlaying && 'animate-spin [animation-duration:4s]',
             )}
           >
@@ -65,20 +98,20 @@ export function CassetteTape({
           {/* Tape Ribbon Window with ruler markings */}
           <div className="mx-3 flex h-4 flex-1 items-center justify-center rounded border border-stone-700 bg-amber-950/40">
             <span className="font-mono text-[8px] tracking-widest text-stone-400">
-              ◄ REEL ►
+              {isPlaying ? '◄ PLAYING ►' : '◄ REEL ►'}
             </span>
           </div>
 
           {/* Right Spool */}
           <div
             className={cn(
-              'flex h-7 w-7 items-center justify-center rounded-full border-2 border-dashed border-stone-300 bg-[#E2E8F0]',
+              'flex h-7 w-7 items-center justify-center rounded-full border-2 border-dashed border-stone-300 bg-[#E2E8F0] transition-transform',
               isPlaying && 'animate-spin [animation-duration:4s]',
             )}
           >
             <span className="h-2 w-2 rounded-full bg-[#181B1D]" />
           </div>
-        </div>
+        </button>
 
         {/* Bottom prompt & controls */}
         <div className="flex items-center justify-between pt-1 font-sans text-[10px] text-stone-600">
@@ -87,11 +120,16 @@ export function CassetteTape({
             type="button"
             onClick={(e) => {
               e.stopPropagation()
-              setIsPlaying(!isPlaying)
+              handleToggle()
             }}
-            className="flex cursor-pointer items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-stone-100 transition-colors hover:bg-stone-700"
+            className="flex cursor-pointer items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-stone-100 transition-colors hover:bg-stone-700 active:scale-95"
           >
-            {isPlaying ? (
+            {isLoading ? (
+              <>
+                <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                <span>Loading...</span>
+              </>
+            ) : isPlaying ? (
               <>
                 <Pause className="h-2.5 w-2.5" />
                 <span>Pause</span>
