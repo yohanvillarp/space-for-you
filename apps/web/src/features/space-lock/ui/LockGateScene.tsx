@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { ArrowRight, RotateCcw } from 'lucide-react'
 import type { SpaceProtectionConfig } from '../model/lock.types'
-import { SnowySafeVault } from './vaults/SnowySafeVault'
-import { CloudVault } from './vaults/CloudVault'
-import { VintageDiaryVault } from './vaults/VintageDiaryVault'
-import { VelvetChestVault } from './vaults/VelvetChestVault'
+import { SpatialVaultObject } from './SpatialVaultObject'
 import { LockKeypad } from './LockKeypad'
 import { Button } from '@/shared/ui'
 import { playSpatialSfx } from '@/shared/lib'
@@ -27,6 +24,7 @@ export function LockGateScene({
   onProceedToStage,
 }: LockGateSceneProps) {
   const [isUnlocked, setIsUnlocked] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
 
   const handleUnlockSuccess = () => {
     setIsUnlocked(true)
@@ -34,20 +32,6 @@ export function LockGateScene({
       setTimeout(() => {
         onProceedToStage()
       }, 900)
-    }
-  }
-
-  const renderVault = () => {
-    switch (config.vaultTheme) {
-      case 'cloud-vault':
-        return <CloudVault isUnlocked={isUnlocked} />
-      case 'vintage-diary':
-        return <VintageDiaryVault isUnlocked={isUnlocked} />
-      case 'velvet-chest':
-        return <VelvetChestVault isUnlocked={isUnlocked} />
-      case 'snowy-safe':
-      default:
-        return <SnowySafeVault isUnlocked={isUnlocked} />
     }
   }
 
@@ -62,22 +46,42 @@ export function LockGateScene({
       ? config.customSubtitle
       : defaultSubtitle
 
+  const vaultX = config.vaultX ?? 32
+  const vaultY = config.vaultY ?? 50
+  const vaultRotation = config.vaultRotation ?? 0
+
   return (
-    <div className="relative flex h-full min-h-full w-full items-center justify-center overflow-y-auto px-4 py-8 pb-24 select-none sm:px-6 sm:py-10 sm:pb-28 lg:px-12 lg:pb-24">
+    <div
+      onClick={() => setIsSelected(false)}
+      className="relative flex h-full min-h-full w-full items-center justify-center overflow-hidden px-4 py-8 pb-24 select-none sm:px-6 sm:py-10 sm:pb-28 lg:px-12 lg:pb-24"
+    >
       {/* Ambient Backdrop Glow */}
       <div className="pointer-events-none absolute inset-0 bg-radial from-amber-500/10 via-black/40 to-black/85" />
 
       {/* Main Responsive Scene Container */}
-      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14 xl:gap-20">
-        {/* Left Side (PC) / Top (Mobile): Heroic Vault Display */}
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="relative py-2 transition-transform duration-300 sm:scale-105 lg:scale-110 xl:scale-120">
-            {renderVault()}
-          </div>
+      <div className="relative z-10 flex h-full w-full max-w-5xl flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
+        {/* Interactive Spatial Vault Stage Area */}
+        <div className="relative flex h-72 w-full flex-1 items-center justify-center sm:h-96 lg:h-[480px]">
+          <SpatialVaultObject
+            vaultTheme={config.vaultTheme}
+            isUnlocked={isUnlocked}
+            x={vaultX}
+            y={vaultY}
+            rotation={vaultRotation}
+            isSelected={isSelected}
+            isStudioPreview={isStudioPreview}
+            onSelect={() => setIsSelected(true)}
+            onUpdatePosition={(x, y) =>
+              onChangeConfig?.({ vaultX: x, vaultY: y })
+            }
+            onSetRotation={(angle) =>
+              onChangeConfig?.({ vaultRotation: angle })
+            }
+          />
         </div>
 
-        {/* Right Side (PC) / Bottom (Mobile): Keypad & Atmosphere Station */}
-        <div className="flex w-full max-w-sm flex-col items-center space-y-5 text-center sm:max-w-md lg:items-center">
+        {/* Right Station: Keypad & Inline Editable Greetings */}
+        <div className="flex w-full max-w-sm shrink-0 flex-col items-center space-y-5 text-center sm:max-w-md lg:items-center">
           {/* Header Title Information */}
           <div className="w-full space-y-2">
             {isStudioPreview && onChangeConfig && !isUnlocked ? (

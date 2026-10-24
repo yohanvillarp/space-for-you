@@ -8,6 +8,9 @@ export interface SpaceProtectionConfig {
   vaultTheme: LockVaultTheme
   customTitle?: string
   customSubtitle?: string
+  vaultX?: number
+  vaultY?: number
+  vaultRotation?: number
 }
 
 export interface VaultThemeMeta {
@@ -26,6 +29,9 @@ export const DEFAULT_PROTECTION_CONFIG: SpaceProtectionConfig = {
   vaultTheme: 'snowy-safe',
   customTitle: 'A Secret Keepsake',
   customSubtitle: 'Enter the secret combination to unlock',
+  vaultX: 36,
+  vaultY: 50,
+  vaultRotation: 0,
 }
 
 export const VAULT_THEMES_CATALOG: VaultThemeMeta[] = [

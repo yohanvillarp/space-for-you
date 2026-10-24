@@ -1,6 +1,7 @@
 import { Lock, KeyRound, Shield, ShieldCheck } from 'lucide-react'
 import type { SpaceProtectionConfig, LockVaultTheme } from '../model/lock.types'
 import { VAULT_THEMES_CATALOG } from '../model/lock.types'
+import { VaultMiniaturePreview } from './VaultMiniaturePreview'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface LockGateSidebarProps {
@@ -124,42 +125,41 @@ export function LockGateSidebar({
               </div>
             </div>
 
-            {/* Vault Style Selector */}
+            {/* Vault Objects Grid (Memory Canvas style) */}
             <div className="space-y-2 pt-1">
-              <label className="text-[11px] font-medium text-amber-200">
-                Choose Vault Decoration
-              </label>
-              <div className="grid grid-cols-1 gap-2">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-medium text-amber-200">
+                  Entrance Vault Artifact
+                </label>
+                <span className="text-[10px] text-stone-400">4 objects</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
                 {VAULT_THEMES_CATALOG.map((theme) => {
                   const isSelected = config.vaultTheme === theme.id
                   return (
-                    <div
+                    <button
                       key={theme.id}
+                      type="button"
                       onClick={() => handleSelectTheme(theme.id)}
                       className={cn(
-                        'group flex cursor-pointer items-start gap-3 rounded-xl border p-2.5 transition-all',
+                        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border text-left transition-all duration-200',
                         isSelected
-                          ? 'border-amber-400/80 bg-amber-500/10 shadow-sm'
-                          : 'border-[#3B302A] bg-[#1B1512] hover:border-amber-400/40',
+                          ? 'border-amber-400 bg-amber-500/15 shadow-lg ring-1 ring-amber-400/60'
+                          : 'border-[#3B302A] bg-[#1E1815] hover:border-amber-400/50 hover:bg-[#251F1C]',
                       )}
                     >
-                      <span className="shrink-0 text-xl select-none">
-                        {theme.icon}
-                      </span>
-                      <div className="min-w-0 flex-1 space-y-0.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-heading text-xs font-semibold text-amber-100">
-                            {theme.name}
-                          </span>
-                          <span className="text-[9px] tracking-wider text-[#A99B90] uppercase">
-                            {theme.badgeText}
-                          </span>
-                        </div>
-                        <p className="line-clamp-2 text-[10px] leading-relaxed text-[#A99B90]">
-                          {theme.description}
+                      {/* Visual specimen preview area */}
+                      <div className="relative flex h-20 w-full items-center justify-center overflow-hidden border-b border-[#3B302A]/50 bg-[#2A221E] p-2 transition-transform duration-200 group-hover:scale-105">
+                        <VaultMiniaturePreview theme={theme.id} />
+                      </div>
+
+                      {/* Name below preview */}
+                      <div className="p-2">
+                        <p className="truncate text-center font-sans text-[11px] font-medium text-[#F3EAE1]">
+                          {theme.name}
                         </p>
                       </div>
-                    </div>
+                    </button>
                   )
                 })}
               </div>
