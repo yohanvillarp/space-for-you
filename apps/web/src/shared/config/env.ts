@@ -14,4 +14,20 @@ export const ENV = {
     import.meta.env.VITE_APPWRITE_PROJECT_NAME ||
     import.meta.env.APPWRITE_PROJECT_NAME ||
     'space-for-you',
+  APPWRITE_DATABASE_ID:
+    import.meta.env.VITE_APPWRITE_DATABASE_ID ||
+    import.meta.env.APPWRITE_DATABASE_ID ||
+    'sfy_primary_db',
+  APPWRITE_SPACES_COLLECTION_ID:
+    import.meta.env.VITE_APPWRITE_SPACES_COLLECTION_ID ||
+    import.meta.env.APPWRITE_SPACES_COLLECTION_ID ||
+    'spaces',
+  APPWRITE_SCENES_COLLECTION_ID:
+    import.meta.env.VITE_APPWRITE_SCENES_COLLECTION_ID ||
+    import.meta.env.APPWRITE_SCENES_COLLECTION_ID ||
+    'space_scenes',
+  APPWRITE_PHOTOS_BUCKET_ID:
+    import.meta.env.VITE_APPWRITE_PHOTOS_BUCKET_ID ||
+    import.meta.env.APPWRITE_PHOTOS_BUCKET_ID ||
+    'space-photos',
 } as const
