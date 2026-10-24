@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
-import { ArrowLeft, Sparkles } from 'lucide-react'
+import type { CreationStep, SpaceTemplateId } from '@/entities/space'
+import { DEFAULT_TEMPLATE_ID } from '@/entities/space'
 import {
   ProtectedRoute,
-  StagePreviewPanel,
   ShareableKeepsakeCard,
+  StagePreviewPanel,
   THEME_REGISTRY,
 } from '@/features'
-import { DEFAULT_TEMPLATE_ID } from '@/entities/space'
-import type { SpaceTemplateId, CreationStep } from '@/entities/space'
 import { ROUTES } from '@/shared/config'
-import { Container, Card } from '@/shared/ui'
 import { cn } from '@/shared/lib'
-import { StepIndicator } from './wizard/StepIndicator'
-import { ThemeStepSidebar } from './wizard/ThemeStepSidebar'
+import { Card, Container } from '@/shared/ui'
+import { ArrowLeft, Sparkles } from 'lucide-react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router'
 import { DetailsStepSidebar } from './wizard/DetailsStepSidebar'
 import { PreviewStepSidebar } from './wizard/PreviewStepSidebar'
+import { StepIndicator } from './wizard/StepIndicator'
+import { ThemeStepSidebar } from './wizard/ThemeStepSidebar'
 
 export function NewSpacePage() {
   const [currentStep, setCurrentStep] = useState<CreationStep>('template')
