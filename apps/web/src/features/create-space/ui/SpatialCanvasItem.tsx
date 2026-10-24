@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type {
   PointerEvent as ReactPointerEvent,
   MouseEvent as ReactMouseEvent,
@@ -7,6 +7,7 @@ import { Lock } from 'lucide-react'
 import type { SpatialItem } from '../model/spatial-stage.types'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import { CanvasItemToolbar } from './canvas/CanvasItemToolbar'
+import { RotationHandle } from './canvas/RotationHandle'
 import { KeepsakeItemRenderer } from './canvas/KeepsakeItemRenderer'
 import { StationeryItemRenderer } from './canvas/StationeryItemRenderer'
 import { EphemeraItemRenderer } from './canvas/EphemeraItemRenderer'
@@ -18,6 +19,8 @@ export interface SpatialCanvasItemProps {
   onSelect: (id: string) => void
   onStartDrag: (id: string, e: ReactPointerEvent) => void
   onRotate: (id: string, delta: number) => void
+  onSetRotation?: (id: string, angle: number) => void
+  onResetRotation?: (id: string) => void
   onBringToFront: (id: string) => void
   onDelete: (id: string) => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
@@ -32,12 +35,15 @@ export function SpatialCanvasItem({
   onSelect,
   onStartDrag,
   onRotate,
+  onSetRotation,
+  onResetRotation,
   onBringToFront,
   onDelete,
   onUpdateData,
   onContextMenu,
   onOpenPhotoPicker,
 }: SpatialCanvasItemProps) {
+  const itemRef = useRef<HTMLDivElement | null>(null)
   const [isEditingText, setIsEditingText] = useState(false)
   const [localText, setLocalText] = useState(
     item.data.caption || item.data.text || '',
@@ -67,6 +73,7 @@ export function SpatialCanvasItem({
 
   return (
     <div
+      ref={itemRef}
       onPointerDown={(e) => {
         if (!item.isLocked) onStartDrag(item.id, e)
       }}
@@ -103,11 +110,24 @@ export function SpatialCanvasItem({
           <Lock className="h-3 w-3" />
         </div>
       )}
+
+      {/* Tactile Rotation Stem & Knob Handle when selected */}
+      {isSelected && !item.isLocked && onSetRotation && (
+        <RotationHandle
+          itemId={item.id}
+          currentRotation={item.rotation}
+          itemRef={itemRef}
+          onSetRotation={onSetRotation}
+        />
+      )}
+
       {/* Micro Floating Toolbar when Item is Selected */}
       {isSelected && (
         <CanvasItemToolbar
           itemId={item.id}
+          currentRotation={item.rotation}
           onRotate={onRotate}
+          onResetRotation={onResetRotation}
           onBringToFront={onBringToFront}
           onDelete={onDelete}
         />

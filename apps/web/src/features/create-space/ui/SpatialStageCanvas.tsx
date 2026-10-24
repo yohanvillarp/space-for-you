@@ -19,6 +19,7 @@ export interface SpatialStageCanvasProps {
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
   onRotateItem: (id: string, delta: number) => void
+  onSetRotation?: (id: string, angle: number) => void
   onResetRotation?: (id: string) => void
   onBringToFront: (id: string) => void
   onSendToBack?: (id: string) => void
@@ -48,6 +49,7 @@ export function SpatialStageCanvas({
   onSelectItem,
   onUpdateItemPosition,
   onRotateItem,
+  onSetRotation,
   onResetRotation,
   onBringToFront,
   onSendToBack,
@@ -166,6 +168,8 @@ export function SpatialStageCanvas({
           onSelect={onSelectItem}
           onStartDrag={handleStartDrag}
           onRotate={onRotateItem}
+          onSetRotation={onSetRotation}
+          onResetRotation={onResetRotation}
           onBringToFront={onBringToFront}
           onDelete={handleDeleteItem}
           onUpdateData={onUpdateItemData}
