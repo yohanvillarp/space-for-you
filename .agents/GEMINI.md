@@ -6,14 +6,10 @@ This file defines the core architecture, development constraints, and standard o
 
 ---
 
-## 1. Environment & Terminal Quirks
+## 1. Environment & Workspace Root
 
-- **Operating System:** Windows (PowerShell / pwsh).
-- **CRITICAL PowerShell Directory Quirk:** The user's PowerShell profile automatically changes the working directory to `C:\Users\yohan\myspace` upon terminal initialization.
-  - **Always force directory explicitly** in all commands:
-    ```powershell
-    cd "c:\Users\yohan\myspace\lab\active\space-for-you" ; <command>
-    ```
+- **Operating System:** Cross-platform (Windows, macOS, Linux).
+- **Execution Context:** All scripts, tooling, and development commands (`npm run ...`, `git ...`) must be executed from the repository root.
 
 ---
 
