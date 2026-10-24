@@ -193,15 +193,14 @@ async function ensureStringAttr(
   console.log(
     `   Adding string attribute '${key}' (size: ${size}, req: ${required})...`,
   )
+  const body = { key, size, required }
+  if (!required && xDefault !== undefined) {
+    body.default = xDefault
+  }
   const res = await apiRequest(
     `/databases/${DATABASE_ID}/collections/${collId}/attributes/string`,
     'POST',
-    {
-      key,
-      size,
-      required,
-      default: xDefault,
-    },
+    body,
   )
   if (!res.ok) {
     console.warn(
@@ -216,15 +215,15 @@ async function ensureIntegerAttr(collId, key, required = false, xDefault = 0) {
   )
   if (check.ok) return
 
-  console.log(`   Adding integer attribute '${key}'...`)
+  console.log(`   Adding integer attribute '${key}' (req: ${required})...`)
+  const body = { key, required }
+  if (!required && xDefault !== undefined) {
+    body.default = xDefault
+  }
   const res = await apiRequest(
     `/databases/${DATABASE_ID}/collections/${collId}/attributes/integer`,
     'POST',
-    {
-      key,
-      required,
-      default: xDefault,
-    },
+    body,
   )
   if (!res.ok) {
     console.warn(
@@ -245,19 +244,35 @@ async function ensureBooleanAttr(
   if (check.ok) return
 
   console.log(`   Adding boolean attribute '${key}'...`)
+  const body = { key, required }
+  if (!required && xDefault !== undefined) {
+    body.default = xDefault
+  }
   const res = await apiRequest(
     `/databases/${DATABASE_ID}/collections/${collId}/attributes/boolean`,
     'POST',
-    {
-      key,
-      required,
-      default: xDefault,
-    },
+    body,
   )
   if (!res.ok) {
     console.warn(
       `   Warning adding attribute ${key}: ${res.data.message || JSON.stringify(res.data)}`,
     )
+  }
+}
+
+async function waitForAttributesAvailable(collId, keys) {
+  for (const key of keys) {
+    let attempts = 0
+    while (attempts < 15) {
+      const check = await apiRequest(
+        `/databases/${DATABASE_ID}/collections/${collId}/attributes/${key}`,
+      )
+      if (check.ok && check.data.status === 'available') {
+        break
+      }
+      await new Promise((r) => setTimeout(r, 1000))
+      attempts++
+    }
   }
 }
 
@@ -295,8 +310,8 @@ async function main() {
     await ensureStringAttr(SPACES_COLL_ID, 'title', 255, true)
     await ensureStringAttr(SPACES_COLL_ID, 'recipientName', 100, true)
     await ensureStringAttr(SPACES_COLL_ID, 'senderName', 100, false, '')
-    await ensureStringAttr(SPACES_COLL_ID, 'templateId', 50, true, 'birthday')
-    await ensureStringAttr(SPACES_COLL_ID, 'status', 20, true, 'draft')
+    await ensureStringAttr(SPACES_COLL_ID, 'templateId', 50, true)
+    await ensureStringAttr(SPACES_COLL_ID, 'status', 20, true)
     await ensureStringAttr(SPACES_COLL_ID, 'slug', 120, true)
     await ensureStringAttr(SPACES_COLL_ID, 'dedicationMessage', 2000, false, '')
     await ensureStringAttr(SPACES_COLL_ID, 'themeConfig', 5000, false, '')
@@ -305,8 +320,12 @@ async function main() {
     await ensureIntegerAttr(SPACES_COLL_ID, 'artifactsCount', false, 0)
     await ensureBooleanAttr(SPACES_COLL_ID, 'isProtected', false, false)
 
-    // Wait slightly for attributes to be ready before creating indexes
-    await new Promise((r) => setTimeout(r, 2000))
+    console.log('   Waiting for spaces attributes to be ready...')
+    await waitForAttributesAvailable(SPACES_COLL_ID, [
+      'userId',
+      'slug',
+      'status',
+    ])
     await ensureIndex(SPACES_COLL_ID, 'idx_spaces_userId', 'key', ['userId'])
     await ensureIndex(SPACES_COLL_ID, 'idx_spaces_slug', 'unique', ['slug'])
     await ensureIndex(SPACES_COLL_ID, 'idx_spaces_status', 'key', ['status'])
@@ -314,14 +333,15 @@ async function main() {
     // 2. Space Scenes Collection
     await ensureCollection(SCENES_COLL_ID, 'Space Scenes')
     await ensureStringAttr(SCENES_COLL_ID, 'spaceId', 36, true)
-    await ensureIntegerAttr(SCENES_COLL_ID, 'order', true, 0)
-    await ensureStringAttr(SCENES_COLL_ID, 'type', 30, true, 'free-canvas')
+    await ensureIntegerAttr(SCENES_COLL_ID, 'order', true)
+    await ensureStringAttr(SCENES_COLL_ID, 'type', 30, true)
     await ensureStringAttr(SCENES_COLL_ID, 'title', 120, true)
     await ensureStringAttr(SCENES_COLL_ID, 'subtitle', 255, false, '')
     await ensureStringAttr(SCENES_COLL_ID, 'icon', 50, false, 'Sparkles')
     await ensureStringAttr(SCENES_COLL_ID, 'payload', 100000, false, '[]')
 
-    await new Promise((r) => setTimeout(r, 2000))
+    console.log('   Waiting for space_scenes attributes to be ready...')
+    await waitForAttributesAvailable(SCENES_COLL_ID, ['spaceId', 'order'])
     await ensureIndex(SCENES_COLL_ID, 'idx_scenes_spaceId', 'key', ['spaceId'])
     await ensureIndex(SCENES_COLL_ID, 'idx_scenes_space_order', 'key', [
       'spaceId',
