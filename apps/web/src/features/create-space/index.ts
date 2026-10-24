@@ -22,6 +22,12 @@ export { SpatialStageCanvas } from './ui/SpatialStageCanvas'
 export type { SpatialStageCanvasProps } from './ui/SpatialStageCanvas'
 export { SpatialToolboxSidebar } from './ui/SpatialToolboxSidebar'
 export type { SpatialToolboxSidebarProps } from './ui/SpatialToolboxSidebar'
+export { SpaceHubScene } from './ui/hub/SpaceHubScene'
+export { SpaceGeneralSidebar } from './ui/hub/SpaceGeneralSidebar'
+export { AddSceneModal } from './ui/hub/AddSceneModal'
+export { LettersScene } from './ui/letters/LettersScene'
+export { LettersToolboxSidebar } from './ui/letters/LettersToolboxSidebar'
+export * from './model/scenes.types'
 export type {
   SpatialItem,
   SpatialItemType,
