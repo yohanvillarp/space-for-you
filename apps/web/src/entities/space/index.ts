@@ -20,3 +20,14 @@ export type {
   UserSpace,
   CreationStep,
 } from './model/types'
+export {
+  fetchUserSpaces,
+  fetchSpaceById,
+  fetchSpaceBySlug,
+  saveSpaceToDatabase,
+  deleteSpaceFromDatabase,
+  toUserSpace,
+  toSpaceScene,
+  generateSpaceSlug,
+} from './api'
+export type { SpaceWithScenes, SaveSpaceParams } from './api'
