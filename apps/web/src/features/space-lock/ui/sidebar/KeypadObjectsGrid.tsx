@@ -1,4 +1,4 @@
-import type { LockKeypadTheme } from '../../model/lock.types'
+import type { LockKeypadTheme, KeypadThemeMeta } from '../../model/lock.types'
 import { KEYPAD_THEMES_CATALOG } from '../../model/lock.types'
 import { KeypadMiniaturePreview } from '../KeypadMiniaturePreview'
 import { cn, playSpatialSfx } from '@/shared/lib'
@@ -6,22 +6,40 @@ import { cn, playSpatialSfx } from '@/shared/lib'
 export interface KeypadObjectsGridProps {
   currentTheme?: LockKeypadTheme
   onSelectTheme: (themeId: LockKeypadTheme) => void
+  items?: KeypadThemeMeta[]
+  searchQuery?: string
 }
 
 export function KeypadObjectsGrid({
   currentTheme = 'classic',
   onSelectTheme,
+  items = KEYPAD_THEMES_CATALOG,
+  searchQuery = '',
 }: KeypadObjectsGridProps) {
+  if (items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#3B302A] px-4 py-8 text-center">
+        <p className="text-xs text-[#A99B90]">
+          {searchQuery
+            ? `No keypads found matching "${searchQuery}"`
+            : 'No keypads available'}
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-2 pt-2">
+    <div className="space-y-2 pt-1">
       <div className="flex items-center justify-between">
         <label className="text-[11px] font-medium text-amber-200">
-          Keypad Objects
+          Keypad & Numbering
         </label>
-        <span className="text-[10px] text-stone-400">5 styles</span>
+        <span className="text-[10px] text-stone-400">
+          {items.length} {items.length === 1 ? 'style' : 'styles'}
+        </span>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {KEYPAD_THEMES_CATALOG.map((kp) => {
+        {items.map((kp) => {
           const isSelected = currentTheme === kp.id
           return (
             <button

@@ -1,4 +1,4 @@
-import type { LockVaultTheme } from '../../model/lock.types'
+import type { LockVaultTheme, VaultThemeMeta } from '../../model/lock.types'
 import { VAULT_THEMES_CATALOG } from '../../model/lock.types'
 import { VaultMiniaturePreview } from '../VaultMiniaturePreview'
 import { cn, playSpatialSfx } from '@/shared/lib'
@@ -6,22 +6,40 @@ import { cn, playSpatialSfx } from '@/shared/lib'
 export interface VaultObjectsGridProps {
   currentTheme?: LockVaultTheme
   onSelectTheme: (themeId: LockVaultTheme) => void
+  items?: VaultThemeMeta[]
+  searchQuery?: string
 }
 
 export function VaultObjectsGrid({
   currentTheme = 'snowy-safe',
   onSelectTheme,
+  items = VAULT_THEMES_CATALOG,
+  searchQuery = '',
 }: VaultObjectsGridProps) {
+  if (items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#3B302A] px-4 py-8 text-center">
+        <p className="text-xs text-[#A99B90]">
+          {searchQuery
+            ? `No vaults found matching "${searchQuery}"`
+            : 'No vaults available'}
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-2 pt-1">
       <div className="flex items-center justify-between">
         <label className="text-[11px] font-medium text-amber-200">
           Entrance Vault Artifact
         </label>
-        <span className="text-[10px] text-stone-400">4 objects</span>
+        <span className="text-[10px] text-stone-400">
+          {items.length} {items.length === 1 ? 'object' : 'objects'}
+        </span>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {VAULT_THEMES_CATALOG.map((theme) => {
+        {items.map((theme) => {
           const isSelected = currentTheme === theme.id
           return (
             <button

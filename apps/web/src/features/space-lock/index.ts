@@ -1,6 +1,8 @@
 export * from './model/lock.types'
+export * from './model/useLockGateToolbox'
 export { LockGateScene } from './ui/LockGateScene'
 export { LockGateSidebar } from './ui/LockGateSidebar'
+export { LockGateToolboxHeader } from './ui/sidebar/LockGateToolboxHeader'
 export { LockKeypad } from './ui/LockKeypad'
 export { SpatialVaultObject } from './ui/SpatialVaultObject'
 export { VaultMiniaturePreview } from './ui/VaultMiniaturePreview'

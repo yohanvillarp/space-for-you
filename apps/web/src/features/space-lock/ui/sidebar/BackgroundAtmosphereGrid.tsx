@@ -1,27 +1,48 @@
-import type { LockBackgroundTheme } from '../../model/lock.types'
+import type {
+  LockBackgroundTheme,
+  BackgroundThemeMeta,
+} from '../../model/lock.types'
 import { BACKGROUND_THEMES_CATALOG } from '../../model/lock.types'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface BackgroundAtmosphereGridProps {
   currentTheme?: LockBackgroundTheme
   onSelectTheme: (themeId: LockBackgroundTheme) => void
+  items?: BackgroundThemeMeta[]
+  searchQuery?: string
 }
 
 export function BackgroundAtmosphereGrid({
   currentTheme = 'midnight-sanctuary',
   onSelectTheme,
+  items = BACKGROUND_THEMES_CATALOG,
+  searchQuery = '',
 }: BackgroundAtmosphereGridProps) {
+  if (items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#3B302A] px-4 py-8 text-center">
+        <p className="text-xs text-[#A99B90]">
+          {searchQuery
+            ? `No backdrops found matching "${searchQuery}"`
+            : 'No backdrops available'}
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-2 pt-2">
+    <div className="space-y-2 pt-1">
       <div className="flex items-center justify-between">
         <label className="text-[11px] font-medium text-amber-200">
           Entrance Atmospheres
         </label>
-        <span className="text-[10px] text-stone-400">4 backdrops</span>
+        <span className="text-[10px] text-stone-400">
+          {items.length} {items.length === 1 ? 'backdrop' : 'backdrops'}
+        </span>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        {BACKGROUND_THEMES_CATALOG.map((bg) => {
+        {items.map((bg) => {
           const isSelected = currentTheme === bg.id
           return (
             <button

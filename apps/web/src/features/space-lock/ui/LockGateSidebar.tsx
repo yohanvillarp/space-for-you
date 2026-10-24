@@ -1,5 +1,7 @@
 import { Lock, KeyRound, Shield, ShieldCheck } from 'lucide-react'
 import type { SpaceProtectionConfig } from '../model/lock.types'
+import { useLockGateToolbox } from '../model/useLockGateToolbox'
+import { LockGateToolboxHeader } from './sidebar/LockGateToolboxHeader'
 import { BackgroundAtmosphereGrid } from './sidebar/BackgroundAtmosphereGrid'
 import { VaultObjectsGrid } from './sidebar/VaultObjectsGrid'
 import { KeypadObjectsGrid } from './sidebar/KeypadObjectsGrid'
@@ -15,9 +17,21 @@ export interface LockGateSidebarProps {
 export function LockGateSidebar({
   config,
   onChangeConfig,
-  isCompact: _isCompact = false,
+  isCompact = false,
   className,
 }: LockGateSidebarProps) {
+  const {
+    activeCategory,
+    setActiveCategory,
+    searchQuery,
+    setSearchQuery,
+    clearSearch,
+    filteredVaults,
+    filteredKeypads,
+    filteredAtmospheres,
+    activePlaceholder,
+  } = useLockGateToolbox()
+
   const handleToggle = () => {
     playSpatialSfx('tactile-tap')
     onChangeConfig({ enabled: !config.enabled })
@@ -121,23 +135,44 @@ export function LockGateSidebar({
               </div>
             </div>
 
-            {/* Background Atmosphere Selection Grid */}
-            <BackgroundAtmosphereGrid
-              currentTheme={config.backgroundTheme}
-              onSelectTheme={(bg) => onChangeConfig({ backgroundTheme: bg })}
+            {/* Modular Search & Category Switcher Header */}
+            <LockGateToolboxHeader
+              activeCategory={activeCategory}
+              onSelectCategory={setActiveCategory}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onClearSearch={clearSearch}
+              searchPlaceholder={activePlaceholder}
+              isCompact={isCompact}
             />
 
-            {/* Vault Objects Grid */}
-            <VaultObjectsGrid
-              currentTheme={config.vaultTheme}
-              onSelectTheme={(vt) => onChangeConfig({ vaultTheme: vt })}
-            />
+            {/* Active Category Display */}
+            {activeCategory === 'vaults' && (
+              <VaultObjectsGrid
+                currentTheme={config.vaultTheme}
+                onSelectTheme={(vt) => onChangeConfig({ vaultTheme: vt })}
+                items={filteredVaults}
+                searchQuery={searchQuery}
+              />
+            )}
 
-            {/* Keypad Objects Grid */}
-            <KeypadObjectsGrid
-              currentTheme={config.keypadTheme}
-              onSelectTheme={(kt) => onChangeConfig({ keypadTheme: kt })}
-            />
+            {activeCategory === 'keypads' && (
+              <KeypadObjectsGrid
+                currentTheme={config.keypadTheme}
+                onSelectTheme={(kt) => onChangeConfig({ keypadTheme: kt })}
+                items={filteredKeypads}
+                searchQuery={searchQuery}
+              />
+            )}
+
+            {activeCategory === 'atmospheres' && (
+              <BackgroundAtmosphereGrid
+                currentTheme={config.backgroundTheme}
+                onSelectTheme={(bg) => onChangeConfig({ backgroundTheme: bg })}
+                items={filteredAtmospheres}
+                searchQuery={searchQuery}
+              />
+            )}
           </div>
         )}
       </div>
