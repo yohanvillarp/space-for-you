@@ -69,7 +69,8 @@ export function StageBottomDock({
           )}
         >
           <Lock className="h-3.5 w-3.5" />
-          <span>Entrance Vault</span>
+          <span className="hidden sm:inline">Entrance Vault</span>
+          <span className="sm:hidden">Vault</span>
           {isProtectionEnabled && (
             <span
               title="Passcode protection is enabled"
@@ -94,7 +95,8 @@ export function StageBottomDock({
           )}
         >
           <Home className="h-3.5 w-3.5" />
-          <span>Space Hub</span>
+          <span className="hidden sm:inline">Space Hub</span>
+          <span className="sm:hidden">Hub</span>
         </button>
 
         {/* 3: Dynamic Created Scenes */}
@@ -116,7 +118,7 @@ export function StageBottomDock({
               )}
             >
               {renderSceneIcon(scene.type)}
-              <span className="max-w-[100px] truncate sm:max-w-[140px]">
+              <span className="max-w-[80px] truncate sm:max-w-[120px] md:max-w-[150px]">
                 {scene.title}
               </span>
             </button>

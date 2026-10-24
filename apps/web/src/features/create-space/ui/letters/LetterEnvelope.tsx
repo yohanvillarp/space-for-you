@@ -104,7 +104,7 @@ export function LetterEnvelope({
       onDoubleClick={handleDoubleClick}
       onContextMenu={onContextMenu}
       className={cn(
-        'group relative flex cursor-pointer flex-col items-center transition-all duration-300 hover:-translate-y-1.5 focus:outline-hidden',
+        'group relative flex w-full max-w-[240px] cursor-pointer flex-col items-center transition-all duration-300 hover:-translate-y-1.5 focus:outline-hidden',
         className,
       )}
     >
@@ -148,12 +148,20 @@ export function LetterEnvelope({
       </div>
 
       {/* Letter Title Label Underneath */}
-      <div className="mt-3 max-w-[200px] text-center sm:max-w-[240px]">
-        <p className="font-heading line-clamp-1 text-sm font-medium text-[#FAF6F0] transition-colors group-hover:text-amber-200">
+      <div className="mt-3 w-full max-w-[208px] px-2 text-center sm:max-w-[240px]">
+        <p
+          title={letter.title}
+          className="font-heading truncate text-sm font-medium text-[#FAF6F0] transition-colors group-hover:text-amber-200"
+        >
           {letter.title}
         </p>
         {letter.date && (
-          <p className="font-sans text-[11px] text-stone-400">{letter.date}</p>
+          <p
+            title={letter.date}
+            className="truncate font-sans text-[11px] text-stone-400"
+          >
+            {letter.date}
+          </p>
         )}
       </div>
     </button>
