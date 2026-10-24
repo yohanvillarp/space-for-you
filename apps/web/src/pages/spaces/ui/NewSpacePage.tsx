@@ -27,7 +27,7 @@ export function NewSpacePage() {
   const activeTheme =
     THEME_REGISTRY[selectedTemplateId] ?? THEME_REGISTRY.birthday
 
-  const previewPath = `/spaces/preview/${selectedTemplateId}`
+  const previewPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(selectedTemplateId)}`
   const fullShareUrl =
     typeof window !== 'undefined'
       ? `${window.location.origin}${previewPath}`
