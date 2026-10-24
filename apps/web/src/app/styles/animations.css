@@ -194,3 +194,39 @@
 .transition-smooth {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* SweetAlert2 Style Editorial Modal Animations */
+@keyframes sfySwalPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.84) translateY(8px);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes sfyBadgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(163, 72, 53, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(163, 72, 53, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(163, 72, 53, 0);
+  }
+}
+
+.animate-swal-pop {
+  animation: sfySwalPopIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-swal-pulse {
+  animation: sfyBadgePulse 2.2s infinite ease-out;
+}

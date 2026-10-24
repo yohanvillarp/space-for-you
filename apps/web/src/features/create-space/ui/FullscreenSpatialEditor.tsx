@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { SlidersHorizontal } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { DEFAULT_PROTECTION_CONFIG } from '@/features/space-lock'
 import type { SpaceProtectionConfig } from '@/features/space-lock'
+import type { SpaceMeta } from '@/features/create-space/model/scenes.types'
 import { EditorTopHeader } from '@/features/create-space/ui/editor/EditorTopHeader'
 import { EditorSidebarRenderer } from '@/features/create-space/ui/editor/EditorSidebarRenderer'
+import { EditorSidebarDrawer } from '@/features/create-space/ui/editor/EditorSidebarDrawer'
 import { EditorStageViewport } from '@/features/create-space/ui/editor/EditorStageViewport'
 import { AddSceneModal } from '@/features/create-space/ui/hub/AddSceneModal'
 import { useSidebarResize } from '@/features/create-space/ui/editor/useSidebarResize'
@@ -15,6 +16,7 @@ import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSc
 import { useEditorMediaAssignment } from '@/features/create-space/ui/editor/useEditorMediaAssignment'
 import { countStagePhotos } from '@/features/create-space/lib/stage-photo-limit'
 import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/StudioBehaviorProvider'
+import { useConfirmDialog } from '@/shared/ui'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -26,6 +28,7 @@ export function FullscreenSpatialEditor({
   templateId,
   className,
 }: FullscreenSpatialEditorProps) {
+  const { confirm } = useConfirmDialog()
   const [protectionConfig, setProtectionConfig] =
     useState<SpaceProtectionConfig>(DEFAULT_PROTECTION_CONFIG)
   const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false)
@@ -95,6 +98,32 @@ export function FullscreenSpatialEditor({
     onOpenSidebar: handleOpenSidebar,
   })
 
+  const handleUpdateProtection = (u: Partial<SpaceProtectionConfig>) =>
+    setProtectionConfig((p) => ({ ...p, ...u }))
+  const handleUpdateSpaceMeta = (u: Partial<SpaceMeta>) =>
+    setSpaceMeta((p) => ({ ...p, ...u }))
+
+  const handleResetToDefaults = async () => {
+    const ok = await confirm({
+      title: 'Reset workspace to defaults?',
+      description:
+        'This will restore all stage elements, letter drafts, and layout back to their initial template settings. Any unsaved custom work will be removed.',
+      confirmText: 'Reset workspace',
+      cancelText: 'Keep working',
+      type: 'danger',
+    })
+    if (!ok) return
+    stage.handleResetToDefaults()
+    try {
+      localStorage.removeItem('sfy_scenes_draft')
+      localStorage.removeItem('sfy_space_meta_draft')
+      localStorage.removeItem('sfy_active_scene_id')
+    } catch {
+      // ignore
+    }
+    setActiveSceneId('hub')
+  }
+
   return (
     <StudioBehaviorProvider initialMode="editor">
       <div
@@ -110,45 +139,24 @@ export function FullscreenSpatialEditor({
           itemCount={items.length}
           selectedId={selectedId}
           onDeleteSelected={stage.handleDeleteItem}
-          onResetToDefaults={stage.handleResetToDefaults}
+          onResetToDefaults={handleResetToDefaults}
         />
 
         <div className="relative flex flex-1 overflow-hidden">
-          {/* Left Toggle Floating Cue */}
-          {!showSidebar && (
-            <button
-              type="button"
-              onClick={handleToggleSidebar}
-              title="Open Workshop Sidebar"
-              className="group absolute top-6 left-0 z-40 flex cursor-pointer items-center gap-1.5 rounded-r-xl border-t border-r border-b border-[#3B302A] bg-[#16120F]/90 px-2.5 py-2 text-xs font-medium text-[#F3EAE1] shadow-xl backdrop-blur-md transition-all hover:bg-[#1C1613] hover:pl-3.5"
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
-              <span className="hidden font-sans text-[11px] sm:inline">
-                {activeSceneId === 'gate'
-                  ? 'Lock Gate'
-                  : activeSceneId === 'hub'
-                    ? 'Space'
-                    : 'Workshop'}
-              </span>
-            </button>
-          )}
-
-          {/* Left Resizable Sidebar */}
-          <div
-            style={{ width: showSidebar ? `${sidebarWidth}px` : '0px' }}
-            className={cn(
-              'relative h-full shrink-0 overflow-hidden border-r border-[#3B302A] transition-[width] duration-150 ease-out',
-              !showSidebar && 'pointer-events-none invisible border-none',
-            )}
+          <EditorSidebarDrawer
+            showSidebar={showSidebar}
+            sidebarWidth={sidebarWidth}
+            isResizingSidebar={isResizingSidebar}
+            activeSceneId={activeSceneId}
+            onToggleSidebar={handleToggleSidebar}
+            onResizeStart={handleResizeStart}
           >
             <EditorSidebarRenderer
               activeSceneId={activeSceneId}
               protectionConfig={protectionConfig}
-              onChangeProtectionConfig={(u) =>
-                setProtectionConfig((p) => ({ ...p, ...u }))
-              }
+              onChangeProtectionConfig={handleUpdateProtection}
               spaceMeta={spaceMeta}
-              onChangeSpaceMeta={(u) => setSpaceMeta((p) => ({ ...p, ...u }))}
+              onChangeSpaceMeta={handleUpdateSpaceMeta}
               scenes={scenes}
               activeScene={activeScene}
               onOpenScene={setActiveSceneId}
@@ -172,28 +180,8 @@ export function FullscreenSpatialEditor({
               onDeleteLetter={handleDeleteLetter}
               isCompact={sidebarWidth < 280}
             />
+          </EditorSidebarDrawer>
 
-            {/* Resizer Handle on Right Edge of Left Sidebar */}
-            <div
-              onPointerDown={handleResizeStart}
-              role="separator"
-              aria-orientation="vertical"
-              title="Drag to resize"
-              className={cn(
-                'group absolute top-0 -right-2 bottom-0 z-50 flex w-4 cursor-col-resize items-center justify-center transition-colors',
-                isResizingSidebar && 'bg-[#CF7056]/20',
-              )}
-            >
-              <div
-                className={cn(
-                  'h-8 w-1 rounded-full bg-[#3B302A] transition-all group-hover:h-14 group-hover:w-1.5 group-hover:bg-[#CF7056]',
-                  isResizingSidebar && 'h-20 w-1.5 bg-[#CF7056]',
-                )}
-              />
-            </div>
-          </div>
-
-          {/* Right Canvas / Space Viewport */}
           <EditorStageViewport
             activeSceneId={activeSceneId}
             activeScene={activeScene}
@@ -201,10 +189,8 @@ export function FullscreenSpatialEditor({
             spaceMeta={spaceMeta}
             protectionConfig={protectionConfig}
             templateId={templateId}
-            onChangeProtectionConfig={(u) =>
-              setProtectionConfig((p) => ({ ...p, ...u }))
-            }
-            onChangeSpaceMeta={(u) => setSpaceMeta((p) => ({ ...p, ...u }))}
+            onChangeProtectionConfig={handleUpdateProtection}
+            onChangeSpaceMeta={handleUpdateSpaceMeta}
             onOpenScene={setActiveSceneId}
             onOpenAddScene={() => setIsAddSceneModalOpen(true)}
             onOpenVault={() => setActiveSceneId('gate')}
@@ -232,7 +218,7 @@ export function FullscreenSpatialEditor({
             onToggleLock={stage.handleToggleLock}
             onCopyItem={stage.handleCopyItem}
             onPasteItem={stage.handlePasteItem}
-            onResetToDefaults={stage.handleResetToDefaults}
+            onResetToDefaults={handleResetToDefaults}
             onClearCanvas={stage.handleClearCanvas}
             onUpdateItemData={stage.handleUpdateItemData}
             onAddItem={stage.handleAddItem}
@@ -251,7 +237,6 @@ export function FullscreenSpatialEditor({
           />
         </div>
 
-        {/* Add Scene Modal Dialog */}
         <AddSceneModal
           isOpen={isAddSceneModalOpen}
           onClose={() => setIsAddSceneModalOpen(false)}
