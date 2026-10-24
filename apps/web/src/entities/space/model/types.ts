@@ -23,4 +23,18 @@ export interface SpaceDraft {
   scheduledDate?: string
 }
 
+export interface UserSpace {
+  id: string
+  title: string
+  recipientName: string
+  templateId: SpaceTemplateId
+  scenesCount: number
+  artifactsCount: number
+  updatedAt: string
+  createdAt: string
+  status: 'draft' | 'ready' | 'published'
+  isProtected?: boolean
+  description?: string
+}
+
 export type CreationStep = 'template' | 'details' | 'preview'

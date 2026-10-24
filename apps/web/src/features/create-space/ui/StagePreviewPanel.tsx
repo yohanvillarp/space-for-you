@@ -2,8 +2,8 @@ import { ExternalLink, Sparkles } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
-import { Button } from '@/shared/ui'
 import { cn } from '@/shared/lib'
+import './stage-preview.css'
 
 export interface StagePreviewPanelProps {
   templateId: SpaceTemplateId
@@ -32,48 +32,47 @@ export function StagePreviewPanel({
       {/* Main Preview Card Container */}
       <div className="border-border-base/70 bg-bg-surface/85 relative overflow-hidden rounded-3xl border shadow-xl backdrop-blur-xl">
         {/* Top Preview Status Bar */}
-        <div className="border-border-base/60 bg-bg-surface/90 flex flex-col gap-3 border-b px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="border-border-base/60 bg-bg-surface/90 flex flex-col gap-3 border-b px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span
-              className="h-2.5 w-2.5 shrink-0 rounded-full"
+              className="h-2.5 w-2.5 shrink-0 rounded-full shadow-xs"
               style={{ backgroundColor: activeTheme.accentColor }}
               aria-hidden="true"
             />
             <div>
-              <div className="flex items-center gap-2">
-                <h3 className="font-heading text-text-primary text-sm font-medium sm:text-base">
-                  {activeTheme.stageName}
-                </h3>
-                <span className="bg-primary/10 text-primary border-primary/20 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-sans text-[10px] font-medium">
-                  <Sparkles className="h-3 w-3" />
-                  <span>Live Recipient Setting</span>
-                </span>
-              </div>
+              <h3 className="font-heading text-text-primary text-sm font-medium sm:text-base">
+                {activeTheme.stageName}
+              </h3>
               <p className="text-text-muted hidden font-sans text-xs sm:block">
                 {activeTheme.mood}
               </p>
             </div>
           </div>
 
-          {/* Action: Open Fullscreen Studio */}
+          {/* Top Actions: Interactive hint badge & subtle external studio link */}
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <Button
-              asChild
-              variant="primary"
-              size="sm"
-              className="cursor-pointer gap-1.5 text-xs shadow-xs"
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-medium text-amber-300 shadow-xs select-none">
+              <Sparkles className="h-3 w-3 text-amber-400" />
+              <span>Interactive Preview</span>
+            </div>
+            <a
+              href={studioPath}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open Studio in new tab"
+              aria-label="Open Studio in new tab"
+              className="border-border-base/70 bg-bg-surface text-text-secondary hover:border-border-base hover:text-text-primary inline-flex items-center justify-center rounded-lg border p-1.5 transition-colors"
             >
-              <a href={studioPath} target="_blank" rel="noopener noreferrer">
-                <span>Open Fullscreen Studio</span>
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            </Button>
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
           </div>
         </div>
 
-        {/* The Clean Stage Preview Area */}
-        <div className="relative min-h-[560px] w-full overflow-hidden sm:min-h-[620px]">
-          <ThemeUniverse />
+        {/* The Clean Centered Stage Preview Area - Full Diorama without clipping */}
+        <div className="stage-diorama-viewport relative flex h-[360px] w-full items-center justify-center overflow-hidden sm:h-[480px] lg:h-[500px]">
+          <div className="w-full max-w-5xl origin-center scale-[0.52] transform transition-transform duration-300 sm:scale-[0.80] lg:scale-[0.85]">
+            <ThemeUniverse />
+          </div>
         </div>
       </div>
     </div>

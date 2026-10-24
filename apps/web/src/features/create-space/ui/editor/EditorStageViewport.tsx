@@ -35,6 +35,7 @@ export interface EditorStageViewportProps {
   onDuplicateScene: (sceneId: string) => void
   onMoveScene: (sceneId: string, direction: 'left' | 'right') => void
   onDeleteScene: (sceneId: string) => void
+  onReorderScenes?: (fromIndex: number, toIndex: number) => void
   onToggleProtection: () => void
   items: SpatialItem[]
   selectedId: string | null
@@ -68,7 +69,21 @@ export interface EditorStageViewportProps {
   onAddLetter?: () => void
   onDuplicateLetter?: (id: string) => void
   onDeleteLetter?: (id: string) => void
+  onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateLetter: (updated: LetterItem) => void
+  shareUrl?: string
+  shareCustomizer?: {
+    customization: import('@/features/create-space/ui/share/share-customizer.types').ShareCardCustomization
+    selectedTarget: import('@/features/create-space/ui/share/share-customizer.types').ShareColorTarget
+    setSelectedTarget: (
+      target: import('@/features/create-space/ui/share/share-customizer.types').ShareColorTarget,
+    ) => void
+    updateCustomization: (
+      updates: Partial<
+        import('@/features/create-space/ui/share/share-customizer.types').ShareCardCustomization
+      >,
+    ) => void
+  }
   className?: string
 }
 
@@ -94,7 +109,7 @@ export function EditorStageViewport(props: EditorStageViewportProps) {
       className={cn(
         'relative min-h-0 flex-1',
         activeScene?.type === 'free-canvas'
-          ? 'overflow-auto p-4 sm:p-6 lg:p-8'
+          ? 'overflow-auto p-2 pb-24 sm:p-6 sm:pb-16 lg:p-8'
           : 'overflow-hidden p-0',
         className,
       )}

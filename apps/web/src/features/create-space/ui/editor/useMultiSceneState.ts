@@ -21,7 +21,9 @@ import type { UseMultiSceneStateReturn } from './multi-scene-storage'
 
 export type { UseMultiSceneStateReturn }
 
-export function useMultiSceneState(): UseMultiSceneStateReturn {
+export function useMultiSceneState(
+  initialSceneId?: string,
+): UseMultiSceneStateReturn {
   const [collection, setCollection] = useState<SpaceSceneCollection>(() => {
     const saved = loadFromStorage<SpaceScene[]>(
       SCENES_STORAGE_KEY,
@@ -37,8 +39,15 @@ export function useMultiSceneState(): UseMultiSceneStateReturn {
   )
 
   const [activeSceneId, setActiveSceneIdState] = useState<string>(() => {
+    if (
+      initialSceneId === 'share' ||
+      initialSceneId === 'hub' ||
+      initialSceneId === 'gate'
+    ) {
+      return initialSceneId
+    }
     const saved = loadFromStorage<string>(SCENE_STORAGE_KEY, 'hub')
-    if (saved === 'hub' || saved === 'gate') return saved
+    if (saved === 'hub' || saved === 'gate' || saved === 'share') return saved
     const savedScenes = loadFromStorage<SpaceScene[]>(
       SCENES_STORAGE_KEY,
       INITIAL_SCENES,
@@ -186,6 +195,28 @@ export function useMultiSceneState(): UseMultiSceneStateReturn {
     })
   }, [])
 
+  const handleReorderScenes = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setCollection((prev) => {
+        const next = prev.clone()
+        next.reorderScenes(fromIndex, toIndex)
+        return next
+      })
+    },
+    [],
+  )
+
+  const handleReorderLetters = useCallback(
+    (fromIndex: number, toIndex: number, sceneId?: string) => {
+      setCollection((prev) => {
+        const next = prev.clone()
+        next.reorderLetters(fromIndex, toIndex, sceneId)
+        return next
+      })
+    },
+    [],
+  )
+
   return {
     activeSceneId,
     setActiveSceneId,
@@ -203,9 +234,11 @@ export function useMultiSceneState(): UseMultiSceneStateReturn {
     handleUpdateScene,
     handleDuplicateScene,
     handleMoveScene,
+    handleReorderScenes,
     handleUpdateLetter,
     handleAddLetter,
     handleDuplicateLetter,
     handleDeleteLetter,
+    handleReorderLetters,
   }
 }

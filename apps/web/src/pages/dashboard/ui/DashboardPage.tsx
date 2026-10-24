@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { SpaceCard, useUserSpaces } from '@/entities/space'
 import { ProtectedRoute } from '@/features'
 import { signOut } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
@@ -8,6 +9,7 @@ import { Logomark } from '@/shared/ui/logo'
 
 export function DashboardPage() {
   const [isSigningOut, setIsSigningOut] = useState(false)
+  const { spaces, deleteSpace, duplicateSpace } = useUserSpaces()
 
   const handleSignOut = async () => {
     try {
@@ -62,33 +64,55 @@ export function DashboardPage() {
               {/* Spaces Overview */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-heading text-text-primary text-xl font-medium">
-                    Your Spaces
-                  </h2>
-                  <Button asChild variant="outline" size="sm">
-                    <Link to={ROUTES.NEW_SPACE}>+ Create a space</Link>
-                  </Button>
-                </div>
-
-                <Card className="space-y-4 border-2 border-dashed px-6 py-16 text-center">
-                  <div className="bg-secondary/20 text-primary mx-auto flex h-14 w-14 items-center justify-center rounded-2xl">
-                    <Logomark className="h-7 w-7" />
-                  </div>
-                  <div className="mx-auto max-w-md space-y-1.5">
-                    <h3 className="font-heading text-text-primary text-xl font-medium">
-                      No spaces created yet
-                    </h3>
-                    <p className="text-text-secondary font-sans text-sm leading-relaxed">
-                      Start crafting an intimate digital space with heartfelt
-                      notes, photographs, and thoughtful music.
+                  <div>
+                    <h2 className="font-heading text-text-primary text-xl font-medium">
+                      Your Spaces
+                    </h2>
+                    <p className="font-sans text-xs text-stone-400">
+                      Intimate sanctuaries crafted for people you hold close.
                     </p>
                   </div>
-                  <div className="pt-3">
-                    <Button asChild variant="primary" size="md">
-                      <Link to={ROUTES.NEW_SPACE}>Start your first space</Link>
+                  {spaces.length > 0 && (
+                    <Button asChild variant="outline" size="sm">
+                      <Link to={ROUTES.NEW_SPACE}>+ Create a space</Link>
                     </Button>
+                  )}
+                </div>
+
+                {spaces.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {spaces.map((space) => (
+                      <SpaceCard
+                        key={space.id}
+                        space={space}
+                        onDelete={deleteSpace}
+                        onDuplicate={duplicateSpace}
+                      />
+                    ))}
                   </div>
-                </Card>
+                ) : (
+                  <Card className="space-y-4 border-2 border-dashed px-6 py-16 text-center">
+                    <div className="bg-secondary/20 text-primary mx-auto flex h-14 w-14 items-center justify-center rounded-2xl">
+                      <Logomark className="h-7 w-7" />
+                    </div>
+                    <div className="mx-auto max-w-md space-y-1.5">
+                      <h3 className="font-heading text-text-primary text-xl font-medium">
+                        No spaces created yet
+                      </h3>
+                      <p className="text-text-secondary font-sans text-sm leading-relaxed">
+                        Start crafting an intimate digital space with heartfelt
+                        notes, photographs, and thoughtful music.
+                      </p>
+                    </div>
+                    <div className="pt-3">
+                      <Button asChild variant="primary" size="md">
+                        <Link to={ROUTES.NEW_SPACE}>
+                          Start your first space
+                        </Link>
+                      </Button>
+                    </div>
+                  </Card>
+                )}
               </div>
             </Container>
           </div>

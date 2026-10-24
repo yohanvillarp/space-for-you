@@ -178,6 +178,16 @@ export class LettersSceneEntity extends SpaceSceneEntity {
     )
   }
 
+  public reorderLetters(fromIndex: number, toIndex: number): boolean {
+    if (fromIndex < 0 || fromIndex >= this.letters.length) return false
+    if (toIndex < 0 || toIndex >= this.letters.length) return false
+    if (fromIndex === toIndex) return false
+
+    const [moved] = this.letters.splice(fromIndex, 1)
+    this.letters.splice(toIndex, 0, moved)
+    return true
+  }
+
   public toDTO(): LettersScene {
     return {
       id: this.id,

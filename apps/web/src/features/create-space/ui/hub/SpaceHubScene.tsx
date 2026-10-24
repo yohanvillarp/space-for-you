@@ -12,6 +12,8 @@ import { AddSceneCard } from '@/features/create-space/ui/hub/AddSceneCard'
 import { useSpaceHubContextMenu } from '@/features/create-space/ui/hub/useSpaceHubContextMenu'
 import { SpaceHubContextMenu } from '@/features/create-space/ui/hub/SpaceHubContextMenu'
 import { RenameSceneModal } from '@/features/create-space/ui/dock/RenameSceneModal'
+import { useScenesDragReorder } from '@/features/create-space/ui/hub/useScenesDragReorder'
+import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { cn } from '@/shared/lib'
 
 export interface SpaceHubSceneProps {
@@ -29,6 +31,7 @@ export interface SpaceHubSceneProps {
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
   onDeleteScene?: (sceneId: string) => void
+  onReorderScenes?: (fromIndex: number, toIndex: number) => void
   onToggleProtection?: () => void
   className?: string
 }
@@ -37,6 +40,7 @@ export function SpaceHubScene({
   templateId = 'birthday',
   meta,
   scenes,
+  isStudioPreview = false,
   isProtectionEnabled = false,
   onChangeMeta,
   onOpenScene,
@@ -47,12 +51,27 @@ export function SpaceHubScene({
   onDuplicateScene,
   onMoveScene,
   onDeleteScene,
+  onReorderScenes,
   onToggleProtection,
   className,
 }: SpaceHubSceneProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const { state: menuState, openMenu, closeMenu } = useSpaceHubContextMenu()
   const [renamingScene, setRenamingScene] = useState<SpaceScene | null>(null)
+  const { isEditorMode } = useStudioBehavior()
+  const isEffectiveEditor = Boolean(isStudioPreview) && isEditorMode
+  const {
+    draggedIndex,
+    dragOverIndex,
+    handleDragStart,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleDragEnd,
+  } = useScenesDragReorder({
+    onReorderScenes,
+    enabled: isEffectiveEditor,
+  })
 
   const handleAddQuickScene = (type: 'free-canvas' | 'letters') => {
     const template = sceneTemplateRegistry.getByType(type)
@@ -99,6 +118,15 @@ export function SpaceHubScene({
               <SceneCard
                 key={scene.id}
                 scene={scene}
+                index={index}
+                isDraggable={isEffectiveEditor}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                isDragging={draggedIndex === index}
+                isDragOver={dragOverIndex === index}
                 accentColor={activeTheme.accentColor}
                 onOpenScene={onOpenScene}
                 onContextMenu={(e) =>

@@ -7,19 +7,11 @@ const CREATION_STEPS = [
     id: 'template',
     number: 1,
     label: 'Choose Stage',
-    hint: 'Select & preview setting',
-  },
-  {
-    id: 'details',
-    number: 2,
-    label: 'Story & Photos',
-    hint: 'Pen letters & add memories',
   },
   {
     id: 'preview',
-    number: 3,
+    number: 2,
     label: 'Shareable Card',
-    hint: 'Keepsake card & copy for chat',
   },
 ] as const
 
@@ -33,13 +25,11 @@ export function StepIndicator({
   onSelectStep,
 }: StepIndicatorProps) {
   return (
-    <div className="border-border-base/70 bg-bg-surface/80 rounded-2xl border p-3.5 px-5 shadow-xs backdrop-blur-md">
-      <div className="flex items-center justify-between gap-3">
+    <div className="border-border-base/70 bg-bg-surface/80 rounded-2xl border p-3 px-5 shadow-xs backdrop-blur-md">
+      <div className="flex items-center justify-between gap-4">
         {CREATION_STEPS.map((step, idx) => {
           const isCurrent = step.id === currentStep
-          const isCompleted =
-            (currentStep === 'details' && step.number === 1) ||
-            (currentStep === 'preview' && step.number <= 2)
+          const isCompleted = currentStep === 'preview' && step.number === 1
 
           return (
             <div key={step.id} className="flex flex-1 items-center gap-3">
@@ -71,23 +61,18 @@ export function StepIndicator({
                   )}
                 </div>
 
-                <div className="hidden sm:block">
-                  <p
-                    className={cn(
-                      'font-heading text-xs',
-                      isCurrent && 'text-primary font-semibold',
-                    )}
-                  >
-                    {step.label}
-                  </p>
-                  <p className="text-text-muted truncate font-sans text-[10px]">
-                    {step.hint}
-                  </p>
-                </div>
+                <p
+                  className={cn(
+                    'font-heading text-xs',
+                    isCurrent && 'text-primary font-semibold',
+                  )}
+                >
+                  {step.label}
+                </p>
               </button>
 
               {idx < CREATION_STEPS.length - 1 && (
-                <div className="bg-border-base/60 mx-1 hidden h-[1px] flex-1 md:block" />
+                <div className="bg-border-base/60 mx-2 hidden h-[1px] flex-1 sm:block" />
               )}
             </div>
           )

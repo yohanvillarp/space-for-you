@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Lock, Home, Sparkles, Mail, Plus } from 'lucide-react'
+import { Lock, Home, Sparkles, Mail, Plus, Share2 } from 'lucide-react'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { useDockContextMenu } from '@/features/create-space/ui/dock/useDockContextMenu'
 import { DockContextMenu } from '@/features/create-space/ui/dock/DockContextMenu'
@@ -125,7 +125,23 @@ export function StageBottomDock({
           )
         })}
 
-        {/* 4: Add Scene Quick Button */}
+        {/* 4: Share Invitation Scene Button */}
+        <button
+          type="button"
+          onClick={() => handleSwitch('share')}
+          title="Share Invitation Keepsake"
+          className={cn(
+            'flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 font-sans text-xs font-medium transition-all duration-200',
+            activeSceneId === 'share'
+              ? 'bg-amber-400/20 text-amber-200 shadow-xs ring-1 ring-amber-400/50'
+              : 'text-stone-400 hover:bg-white/5 hover:text-stone-200',
+          )}
+        >
+          <Share2 className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Share</span>
+        </button>
+
+        {/* 5: Add Scene Quick Button */}
         <button
           type="button"
           onClick={() => {

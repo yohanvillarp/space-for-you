@@ -7,9 +7,11 @@ import {
   SlidersHorizontal,
   Trash2,
   Save,
+  Share2,
 } from 'lucide-react'
 import type { ThemeRegistryEntry } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
+import { cn } from '@/shared/lib'
 import { Button } from '@/shared/ui'
 import { StudioModeSwitch } from '@/features/create-space/ui/editor/StudioModeSwitch'
 
@@ -21,6 +23,9 @@ export interface EditorTopHeaderProps {
   selectedId: string | null
   onDeleteSelected: (id: string) => void
   onResetToDefaults: () => void
+  onOpenShare?: () => void
+  onSave?: () => void
+  isSaved?: boolean
 }
 
 export function EditorTopHeader({
@@ -31,6 +36,9 @@ export function EditorTopHeader({
   selectedId,
   onDeleteSelected,
   onResetToDefaults,
+  onOpenShare,
+  onSave,
+  isSaved = false,
 }: EditorTopHeaderProps) {
   return (
     <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-white/10 bg-black/90 px-3 py-3 backdrop-blur-md sm:px-6">
@@ -119,14 +127,39 @@ export function EditorTopHeader({
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => {}}
-          title="Save Space"
-          aria-label="Save Space"
-          className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-[#F3EAE1] shadow-xs transition-colors hover:border-white/30 hover:bg-white/10 sm:px-3"
+          onClick={onSave}
+          title={isSaved ? 'Space saved!' : 'Save Space'}
+          aria-label={isSaved ? 'Space saved!' : 'Save Space'}
+          className={cn(
+            'cursor-pointer gap-1.5 px-2.5 text-xs shadow-xs transition-all sm:px-3',
+            isSaved
+              ? 'border-emerald-500/40 bg-emerald-500/20 text-emerald-300'
+              : 'border-white/20 text-[#F3EAE1] hover:border-white/30 hover:bg-white/10',
+          )}
         >
-          <Save className="h-3.5 w-3.5 text-[#CF7056]" />
-          <span className="hidden md:inline">Save Space</span>
+          {isSaved ? (
+            <Check className="h-3.5 w-3.5 text-emerald-400" />
+          ) : (
+            <Save className="h-3.5 w-3.5 text-[#CF7056]" />
+          )}
+          <span className="hidden md:inline">{isSaved ? 'Saved' : 'Save'}</span>
         </Button>
+
+        {/* Share Sanctuary Keepsake Card Button */}
+        {onOpenShare && (
+          <Button
+            type="button"
+            variant="primary"
+            size="sm"
+            onClick={onOpenShare}
+            title="Share Sanctuary Card"
+            aria-label="Share Sanctuary Card"
+            className="cursor-pointer gap-1.5 border-none bg-[#CF7056] px-2.5 text-xs text-white shadow-md transition-all hover:bg-[#B85F47] sm:px-3"
+          >
+            <Share2 className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Share</span>
+          </Button>
+        )}
 
         {/* Primary Action: Done / Dashboard */}
         <Button
