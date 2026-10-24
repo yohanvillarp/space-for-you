@@ -8,6 +8,7 @@ import { EditorTopHeader } from './editor/EditorTopHeader'
 import { useSidebarResize } from './editor/useSidebarResize'
 import { useSpatialStageItems } from './editor/useSpatialStageItems'
 import { useStageKeyboardShortcuts } from './editor/useStageKeyboardShortcuts'
+import { countStagePhotos } from '../lib/stage-photo-limit'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -32,6 +33,7 @@ export function FullscreenSpatialEditor({
     handleDeleteItem,
     handleToggleLock,
     handleUpdateItemData,
+    handleAssignItemPhoto,
     handleAddItem,
     handleDuplicateItem,
     handleCopyItem,
@@ -49,14 +51,15 @@ export function FullscreenSpatialEditor({
     handleOpenSidebar,
   } = useSidebarResize()
 
-  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
-
   const selectedItem = items.find((it) => it.id === selectedId)
   const isMusicSelected =
     selectedItem?.type === 'music-box' ||
     selectedItem?.type === 'vinyl-player' ||
     selectedItem?.type === 'cassette-tape'
   const selectedMusicItem = isMusicSelected ? selectedItem : null
+
+  const isPhotoSelected = selectedItem?.type === 'polaroid'
+  const selectedPhotoItem = isPhotoSelected ? selectedItem : null
 
   // Enable global keyboard shortcuts (Ctrl+C, Ctrl+V, Ctrl+D, Delete, ], [, R)
   useStageKeyboardShortcuts({
@@ -88,17 +91,28 @@ export function FullscreenSpatialEditor({
         audioUrl: track.url,
         photoUrl: track.albumArt || track.coverUrl,
       })
-      setSelectedId(target.id)
     }
   }
+
+  const handleAssignPhoto = (photoUrl: string, file?: File) => {
+    const target =
+      selectedPhotoItem || items.find((it) => it.type === 'polaroid')
+
+    if (target) {
+      handleAssignItemPhoto(target.id, photoUrl, file)
+    }
+  }
+
+  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   return (
     <div
       className={cn(
-        'selection:bg-primary relative flex h-dvh max-h-dvh w-full flex-col overflow-hidden selection:text-white',
+        'relative flex h-screen w-screen flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] select-none',
         className,
       )}
     >
+      {/* Top Controls Header */}
       <EditorTopHeader
         activeTheme={activeTheme}
         showSidebar={showSidebar}
@@ -109,14 +123,15 @@ export function FullscreenSpatialEditor({
         onResetToDefaults={handleResetToDefaults}
       />
 
-      {/* Main Fullscreen Workspace Area */}
-      <div className="relative flex min-h-0 w-full flex-1 overflow-hidden">
+      {/* Main Workspace: Resizable Sidebar & Full Stage Canvas */}
+      <div className="relative flex min-h-0 flex-1 overflow-hidden">
+        {/* Collapsed State Toggle Pill */}
         {!showSidebar && (
           <button
             type="button"
             onClick={handleOpenSidebar}
-            className="animate-fade-in group absolute top-4 left-4 z-40 flex cursor-pointer items-center gap-2 rounded-xl border border-[#3B302A] bg-[#14110F]/95 px-3 py-2 font-sans text-xs font-medium text-[#F3EAE1] shadow-2xl backdrop-blur-md transition-all hover:scale-105 hover:border-[#CF7056] hover:text-[#CF7056]"
             title="Open Studio Library"
+            className="group absolute top-4 left-4 z-40 flex cursor-pointer items-center gap-2 rounded-xl border border-[#3B302A] bg-[#1A1411]/95 px-3 py-2 font-sans text-xs text-[#F3EAE1] shadow-2xl backdrop-blur-md transition-all hover:border-[#CF7056] hover:bg-[#251E1A]"
           >
             <SlidersHorizontal className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover:rotate-90" />
             <span>Studio Library</span>
@@ -137,6 +152,9 @@ export function FullscreenSpatialEditor({
             onAddItem={handleAddItem}
             onAssignTrack={handleAssignTrack}
             selectedMusicItem={selectedMusicItem}
+            selectedPhotoItem={selectedPhotoItem}
+            onAssignPhoto={handleAssignPhoto}
+            photoCount={countStagePhotos(items)}
             isCompact={sidebarWidth < 280}
             className="h-full w-full"
           />
@@ -183,6 +201,10 @@ export function FullscreenSpatialEditor({
             onClearCanvas={handleClearCanvas}
             onUpdateItemData={handleUpdateItemData}
             onAddItem={handleAddItem}
+            onOpenPhotoPicker={(item) => {
+              setSelectedId(item.id)
+              handleOpenSidebar()
+            }}
             className="min-h-full w-full rounded-2xl"
           />
         </main>

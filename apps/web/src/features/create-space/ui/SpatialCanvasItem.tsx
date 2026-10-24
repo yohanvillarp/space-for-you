@@ -22,6 +22,7 @@ export interface SpatialCanvasItemProps {
   onDelete: (id: string) => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onContextMenu?: (item: SpatialItem, e: ReactMouseEvent) => void
+  onOpenPhotoPicker?: (item: SpatialItem) => void
 }
 
 export function SpatialCanvasItem({
@@ -35,6 +36,7 @@ export function SpatialCanvasItem({
   onDelete,
   onUpdateData,
   onContextMenu,
+  onOpenPhotoPicker,
 }: SpatialCanvasItemProps) {
   const [isEditingText, setIsEditingText] = useState(false)
   const [localText, setLocalText] = useState(
@@ -142,6 +144,7 @@ export function SpatialCanvasItem({
             playSpatialSfx('paper-rustle')
             setIsEditingText(true)
           }}
+          onOpenPhotoPicker={onOpenPhotoPicker}
         />
       )}
     </div>

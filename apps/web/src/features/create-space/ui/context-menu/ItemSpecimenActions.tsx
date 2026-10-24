@@ -1,4 +1,11 @@
-import { Play, Pause, Flame, FlameKindling, PenLine } from 'lucide-react'
+import {
+  Play,
+  Pause,
+  Flame,
+  FlameKindling,
+  PenLine,
+  Camera,
+} from 'lucide-react'
 import type { SpatialItem } from '../../model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
 import type { SpatialSfxName } from '@/shared/lib'
@@ -8,6 +15,7 @@ export interface ItemSpecimenActionsProps {
   onClose: () => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onStartEditText?: (item: SpatialItem) => void
+  onChangePhoto?: (item: SpatialItem) => void
 }
 
 export function ItemSpecimenActions({
@@ -15,19 +23,26 @@ export function ItemSpecimenActions({
   onClose,
   onUpdateData,
   onStartEditText,
+  onChangePhoto,
 }: ItemSpecimenActionsProps) {
   const isMusic =
     item.type === 'music-box' ||
     item.type === 'vinyl-player' ||
     item.type === 'cassette-tape'
   const isCandle = item.type === 'candle'
+  const isPhoto = item.type === 'polaroid'
   const hasText =
     item.type === 'polaroid' ||
     item.type === 'greeting-card' ||
     item.type === 'sticky-note' ||
     item.type === 'airmail-postcard'
 
-  if (!isMusic && !isCandle && (!hasText || !onStartEditText)) {
+  if (
+    !isMusic &&
+    !isCandle &&
+    (!hasText || !onStartEditText) &&
+    (!isPhoto || !onChangePhoto)
+  ) {
     return null
   }
 
@@ -84,6 +99,23 @@ export function ItemSpecimenActions({
               <Flame className="h-3.5 w-3.5 text-amber-400" />
             )}
             <span>{item.data.isLit ? 'Blow out Flame' : 'Light Candle'}</span>
+          </div>
+        </button>
+      )}
+
+      {isPhoto && onChangePhoto && (
+        <button
+          type="button"
+          onClick={() =>
+            executeAction(() => onChangePhoto(item), 'camera-shutter')
+          }
+          className="flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors hover:bg-[#2A221E] hover:text-amber-300"
+        >
+          <div className="flex items-center gap-2">
+            <Camera className="h-3.5 w-3.5 text-amber-400" />
+            <span>
+              {item.data.photoUrl ? 'Change Photograph' : 'Add Photograph'}
+            </span>
           </div>
         </button>
       )}

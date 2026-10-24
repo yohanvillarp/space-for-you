@@ -1,12 +1,13 @@
 import type { ChangeEvent } from 'react'
-import { Search, X, Sparkles, Layers, Disc } from 'lucide-react'
+import { Search, X, Sparkles, Layers, Disc, Camera } from 'lucide-react'
 import { cn } from '@/shared/lib'
+import { ToolboxFilterChips } from './ToolboxFilterChips'
 
-import { STICKER_CHIPS, MUSIC_CHIPS } from './toolbox-chips'
+export type ToolboxCategory = 'objects' | 'stickers' | 'music' | 'photos'
 
 export interface ToolboxHeaderProps {
-  activeCategory: 'objects' | 'stickers' | 'music'
-  onSelectCategory: (category: 'objects' | 'stickers' | 'music') => void
+  activeCategory: ToolboxCategory
+  onSelectCategory: (category: ToolboxCategory) => void
   searchQuery: string
   onSearchChange: (query: string) => void
   onClearSearch: () => void
@@ -16,6 +17,8 @@ export interface ToolboxHeaderProps {
   onSelectMusicChip: (query: string) => void
   hasMusicOption?: boolean
   selectedMusicItemName?: string
+  hasPhotoOption?: boolean
+  selectedPhotoItemName?: string
   isCompact?: boolean
 }
 
@@ -31,15 +34,48 @@ export function ToolboxHeader({
   onSelectMusicChip,
   hasMusicOption = false,
   selectedMusicItemName,
+  selectedPhotoItemName,
   isCompact = false,
 }: ToolboxHeaderProps) {
+  const getHeaderTitle = () => {
+    switch (activeCategory) {
+      case 'photos':
+        return selectedPhotoItemName
+          ? `Photo for ${selectedPhotoItemName}`
+          : 'Photographs'
+      case 'music':
+        return selectedMusicItemName
+          ? `Song for ${selectedMusicItemName}`
+          : 'Soundtracks'
+      case 'stickers':
+        return 'Stickers'
+      default:
+        return 'Elements'
+    }
+  }
+
+  const getSearchPlaceholder = () => {
+    switch (activeCategory) {
+      case 'photos':
+        return 'Search web photos (nature, stars, memories)...'
+      case 'stickers':
+        return 'Search stickers (cake, heart, tape)...'
+      case 'music':
+        return 'Search songs (artist, title, mood)...'
+      default:
+        return 'Search keepsakes & decor...'
+    }
+  }
+
   return (
     <div className="shrink-0 border-b border-[#3B302A] bg-[#171310]">
       {/* Top Studio Library Title */}
       <div className="flex items-center justify-between border-b border-[#3B302A] px-4 py-3">
         <div className="flex items-center gap-2">
           <div className="flex h-5 w-5 items-center justify-center rounded-md border border-[#3B302A] bg-[#2A221E] text-[#CF7056]">
-            {activeCategory === 'music' ? (
+            {activeCategory === 'photos' ? (
+              <Camera className="h-3 w-3 text-amber-400" />
+            ) : activeCategory === 'music' ? (
               <Disc className="h-3 w-3 text-amber-400" />
             ) : activeCategory === 'stickers' ? (
               <Sparkles className="h-3 w-3 text-[#CF7056]" />
@@ -54,13 +90,7 @@ export function ToolboxHeader({
               </span>
             </div>
             <h3 className="font-heading mt-0.5 text-sm leading-tight font-medium text-[#F3EAE1]">
-              {activeCategory === 'objects'
-                ? 'Elements'
-                : activeCategory === 'stickers'
-                  ? 'Stickers'
-                  : selectedMusicItemName
-                    ? `Song for ${selectedMusicItemName}`
-                    : 'Soundtracks'}
+              {getHeaderTitle()}
             </h3>
           </div>
         </div>
@@ -77,32 +107,25 @@ export function ToolboxHeader({
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               onSearchChange(e.target.value)
             }
-            placeholder={
-              activeCategory === 'objects'
-                ? 'Search keepsake elements...'
-                : activeCategory === 'stickers'
-                  ? 'Search vector stickers...'
-                  : 'Search any song or artist...'
-            }
-            className="w-full rounded-lg border border-[#3B302A] bg-[#211B18] py-1.5 pr-7 pl-8 font-sans text-xs text-[#F3EAE1] transition-colors outline-none placeholder:text-[#A99B90]/60 focus:border-[#CF7056] focus:ring-1 focus:ring-[#CF7056]/30"
+            placeholder={getSearchPlaceholder()}
+            className="font-heading w-full rounded-lg border border-[#3B302A] bg-[#211B18] py-2 pr-8 pl-8 text-xs text-[#F3EAE1] placeholder-[#A99B90] transition-all outline-none focus:border-[#CF7056] focus:bg-[#2A221E] focus:ring-1 focus:ring-[#CF7056]"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={onClearSearch}
-              title="Clear search"
-              className="absolute top-2 right-2 cursor-pointer p-0.5 text-[#A99B90] hover:text-[#F3EAE1]"
+              className="absolute top-2.5 right-2.5 text-[#A99B90] hover:text-[#F3EAE1]"
             >
               <X className="h-3.5 w-3.5" />
             </button>
           )}
         </div>
 
-        {/* Category Switcher: Objects vs Stickers vs Music (conditional) */}
+        {/* Category Switcher: Objects vs Photos vs Stickers vs Music */}
         <div
           className={cn(
             'grid gap-1 rounded-lg border border-[#3B302A] bg-[#211B18] p-0.5 font-sans text-xs',
-            hasMusicOption ? 'grid-cols-3' : 'grid-cols-2',
+            hasMusicOption ? 'grid-cols-4' : 'grid-cols-3',
           )}
         >
           <button
@@ -118,6 +141,21 @@ export function ToolboxHeader({
           >
             <Layers className="h-3.5 w-3.5 shrink-0" />
             {!isCompact && <span className="truncate">Objects</span>}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onSelectCategory('photos')}
+            title="Keepsake Photographs"
+            className={cn(
+              'flex cursor-pointer items-center justify-center gap-1.5 rounded-md px-1 py-1.5 text-xs transition-all',
+              activeCategory === 'photos'
+                ? 'border border-amber-500/40 bg-[#2A221E] font-medium text-amber-400 shadow-xs'
+                : 'text-[#A99B90] hover:text-[#F3EAE1]',
+            )}
+          >
+            <Camera className="h-3.5 w-3.5 shrink-0" />
+            {!isCompact && <span className="truncate">Photos</span>}
           </button>
 
           <button
@@ -153,89 +191,15 @@ export function ToolboxHeader({
           )}
         </div>
 
-        {/* Secondary Filter Chips Row for Objects */}
-        {activeCategory === 'objects' && (
-          <div className="flex items-center gap-1 pt-0.5">
-            <button
-              type="button"
-              onClick={() => onSelectObjectFilter('all')}
-              className={cn(
-                'flex-1 cursor-pointer rounded-full border px-2 py-0.5 text-center font-sans text-[10px] font-medium transition-colors',
-                objectFilter === 'all'
-                  ? 'border-[#CF7056] bg-[#CF7056] font-semibold text-[#14110F]'
-                  : 'border-[#3B302A] bg-[#211B18] text-[#A99B90] hover:text-[#F3EAE1]',
-              )}
-            >
-              All
-            </button>
-            <button
-              type="button"
-              onClick={() => onSelectObjectFilter('stage')}
-              className={cn(
-                'flex-1 cursor-pointer truncate rounded-full border px-2 py-0.5 text-center font-sans text-[10px] font-medium transition-colors',
-                objectFilter === 'stage'
-                  ? 'border-[#CF7056] bg-[#CF7056] font-semibold text-[#14110F]'
-                  : 'border-[#3B302A] bg-[#211B18] text-[#A99B90] hover:text-[#F3EAE1]',
-              )}
-            >
-              Setting
-            </button>
-            <button
-              type="button"
-              onClick={() => onSelectObjectFilter('universal')}
-              className={cn(
-                'flex-1 cursor-pointer rounded-full border px-2 py-0.5 text-center font-sans text-[10px] font-medium transition-colors',
-                objectFilter === 'universal'
-                  ? 'border-[#CF7056] bg-[#CF7056] font-semibold text-[#14110F]'
-                  : 'border-[#3B302A] bg-[#211B18] text-[#A99B90] hover:text-[#F3EAE1]',
-              )}
-            >
-              Universal
-            </button>
-          </div>
-        )}
-
-        {/* Secondary Filter Chips Row for Stickers */}
-        {activeCategory === 'stickers' && (
-          <div className="flex [scrollbar-width:none] flex-wrap items-center gap-1 pt-0.5 [&::-webkit-scrollbar]:hidden">
-            {STICKER_CHIPS.map((chip) => (
-              <button
-                key={chip.query}
-                type="button"
-                onClick={() => onSelectStickerChip(chip.query)}
-                className={cn(
-                  'shrink-0 cursor-pointer rounded-full border px-2 py-0.5 font-sans text-[10px] font-medium transition-colors',
-                  searchQuery === chip.query
-                    ? 'border-[#CF7056] bg-[#CF7056] font-semibold text-[#14110F]'
-                    : 'border-[#3B302A] bg-[#211B18] text-[#A99B90] hover:text-[#F3EAE1]',
-                )}
-              >
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Secondary Filter Chips Row for Music */}
-        {activeCategory === 'music' && (
-          <div className="flex [scrollbar-width:none] flex-wrap items-center gap-1 pt-0.5 [&::-webkit-scrollbar]:hidden">
-            {MUSIC_CHIPS.map((chip) => (
-              <button
-                key={chip.label}
-                type="button"
-                onClick={() => onSelectMusicChip(chip.query)}
-                className={cn(
-                  'shrink-0 cursor-pointer rounded-full border px-2 py-0.5 font-sans text-[10px] font-medium transition-colors',
-                  searchQuery === chip.query
-                    ? 'border-amber-400 bg-amber-400 font-semibold text-[#14110F]'
-                    : 'border-[#3B302A] bg-[#211B18] text-[#A99B90] hover:text-[#F3EAE1]',
-                )}
-              >
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Secondary Filter Chips Row */}
+        <ToolboxFilterChips
+          activeCategory={activeCategory}
+          objectFilter={objectFilter}
+          onSelectObjectFilter={onSelectObjectFilter}
+          searchQuery={searchQuery}
+          onSelectStickerChip={onSelectStickerChip}
+          onSelectMusicChip={onSelectMusicChip}
+        />
       </div>
     </div>
   )

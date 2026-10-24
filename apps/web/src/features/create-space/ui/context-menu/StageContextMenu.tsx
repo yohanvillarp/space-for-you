@@ -6,6 +6,7 @@ import type {
 } from '../../model/spatial-stage.types'
 import { ItemContextMenuContent } from './ItemContextMenuContent'
 import { CanvasContextMenuContent } from './CanvasContextMenuContent'
+import { canAddStagePhoto } from '../../lib/stage-photo-limit'
 
 export interface StageContextMenuProps {
   state: ContextMenuState
@@ -22,6 +23,7 @@ export interface StageContextMenuProps {
   onDelete: (id: string) => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onStartEditText?: (item: SpatialItem) => void
+  onChangePhoto?: (item: SpatialItem) => void
   onAddItem: (type: SpatialItemType, x: number, y: number) => void
   onPasteItem: (x?: number, y?: number) => void
   onResetToDefaults: () => void
@@ -43,6 +45,7 @@ export function StageContextMenu({
   onDelete,
   onUpdateData,
   onStartEditText,
+  onChangePhoto,
   onAddItem,
   onPasteItem,
   onResetToDefaults,
@@ -84,11 +87,13 @@ export function StageContextMenu({
           onDelete={onDelete}
           onUpdateData={onUpdateData}
           onStartEditText={onStartEditText}
+          onChangePhoto={onChangePhoto}
         />
       ) : (
         <CanvasContextMenuContent
           coords={target.coords}
           copiedItem={copiedItem}
+          canAddPhoto={canAddStagePhoto(items ?? [])}
           onClose={onClose}
           onAddItem={onAddItem}
           onPasteItem={onPasteItem}

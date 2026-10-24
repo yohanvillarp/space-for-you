@@ -36,6 +36,7 @@ export interface SpatialStageCanvasProps {
     y?: number,
     customData?: Partial<SpatialItem['data']>,
   ) => void
+  onOpenPhotoPicker?: (item: SpatialItem) => void
   className?: string
 }
 
@@ -59,6 +60,7 @@ export function SpatialStageCanvas({
   onClearCanvas,
   onUpdateItemData,
   onAddItem,
+  onOpenPhotoPicker,
   className,
 }: SpatialStageCanvasProps) {
   const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
@@ -168,6 +170,7 @@ export function SpatialStageCanvas({
           onDelete={handleDeleteItem}
           onUpdateData={onUpdateItemData}
           onContextMenu={handleItemContextMenu}
+          onOpenPhotoPicker={onOpenPhotoPicker}
         />
       ))}
 
@@ -186,6 +189,7 @@ export function SpatialStageCanvas({
         onCopyItem={onCopyItem || (() => {})}
         onDelete={handleDeleteItem}
         onUpdateData={onUpdateItemData}
+        onChangePhoto={onOpenPhotoPicker}
         onAddItem={(type, x, y) => onAddItem(type, x, y)}
         onPasteItem={(x, y) => onPasteItem?.(x, y)}
         onResetToDefaults={onResetToDefaults || (() => {})}

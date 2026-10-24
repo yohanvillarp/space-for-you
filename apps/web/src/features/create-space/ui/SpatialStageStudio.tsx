@@ -14,6 +14,7 @@ import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
 import { Button } from '@/shared/ui'
 import { cn } from '@/shared/lib'
 import { useSpatialStageItems } from './editor/useSpatialStageItems'
+import { countStagePhotos } from '../lib/stage-photo-limit'
 
 export interface SpatialStageStudioProps {
   templateId: SpaceTemplateId
@@ -33,12 +34,23 @@ export function SpatialStageStudio({
     handleBringToFront,
     handleDeleteItem,
     handleUpdateItemData,
+    handleAssignItemPhoto,
     handleAddItem,
     handleResetToDefaults,
   } = useSpatialStageItems(templateId)
 
   const [copiedLink, setCopiedLink] = useState(false)
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
+
+  const selectedItem = items.find((it) => it.id === selectedId)
+  const isMusicSelected =
+    selectedItem?.type === 'music-box' ||
+    selectedItem?.type === 'vinyl-player' ||
+    selectedItem?.type === 'cassette-tape'
+  const selectedMusicItem = isMusicSelected ? selectedItem : null
+
+  const isPhotoSelected = selectedItem?.type === 'polaroid'
+  const selectedPhotoItem = isPhotoSelected ? selectedItem : null
 
   const previewPath = `/spaces/preview/${templateId}`
   const fullPreviewUrl =
@@ -53,6 +65,15 @@ export function SpatialStageStudio({
       setTimeout(() => setCopiedLink(false), 2500)
     } catch {
       // Fallback
+    }
+  }
+
+  const handleAssignPhoto = (photoUrl: string, file?: File) => {
+    const target =
+      selectedPhotoItem || items.find((it) => it.type === 'polaroid')
+
+    if (target) {
+      handleAssignItemPhoto(target.id, photoUrl, file)
     }
   }
 
@@ -164,6 +185,7 @@ export function SpatialStageStudio({
             onDeleteItem={handleDeleteItem}
             onUpdateItemData={handleUpdateItemData}
             onAddItem={handleAddItem}
+            onOpenPhotoPicker={(item) => setSelectedId(item.id)}
           />
         </div>
 
@@ -172,6 +194,10 @@ export function SpatialStageStudio({
           <SpatialToolboxSidebar
             templateId={templateId}
             onAddItem={handleAddItem}
+            selectedMusicItem={selectedMusicItem}
+            selectedPhotoItem={selectedPhotoItem}
+            onAssignPhoto={handleAssignPhoto}
+            photoCount={countStagePhotos(items)}
           />
         </div>
       </div>

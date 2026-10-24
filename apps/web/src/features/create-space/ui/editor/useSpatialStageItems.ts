@@ -10,6 +10,7 @@ import {
   TOOLBOX_ITEMS,
 } from '../../lib/spatial-stage-defaults'
 import { getNextItemLabel } from '../../lib/stage-item-naming'
+import { canAddStagePhoto } from '../../lib/stage-photo-limit'
 
 export function useSpatialStageItems(templateId: SpaceTemplateId) {
   const [items, setItems] = useState<SpatialItem[]>(() =>
@@ -17,6 +18,9 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
   )
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [copiedItem, setCopiedItem] = useState<SpatialItem | null>(null)
+  const [pendingPhotos, setPendingPhotos] = useState<Map<string, File>>(
+    () => new Map(),
+  )
 
   const handleUpdatePosition = (id: string, x: number, y: number) => {
     setItems((prev) =>
@@ -64,6 +68,12 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
   const handleDeleteItem = (id: string) => {
     setItems((prev) => prev.filter((it) => it.id !== id))
     if (selectedId === id) setSelectedId(null)
+    setPendingPhotos((prev) => {
+      if (!prev.has(id)) return prev
+      const next = new Map(prev)
+      next.delete(id)
+      return next
+    })
   }
 
   const handleToggleLock = (id: string) => {
@@ -85,12 +95,21 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     )
   }
 
+  const handleAssignItemPhoto = (id: string, photoUrl: string, file?: File) => {
+    handleUpdateItemData(id, { photoUrl })
+    if (file) {
+      setPendingPhotos((prev) => new Map(prev).set(id, file))
+    }
+  }
+
   const handleAddItem = (
     type: SpatialItemType,
     dropX?: number,
     dropY?: number,
     customData?: Partial<SpatialItemData>,
   ) => {
+    if (type === 'polaroid' && !canAddStagePhoto(items)) return
+
     const itemDef = TOOLBOX_ITEMS.find((it) => it.type === type)
     const newId = `${type}-${Date.now()}`
     const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
@@ -120,6 +139,7 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
   const handleDuplicateItem = (id: string) => {
     const target = items.find((it) => it.id === id)
     if (!target) return
+    if (target.type === 'polaroid' && !canAddStagePhoto(items)) return
 
     const newId = `${target.type}-${Date.now()}`
     const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
@@ -144,6 +164,8 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
 
   const handlePasteItem = (x?: number, y?: number) => {
     if (!copiedItem) return
+    if (copiedItem.type === 'polaroid' && !canAddStagePhoto(items)) return
+
     const newId = `${copiedItem.type}-${Date.now()}`
     const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
     const pasteX = x ?? Math.min(90, copiedItem.x + 4)
@@ -180,6 +202,7 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     selectedId,
     setSelectedId,
     copiedItem,
+    pendingPhotos,
     handleUpdatePosition,
     handleRotateItem,
     handleResetRotation,
@@ -188,6 +211,7 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     handleDeleteItem,
     handleToggleLock,
     handleUpdateItemData,
+    handleAssignItemPhoto,
     handleAddItem,
     handleDuplicateItem,
     handleCopyItem,

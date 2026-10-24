@@ -28,6 +28,7 @@ export interface ItemContextMenuContentProps {
   onDelete: (id: string) => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onStartEditText?: (item: SpatialItem) => void
+  onChangePhoto?: (item: SpatialItem) => void
 }
 
 export function ItemContextMenuContent({
@@ -44,6 +45,7 @@ export function ItemContextMenuContent({
   onDelete,
   onUpdateData,
   onStartEditText,
+  onChangePhoto,
 }: ItemContextMenuContentProps) {
   const executeAction = (
     action: () => void,
@@ -66,12 +68,13 @@ export function ItemContextMenuContent({
         </p>
       </div>
 
-      {/* Contextual Specimen Action (Music, Candle, Dedication Text) */}
+      {/* Contextual Specimen Action (Music, Candle, Dedication Text, Photo) */}
       <ItemSpecimenActions
         item={item}
         onClose={onClose}
         onUpdateData={onUpdateData}
         onStartEditText={onStartEditText}
+        onChangePhoto={onChangePhoto}
       />
 
       {/* Layering & Z-Index */}

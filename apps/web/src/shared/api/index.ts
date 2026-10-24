@@ -6,6 +6,8 @@ export {
   client as appwriteClient,
   account,
   account as appwriteAccount,
+  storage,
+  storage as appwriteStorage,
   APPWRITE_ENDPOINT,
   APPWRITE_PROJECT_ID,
   APPWRITE_PROJECT_NAME,

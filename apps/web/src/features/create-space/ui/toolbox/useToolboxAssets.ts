@@ -27,7 +27,7 @@ export const INITIAL_POPULAR_STICKERS = [
 ]
 
 export function useToolboxAssets(
-  activeCategory: 'objects' | 'stickers' | 'music',
+  activeCategory: 'objects' | 'stickers' | 'music' | 'photos',
   searchQuery: string,
   onAddItem: (
     type: SpatialItemType,

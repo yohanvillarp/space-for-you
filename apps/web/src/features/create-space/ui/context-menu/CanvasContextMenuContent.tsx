@@ -17,6 +17,7 @@ import type { SpatialSfxName } from '@/shared/lib'
 export interface CanvasContextMenuContentProps {
   coords: { x: number; y: number }
   copiedItem: SpatialItem | null
+  canAddPhoto?: boolean
   onClose: () => void
   onAddItem: (type: SpatialItemType, x: number, y: number) => void
   onPasteItem: (x?: number, y?: number) => void
@@ -27,6 +28,7 @@ export interface CanvasContextMenuContentProps {
 export function CanvasContextMenuContent({
   coords,
   copiedItem,
+  canAddPhoto = true,
   onClose,
   onAddItem,
   onPasteItem,
@@ -89,16 +91,25 @@ export function CanvasContextMenuContent({
 
       <button
         type="button"
+        disabled={!canAddPhoto}
         onClick={() =>
           executeAction(
             () => onAddItem('polaroid', coords.x, coords.y),
             'camera-shutter',
           )
         }
-        className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors hover:bg-[#2A221E] hover:text-amber-300"
+        title={
+          canAddPhoto ? undefined : 'Maximum 2 photos reached for this space'
+        }
+        className="flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors hover:bg-[#2A221E] hover:text-amber-300 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <Image className="h-3.5 w-3.5 text-cyan-400" />
-        <span>Memory Polaroid</span>
+        <div className="flex items-center gap-2">
+          <Image className="h-3.5 w-3.5 text-cyan-400" />
+          <span>Memory Polaroid</span>
+        </div>
+        {!canAddPhoto && (
+          <span className="font-mono text-[9px] text-amber-400">Max 2</span>
+        )}
       </button>
 
       <button
