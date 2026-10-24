@@ -12,6 +12,8 @@ export interface StageKeyboardShortcutsProps {
   onBringToFront: (id: string) => void
   onSendToBack: (id: string) => void
   onResetRotation: (id: string) => void
+  showSidebar?: boolean
+  onOpenSidebar?: () => void
 }
 
 export function useStageKeyboardShortcuts({
@@ -24,10 +26,35 @@ export function useStageKeyboardShortcuts({
   onBringToFront,
   onSendToBack,
   onResetRotation,
+  showSidebar,
+  onOpenSidebar,
 }: StageKeyboardShortcutsProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't intercept if user is typing in an input, textarea or contentEditable
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey
+
+      // Focus Search: Ctrl+K / Cmd+K (Universal shortcut across Windows, Linux & Mac)
+      if (isCtrlOrCmd && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault()
+        if (showSidebar === false) {
+          onOpenSidebar?.()
+        }
+        requestAnimationFrame(() => {
+          const inputs = Array.from(
+            document.querySelectorAll<HTMLInputElement>('[data-search-input]'),
+          )
+          const visibleInput =
+            inputs.find((el) => el.offsetParent !== null) ?? inputs[0]
+          if (visibleInput) {
+            visibleInput.focus()
+            visibleInput.select()
+            playSpatialSfx('tactile-tap')
+          }
+        })
+        return
+      }
+
+      // Don't intercept other shortcuts if user is typing in an input, textarea or contentEditable
       const target = e.target as HTMLElement | null
       if (
         target?.tagName === 'INPUT' ||
@@ -36,8 +63,6 @@ export function useStageKeyboardShortcuts({
       ) {
         return
       }
-
-      const isCtrlOrCmd = e.ctrlKey || e.metaKey
 
       // Copy: Ctrl+C / Cmd+C
       if (isCtrlOrCmd && (e.key === 'c' || e.key === 'C')) {
@@ -116,5 +141,7 @@ export function useStageKeyboardShortcuts({
     onBringToFront,
     onSendToBack,
     onResetRotation,
+    showSidebar,
+    onOpenSidebar,
   ])
 }
