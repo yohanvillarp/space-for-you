@@ -52,6 +52,12 @@ export function LettersScene({
 
   const [internalActiveLetter, setInternalActiveLetter] =
     useState<LetterItem | null>(null)
+  const [internalSelectedLetterId, setInternalSelectedLetterId] = useState<
+    string | null
+  >(null)
+  const currentSelectedLetterId =
+    selectedLetterId !== undefined ? selectedLetterId : internalSelectedLetterId
+
   const activeReadingLetter =
     openLetterId !== undefined
       ? (scene.letters.find((l) => l.id === openLetterId) ?? null)
@@ -61,11 +67,22 @@ export function LettersScene({
   const { state: menuState, openMenu, closeMenu } = useLettersContextMenu()
 
   const handleEnvelopeClick = (letter: LetterItem) => {
-    onSelectLetter?.(letter.id)
     if (!isEffectiveEditor) {
       // In user/preview mode, clicking directly opens the letter
+      onSelectLetter?.(letter.id)
       onOpenLetter?.(letter.id)
       setInternalActiveLetter(letter)
+      return
+    }
+
+    // In editor mode: if the letter is already selected and pressed again, open it
+    if (currentSelectedLetterId === letter.id) {
+      playSpatialSfx('paper-rustle')
+      handleOpenLetterModal(letter)
+    } else {
+      // First click: select the envelope to customize in sidebar
+      onSelectLetter?.(letter.id)
+      setInternalSelectedLetterId(letter.id)
     }
   }
 
@@ -167,7 +184,7 @@ export function LettersScene({
               <LetterEnvelope
                 key={letter.id}
                 letter={letter}
-                isSelected={selectedLetterId === letter.id}
+                isSelected={currentSelectedLetterId === letter.id}
                 onOpen={handleEnvelopeClick}
                 onDoubleClick={handleEnvelopeDoubleClick}
                 onContextMenu={(e) =>
