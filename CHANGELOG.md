@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.8.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.7.0...space-for-you-v0.8.0) (2026-10-24)
+
+
+### Features
+
+* **editor:** persist active scene and drafts across page reloads ([222548c](https://github.com/yohanvillarp/space-for-you/commit/222548cf8caf0ccbc24a29283f4a4033f18f6f99))
+* **editor:** persist active scene and drafts across page reloads ([fac925e](https://github.com/yohanvillarp/space-for-you/commit/fac925e42b3cbaa66aca53659837ab6ba6b1d60e))
+* **letters:** expand typography studio and remove presets ([f8e649b](https://github.com/yohanvillarp/space-for-you/commit/f8e649bee758e2a88e8d4dbd31ed0e2e93db0928))
+* **letters:** expand typography studio and remove presets ([a7735ea](https://github.com/yohanvillarp/space-for-you/commit/a7735ea2b7a4466feeaf75cf41e01aa5798ce818))
+* **letters:** open envelope when pressing an already selected letter ([b594dd4](https://github.com/yohanvillarp/space-for-you/commit/b594dd4ac295d6644a7e502ac10489e7bd28c8ec))
+* **letters:** open envelope when pressing an already selected letter ([967699f](https://github.com/yohanvillarp/space-for-you/commit/967699fe60175ba3276292aab0b1726ee1dd8d9b))
+* **letters:** separate proportion and alignment into spacious rows ([7f90c2e](https://github.com/yohanvillarp/space-for-you/commit/7f90c2ec862686e6f578a7f2eef62e952c8daccf))
+* **letters:** separate proportion and alignment into spacious rows ([3a769c8](https://github.com/yohanvillarp/space-for-you/commit/3a769c8cf58d045475ef1038875250728547a330))
+* **router:** unify spatial studio route to /spaces/studio ([86aadf2](https://github.com/yohanvillarp/space-for-you/commit/86aadf2420c740afd7a9e89ddc2e21e5e1f3bc49))
+* **router:** unify spatial studio route to /spaces/studio ([afd07b4](https://github.com/yohanvillarp/space-for-you/commit/afd07b463f6eaf1d8abff6a506ab6ae9884a582a))
+* **ui:** add Swal2-style animated alert modal and wire to reset ([faf9136](https://github.com/yohanvillarp/space-for-you/commit/faf9136907d374281759fcdc95ccb1821a71e38a))
+* **ui:** add Swal2-style animated alert modal and wire to reset ([02e6ad4](https://github.com/yohanvillarp/space-for-you/commit/02e6ad4cdcc78586d2454d37bdf43afc134c45da))
+
+
+### Bug Fixes
+
+* **ui:** improve responsive layout for header and scene grids ([6a05185](https://github.com/yohanvillarp/space-for-you/commit/6a05185085540b50778cb4dd9bff14af070e19f9))
+* **ui:** improve responsive layout for header and scene grids ([43ef570](https://github.com/yohanvillarp/space-for-you/commit/43ef570dd8beb4a04243581a3f1271636d6b490e))
+
 ## [0.7.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.6.0...space-for-you-v0.7.0) (2026-10-24)
 
 
