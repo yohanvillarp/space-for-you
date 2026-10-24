@@ -1,4 +1,4 @@
-import type { LockBackgroundTheme } from '../model/lock.types'
+import type { LockBackgroundTheme } from '@/features/space-lock/model/lock.types'
 
 export interface GateAtmosphereBackdropProps {
   theme?: LockBackgroundTheme

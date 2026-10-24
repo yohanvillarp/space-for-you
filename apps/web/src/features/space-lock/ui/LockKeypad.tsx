@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Delete, AlertCircle } from 'lucide-react'
-import type { LockKeypadTheme } from '../model/lock.types'
+import type { LockKeypadTheme } from '@/features/space-lock/model/lock.types'
 import { playSpatialSfx, cn } from '@/shared/lib'
 
 export interface LockKeypadProps {

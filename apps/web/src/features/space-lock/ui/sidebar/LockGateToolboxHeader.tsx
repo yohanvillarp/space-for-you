@@ -1,6 +1,6 @@
 import type { ChangeEvent } from 'react'
 import { Search, X, Layers, Hash, Sparkles } from 'lucide-react'
-import type { LockGateCategory } from '../../model/useLockGateToolbox'
+import type { LockGateCategory } from '@/features/space-lock/model/useLockGateToolbox'
 import { cn } from '@/shared/lib'
 
 export interface LockGateToolboxHeaderProps {

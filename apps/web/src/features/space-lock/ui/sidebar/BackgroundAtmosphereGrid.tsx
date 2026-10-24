@@ -1,8 +1,8 @@
 import type {
   LockBackgroundTheme,
   BackgroundThemeMeta,
-} from '../../model/lock.types'
-import { BACKGROUND_THEMES_CATALOG } from '../../model/lock.types'
+} from '@/features/space-lock/model/lock.types'
+import { BACKGROUND_THEMES_CATALOG } from '@/features/space-lock/model/lock.types'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface BackgroundAtmosphereGridProps {

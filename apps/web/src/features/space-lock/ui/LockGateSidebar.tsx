@@ -1,10 +1,10 @@
 import { Lock, KeyRound, Shield, ShieldCheck } from 'lucide-react'
-import type { SpaceProtectionConfig } from '../model/lock.types'
-import { useLockGateToolbox } from '../model/useLockGateToolbox'
-import { LockGateToolboxHeader } from './sidebar/LockGateToolboxHeader'
-import { BackgroundAtmosphereGrid } from './sidebar/BackgroundAtmosphereGrid'
-import { VaultObjectsGrid } from './sidebar/VaultObjectsGrid'
-import { KeypadObjectsGrid } from './sidebar/KeypadObjectsGrid'
+import type { SpaceProtectionConfig } from '@/features/space-lock/model/lock.types'
+import { useLockGateToolbox } from '@/features/space-lock/model/useLockGateToolbox'
+import { LockGateToolboxHeader } from '@/features/space-lock/ui/sidebar/LockGateToolboxHeader'
+import { BackgroundAtmosphereGrid } from '@/features/space-lock/ui/sidebar/BackgroundAtmosphereGrid'
+import { VaultObjectsGrid } from '@/features/space-lock/ui/sidebar/VaultObjectsGrid'
+import { KeypadObjectsGrid } from '@/features/space-lock/ui/sidebar/KeypadObjectsGrid'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface LockGateSidebarProps {

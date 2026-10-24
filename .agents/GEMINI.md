@@ -35,6 +35,7 @@ The repository is organized as a monorepo containing:
   - **Styling:** Tailwind CSS v4 using customized editorial `@theme` design tokens.
   - **Routing:** React Router 8.
   - **Backend & Auth:** Appwrite Web SDK v29 (`appwrite`).
+  - **Path Aliases & Imports (Strict):** Always use the `@/` path alias for all internal imports across slices and modules (e.g. `@/features/...`, `@/shared/...`, `@/entities/...`, `@/widgets/...`, `@/pages/...`). Never use or promote deep relative paths (`../../model/...`, `../ui/...`).
   - **Linter & Quality:** Oxlint (Rust linter) + TypeScript compiler (`tsc -b`).
 
 ---

@@ -1,4 +1,4 @@
-import type { LockKeypadTheme } from '../model/lock.types'
+import type { LockKeypadTheme } from '@/features/space-lock/model/lock.types'
 
 export interface KeypadMiniaturePreviewProps {
   theme: LockKeypadTheme

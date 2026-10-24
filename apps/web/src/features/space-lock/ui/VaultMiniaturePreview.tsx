@@ -1,5 +1,5 @@
 import { Lock } from 'lucide-react'
-import type { LockVaultTheme } from '../model/lock.types'
+import type { LockVaultTheme } from '@/features/space-lock/model/lock.types'
 
 export interface VaultMiniaturePreviewProps {
   theme: LockVaultTheme

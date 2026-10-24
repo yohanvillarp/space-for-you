@@ -1,6 +1,9 @@
-import type { LockKeypadTheme, KeypadThemeMeta } from '../../model/lock.types'
-import { KEYPAD_THEMES_CATALOG } from '../../model/lock.types'
-import { KeypadMiniaturePreview } from '../KeypadMiniaturePreview'
+import type {
+  LockKeypadTheme,
+  KeypadThemeMeta,
+} from '@/features/space-lock/model/lock.types'
+import { KEYPAD_THEMES_CATALOG } from '@/features/space-lock/model/lock.types'
+import { KeypadMiniaturePreview } from '@/features/space-lock/ui/KeypadMiniaturePreview'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface KeypadObjectsGridProps {

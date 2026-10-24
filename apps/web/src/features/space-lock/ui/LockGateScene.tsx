@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { ArrowRight, RotateCcw } from 'lucide-react'
-import type { SpaceProtectionConfig } from '../model/lock.types'
-import { SpatialVaultObject } from './SpatialVaultObject'
-import { LockKeypad } from './LockKeypad'
-import { GateAtmosphereBackdrop } from './GateAtmosphereBackdrop'
+import type { SpaceProtectionConfig } from '@/features/space-lock/model/lock.types'
+import { SpatialVaultObject } from '@/features/space-lock/ui/SpatialVaultObject'
+import { LockKeypad } from '@/features/space-lock/ui/LockKeypad'
+import { GateAtmosphereBackdrop } from '@/features/space-lock/ui/GateAtmosphereBackdrop'
 import { Button } from '@/shared/ui'
 import { playSpatialSfx } from '@/shared/lib'
 

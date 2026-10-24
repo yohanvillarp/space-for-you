@@ -1,6 +1,9 @@
-import type { LockVaultTheme, VaultThemeMeta } from '../../model/lock.types'
-import { VAULT_THEMES_CATALOG } from '../../model/lock.types'
-import { VaultMiniaturePreview } from '../VaultMiniaturePreview'
+import type {
+  LockVaultTheme,
+  VaultThemeMeta,
+} from '@/features/space-lock/model/lock.types'
+import { VAULT_THEMES_CATALOG } from '@/features/space-lock/model/lock.types'
+import { VaultMiniaturePreview } from '@/features/space-lock/ui/VaultMiniaturePreview'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface VaultObjectsGridProps {
