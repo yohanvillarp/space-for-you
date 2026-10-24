@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.5.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.4.0...space-for-you-v0.5.0) (2026-10-24)
+
+
+### Features
+
+* **audio:** add web audio synthesizer and spatial sound effects ([ede5846](https://github.com/yohanvillarp/space-for-you/commit/ede5846ecac0b2a74b9d845db9f40278d26ddcb5))
+* **editor:** sequence duplicate and pasted items with letters A..Z ([c912911](https://github.com/yohanvillarp/space-for-you/commit/c91291194b4df719b74ff124e208f761de63a443))
+* **pages:** add dedicated attributions route and page ([af0b0b8](https://github.com/yohanvillarp/space-for-you/commit/af0b0b8d5df0e8cf4a6f296d1efbaec40daddfda))
+* **space-themes:** add animated music box and interactive sfx ([b4088ea](https://github.com/yohanvillarp/space-for-you/commit/b4088ead4353f64865bbe57561ee86a89ef82a6a))
+* **spaces:** add birthday music box, interactive sfx, and modular studio sidebar ([d1e8203](https://github.com/yohanvillarp/space-for-you/commit/d1e8203ffd9e59be4972eb50cefb2102bd7bfbcc))
+* **spaces:** add fullscreen spatial studio and atelier creative library ([0584e97](https://github.com/yohanvillarp/space-for-you/commit/0584e9736227d7f167b7940100803a2e0560cae3))
+* **spaces:** add stage preview panel and fullscreen spatial editor ([a85cf64](https://github.com/yohanvillarp/space-for-you/commit/a85cf641655aafadd19a5c5f7d3b016137c6fee1))
+* **spatial-stage:** add atelier library sidebar with svg search ([5d34f7b](https://github.com/yohanvillarp/space-for-you/commit/5d34f7be072a61f60b7bdfa7a6b44a098159ef6a))
+* **spatial-stage:** add data models and default stage configurations ([0997370](https://github.com/yohanvillarp/space-for-you/commit/0997370d15562188682cd6b2f16db9261d1c4d97))
+* **spatial-stage:** implement drag drop canvas and specimen renderer ([a69e2ab](https://github.com/yohanvillarp/space-for-you/commit/a69e2ab9387e0650e0b8039ec1d1a9aef7993acc))
+* **studio:** add resizable sidebar and contextual music selector ([0a8820a](https://github.com/yohanvillarp/space-for-you/commit/0a8820a3989080238fde0f33c3ab4c50e41dba31))
+* **studio:** add right-click context menu for objects and canvas ([2601442](https://github.com/yohanvillarp/space-for-you/commit/260144234a9f95cb2cc30ebf87d39c73e24d4179))
+* **studio:** add sidebar photo workshop and 2-photo limit ([59eab96](https://github.com/yohanvillarp/space-for-you/commit/59eab9615a7bed23791a874ba2f0499c2a5b3458))
+* **studio:** enhance spatial studio with photo workshop, attributions page, and UX refinements ([2c01d78](https://github.com/yohanvillarp/space-for-you/commit/2c01d78a51a541734efc3141b1cdedf3bca4a447))
+
+
+### Bug Fixes
+
+* **studio:** clear search query on category switch and object deselect ([d12551f](https://github.com/yohanvillarp/space-for-you/commit/d12551f0a84d6e97e42dc623d833b6aae8e99ad2))
+* **studio:** coordinate single audio playback and fix track in-use match ([8ac7ea6](https://github.com/yohanvillarp/space-for-you/commit/8ac7ea66f16f9f7e19ace23077a26ded54f6ce32))
+* **ui:** reset scroll on page change and remove procedural meta badges ([6b1b4a5](https://github.com/yohanvillarp/space-for-you/commit/6b1b4a51ced68208f2975816ddf593691af798f8))
+
 ## [0.4.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.3.0...space-for-you-v0.4.0) (2026-10-23)
 
 
