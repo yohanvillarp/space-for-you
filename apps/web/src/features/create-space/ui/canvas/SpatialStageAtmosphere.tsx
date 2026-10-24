@@ -72,11 +72,6 @@ export function SpatialStageAtmosphere({
           </div>
         </div>
       )}
-
-      {/* Subtle bottom canvas note */}
-      <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 text-center font-sans text-[10px] text-stone-400/80 drop-shadow-xs select-none">
-        Click or drag elements to arrange • Drag from toolbox to add
-      </div>
     </>
   )
 }
