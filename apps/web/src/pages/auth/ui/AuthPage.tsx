@@ -1,20 +1,20 @@
+import type { AuthMode } from '@/features'
+import { EmailAuthForm, GoogleSignInButton, PublicOnlyRoute } from '@/features'
+import { ROUTES } from '@/shared/config'
+import { Badge, Card, Container, Logo } from '@/shared/ui'
+import { Logomark } from '@/shared/ui/logo'
+import {
+  ArrowLeft,
+  Heart,
+  Lock,
+  MapPin,
+  Music,
+  Palette,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
-import {
-  Sparkles,
-  ShieldCheck,
-  Palette,
-  Lock,
-  Heart,
-  Music,
-  MapPin,
-  ArrowLeft,
-} from 'lucide-react'
-import { PublicOnlyRoute, GoogleSignInButton, EmailAuthForm } from '@/features'
-import type { AuthMode } from '@/features'
-import { Card, Container, Badge, Logo } from '@/shared/ui'
-import { Logomark } from '@/shared/ui/logo'
-import { ROUTES } from '@/shared/config'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
