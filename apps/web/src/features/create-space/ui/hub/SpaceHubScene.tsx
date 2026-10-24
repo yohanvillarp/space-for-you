@@ -70,7 +70,7 @@ export function SpaceHubScene({
       <div
         onContextMenu={(e) => openMenu(e, { type: 'background' })}
         className={cn(
-          'relative flex h-full min-h-full w-full flex-col items-center justify-start overflow-y-auto px-4 py-8 pb-24 sm:px-6 sm:py-12 sm:pb-28 lg:px-12',
+          '@container relative flex h-full min-h-full w-full flex-col items-center justify-start overflow-y-auto px-4 py-8 pb-24 sm:px-6 sm:py-12 sm:pb-28 lg:px-12',
           className,
         )}
       >
@@ -94,7 +94,7 @@ export function SpaceHubScene({
           />
 
           {/* Dynamic Scenes Grid */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 lg:gap-6">
+          <div className="grid grid-cols-1 gap-4 @xl:grid-cols-2 @xl:gap-6">
             {scenes.map((scene, index) => (
               <SceneCard
                 key={scene.id}
