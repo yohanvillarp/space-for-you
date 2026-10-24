@@ -209,8 +209,8 @@ export function SpatialToolboxSidebar({
         )}
       </div>
 
-      <div className="shrink-0 border-t border-[#3B302A] bg-[#171310] px-3 py-2 text-center font-sans text-[10px] text-[#A99B90]">
-        <span>
+      <div className="shrink-0 space-y-0.5 border-t border-[#3B302A] bg-[#171310] px-3 py-1.5 text-center font-sans text-[10px] text-[#A99B90]">
+        <p>
           {activeCategory === 'photos'
             ? selectedPhotoItem
               ? 'Click or upload to replace photo for selected frame'
@@ -218,7 +218,16 @@ export function SpatialToolboxSidebar({
             : activeCategory === 'music'
               ? 'Click ▶ to preview · Click Use or drag to place'
               : 'Drag onto canvas · Click to add'}
-        </span>
+        </p>
+        <p className="text-[9px] text-[#786C64]">
+          {activeCategory === 'photos'
+            ? 'Photos powered by Pexels & Unsplash'
+            : activeCategory === 'music'
+              ? '30s previews via Apple Music API'
+              : activeCategory === 'stickers'
+                ? 'Stickers powered by Iconify'
+                : 'Interactive keepsakes'}
+        </p>
       </div>
     </aside>
   )

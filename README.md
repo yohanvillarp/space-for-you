@@ -20,18 +20,18 @@
 
 ## Tech Stack
 
-| Category | Technology | Version | Purpose |
-| :--- | :--- | :--- | :--- |
-| **Runtime & UI** | [React](https://react.dev/) | 19.3.1 | Core UI library with modern compiler support |
-| **Language** | [TypeScript](https://www.typescriptlang.org/) | 6.0.3 | Strict static typing with `verbatimModuleSyntax` |
-| **Bundler & Tooling** | [Vite](https://vite.dev/) | 8.3.4 | Development server with instant HMR and optimized production bundling |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | 4.3.3 | CSS engine using customized editorial `@theme` design tokens |
-| **Routing** | [React Router](https://reactrouter.com/) | 8.5.0 | Declarative client-side routing and layout hierarchies |
-| **Iconography** | [Lucide React](https://lucide.dev/) | 1.61.0 | Consistent, lightweight vector icon set |
-| **Static Analysis** | [Oxlint](https://oxc.rs/) | 1.88.0 | Rust-based high-performance linter |
-| **Git Automation** | [Husky](https://typicode.github.io/husky/) | 9.1.7 | Automated local pre-commit and commit-msg quality gates |
-| **Commit Specification** | [Commitlint](https://commitlint.js.org/) | 21.2.4 | Conventional Commits standard enforcement |
-| **Hosting & Deployment** | [Vercel](https://vercel.com/) | Cloud | Production hosting configured with SPA fallback rewrite rules |
+| Category                 | Technology                                    | Version | Purpose                                                               |
+| :----------------------- | :-------------------------------------------- | :------ | :-------------------------------------------------------------------- |
+| **Runtime & UI**         | [React](https://react.dev/)                   | 19.3.1  | Core UI library with modern compiler support                          |
+| **Language**             | [TypeScript](https://www.typescriptlang.org/) | 6.0.3   | Strict static typing with `verbatimModuleSyntax`                      |
+| **Bundler & Tooling**    | [Vite](https://vite.dev/)                     | 8.3.4   | Development server with instant HMR and optimized production bundling |
+| **Styling**              | [Tailwind CSS](https://tailwindcss.com/)      | 4.3.3   | CSS engine using customized editorial `@theme` design tokens          |
+| **Routing**              | [React Router](https://reactrouter.com/)      | 8.5.0   | Declarative client-side routing and layout hierarchies                |
+| **Iconography**          | [Lucide React](https://lucide.dev/)           | 1.61.0  | Consistent, lightweight vector icon set                               |
+| **Static Analysis**      | [Oxlint](https://oxc.rs/)                     | 1.88.0  | Rust-based high-performance linter                                    |
+| **Git Automation**       | [Husky](https://typicode.github.io/husky/)    | 9.1.7   | Automated local pre-commit and commit-msg quality gates               |
+| **Commit Specification** | [Commitlint](https://commitlint.js.org/)      | 21.2.4  | Conventional Commits standard enforcement                             |
+| **Hosting & Deployment** | [Vercel](https://vercel.com/)                 | Cloud   | Production hosting configured with SPA fallback rewrite rules         |
 
 ---
 
@@ -85,17 +85,32 @@ npm run preview
 The web application (`apps/web`) is structured following the **Feature-Sliced Design (FSD)** architectural methodology:
 
 - `src/app`: Global application providers, routing configuration, base stylesheets, and design tokens.
-- `src/pages`: Top-level route views (`HomePage`, `NotFoundPage`).
+- `src/pages`: Top-level route views (`HomePage`, `DashboardPage`, `AttributionsPage`, `PrivacyPage`, `NewSpacePage`, `EditSpacePage`, etc.).
 - `src/widgets`: Composite user interface blocks (`Header`, `Navbar`, `Footer`, `RootLayout`).
-- `src/features`: Interactive user features and behaviors (`theme-toggle`).
+- `src/features`: Interactive user features and behaviors (`create-space`, `theme-toggle`, `auth`).
 - `src/entities`: Business domain models and session entities.
 - `src/shared`: Reusable atomic UI components (`Button`, `Card`, `Badge`, `Container`), API clients, assets, and utility functions.
+
+---
+
+## Acknowledgements & Open Resources
+
+Space for You is shaped with gratitude to the open web and generous developer platforms:
+
+- **[Pexels](https://www.pexels.com/) & [Unsplash](https://unsplash.com/):** Intimate, royalty-free photography under open commercial and editorial licenses.
+- **[Apple iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/):** Ambient preview soundtracks and melodies.
+- **[Lucide Icons](https://lucide.dev/) & [Iconify](https://iconify.design/):** Beautiful open-source vector stickers and interface iconography.
+- **[Appwrite](https://appwrite.io/):** Secure open-source backend, authentication, and cloud storage engine.
+- **[Google Fonts](https://fonts.google.com/):** Contemporary editorial typography (`Lora` & `DM Sans`).
+
+For full details, visit the dedicated [/attributions](https://spaceforyou.app/attributions) page within the application.
 
 ---
 
 ## Branching & Contribution
 
 This repository follows a strict two-primary-branch workflow:
+
 - `main`: Production release branch. Direct commits are restricted.
 - `develop`: Primary integration and active development branch.
 
