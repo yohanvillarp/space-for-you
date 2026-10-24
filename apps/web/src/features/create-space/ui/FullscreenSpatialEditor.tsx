@@ -27,6 +27,7 @@ export function FullscreenSpatialEditor({
     copiedItem,
     handleUpdatePosition,
     handleRotateItem,
+    handleSetItemRotation,
     handleResetRotation,
     handleBringToFront,
     handleSendToBack,
@@ -189,6 +190,7 @@ export function FullscreenSpatialEditor({
             onSelectItem={setSelectedId}
             onUpdateItemPosition={handleUpdatePosition}
             onRotateItem={handleRotateItem}
+            onSetRotation={handleSetItemRotation}
             onResetRotation={handleResetRotation}
             onBringToFront={handleBringToFront}
             onSendToBack={handleSendToBack}

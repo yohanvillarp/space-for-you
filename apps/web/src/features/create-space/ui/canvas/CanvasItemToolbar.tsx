@@ -9,24 +9,30 @@ import { playSpatialSfx } from '@/shared/lib'
 
 export interface CanvasItemToolbarProps {
   itemId: string
+  currentRotation?: number
   onRotate: (id: string, delta: number) => void
+  onResetRotation?: (id: string) => void
   onBringToFront: (id: string) => void
   onDelete: (id: string) => void
 }
 
 export function CanvasItemToolbar({
   itemId,
+  currentRotation = 0,
   onRotate,
+  onResetRotation,
   onBringToFront,
   onDelete,
 }: CanvasItemToolbarProps) {
+  const isTilted = Math.abs(currentRotation) > 0.5
+
   return (
     <div
       onPointerDown={(e) => e.stopPropagation()}
       className="bg-bg-surface/95 border-border-base/80 text-text-primary animate-fade-in absolute -top-11 left-1/2 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border px-2 py-1 shadow-lg backdrop-blur-md"
     >
       {/* Drag Handle Indicator */}
-      <div className="text-text-muted px-1">
+      <div className="text-text-muted px-1" title="Selected item toolbar">
         <GripHorizontal className="h-3.5 w-3.5" />
       </div>
 
@@ -43,6 +49,26 @@ export function CanvasItemToolbar({
       >
         <RotateCcw className="h-3 w-3" />
       </button>
+
+      {/* Quick Straighten to 0° if tilted */}
+      {isTilted && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            playSpatialSfx('tactile-tap')
+            if (onResetRotation) {
+              onResetRotation(itemId)
+            } else {
+              onRotate(itemId, -currentRotation)
+            }
+          }}
+          title="Straighten object (0°)"
+          className="hover:bg-bg-subtle cursor-pointer rounded-full px-1.5 py-0.5 font-mono text-[10px] font-medium text-amber-300 transition-colors"
+        >
+          0°
+        </button>
+      )}
 
       {/* Rotate Clockwise */}
       <button
