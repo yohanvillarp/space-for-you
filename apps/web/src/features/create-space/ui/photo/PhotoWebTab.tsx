@@ -57,6 +57,7 @@ export function PhotoWebTab({
       <div className="relative">
         <Search className="text-text-muted absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2" />
         <input
+          data-search-input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
