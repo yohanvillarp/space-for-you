@@ -18,29 +18,11 @@ export function useDockContextMenu() {
       e.preventDefault()
       e.stopPropagation()
 
-      // Keep menu strictly inside viewport bounds
-      const menuWidth = 200
-      const menuHeight = 240
-      const padding = 12
-
-      const clientX = e.clientX
-      const clientY = e.clientY
-
-      const x = Math.min(
-        Math.max(padding, clientX - menuWidth / 2),
-        window.innerWidth - menuWidth - padding,
-      )
-      // Dock is at bottom, default position above cursor
-      const y =
-        clientY - menuHeight < padding
-          ? clientY + padding
-          : clientY - menuHeight
-
       playSpatialSfx('tactile-tap')
       setState({
         isOpen: true,
-        x,
-        y,
+        x: e.clientX,
+        y: e.clientY,
         target,
       })
     },

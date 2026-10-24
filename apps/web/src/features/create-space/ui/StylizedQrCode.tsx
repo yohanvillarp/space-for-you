@@ -6,6 +6,7 @@ export interface StylizedQrCodeProps {
   url: string
   accentColor?: string
   size?: number
+  qrStyle?: 'minimal' | 'vintage' | 'celestial' | 'stamp' | 'pill'
   className?: string
 }
 
@@ -13,6 +14,7 @@ export function StylizedQrCode({
   url,
   accentColor = '#A34835',
   size = 200,
+  qrStyle = 'minimal',
   className,
 }: StylizedQrCodeProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -20,6 +22,24 @@ export function StylizedQrCode({
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
+
+    const dotsType =
+      qrStyle === 'vintage'
+        ? 'classy'
+        : qrStyle === 'celestial'
+          ? 'dots'
+          : qrStyle === 'stamp'
+            ? 'classy-rounded'
+            : qrStyle === 'pill'
+              ? 'extra-rounded'
+              : 'rounded'
+
+    const cornerSquareType =
+      qrStyle === 'vintage'
+        ? 'square'
+        : qrStyle === 'pill'
+          ? 'dot'
+          : 'extra-rounded'
 
     const qrCode = new QRCodeStyling({
       width: size,
@@ -34,14 +54,14 @@ export function StylizedQrCode({
       },
       dotsOptions: {
         color: accentColor,
-        type: 'rounded',
+        type: dotsType,
       },
       backgroundOptions: {
         color: '#FFFFFF',
       },
       cornersSquareOptions: {
         color: accentColor,
-        type: 'extra-rounded',
+        type: cornerSquareType,
       },
       cornersDotOptions: {
         color: accentColor,
@@ -55,7 +75,7 @@ export function StylizedQrCode({
     return () => {
       container.innerHTML = ''
     }
-  }, [size, url, accentColor])
+  }, [size, url, accentColor, qrStyle])
 
   return (
     <div

@@ -53,8 +53,8 @@ export function ShareActionsPanel({
       {/* Feedback banner when copied */}
       {copiedImage && (
         <div className="animate-fade-in rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-center font-sans text-xs text-emerald-600 dark:text-emerald-400">
-          ✨ <strong>¡Tarjeta copiada con éxito!</strong> Abre cualquier chat de
-          WhatsApp y presiona <strong>Ctrl + V</strong> para pegarla.
+          ✨ <strong>Card copied successfully!</strong> Open any WhatsApp chat
+          and press <strong>Ctrl + V</strong> to paste.
         </div>
       )}
 
