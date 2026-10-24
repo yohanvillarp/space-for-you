@@ -121,6 +121,7 @@ export function LockGateScene({
           {!isUnlocked ? (
             <div className="w-full pt-1">
               <LockKeypad
+                key={config.passcode}
                 expectedPasscode={config.passcode}
                 isUnlocked={isUnlocked}
                 onUnlockSuccess={handleUnlockSuccess}

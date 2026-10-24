@@ -60,10 +60,21 @@ export function LockKeypad({
     setDigits((prev) => prev.slice(0, -1))
   }, [isUnlocked, hasError])
 
-  // Listen to physical keyboard events
+  // Listen to physical keyboard events (ignore when typing in form inputs)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isUnlocked) return
+
+      const target = e.target as HTMLElement | null
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return
+      }
+
       if (/^[0-9]$/.test(e.key)) {
         handlePressDigit(e.key)
       } else if (e.key === 'Backspace') {
