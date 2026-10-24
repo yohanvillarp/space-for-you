@@ -3,6 +3,7 @@ import { ArrowRight, RotateCcw } from 'lucide-react'
 import type { SpaceProtectionConfig } from '../model/lock.types'
 import { SpatialVaultObject } from './SpatialVaultObject'
 import { LockKeypad } from './LockKeypad'
+import { GateAtmosphereBackdrop } from './GateAtmosphereBackdrop'
 import { Button } from '@/shared/ui'
 import { playSpatialSfx } from '@/shared/lib'
 
@@ -55,8 +56,8 @@ export function LockGateScene({
       onClick={() => setIsSelected(false)}
       className="relative flex h-full min-h-full w-full items-center justify-center overflow-hidden px-4 py-8 pb-24 select-none sm:px-6 sm:py-10 sm:pb-28 lg:px-12 lg:pb-24"
     >
-      {/* Ambient Backdrop Glow */}
-      <div className="pointer-events-none absolute inset-0 bg-radial from-amber-500/10 via-black/40 to-black/85" />
+      {/* Selectable Universal Entrance Atmospheres */}
+      <GateAtmosphereBackdrop theme={config.backgroundTheme} />
 
       {/* Main Responsive Scene Container */}
       <div className="relative z-10 flex h-full w-full max-w-5xl flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">

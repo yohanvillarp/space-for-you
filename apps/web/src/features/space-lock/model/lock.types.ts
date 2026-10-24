@@ -8,12 +8,16 @@ export type LockKeypadTheme =
   | 'celestial-crystal'
   | 'clay-terracotta'
 
+export type LockBackgroundTheme =
+  'midnight-sanctuary' | 'frosted-aurora' | 'velvet-ember' | 'cosmic-nebula'
+
 export interface SpaceProtectionConfig {
   enabled: boolean
   passcode: string
   hint?: string
   vaultTheme: LockVaultTheme
   keypadTheme?: LockKeypadTheme
+  backgroundTheme?: LockBackgroundTheme
   customTitle?: string
   customSubtitle?: string
   vaultX?: number
@@ -42,11 +46,20 @@ export interface KeypadThemeMeta {
   accentColor: string
 }
 
+export interface BackgroundThemeMeta {
+  id: LockBackgroundTheme
+  name: string
+  subtitle: string
+  previewClass: string
+  accentColor: string
+}
+
 export const DEFAULT_PROTECTION_CONFIG: SpaceProtectionConfig = {
   enabled: false,
   passcode: '1234',
   vaultTheme: 'snowy-safe',
   keypadTheme: 'classic',
+  backgroundTheme: 'midnight-sanctuary',
   customTitle: 'A Secret Keepsake',
   customSubtitle: 'Enter the secret combination to unlock',
   vaultX: 32,
@@ -56,6 +69,37 @@ export const DEFAULT_PROTECTION_CONFIG: SpaceProtectionConfig = {
   keypadY: 50,
   keypadRotation: 0,
 }
+
+export const BACKGROUND_THEMES_CATALOG: BackgroundThemeMeta[] = [
+  {
+    id: 'midnight-sanctuary',
+    name: 'Midnight Amber',
+    subtitle: 'Deep obsidian & amber core',
+    previewClass: 'from-amber-600/35 via-stone-900 to-black',
+    accentColor: '#F59E0B',
+  },
+  {
+    id: 'frosted-aurora',
+    name: 'Frosted Aurora',
+    subtitle: 'Winter slate & teal glow',
+    previewClass: 'from-cyan-500/35 via-slate-900 to-[#0A1018]',
+    accentColor: '#38BDF8',
+  },
+  {
+    id: 'velvet-ember',
+    name: 'Velvet Ember',
+    subtitle: 'Warm wine & terracotta embers',
+    previewClass: 'from-[#A34835]/45 via-[#260B08] to-[#120504]',
+    accentColor: '#CF7056',
+  },
+  {
+    id: 'cosmic-nebula',
+    name: 'Cosmic Nebula',
+    subtitle: 'Mystic violet & stardust',
+    previewClass: 'from-purple-600/35 via-[#1C1028] to-[#0D0714]',
+    accentColor: '#C084FC',
+  },
+]
 
 export const KEYPAD_THEMES_CATALOG: KeypadThemeMeta[] = [
   {
