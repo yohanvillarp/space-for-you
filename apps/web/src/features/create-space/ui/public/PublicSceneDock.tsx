@@ -39,7 +39,7 @@ export function PublicSceneDock({
         className,
       )}
     >
-      <div className="flex max-w-[92vw] items-center gap-1.5 overflow-x-auto rounded-full border border-white/15 bg-[#140F0D]/90 p-1.5 shadow-2xl backdrop-blur-xl">
+      <div className="flex max-w-[94vw] scrollbar-none items-center gap-1.5 overflow-x-auto rounded-full border border-white/15 bg-[#140F0D]/95 px-3 py-1.5 shadow-2xl backdrop-blur-xl sm:px-4">
         {hasHub && (
           <button
             type="button"
@@ -47,21 +47,21 @@ export function PublicSceneDock({
             style={
               activeSceneId === 'hub'
                 ? {
-                    borderColor: `${accentColor}55`,
+                    borderColor: `${accentColor}66`,
                     backgroundColor: `${accentColor}25`,
                     color: '#FAF6F0',
                   }
                 : undefined
             }
             className={cn(
-              'flex shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 py-2 font-sans text-xs font-medium transition-all',
+              'flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 font-sans text-xs font-medium transition-all sm:px-4 sm:py-2',
               activeSceneId === 'hub'
-                ? 'shadow-sm'
-                : 'text-stone-300 hover:bg-white/5 hover:text-white',
+                ? 'shadow-xs'
+                : 'border-transparent text-stone-300 hover:bg-white/5 hover:text-white',
             )}
           >
             {renderIcon('', true)}
-            <span>Home</span>
+            <span className="shrink-0">Home</span>
           </button>
         )}
 
@@ -75,21 +75,23 @@ export function PublicSceneDock({
               style={
                 isActive
                   ? {
-                      borderColor: `${accentColor}55`,
+                      borderColor: `${accentColor}66`,
                       backgroundColor: `${accentColor}25`,
                       color: '#FAF6F0',
                     }
                   : undefined
               }
               className={cn(
-                'flex shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 py-2 font-sans text-xs font-medium transition-all',
+                'flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 font-sans text-xs font-medium transition-all sm:px-4 sm:py-2',
                 isActive
-                  ? 'shadow-sm'
-                  : 'text-stone-300 hover:bg-white/5 hover:text-white',
+                  ? 'shadow-xs'
+                  : 'border-transparent text-stone-300 hover:bg-white/5 hover:text-white',
               )}
             >
               {renderIcon(scene.type)}
-              <span>{scene.title || 'Scene'}</span>
+              <span className="max-w-[130px] truncate sm:max-w-[180px]">
+                {scene.title || 'Scene'}
+              </span>
             </button>
           )
         })}
