@@ -85,6 +85,8 @@ export interface UserSpace {
   isProtected?: boolean
   /** Short summary or dedication note. */
   description?: string
+  /** Canonical public sharing slug (e.g. "ariana-birthday-sanctuary-brs2f"). */
+  slug?: string
 }
 
 /**

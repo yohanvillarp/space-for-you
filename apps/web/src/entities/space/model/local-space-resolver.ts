@@ -32,10 +32,12 @@ export function getLocalSpaceWithScenes(
 
   if (!space) {
     const allSpaces = getSavedSpaces()
+    const suffix = cleanId.split('-').pop() || cleanId
     space = allSpaces.find(
       (s) =>
         s.id === cleanId ||
-        (s as unknown as { slug?: string }).slug === cleanId,
+        s.slug === cleanId ||
+        (suffix && s.id.endsWith(suffix)),
     )
   }
 

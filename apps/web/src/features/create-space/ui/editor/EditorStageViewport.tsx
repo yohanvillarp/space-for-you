@@ -79,6 +79,8 @@ export interface EditorStageViewportProps {
   onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateLetter: (updated: LetterItem) => void
   shareUrl?: string
+  isPublished?: boolean
+  onOpenPublish?: () => void
   shareCustomizer?: {
     customization: import('@/features/create-space/ui/share/share-customizer.types').ShareCardCustomization
     selectedTarget: import('@/features/create-space/ui/share/share-customizer.types').ShareColorTarget

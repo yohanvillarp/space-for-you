@@ -104,14 +104,31 @@ export default async ({ req, res, log, error }) => {
 
   let spaceDoc = null
   try {
-    const list = await databases.listDocuments(dbId, spacesColl, [
-      Query.equal('slug', slug),
-      Query.limit(1),
-    ])
-    if (list.documents.length > 0) {
-      spaceDoc = list.documents[0]
-    } else {
+    if (slug.startsWith('space_')) {
       spaceDoc = await databases.getDocument(dbId, spacesColl, slug)
+    } else {
+      try {
+        const list = await databases.listDocuments(dbId, spacesColl, [
+          Query.equal('slug', slug),
+          Query.limit(1),
+        ])
+        if (list.documents.length > 0) spaceDoc = list.documents[0]
+      } catch (listErr) {
+        log(`listDocuments with slug index query notice: ${listErr.message}`)
+      }
+
+      if (!spaceDoc) {
+        const parts = slug.split('-')
+        const hash = parts[parts.length - 1]
+        const recent = await databases.listDocuments(dbId, spacesColl, [
+          Query.orderDesc('$createdAt'),
+          Query.limit(25),
+        ])
+        spaceDoc =
+          recent.documents.find(
+            (d) => d.slug === slug || (hash && d.$id.endsWith(hash)),
+          ) || null
+      }
     }
   } catch (err) {
     error(`Database lookup error for slug [${slug}]: ${err.message}`)

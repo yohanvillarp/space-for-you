@@ -111,17 +111,18 @@ export function usePublishSanctuary({
 
       setPublishStep('persisting')
       const targetId = spaceId || `space_${Date.now()}`
-      const baseSlug = generateSpaceSlug(
+      const slug = generateSpaceSlug(
         spaceMeta.title,
         spaceMeta.recipientName,
+        targetId,
       )
-      const slug = baseSlug
 
       const spacePayload: UserSpace = {
         id: targetId,
         title: spaceMeta.title.trim() || 'Untitled Sanctuary',
         recipientName: spaceMeta.recipientName.trim() || 'Someone Special',
         templateId,
+        slug,
         scenesCount: finalScenes.length,
         artifactsCount: finalScenes.reduce((acc, s) => {
           if (s.type === 'free-canvas') return acc + (s.items?.length || 0)

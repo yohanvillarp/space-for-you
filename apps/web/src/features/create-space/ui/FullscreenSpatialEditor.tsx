@@ -25,6 +25,7 @@ import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEdi
 import { useConfirmDialog } from '@/shared/ui'
 import { ROUTES } from '@/shared/config'
 import { getCanonicalPublicUrl } from '@/features/create-space/lib/url-shortener'
+import { generateSpaceSlug } from '@/entities/space/api/space-converters'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -117,8 +118,11 @@ export function FullscreenSpatialEditor({
     onPublishSuccess: () => handleUpdateSpaceMeta({ status: 'published' }),
   })
 
-  const shareUrl = spaceId
-    ? getCanonicalPublicUrl(spaceId)
+  const canonicalSlug = spaceId
+    ? generateSpaceSlug(spaceMeta.title, spaceMeta.recipientName, spaceId)
+    : undefined
+  const shareUrl = canonicalSlug
+    ? getCanonicalPublicUrl(canonicalSlug)
     : `${typeof window !== 'undefined' ? window.location.origin : ''}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
   const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
 
@@ -238,6 +242,8 @@ export function FullscreenSpatialEditor({
             onReorderScenes={multiScene.handleReorderScenes}
             shareUrl={shareUrl}
             shareCustomizer={shareCustomizer}
+            isPublished={isPublished}
+            onOpenPublish={publishState.openPublishModal}
           />
         </div>
 

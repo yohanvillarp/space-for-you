@@ -106,37 +106,43 @@ export async function fetchSpaceById(
 export async function fetchSpaceBySlug(
   slug: string,
 ): Promise<SpaceWithScenes | null> {
+  if (slug.startsWith('space_')) return fetchSpaceById(slug)
   try {
     const res = await databases.listDocuments(DB_ID, SPACES_COLL, [
       Query.equal('slug', slug),
       Query.limit(1),
     ])
-
-    if (res.documents.length === 0) return null
-    const doc = res.documents[0]
-    return fetchSpaceById(doc.$id)
+    if (res.documents.length > 0) return fetchSpaceById(res.documents[0].$id)
   } catch {
-    return null
+    // Index may be missing
   }
+  try {
+    const parts = slug.split('-')
+    const hash = parts[parts.length - 1]
+    const list = await databases.listDocuments(DB_ID, SPACES_COLL, [
+      Query.orderDesc('$createdAt'),
+      Query.limit(25),
+    ])
+    const match = list.documents.find(
+      (d) => d.slug === slug || (hash && d.$id.endsWith(hash)),
+    )
+    if (match) return fetchSpaceById(match.$id)
+  } catch {
+    // ignore
+  }
+  return null
 }
 
 /**
  * Parameters for creating or updating a space in Appwrite Databases.
  */
 export interface SaveSpaceParams {
-  /** Space metadata to save or update. */
   space: UserSpace
-  /** Optional array of scenes (free-canvas items or heartfelt letters). */
   scenes?: SpaceScene[]
-  /** Owner user ID matching Appwrite Auth `$id`. */
   userId: string
-  /** Optional sender name. */
   senderName?: string
-  /** Optional dedication message. */
   dedicationMessage?: string
-  /** Optional JSON-serialized theme customization. */
   themeConfig?: string
-  /** Optional slug override. */
   slug?: string
   passcodeHash?: string
   passcodeSalt?: string
@@ -146,23 +152,6 @@ export interface SaveSpaceParams {
 
 /**
  * Saves a space and all its scenes to Appwrite Databases with Document-Level Security.
- * Performs idempotent update or creation of both space and scene documents.
- *
- * @param params - Save parameters containing space, scenes, and owner info.
- * @returns The persisted space model with updated timestamps.
- *
- * @remarks
- * This function persists the master space document and loops over scenes,
- * serializing polymorphic payloads (diorama canvas items or letters).
- *
- * @example
- * ```ts
- * const savedSpace = await saveSpaceToDatabase({
- *   space: currentSpace,
- *   scenes: currentScenes,
- *   userId: user.$id,
- * })
- * ```
  */
 export async function saveSpaceToDatabase({
   space,

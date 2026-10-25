@@ -14,6 +14,7 @@ import { cn, playSpatialSfx } from '@/shared/lib'
 import { shortenSanctuaryUrl } from '@/features/create-space/lib/url-shortener'
 import { ShareActionsPanel } from './ShareActionsPanel'
 import { ShareCardInlineEditor } from './ShareCardInlineEditor'
+import { ShareStatusBanner } from './ShareStatusBanner'
 import {
   openWhatsAppShare,
   openTelegramShare,
@@ -46,6 +47,8 @@ export interface ShareSceneProps {
   onUpdateCustomization: (updates: Partial<ShareCardCustomization>) => void
   onBackToHub: () => void
   isStudioPreview?: boolean
+  isPublished?: boolean
+  onOpenPublish?: () => void
   className?: string
 }
 
@@ -60,6 +63,8 @@ export function ShareScene({
   onUpdateCustomization,
   onBackToHub,
   isStudioPreview = true,
+  isPublished,
+  onOpenPublish,
   className,
 }: ShareSceneProps) {
   const { isEditorMode } = useStudioBehavior()
@@ -138,9 +143,7 @@ export function ShareScene({
       await navigator.clipboard.writeText(activeShareUrl)
       setCopiedLink(true)
       setTimeout(() => setCopiedLink(false), 2500)
-    } catch {
-      // Ignore
-    }
+    } catch {}
   }
 
   const handleShareSocial = async () => {
@@ -160,9 +163,7 @@ export function ShareScene({
         setSocialFeedback(res)
         setTimeout(() => setSocialFeedback(null), 3000)
       }
-    } catch {
-      // Ignore
-    }
+    } catch {}
   }
 
   return (
@@ -192,6 +193,11 @@ export function ShareScene({
               : 'Print a foldable keepsake card or share directly via messaging.'}
           </p>
         </div>
+
+        <ShareStatusBanner
+          isPublished={Boolean(isPublished)}
+          onOpenPublish={onOpenPublish}
+        />
 
         <div className="grid w-full grid-cols-1 items-start justify-items-center gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="flex w-full justify-center lg:col-span-7">

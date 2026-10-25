@@ -28,6 +28,7 @@ export function toUserSpace(doc: Models.DefaultDocument): UserSpace {
     updatedAt: d.$updatedAt,
     isProtected: Boolean(d.isProtected),
     description: d.dedicationMessage || undefined,
+    slug: d.slug || undefined,
   }
 }
 
@@ -76,20 +77,17 @@ export function toSpaceScene(doc: Models.DefaultDocument): SpaceScene | null {
 
 /**
  * Generates an URL-safe, human-readable unique slug for public sharing.
+ * Deterministic: Reuses existing stable spaceId hash if provided so URLs stay constant.
  *
  * @param title - Space title (e.g., "Golden Memories").
  * @param recipientName - Recipient's name (e.g., "Sophia").
+ * @param existingId - Optional space identifier to derive a stable hash.
  * @returns Sanitized slug string formatted as `[recipient]-[title]-[hash]`.
- *
- * @example
- * ```ts
- * const slug = generateSpaceSlug("Birthday Sanctuary", "Sophia")
- * // Output: "sophia-birthday-sanctuary-a81f"
- * ```
  */
 export function generateSpaceSlug(
   title: string,
   recipientName: string,
+  existingId?: string,
 ): string {
   const cleanTitle = (title || 'sanctuary')
     .toLowerCase()
@@ -103,6 +101,18 @@ export function generateSpaceSlug(
     .replace(/(^-|-$)/g, '')
     .slice(0, 20)
 
-  const randomHash = Math.random().toString(36).substring(2, 6)
-  return `${cleanRecipient}-${cleanTitle}-${randomHash}`
+  let hash = ''
+  if (existingId) {
+    const parts = existingId.split('_')
+    const lastPart = parts[parts.length - 1]
+    hash = lastPart
+      .slice(-5)
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '')
+  }
+  if (!hash || hash.length < 3) {
+    hash = Math.random().toString(36).substring(2, 6)
+  }
+
+  return `${cleanRecipient}-${cleanTitle}-${hash}`
 }
