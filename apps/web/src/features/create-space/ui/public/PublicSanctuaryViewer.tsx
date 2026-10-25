@@ -9,6 +9,8 @@ import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { PublicStageCanvas } from '@/features/create-space/ui/public/PublicStageCanvas'
 import { PublicSceneDock } from '@/features/create-space/ui/public/PublicSceneDock'
 import { SanctuaryWelcomeIntro } from '@/features/create-space/ui/public/SanctuaryWelcomeIntro'
+import { SceneTeaserModal } from '@/features/create-space/ui/public/SceneTeaserModal'
+import { isSceneTimeLocked } from '@/features/create-space/lib/scene-schedule-utils'
 import { useSpatialAudioPlayer, cn, playSpatialSfx } from '@/shared/lib'
 
 export interface PublicSanctuaryViewerProps {
@@ -22,6 +24,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
 
   const [activeSceneId, setActiveSceneId] = useState<string>('hub')
   const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(false)
+  const [teaserScene, setTeaserScene] = useState<SpaceScene | null>(null)
 
   const presetTrack = getPresetTrackForTemplate(templateId)
   const { isPlaying, togglePlay } = useSpatialAudioPlayer({
@@ -42,6 +45,19 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
     })
     return populated.length > 0 ? populated : scenes
   }, [scenes])
+
+  const handleSelectScene = (sceneId: string) => {
+    if (sceneId === 'hub') {
+      setActiveSceneId('hub')
+      return
+    }
+    const target = visibleScenes.find((s) => s.id === sceneId)
+    if (target && isSceneTimeLocked(target)) {
+      setTeaserScene(target)
+      return
+    }
+    setActiveSceneId(sceneId)
+  }
 
   const handleEnterSanctuary = () => {
     setHasSeenWelcome(true)
@@ -151,28 +167,30 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                 }}
                 scenes={visibleScenes}
                 isStudioPreview={false}
-                onOpenScene={(sceneId) => {
-                  setActiveSceneId(sceneId)
-                }}
+                onOpenScene={handleSelectScene}
                 onOpenAddScene={() => {}}
               />
             )}
 
-            {activeScene?.type === 'letters' && (
-              <LettersScene
-                scene={activeScene}
-                templateId={templateId}
-                isStudioPreview={false}
-                onBackToHub={() => setActiveSceneId('hub')}
-              />
-            )}
+            {activeScene &&
+              !isSceneTimeLocked(activeScene) &&
+              activeScene.type === 'letters' && (
+                <LettersScene
+                  scene={activeScene}
+                  templateId={templateId}
+                  isStudioPreview={false}
+                  onBackToHub={() => setActiveSceneId('hub')}
+                />
+              )}
 
-            {activeScene?.type === 'free-canvas' && (
-              <PublicStageCanvas
-                templateId={templateId}
-                items={activeScene.items || []}
-              />
-            )}
+            {activeScene &&
+              !isSceneTimeLocked(activeScene) &&
+              activeScene.type === 'free-canvas' && (
+                <PublicStageCanvas
+                  templateId={templateId}
+                  items={activeScene.items || []}
+                />
+              )}
           </>
         )}
       </main>
@@ -182,9 +200,18 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
         <PublicSceneDock
           scenes={visibleScenes}
           activeSceneId={activeSceneId}
-          onSelectScene={setActiveSceneId}
+          onSelectScene={handleSelectScene}
           hasHub={true}
           accentColor={activeTheme.accentColor}
+        />
+      )}
+
+      {/* Recipient Scene Teaser Modal */}
+      {teaserScene && (
+        <SceneTeaserModal
+          isOpen={true}
+          scene={teaserScene}
+          onClose={() => setTeaserScene(null)}
         />
       )}
     </div>

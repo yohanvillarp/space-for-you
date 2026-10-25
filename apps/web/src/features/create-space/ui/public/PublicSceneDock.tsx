@@ -1,5 +1,6 @@
-import { Home, Mail, Sparkles, Image } from 'lucide-react'
+import { Home, Mail, Sparkles, Lock } from 'lucide-react'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
+import { isSceneTimeLocked } from '@/features/create-space/lib/scene-schedule-utils'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface PublicSceneDockProps {
@@ -24,10 +25,11 @@ export function PublicSceneDock({
     onSelectScene(id)
   }
 
-  const renderIcon = (sceneType: string, isHub?: boolean) => {
-    if (isHub) return <Home className="h-4 w-4" />
-    if (sceneType === 'letters') return <Mail className="h-4 w-4" />
-    if (sceneType === 'photos') return <Image className="h-4 w-4" />
+  const renderIcon = (scene: SpaceScene) => {
+    if (isSceneTimeLocked(scene)) {
+      return <Lock className="h-3.5 w-3.5 text-amber-400" />
+    }
+    if (scene.type === 'letters') return <Mail className="h-4 w-4" />
     return <Sparkles className="h-4 w-4" />
   }
 
@@ -60,13 +62,14 @@ export function PublicSceneDock({
                 : 'border-transparent text-stone-300 hover:bg-white/5 hover:text-white',
             )}
           >
-            {renderIcon('', true)}
+            <Home className="h-4 w-4" />
             <span className="shrink-0">Home</span>
           </button>
         )}
 
         {scenes.map((scene) => {
           const isActive = activeSceneId === scene.id
+          const isLocked = isSceneTimeLocked(scene)
           return (
             <button
               key={scene.id}
@@ -86,9 +89,12 @@ export function PublicSceneDock({
                 isActive
                   ? 'shadow-xs'
                   : 'border-transparent text-stone-300 hover:bg-white/5 hover:text-white',
+                isLocked &&
+                  !isActive &&
+                  'border-amber-400/20 text-amber-200/80',
               )}
             >
-              {renderIcon(scene.type)}
+              {renderIcon(scene)}
               <span className="max-w-[130px] truncate sm:max-w-[180px]">
                 {scene.title || 'Scene'}
               </span>

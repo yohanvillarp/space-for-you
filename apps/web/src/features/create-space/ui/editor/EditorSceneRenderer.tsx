@@ -3,6 +3,7 @@ import type {
   SpaceMeta,
   SpaceScene,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import type { SpaceTemplateId } from '@/entities/space'
 import type {
@@ -35,7 +36,11 @@ export interface EditorSceneRendererProps {
   onRenameScene?: (sceneId: string, newTitle: string) => void
   onUpdateScene?: (
     sceneId: string,
-    updates: { title?: string; subtitle?: string },
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?: SceneScheduleConfig | null
+    },
   ) => void
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
@@ -171,6 +176,7 @@ export function EditorSceneRenderer({
         onOpenVault={onOpenVault}
         onAddScene={onAddScene}
         onRenameScene={onRenameScene}
+        onUpdateScene={onUpdateScene}
         onDuplicateScene={onDuplicateScene}
         onMoveScene={onMoveScene}
         onDeleteScene={onDeleteScene}

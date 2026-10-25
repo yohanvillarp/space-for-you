@@ -1,6 +1,7 @@
 import type {
   SpaceScene,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import {
   SpaceSceneEntity,
@@ -65,12 +66,23 @@ export class SpaceSceneCollection {
 
   public updateScene(
     sceneId: string,
-    updates: { title?: string; subtitle?: string },
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?: SceneScheduleConfig | null
+    },
   ): boolean {
     const scene = this.findById(sceneId)
     if (!scene) return false
     if (updates.title !== undefined) scene.title = updates.title
     if (updates.subtitle !== undefined) scene.subtitle = updates.subtitle
+    if (updates.schedule !== undefined) {
+      if (updates.schedule === null) {
+        delete scene.schedule
+      } else {
+        scene.schedule = updates.schedule
+      }
+    }
     return true
   }
 

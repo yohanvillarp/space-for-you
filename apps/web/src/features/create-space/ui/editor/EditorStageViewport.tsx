@@ -4,6 +4,7 @@ import type {
   SpaceScene,
   SpaceMeta,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import type {
   SpatialItem,
@@ -30,7 +31,11 @@ export interface EditorStageViewportProps {
   onRenameScene: (sceneId: string, newTitle: string) => void
   onUpdateScene?: (
     sceneId: string,
-    updates: { title?: string; subtitle?: string },
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?: SceneScheduleConfig | null
+    },
   ) => void
   onDuplicateScene: (sceneId: string) => void
   onMoveScene: (sceneId: string, direction: 'left' | 'right') => void
