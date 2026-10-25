@@ -44,12 +44,33 @@ const EPHEMERA_TYPES = new Set([
   'confetti-stars',
 ])
 
+function filterPublicItems(rawItems: SpatialItem[]): SpatialItem[] {
+  return rawItems.filter((item) => {
+    if (item.type === 'cassette-tape') {
+      const isSample =
+        item.data?.isVoiceNoteSample ||
+        !item.data?.audioUrl ||
+        item.data.audioUrl.includes('6ade885600247e215323')
+      return !isSample
+    }
+    return true
+  })
+}
+
 export function PublicStageCanvas({
   templateId,
   items: initialItems,
   className,
 }: PublicStageCanvasProps) {
-  const [items, setItems] = useState<SpatialItem[]>(initialItems)
+  const [prevInitialItems, setPrevInitialItems] = useState(initialItems)
+  const [items, setItems] = useState<SpatialItem[]>(() =>
+    filterPublicItems(initialItems),
+  )
+
+  if (prevInitialItems !== initialItems) {
+    setPrevInitialItems(initialItems)
+    setItems(filterPublicItems(initialItems))
+  }
   const [activePhoto, setActivePhoto] = useState<SpatialItem | null>(null)
   const { containerRef, scale } = useVirtualCanvasScale()
 

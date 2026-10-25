@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
-import type {
-  SpatialItem,
-  SpatialItemType,
-  SpatialItemData,
-} from '@/features/create-space/model/spatial-stage.types'
 import { SpatialCanvasItem } from './SpatialCanvasItem'
 import { SpatialStageAtmosphere } from './canvas/SpatialStageAtmosphere'
 import { useCanvasDragAndDrop } from './canvas/useCanvasDragAndDrop'
@@ -19,42 +14,13 @@ import { CanvasZoomControl } from './canvas/CanvasZoomControl'
 import { useStudioBehavior } from './editor/useStudioBehavior'
 import { VoiceNoteRecorderModal } from './canvas/inspector/VoiceNoteRecorderModal'
 import { countSpaceVoiceNotes } from '@/features/create-space/lib/voice-recorder/voice-note-types'
+import type { SpatialStageCanvasProps } from './canvas/spatial-stage-canvas.types'
 import { cn } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
 import '@/features/space-themes/romantic/romantic.css'
 import '@/features/space-themes/friendship/friendship.css'
 
-export interface SpatialStageCanvasProps {
-  templateId: SpaceTemplateId
-  items: SpatialItem[]
-  selectedId: string | null
-  copiedItem?: SpatialItem | null
-  onSelectItem: (id: string | null) => void
-  onUpdateItemPosition: (id: string, x: number, y: number) => void
-  onStartDragItem?: (id: string) => void
-  onCommitItemPosition?: () => void
-  onRotateItem: (id: string, delta: number) => void
-  onSetRotation?: (id: string, angle: number) => void
-  onResetRotation?: (id: string) => void
-  onBringToFront: (id: string) => void
-  onSendToBack?: (id: string) => void
-  onDeleteItem: (id: string) => void
-  onDuplicateItem?: (id: string) => void
-  onToggleLock?: (id: string) => void
-  onCopyItem?: (item: SpatialItem) => void
-  onPasteItem?: (x?: number, y?: number) => void
-  onResetToDefaults?: () => void
-  onClearCanvas?: () => void
-  onUpdateItemData: (id: string, updates: Partial<SpatialItemData>) => void
-  onAddItem: (
-    type: SpatialItemType,
-    x?: number,
-    y?: number,
-    customData?: Partial<SpatialItemData>,
-  ) => void
-  onOpenPhotoPicker?: (item: SpatialItem) => void
-  className?: string
-}
+export type { SpatialStageCanvasProps }
 
 const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
   birthday: 'universe-birthday celebration-table-surface',
@@ -272,6 +238,7 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
               duration: durationSeconds,
               title: label,
               isVoiceNote: true,
+              isVoiceNoteSample: false,
             })
             setRecordingCassetteId(null)
           }}

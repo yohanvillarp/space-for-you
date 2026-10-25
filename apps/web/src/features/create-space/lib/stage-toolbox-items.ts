@@ -1,5 +1,8 @@
 import type { ToolboxItemDef } from '@/features/create-space/model/spatial-stage.types'
 
+export const DEFAULT_CASSETTE_GUIDE_AUDIO_URL =
+  'https://nyc.cloud.appwrite.io/v1/storage/buckets/6ade87be001700e5c95b/files/6ade885600247e215323/view?project=6adad55500193c6ac8ac'
+
 export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
   // --- Stage Specific Items ---
   {
@@ -123,7 +126,12 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
     supportedTemplates: 'all',
     defaultData: {
       isPlaying: false,
-      title: 'Personal Voice Message',
+      title: 'Sample Guide • Tap Mic to Record',
+      subtitle: 'Voice Note Instructions',
+      audioUrl: DEFAULT_CASSETTE_GUIDE_AUDIO_URL,
+      isVoiceNote: true,
+      isVoiceNoteSample: true,
+      duration: 24,
     },
   },
 
