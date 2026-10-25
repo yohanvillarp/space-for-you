@@ -18,6 +18,7 @@ export interface HeartfeltLettersCardContentProps {
   theme: SceneCardThemeConfig
   accentColor: string
   isDraggable?: boolean
+  isEditor?: boolean
 }
 
 export function HeartfeltLettersCardContent({
@@ -26,12 +27,16 @@ export function HeartfeltLettersCardContent({
   theme,
   accentColor,
   isDraggable = false,
+  isEditor = false,
 }: HeartfeltLettersCardContentProps) {
   const letters = scene.letters || []
   const firstLetter = letters[0]
 
-  const lettersCountLabel =
-    letters.length === 1 ? '1 letter' : `${letters.length} letters`
+  const lettersCountLabel = isEditor
+    ? letters.length === 1
+      ? '1 letter'
+      : `${letters.length} letters`
+    : 'Sealed'
 
   const renderWaxSealIcon = () => {
     const sealType = firstLetter?.waxSeal
@@ -101,22 +106,16 @@ export function HeartfeltLettersCardContent({
         </span>
       </div>
 
-      {/* Middle Preview: Intimate Letter Title or Writing Preview */}
+      {/* Middle Context Guidance Box */}
       <div className="relative z-10 my-3 flex min-h-[52px] flex-col justify-center rounded-lg border border-white/5 bg-black/20 px-3.5 py-2">
-        {firstLetter ? (
-          <div className="space-y-0.5">
-            <span className="font-heading text-xs font-medium text-stone-200 italic">
-              "{firstLetter.title || 'Folded Letter'}"
-            </span>
-            <p className="line-clamp-1 font-sans text-[11px] text-stone-400">
-              {firstLetter.content || 'Sealed with heartfelt thoughts'}
-            </p>
-          </div>
-        ) : (
-          <span className="font-heading text-xs text-stone-400 italic">
-            Desk of folded handwritten notes
-          </span>
-        )}
+        <span className="font-heading text-xs font-medium text-stone-200 italic">
+          {isEditor ? 'Personal Letters Collection' : 'Letters Written For You'}
+        </span>
+        <p className="font-sans text-[11px] text-stone-400">
+          {isEditor
+            ? 'Compose, organize and wax-seal heartfelt letters'
+            : 'Touch to break the wax seal and read what was written for you'}
+        </p>
       </div>
 
       {/* Bottom Content: Title, Subtitle, Arrow */}

@@ -130,6 +130,7 @@ export function SpaceHubScene({
                 scene={scene}
                 index={index}
                 templateId={templateId}
+                isEditor={isEffectiveEditor}
                 isDraggable={isEffectiveEditor}
                 onDragStart={handleDragStart}
                 onDragOver={handleDragOver}

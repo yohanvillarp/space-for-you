@@ -16,6 +16,7 @@ export interface MemoryCanvasCardContentProps {
   theme: SceneCardThemeConfig
   accentColor: string
   isDraggable?: boolean
+  isEditor?: boolean
 }
 
 export function MemoryCanvasCardContent({
@@ -23,6 +24,7 @@ export function MemoryCanvasCardContent({
   theme,
   accentColor,
   isDraggable = false,
+  isEditor = false,
 }: MemoryCanvasCardContentProps) {
   const items: SpatialItem[] = scene.items || []
   const photoUrls: string[] = items
@@ -30,8 +32,11 @@ export function MemoryCanvasCardContent({
     .filter((url: string | undefined): url is string => Boolean(url))
     .slice(0, 3)
 
-  const keepsakesLabel =
-    items.length === 1 ? '1 keepsake' : `${items.length} keepsakes`
+  const keepsakesLabel = isEditor
+    ? items.length === 1
+      ? '1 keepsake'
+      : `${items.length} keepsakes`
+    : 'Keepsakes'
 
   return (
     <>
@@ -96,13 +101,17 @@ export function MemoryCanvasCardContent({
               </div>
             ))}
             <span className="pl-4 font-sans text-[11px] text-stone-400 italic">
-              Memory snapshots
+              {isEditor
+                ? 'Interactive stage items'
+                : 'Moments & photo keepsakes'}
             </span>
           </div>
         ) : (
           <div className="flex items-center gap-2 text-stone-400">
             <span className="font-heading text-xs tracking-wide text-stone-300 italic">
-              Interactive 3D Stage
+              {isEditor
+                ? 'Interactive 3D Stage'
+                : 'Touch to explore the memory diorama'}
             </span>
           </div>
         )}
@@ -117,7 +126,10 @@ export function MemoryCanvasCardContent({
           <ArrowRight className="h-4 w-4 text-stone-500 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-amber-300" />
         </div>
         <p className="line-clamp-2 font-sans text-xs text-[#A99B90]">
-          {scene.subtitle || 'Diorama stage for keepsakes & moments'}
+          {scene.subtitle ||
+            (isEditor
+              ? 'Diorama stage for keepsakes & moments'
+              : 'Explore intimate keepsakes, photos & memories')}
         </p>
       </div>
     </>

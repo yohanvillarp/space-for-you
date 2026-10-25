@@ -10,6 +10,7 @@ export interface SceneCardProps {
   index?: number
   templateId?: SpaceTemplateId
   accentColor?: string
+  isEditor?: boolean
   onOpenScene: (sceneId: string) => void
   onContextMenu?: (e: React.MouseEvent) => void
   isDraggable?: boolean
@@ -28,6 +29,7 @@ export function SceneCard({
   index = 0,
   templateId = 'birthday',
   accentColor,
+  isEditor = false,
   onOpenScene,
   onContextMenu,
   isDraggable = false,
@@ -101,6 +103,7 @@ export function SceneCard({
           theme={theme}
           accentColor={resolvedAccent}
           isDraggable={isDraggable}
+          isEditor={isEditor}
         />
       ) : (
         <MemoryCanvasCardContent
@@ -109,6 +112,7 @@ export function SceneCard({
           theme={theme}
           accentColor={resolvedAccent}
           isDraggable={isDraggable}
+          isEditor={isEditor}
         />
       )}
     </div>
