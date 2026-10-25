@@ -25,6 +25,7 @@ export interface EditorTopHeaderProps {
   selectedId: string | null
   onDeleteSelected: (id: string) => void
   onResetToDefaults: () => void
+  showUndoRedo?: boolean
   canUndo?: boolean
   canRedo?: boolean
   onUndo?: () => void
@@ -45,6 +46,7 @@ export function EditorTopHeader({
   selectedId,
   onDeleteSelected,
   onResetToDefaults,
+  showUndoRedo = false,
   canUndo = false,
   canRedo = false,
   onUndo,
@@ -138,12 +140,14 @@ export function EditorTopHeader({
         )}
 
         {/* Undo / Redo History Controls */}
-        <UndoRedoControls
-          canUndo={canUndo}
-          canRedo={canRedo}
-          onUndo={onUndo}
-          onRedo={onRedo}
-        />
+        {showUndoRedo && (
+          <UndoRedoControls
+            canUndo={canUndo}
+            canRedo={canRedo}
+            onUndo={onUndo}
+            onRedo={onRedo}
+          />
+        )}
 
         {/* Reset Stage to Defaults */}
         <Button

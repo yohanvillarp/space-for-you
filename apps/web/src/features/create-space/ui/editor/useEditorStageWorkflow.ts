@@ -180,11 +180,13 @@ export function useEditorStageWorkflow({
     [copiedItem, scenes, items, activeSceneId, stage, confirm],
   )
 
+  const isFreeCanvas = activeScene?.type === 'free-canvas'
+
   useStageKeyboardShortcuts({
     selectedItem: selectedItem ?? null,
     copiedItem,
-    canUndo: stage.canUndo,
-    canRedo: stage.canRedo,
+    canUndo: isFreeCanvas && stage.canUndo,
+    canRedo: isFreeCanvas && stage.canRedo,
     onUndo: stage.handleUndo,
     onRedo: stage.handleRedo,
     onCopyItem: stage.handleCopyItem,
