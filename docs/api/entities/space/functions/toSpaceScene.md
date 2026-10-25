@@ -8,7 +8,7 @@
 
 > **toSpaceScene**(`doc`): [`SpaceScene`](../../../features/create-space/type-aliases/SpaceScene.md) \| `null`
 
-Defined in: [apps/web/src/entities/space/api/space-converters.ts:41](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-converters.ts#L41)
+Defined in: [apps/web/src/entities/space/api/space-converters.ts:41](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/space-converters.ts#L41)
 
 Transforms an Appwrite scene document into a typed, polymorphic `SpaceScene`.
 Safely parses the JSON payload into `items` or `letters` depending on `type`.

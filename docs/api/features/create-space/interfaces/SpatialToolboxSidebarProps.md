@@ -6,7 +6,7 @@
 
 # Interface: SpatialToolboxSidebarProps
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:25](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L25)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:25](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L25)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:25]
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:39](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L39)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:39](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L39)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:39]
 
 > `optional` **isCompact?**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:38](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L38)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:38](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L38)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:38]
 
 > **onAddItem**: (`type`, `x?`, `y?`, `defaultData?`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:27](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L27)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:27](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L27)
 
 #### Parameters
 
@@ -60,7 +60,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:27]
 
 > `optional` **onAssignPhoto?**: (`photoUrl`, `file?`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:36](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L36)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:36](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L36)
 
 #### Parameters
 
@@ -82,7 +82,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:36]
 
 > `optional` **onAssignTrack?**: (`track`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:33](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L33)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:33](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L33)
 
 #### Parameters
 
@@ -100,7 +100,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:33]
 
 > `optional` **photoCount?**: `number`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:37](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L37)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:37](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L37)
 
 ---
 
@@ -108,7 +108,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:37]
 
 > `optional` **selectedMusicItem?**: [`SpatialItem`](SpatialItem.md) \| `null`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:34](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L34)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:34](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L34)
 
 ---
 
@@ -116,7 +116,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:34]
 
 > `optional` **selectedPhotoItem?**: [`SpatialItem`](SpatialItem.md) \| `null`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:35](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L35)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:35](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L35)
 
 ---
 
@@ -124,4 +124,4 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:35]
 
 > **templateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:26](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L26)
+Defined in: [apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx:26](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialToolboxSidebar.tsx#L26)
