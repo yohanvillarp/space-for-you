@@ -3,7 +3,11 @@ import { Link, useParams } from 'react-router'
 import { ROUTES } from '@/shared/config'
 import { Container, Card, Button } from '@/shared/ui'
 import { Home, Loader2, Compass } from 'lucide-react'
-import { fetchSpaceBySlug, fetchSpaceById } from '@/entities/space'
+import {
+  fetchSpaceBySlug,
+  fetchSpaceById,
+  getLocalSpaceWithScenes,
+} from '@/entities/space'
 import type { SpaceWithScenes } from '@/entities/space'
 import {
   LockGateScene,
@@ -25,7 +29,7 @@ export function PublicSpacePage() {
 
     let isMounted = true
 
-    // Attempt fetching by slug first, then fallback to ID
+    // Attempt fetching by slug first, then fallback to ID, and finally local storage
     fetchSpaceBySlug(slug)
       .then(async (result) => {
         if (result) return result
@@ -33,17 +37,22 @@ export function PublicSpacePage() {
       })
       .then((spaceData) => {
         if (isMounted) {
-          setData(spaceData)
+          const resolved = spaceData ?? getLocalSpaceWithScenes(slug)
+          setData(resolved)
           setIsLoading(false)
-          if (!spaceData?.space?.isProtected) {
+          if (resolved && !resolved.space?.isProtected) {
             setIsUnlocked(true)
           }
         }
       })
       .catch(() => {
         if (isMounted) {
-          setData(null)
+          const localFallback = getLocalSpaceWithScenes(slug)
+          setData(localFallback)
           setIsLoading(false)
+          if (localFallback && !localFallback.space?.isProtected) {
+            setIsUnlocked(true)
+          }
         }
       })
 
