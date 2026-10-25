@@ -23,7 +23,10 @@ export function PublicOnlyRoute({ children }: PublicOnlyRouteProps) {
         await appwriteAccount.get()
         if (isMounted) {
           setSessionHint(true)
-          navigate(ROUTES.DASHBOARD, { replace: true })
+          const returnPath =
+            sessionStorage.getItem('sfy_auth_return') || ROUTES.DASHBOARD
+          sessionStorage.removeItem('sfy_auth_return')
+          navigate(returnPath, { replace: true })
         }
       } catch {
         if (isMounted) {
