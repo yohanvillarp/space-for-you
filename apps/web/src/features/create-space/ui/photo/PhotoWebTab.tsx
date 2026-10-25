@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Search, Sparkles, Check, Globe } from 'lucide-react'
-import { searchPhotos } from '../../lib/photo-catalog'
-import type { WebPhotoSpecimen } from '../../lib/photo-catalog'
+import { searchPhotos } from '@/features/create-space/lib/photo-catalog'
+import type { WebPhotoSpecimen } from '@/features/create-space/lib/photo-catalog'
 import { playSpatialSfx } from '@/shared/lib'
 
 export interface PhotoWebTabProps {

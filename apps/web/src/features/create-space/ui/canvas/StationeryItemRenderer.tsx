@@ -1,5 +1,5 @@
 import { Sparkles, Camera } from 'lucide-react'
-import type { SpatialItem } from '../../model/spatial-stage.types'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import {
   PolaroidFrame,
   WashiTape,

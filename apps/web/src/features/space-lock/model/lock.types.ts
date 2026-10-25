@@ -13,7 +13,9 @@ export type LockBackgroundTheme =
 
 export interface SpaceProtectionConfig {
   enabled: boolean
-  passcode: string
+  passcode?: string
+  passcodeHash?: string
+  passcodeSalt?: string
   hint?: string
   vaultTheme: LockVaultTheme
   keypadTheme?: LockKeypadTheme
@@ -181,3 +183,22 @@ export const VAULT_THEMES_CATALOG: VaultThemeMeta[] = [
     badgeText: 'Warm & Elegant',
   },
 ]
+
+export function serializeProtectionTheme(
+  cfg?: SpaceProtectionConfig,
+): string | undefined {
+  if (!cfg?.enabled) return undefined
+  return JSON.stringify({
+    vaultTheme: cfg.vaultTheme,
+    keypadTheme: cfg.keypadTheme,
+    backgroundTheme: cfg.backgroundTheme,
+    customTitle: cfg.customTitle,
+    customSubtitle: cfg.customSubtitle,
+    vaultX: cfg.vaultX,
+    vaultY: cfg.vaultY,
+    vaultRotation: cfg.vaultRotation,
+    keypadX: cfg.keypadX,
+    keypadY: cfg.keypadY,
+    keypadRotation: cfg.keypadRotation,
+  })
+}

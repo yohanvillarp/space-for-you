@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import { Compass, Share2 } from 'lucide-react'
-import type { SpaceMeta } from '@/features/create-space/model/scenes.types'
 import type { SpaceTemplateId } from '@/entities/space'
+import type { KeepsakeCardData } from '@/features/create-space/lib/card-canvas-generator'
+import {
+  copyCardImageToClipboard,
+  downloadCardImage,
+  generateKeepsakeCardCanvas,
+} from '@/features/create-space/lib/card-canvas-generator'
+import type { SpaceMeta } from '@/features/create-space/model/scenes.types'
+import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { THEME_REGISTRY } from '@/features/space-themes'
-import { ShareCardInlineEditor } from './ShareCardInlineEditor'
+import { cn, playSpatialSfx } from '@/shared/lib'
+import { Compass } from 'lucide-react'
+import { useState } from 'react'
 import { ShareActionsPanel } from './ShareActionsPanel'
+import { ShareCardInlineEditor } from './ShareCardInlineEditor'
 import type {
   ShareCardCustomization,
   ShareColorTarget,
 } from './share-customizer.types'
-import {
-  generateKeepsakeCardCanvas,
-  copyCardImageToClipboard,
-  downloadCardImage,
-} from '@/features/create-space/lib/card-canvas-generator'
-import type { KeepsakeCardData } from '@/features/create-space/lib/card-canvas-generator'
-import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
-import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface ShareSceneProps {
   templateId?: SpaceTemplateId
@@ -58,6 +58,10 @@ export function ShareScene({
     recipientName: spaceMeta.recipientName,
     url,
     accentColor: customization.qrColor,
+    cardBg: customization.cardBg,
+    textColor: customization.textColor,
+    fontFamily: customization.fontFamily,
+    qrStyle: customization.qrStyle,
     tapeColor: customization.tapeColor,
     note: customization.customNote,
   }
@@ -135,10 +139,6 @@ export function ShareScene({
       <div className="relative z-10 flex w-full max-w-5xl flex-col items-center space-y-8 sm:space-y-10">
         {/* Editorial Scene Header */}
         <div className="flex w-full max-w-xl flex-col items-center space-y-2 px-4 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-1 font-sans text-xs text-amber-300">
-            <Share2 className="h-3.5 w-3.5" />
-            <span>Invitation Keepsake</span>
-          </div>
           <h2 className="font-heading text-3xl font-medium tracking-tight text-[#FAF6F0] sm:text-4xl">
             Share Your Sanctuary
           </h2>

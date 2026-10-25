@@ -53,6 +53,7 @@ export interface EditorSidebarRendererProps {
   onAddLetter: () => void
   onUpdateLetter: (updated: LetterItem) => void
   onDeleteLetter: (id: string) => void
+  onAssignLetterPhoto?: (letterId: string, url: string, file?: File) => void
   isCompact: boolean
   shareCustomizer?: {
     customization: ShareCardCustomization
@@ -95,6 +96,7 @@ export function EditorSidebarRenderer({
   onAddLetter,
   onUpdateLetter,
   onDeleteLetter,
+  onAssignLetterPhoto,
   isCompact,
   shareCustomizer,
 }: EditorSidebarRendererProps) {
@@ -155,6 +157,7 @@ export function EditorSidebarRenderer({
         onAddLetter={onAddLetter}
         onUpdateLetter={onUpdateLetter}
         onDeleteLetter={onDeleteLetter}
+        onAssignLetterPhoto={onAssignLetterPhoto}
         isCompact={isCompact}
         className="h-full w-full"
       />

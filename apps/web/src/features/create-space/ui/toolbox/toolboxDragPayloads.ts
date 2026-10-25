@@ -3,7 +3,7 @@ import type { AudioTrack } from '@/entities/audio'
 import type {
   SpatialItemType,
   ToolboxItemDef,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 
 export function getIconSvgUrl(iconKey: string): string {
   const [prefix, name] = iconKey.split(':')

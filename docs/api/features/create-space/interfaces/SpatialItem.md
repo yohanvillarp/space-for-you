@@ -6,7 +6,7 @@
 
 # Interface: SpatialItem
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:66](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L66)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:66](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L66)
 
 A discrete interactive item positioned in the 2D spatial canvas diorama.
 
@@ -16,7 +16,7 @@ A discrete interactive item positioned in the 2D spatial canvas diorama.
 
 > **data**: [`SpatialItemData`](SpatialItemData.md)
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:84](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L84)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:84](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L84)
 
 Domain item payload data.
 
@@ -26,7 +26,7 @@ Domain item payload data.
 
 > **id**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:68](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L68)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:68](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L68)
 
 Unique item instance ID.
 
@@ -36,7 +36,7 @@ Unique item instance ID.
 
 > `optional` **isLocked?**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:82](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L82)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:82](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L82)
 
 Whether position and rotation are locked against accidental drag.
 
@@ -46,7 +46,7 @@ Whether position and rotation are locked against accidental drag.
 
 > **label**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:72](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L72)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:72](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L72)
 
 Display label in the layer list or inspector.
 
@@ -56,7 +56,7 @@ Display label in the layer list or inspector.
 
 > **rotation**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:78](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L78)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:78](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L78)
 
 Visual rotation angle in degrees (-25 to +25).
 
@@ -66,7 +66,7 @@ Visual rotation angle in degrees (-25 to +25).
 
 > **type**: [`SpatialItemType`](../type-aliases/SpatialItemType.md)
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:70](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L70)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:70](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L70)
 
 Spatial artifact archetype.
 
@@ -76,7 +76,7 @@ Spatial artifact archetype.
 
 > **x**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:74](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L74)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:74](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L74)
 
 Normalized X position (0 - 100 percentage relative to stage width).
 
@@ -86,7 +86,7 @@ Normalized X position (0 - 100 percentage relative to stage width).
 
 > **y**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:76](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L76)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:76](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L76)
 
 Normalized Y position (0 - 100 percentage relative to stage height).
 
@@ -96,6 +96,6 @@ Normalized Y position (0 - 100 percentage relative to stage height).
 
 > **zIndex**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:80](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/spatial-stage.types.ts#L80)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:80](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L80)
 
 Depth layering stack order.

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { SpatialItem } from '../../model/spatial-stage.types'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
 
 export interface StageKeyboardShortcutsProps {

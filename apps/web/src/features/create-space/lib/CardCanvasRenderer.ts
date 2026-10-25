@@ -1,16 +1,12 @@
 import QRCodeStyling from 'qr-code-styling'
+import type { KeepsakeCardData } from './card-canvas-types'
+import { isDarkColor, resolveCardFont } from './card-canvas-types'
+import { drawRoundedRect, buildQrCodeOptions } from './card-canvas-helpers'
 
-export interface KeepsakeCardData {
-  recipientName: string
-  url: string
-  accentColor: string
-  tapeColor?: 'rose' | 'gold' | 'sage'
-  note?: string
-}
+export type { KeepsakeCardData }
 
 /**
- * OOP Renderer class generating high-resolution Keepsake Gift Cards on HTML5 Canvas.
- * Encapsulates dimension calculations, canvas state, and graphic primitives.
+ * OOP Renderer generating high-resolution Keepsake Gift Cards matching the customizer.
  */
 export class CardCanvasRenderer {
   private readonly canvas: HTMLCanvasElement
@@ -32,9 +28,7 @@ export class CardCanvasRenderer {
     this.canvas.height = this.height
 
     const context = this.canvas.getContext('2d')
-    if (!context) {
-      throw new Error('Could not get 2D canvas rendering context')
-    }
+    if (!context) throw new Error('Could not get 2D canvas context')
     this.ctx = context
   }
 
@@ -45,7 +39,6 @@ export class CardCanvasRenderer {
     this.drawHeaderTypography()
     await this.drawQRCode()
     this.drawFooterTypography()
-
     return this.canvas
   }
 
@@ -60,31 +53,27 @@ export class CardCanvasRenderer {
 
   private drawCardBase(): void {
     const { ctx, cardX, cardY, cardW, cardH, cardRadius, data } = this
+    const bg = data.cardBg || '#FFFDF9'
+    const isDark = isDarkColor(bg)
 
-    // Outer card drop shadow
+    // Outer card shadow
     ctx.save()
     ctx.shadowColor = 'rgba(0, 0, 0, 0.45)'
     ctx.shadowBlur = 35
     ctx.shadowOffsetY = 15
-
-    const cardGrad = ctx.createLinearGradient(
-      cardX,
-      cardY,
-      cardX,
-      cardY + cardH,
-    )
-    cardGrad.addColorStop(0, '#FFFDF9')
-    cardGrad.addColorStop(1, '#F8F4EC')
-    ctx.fillStyle = cardGrad
-    this.drawRoundedRect(cardX, cardY, cardW, cardH, cardRadius)
+    ctx.fillStyle = bg
+    drawRoundedRect(ctx, cardX, cardY, cardW, cardH, cardRadius)
     ctx.fill()
     ctx.restore()
 
-    // Delicate inner border
+    // Delicate inner border matching preview
     ctx.save()
-    ctx.strokeStyle = `${data.accentColor}33`
+    ctx.strokeStyle = isDark
+      ? 'rgba(255, 255, 255, 0.12)'
+      : 'rgba(0, 0, 0, 0.08)'
     ctx.lineWidth = 1.5
-    this.drawRoundedRect(
+    drawRoundedRect(
+      ctx,
       cardX + 16,
       cardY + 16,
       cardW - 32,
@@ -103,17 +92,17 @@ export class CardCanvasRenderer {
 
     ctx.save()
     ctx.translate(width / 2, tapeY + tapeH / 2)
-    ctx.rotate(-0.03)
+    ctx.rotate(-0.04)
 
     ctx.fillStyle =
       data.tapeColor === 'rose'
-        ? 'rgba(214, 117, 100, 0.75)'
+        ? 'rgba(244, 63, 94, 0.75)'
         : data.tapeColor === 'sage'
-          ? 'rgba(45, 160, 145, 0.75)'
-          : 'rgba(230, 175, 70, 0.75)'
+          ? 'rgba(20, 184, 166, 0.75)'
+          : 'rgba(245, 158, 11, 0.75)'
 
     ctx.fillRect(-tapeW / 2, -tapeH / 2, tapeW, tapeH)
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)'
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)'
     ctx.lineWidth = 1
     ctx.strokeRect(-tapeW / 2, -tapeH / 2, tapeW, tapeH)
     ctx.restore()
@@ -121,20 +110,22 @@ export class CardCanvasRenderer {
 
   private drawHeaderTypography(): void {
     const { ctx, width, cardY, data } = this
+    const textColor = data.textColor || '#221915'
     ctx.save()
     ctx.textAlign = 'center'
 
-    // Main Heading
-    ctx.fillStyle = '#221915'
-    ctx.font = '500 44px "Lora", Georgia, serif'
+    // Main Heading: "For [Recipient]"
+    ctx.fillStyle = textColor
+    ctx.font = resolveCardFont(data.fontFamily, 44, '500')
     const recipient = data.recipientName
       ? `For ${data.recipientName}`
       : 'A Space for You'
     ctx.fillText(recipient, width / 2, cardY + 85)
 
     // Subtitle Note
-    ctx.fillStyle = '#66554D'
-    ctx.font = 'italic 18px "Lora", Georgia, serif'
+    ctx.fillStyle = textColor
+    ctx.globalAlpha = 0.85
+    ctx.font = resolveCardFont(data.fontFamily, 18, '400', true)
     const subtitle = data.note || 'A quiet, private world meant solely for you.'
     ctx.fillText(subtitle, width / 2, cardY + 125)
 
@@ -145,18 +136,7 @@ export class CardCanvasRenderer {
     const { ctx, width, cardY, data } = this
     const qrSize = 360
 
-    const qrCode = new QRCodeStyling({
-      width: qrSize,
-      height: qrSize,
-      type: 'svg',
-      data: data.url,
-      margin: 8,
-      dotsOptions: { color: data.accentColor, type: 'rounded' },
-      backgroundOptions: { color: '#FFFFFF' },
-      cornersSquareOptions: { color: data.accentColor, type: 'extra-rounded' },
-      cornersDotOptions: { color: data.accentColor, type: 'dot' },
-    })
-
+    const qrCode = new QRCodeStyling(buildQrCodeOptions(data, qrSize))
     const rawQr = await qrCode.getRawData('png')
     if (!rawQr || !(rawQr instanceof Blob)) return
 
@@ -174,12 +154,17 @@ export class CardCanvasRenderer {
 
     // White base card with soft shadow
     ctx.save()
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.12)'
-    ctx.shadowBlur = 20
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.15)'
+    ctx.shadowBlur = 22
     ctx.shadowOffsetY = 8
     ctx.fillStyle = '#FFFFFF'
-    this.drawRoundedRect(qrX - 16, qrY - 16, qrSize + 32, qrSize + 32, 24)
+    drawRoundedRect(ctx, qrX - 16, qrY - 16, qrSize + 32, qrSize + 32, 24)
     ctx.fill()
+
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)'
+    ctx.lineWidth = 1
+    drawRoundedRect(ctx, qrX - 16, qrY - 16, qrSize + 32, qrSize + 32, 24)
+    ctx.stroke()
     ctx.restore()
 
     ctx.drawImage(img, qrX, qrY, qrSize, qrSize)
@@ -188,16 +173,22 @@ export class CardCanvasRenderer {
 
   private drawFooterTypography(): void {
     const { ctx, width, cardX, cardY, cardW, data } = this
+    const textColor = data.textColor || '#221915'
+    const isDark = isDarkColor(data.cardBg)
     ctx.save()
     ctx.textAlign = 'center'
 
     // Scan instruction
-    ctx.fillStyle = '#3A2E29'
-    ctx.font = '500 16px "Lora", Georgia, serif'
+    ctx.fillStyle = textColor
+    ctx.globalAlpha = 0.75
+    ctx.font = resolveCardFont(data.fontFamily, 16, '400', true)
     ctx.fillText('Scan with your camera to open', width / 2, cardY + 630)
+    ctx.globalAlpha = 1
 
-    // Divider
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)'
+    // Subtle divider
+    ctx.strokeStyle = isDark
+      ? 'rgba(255, 255, 255, 0.12)'
+      : 'rgba(0, 0, 0, 0.08)'
     ctx.lineWidth = 1
     ctx.beginPath()
     ctx.moveTo(cardX + 120, cardY + 675)
@@ -206,31 +197,9 @@ export class CardCanvasRenderer {
 
     // Signature
     ctx.fillStyle = data.accentColor
-    ctx.font = 'italic 15px "Lora", Georgia, serif'
+    ctx.font = resolveCardFont(data.fontFamily, 15, '500', true)
     ctx.fillText('✦ Created with love ✦', width / 2, cardY + 725)
 
     ctx.restore()
-  }
-
-  private drawRoundedRect(
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-    r: number,
-  ): void {
-    const { ctx } = this
-    if (typeof ctx.roundRect === 'function') {
-      ctx.beginPath()
-      ctx.roundRect(x, y, w, h, r)
-      return
-    }
-    ctx.beginPath()
-    ctx.moveTo(x + r, y)
-    ctx.arcTo(x + w, y, x + w, y + h, r)
-    ctx.arcTo(x + w, y + h, x, y + h, r)
-    ctx.arcTo(x, y + h, x, y, r)
-    ctx.arcTo(x, y, x + w, y, r)
-    ctx.closePath()
   }
 }

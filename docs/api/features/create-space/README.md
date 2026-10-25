@@ -9,10 +9,12 @@
 ## Interfaces
 
 - [BaseScene](interfaces/BaseScene.md)
+- [CreateSpaceModalProps](interfaces/CreateSpaceModalProps.md)
 - [FreeCanvasScene](interfaces/FreeCanvasScene.md)
 - [FullscreenSpatialEditorProps](interfaces/FullscreenSpatialEditorProps.md)
 - [LetterItem](interfaces/LetterItem.md)
 - [LiveSpaceCanvasProps](interfaces/LiveSpaceCanvasProps.md)
+- [RenameSpaceModalProps](interfaces/RenameSpaceModalProps.md)
 - [ShareableKeepsakeCardProps](interfaces/ShareableKeepsakeCardProps.md)
 - [ShareSpaceModalProps](interfaces/ShareSpaceModalProps.md)
 - [SpaceCreationStepperProps](interfaces/SpaceCreationStepperProps.md)
@@ -32,6 +34,7 @@
 
 ## Type Aliases
 
+- [ConfirmAlertFn](type-aliases/ConfirmAlertFn.md)
 - [EnvelopeColor](type-aliases/EnvelopeColor.md)
 - [LetterBlockId](type-aliases/LetterBlockId.md)
 - [LetterFontSize](type-aliases/LetterFontSize.md)
@@ -46,14 +49,25 @@
 
 - [DEFAULT\_SPACE\_META](variables/DEFAULT_SPACE_META.md)
 - [INITIAL\_LETTERS\_DATA](variables/INITIAL_LETTERS_DATA.md)
+- [MAX\_SPACE\_ARTIFACTS](variables/MAX_SPACE_ARTIFACTS.md)
+- [MAX\_SPACE\_MUSIC](variables/MAX_SPACE_MUSIC.md)
+- [MAX\_SPACE\_PHOTOS](variables/MAX_SPACE_PHOTOS.md)
+- [MAX\_SPACE\_SCENES](variables/MAX_SPACE_SCENES.md)
+- [MAX\_USER\_SPACES](variables/MAX_USER_SPACES.md)
 
 ## Functions
 
 - [AddSceneModal](functions/AddSceneModal.md)
+- [countTotalArtifacts](functions/countTotalArtifacts.md)
+- [countTotalMusicItems](functions/countTotalMusicItems.md)
+- [countTotalPhotos](functions/countTotalPhotos.md)
+- [CreateSpaceModal](functions/CreateSpaceModal.md)
 - [FullscreenSpatialEditor](functions/FullscreenSpatialEditor.md)
+- [isMusicItemType](functions/isMusicItemType.md)
 - [LettersScene](functions/LettersScene.md)
 - [LettersToolboxSidebar](functions/LettersToolboxSidebar.md)
 - [LiveSpaceCanvas](functions/LiveSpaceCanvas.md)
+- [RenameSpaceModal](functions/RenameSpaceModal.md)
 - [ShareableKeepsakeCard](functions/ShareableKeepsakeCard.md)
 - [ShareCustomizerSidebar](functions/ShareCustomizerSidebar.md)
 - [ShareScene](functions/ShareScene.md)
@@ -70,3 +84,6 @@
 - [StylizedQrCode](functions/StylizedQrCode.md)
 - [ThemeModeSelector](functions/ThemeModeSelector.md)
 - [ThemeSelectorList](functions/ThemeSelectorList.md)
+- [validateItemAddition](functions/validateItemAddition.md)
+- [validateSceneAddition](functions/validateSceneAddition.md)
+- [validateSpaceCreation](functions/validateSpaceCreation.md)

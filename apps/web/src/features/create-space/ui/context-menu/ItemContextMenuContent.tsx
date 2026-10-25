@@ -9,7 +9,7 @@ import {
   Clipboard,
   Trash2,
 } from 'lucide-react'
-import type { SpatialItem } from '../../model/spatial-stage.types'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
 import type { SpatialSfxName } from '@/shared/lib'
 import { ItemSpecimenActions } from './ItemSpecimenActions'

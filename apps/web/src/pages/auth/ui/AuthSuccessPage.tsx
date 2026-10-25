@@ -13,64 +13,68 @@ export function AuthSuccessPage() {
     if (isExecutingRef.current) return
     isExecutingRef.current = true
 
-    let isMounted = true
-
     async function processOAuthCallback() {
       try {
         const url = new URL(window.location.href)
-        const secret = url.searchParams.get('secret')
-        const userId = url.searchParams.get('userId')
+        let secret = url.searchParams.get('secret')
+        let userId = url.searchParams.get('userId')
 
-        // 1. If token credentials are present, exchange them for a session
+        // Support hash-based callback parameters if provider rewrites query
+        if ((!secret || !userId) && url.hash) {
+          const hashParams = new URLSearchParams(url.hash.replace(/^#\/?/, ''))
+          secret = secret || hashParams.get('secret')
+          userId = userId || hashParams.get('userId')
+        }
+
+        // Fallback: decode userId from JWT secret payload if missing
+        if (!userId && secret) {
+          try {
+            const parts = secret.split('.')
+            if (parts.length >= 2) {
+              const base64Url = parts[1].replace(/-/g, '+').replace(/_/g, '/')
+              const decoded = JSON.parse(atob(base64Url))
+              userId = decoded.userId || decoded.sub || decoded.id || null
+            }
+          } catch {
+            // ignore malformed token
+          }
+        }
+
+        // If credentials exist, exchange for an active session
         if (secret && userId) {
           try {
             await appwriteAccount.createSession({ userId, secret })
           } catch (sessionErr) {
-            // Secret might have already been consumed or session already active
             console.warn('OAuth token exchange notice:', sessionErr)
           }
         }
 
-        // 2. Verify that an active session exists in Appwrite
-        const user = await appwriteAccount.get()
-        if (user) {
-          setSessionHint(true)
-          if (isMounted) {
-            window.location.assign(ROUTES.DASHBOARD)
+        // Verify authenticated user
+        try {
+          const user = await appwriteAccount.get()
+          if (user) {
+            setSessionHint(true)
+            window.location.replace(ROUTES.DASHBOARD)
             return
           }
+        } catch {
+          // Fall through to error
         }
 
-        throw new Error('Missing active session. Please sign in again.')
+        throw new Error(
+          'Unable to verify your account session. Please try signing in again.',
+        )
       } catch (err) {
-        if (isMounted) {
-          // Fallback check: verify if the session was established despite token exchange warning
-          try {
-            const user = await appwriteAccount.get()
-            if (user) {
-              setSessionHint(true)
-              window.location.assign(ROUTES.DASHBOARD)
-              return
-            }
-          } catch {
-            // Truly unauthenticated
-          }
-
-          setIsProcessing(false)
-          setError(
-            err instanceof Error
-              ? err.message
-              : 'An error occurred while establishing your session.',
-          )
-        }
+        setIsProcessing(false)
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'An error occurred while establishing your session.',
+        )
       }
     }
 
     void processOAuthCallback()
-
-    return () => {
-      isMounted = false
-    }
   }, [])
 
   return (
@@ -96,7 +100,7 @@ export function AuthSuccessPage() {
               </div>
               <div className="space-y-2">
                 <h1 className="font-heading text-text-primary text-xl font-medium">
-                  Authentication Failed
+                  Authentication Notice
                 </h1>
                 <p className="text-text-secondary font-sans text-sm leading-relaxed">
                   {error}

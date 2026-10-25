@@ -4,7 +4,7 @@ import type {
   SpatialItem,
   SpatialItemType,
   ToolboxItemDef,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 
 export interface UseCanvasDragAndDropProps {
   items: SpatialItem[]

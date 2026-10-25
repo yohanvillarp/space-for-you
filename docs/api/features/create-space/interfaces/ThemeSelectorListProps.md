@@ -6,7 +6,7 @@
 
 # Interface: ThemeSelectorListProps
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L7)
+Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L7)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:7](http
 
 > `optional` **layout?**: `"grid"` \| `"list"`
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L10)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:10](htt
 
 > **onSelectTemplate**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L9)
+Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L9)
 
 #### Parameters
 
@@ -40,4 +40,4 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:9](http
 
 > **selectedTemplateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/ThemeSelectorList.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeSelectorList.tsx#L8)

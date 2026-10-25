@@ -8,7 +8,7 @@
 
 > **apiClient**\<`T`\>(`endpoint`, `options?`): `Promise`\<`T`\>
 
-Defined in: [apps/web/src/shared/api/client.ts:5](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/shared/api/client.ts#L5)
+Defined in: [apps/web/src/shared/api/client.ts:5](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/shared/api/client.ts#L5)
 
 ## Type Parameters
 

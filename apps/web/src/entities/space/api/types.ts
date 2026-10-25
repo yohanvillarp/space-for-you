@@ -35,6 +35,14 @@ export interface AppwriteSpaceDocument extends Models.DefaultDocument {
   themeConfig?: string
   /** Whether the sanctuary requires a passcode or privacy gate to access. */
   isProtected?: boolean
+  /** Cryptographic hash (SHA-256) of the protection passcode. */
+  passcodeHash?: string
+  /** Cryptographic salt for passcode hashing. */
+  passcodeSalt?: string
+  /** Optional hint displayed on the passcode gate. */
+  passcodeHint?: string
+  /** Passcode gate theme design variant. */
+  protectionTheme?: string
   /** Owner user ID matching Appwrite Auth `$id`. */
   userId: string
 }
@@ -76,4 +84,8 @@ export interface SpaceWithScenes {
   themeConfig?: string
   /** Resolved public slug for sharing. */
   slug?: string
+  passcodeHash?: string
+  passcodeSalt?: string
+  passcodeHint?: string
+  protectionTheme?: string
 }

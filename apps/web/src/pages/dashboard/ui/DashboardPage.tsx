@@ -1,15 +1,25 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import type { UserSpace } from '@/entities/space'
 import { SpaceCard, useUserSpaces } from '@/entities/space'
-import { ProtectedRoute } from '@/features'
+import {
+  ProtectedRoute,
+  CreateSpaceModal,
+  RenameSpaceModal,
+  validateSpaceCreation,
+} from '@/features'
 import { signOut } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
-import { Button, Card, Container } from '@/shared/ui'
+import { Button, Card, Container, useConfirmDialog } from '@/shared/ui'
 import { Logomark } from '@/shared/ui/logo'
 
 export function DashboardPage() {
+  const { confirm } = useConfirmDialog()
   const [isSigningOut, setIsSigningOut] = useState(false)
-  const { spaces, deleteSpace, duplicateSpace } = useUserSpaces()
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [duplicateTarget, setDuplicateTarget] = useState<UserSpace | null>(null)
+  const [renameTarget, setRenameTarget] = useState<UserSpace | null>(null)
+
+  const { spaces, deleteSpace, duplicateSpace, renameSpace } = useUserSpaces()
 
   const handleSignOut = async () => {
     try {
@@ -18,6 +28,28 @@ export function DashboardPage() {
     } catch {
       setIsSigningOut(false)
       window.location.assign(ROUTES.AUTH)
+    }
+  }
+
+  const handleOpenCreateModal = () => {
+    if (!validateSpaceCreation(spaces.length, confirm)) return
+    setDuplicateTarget(null)
+    setIsCreateModalOpen(true)
+  }
+
+  const handleDuplicateRequest = (id: string) => {
+    if (!validateSpaceCreation(spaces.length, confirm, true)) return
+    const target = spaces.find((s) => s.id === id)
+    if (target) {
+      setDuplicateTarget(target)
+      setIsCreateModalOpen(true)
+    }
+  }
+
+  const handleRenameRequest = (id: string) => {
+    const target = spaces.find((s) => s.id === id)
+    if (target) {
+      setRenameTarget(target)
     }
   }
 
@@ -45,8 +77,13 @@ export function DashboardPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Button asChild variant="primary" size="md">
-                    <Link to={ROUTES.NEW_SPACE}>+ Create space</Link>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    size="md"
+                    onClick={handleOpenCreateModal}
+                  >
+                    + Create space
                   </Button>
                   <Button
                     type="button"
@@ -73,8 +110,13 @@ export function DashboardPage() {
                     </p>
                   </div>
                   {spaces.length > 0 && (
-                    <Button asChild variant="outline" size="sm">
-                      <Link to={ROUTES.NEW_SPACE}>+ Create a space</Link>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleOpenCreateModal}
+                    >
+                      + Create a space
                     </Button>
                   )}
                 </div>
@@ -86,7 +128,8 @@ export function DashboardPage() {
                         key={space.id}
                         space={space}
                         onDelete={deleteSpace}
-                        onDuplicate={duplicateSpace}
+                        onDuplicate={handleDuplicateRequest}
+                        onRename={handleRenameRequest}
                       />
                     ))}
                   </div>
@@ -105,16 +148,51 @@ export function DashboardPage() {
                       </p>
                     </div>
                     <div className="pt-3">
-                      <Button asChild variant="primary" size="md">
-                        <Link to={ROUTES.NEW_SPACE}>
-                          Start your first space
-                        </Link>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        size="md"
+                        onClick={handleOpenCreateModal}
+                      >
+                        Start your first space
                       </Button>
                     </div>
                   </Card>
                 )}
               </div>
             </Container>
+
+            <CreateSpaceModal
+              key={duplicateTarget ? `dup-${duplicateTarget.id}` : 'new'}
+              isOpen={isCreateModalOpen}
+              onClose={() => {
+                setIsCreateModalOpen(false)
+                setDuplicateTarget(null)
+              }}
+              sourceSpaceId={duplicateTarget?.id}
+              initialTitle={
+                duplicateTarget ? `${duplicateTarget.title} (Copy)` : undefined
+              }
+              initialRecipientName={duplicateTarget?.recipientName}
+              onDuplicate={(sourceId, title, recipient) => {
+                if (!validateSpaceCreation(spaces.length, confirm, true)) return
+                duplicateSpace(sourceId, title, recipient)
+              }}
+            />
+
+            {renameTarget && (
+              <RenameSpaceModal
+                key={renameTarget.id}
+                isOpen={Boolean(renameTarget)}
+                onClose={() => setRenameTarget(null)}
+                spaceId={renameTarget.id}
+                currentTitle={renameTarget.title}
+                currentRecipient={renameTarget.recipientName}
+                onRename={(id, newTitle, newRecipient) => {
+                  renameSpace(id, newTitle, newRecipient)
+                }}
+              />
+            )}
           </div>
         )
       }}

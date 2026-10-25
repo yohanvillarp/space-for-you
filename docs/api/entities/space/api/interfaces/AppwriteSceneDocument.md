@@ -6,7 +6,7 @@
 
 # Interface: AppwriteSceneDocument
 
-Defined in: [apps/web/src/entities/space/api/types.ts:46](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L46)
+Defined in: [apps/web/src/entities/space/api/types.ts:54](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L54)
 
 Raw document model stored in the Appwrite `space_scenes` collection.
 Each document represents a room, letter desk, or diorama canvas in the space.
@@ -135,7 +135,7 @@ Document update date in ISO 8601 format.
 
 > **icon**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:58](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L58)
+Defined in: [apps/web/src/entities/space/api/types.ts:66](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L66)
 
 Lucide icon identifier for UI tabs and buttons.
 
@@ -145,7 +145,7 @@ Lucide icon identifier for UI tabs and buttons.
 
 > **order**: `number`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:50](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L50)
+Defined in: [apps/web/src/entities/space/api/types.ts:58](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L58)
 
 Zero-indexed sequential display order for navigation.
 
@@ -155,7 +155,7 @@ Zero-indexed sequential display order for navigation.
 
 > **payload**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:60](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L60)
+Defined in: [apps/web/src/entities/space/api/types.ts:68](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L68)
 
 JSON-serialized array of SpatialItem[] or LetterItem[] objects.
 
@@ -165,7 +165,7 @@ JSON-serialized array of SpatialItem[] or LetterItem[] objects.
 
 > **spaceId**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:48](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L48)
+Defined in: [apps/web/src/entities/space/api/types.ts:56](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L56)
 
 Foreign key pointing to the parent space document ID.
 
@@ -175,7 +175,7 @@ Foreign key pointing to the parent space document ID.
 
 > `optional` **subtitle?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:56](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L56)
+Defined in: [apps/web/src/entities/space/api/types.ts:64](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L64)
 
 Optional subtitle or emotional prompt.
 
@@ -185,7 +185,7 @@ Optional subtitle or emotional prompt.
 
 > **title**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:54](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L54)
+Defined in: [apps/web/src/entities/space/api/types.ts:62](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L62)
 
 Scene tab/portal title (e.g., "Heartfelt Letters", "Stage Diorama").
 
@@ -195,6 +195,6 @@ Scene tab/portal title (e.g., "Heartfelt Letters", "Stage Diorama").
 
 > **type**: `"free-canvas"` \| `"letters"`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:52](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L52)
+Defined in: [apps/web/src/entities/space/api/types.ts:60](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L60)
 
 Polymorphic scene discriminator.

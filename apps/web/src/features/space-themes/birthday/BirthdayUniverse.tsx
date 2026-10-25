@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { Sparkles } from 'lucide-react'
-import { CandleFlame, PolaroidFrame, WashiTape, MusicBox } from '../shared'
+import {
+  CandleFlame,
+  PolaroidFrame,
+  WashiTape,
+  MusicBox,
+} from '@/features/space-themes/shared'
 import { getPresetTrackForTemplate } from '@/entities/audio'
 import { playSpatialSfx } from '@/shared/lib'
 import './birthday.css'

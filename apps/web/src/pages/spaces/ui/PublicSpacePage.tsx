@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '@/shared/config'
 import { Container, Card, Button } from '@/shared/ui'
 import { Heart, Home, ArrowRight, Loader2, Compass } from 'lucide-react'
 import { fetchSpaceBySlug, fetchSpaceById } from '@/entities/space'
 import type { SpaceWithScenes } from '@/entities/space'
+import {
+  LockGateScene,
+  DEFAULT_PROTECTION_CONFIG,
+  type SpaceProtectionConfig,
+} from '@/features/space-lock'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
@@ -12,6 +17,7 @@ export function PublicSpacePage() {
   const { slug } = useParams<{ slug: string }>()
   const [data, setData] = useState<SpaceWithScenes | null>(null)
   const [isLoading, setIsLoading] = useState(() => Boolean(slug))
+  const [isUnlocked, setIsUnlocked] = useState(false)
 
   useEffect(() => {
     if (!slug) return
@@ -47,6 +53,36 @@ export function PublicSpacePage() {
   const studioHref = space
     ? `${ROUTES.STUDIO}?spaceId=${space.id}&template=${space.templateId}`
     : ROUTES.HOME
+
+  const protectionConfig: SpaceProtectionConfig = useMemo(() => {
+    let parsedTheme: Partial<SpaceProtectionConfig> = {}
+    try {
+      if (data?.protectionTheme) parsedTheme = JSON.parse(data.protectionTheme)
+    } catch {
+      parsedTheme = {}
+    }
+    return {
+      ...DEFAULT_PROTECTION_CONFIG,
+      ...parsedTheme,
+      enabled: Boolean(space?.isProtected),
+      passcodeHash: data?.passcodeHash,
+      passcodeSalt: data?.passcodeSalt,
+      hint: data?.passcodeHint,
+    }
+  }, [data, space?.isProtected])
+
+  if (!isLoading && space?.isProtected && !isUnlocked) {
+    return (
+      <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col overflow-hidden bg-[#0F0B09]">
+        <LockGateScene
+          config={protectionConfig}
+          spaceTitle={space.title}
+          recipientName={space.recipientName}
+          onProceedToStage={() => setIsUnlocked(true)}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="animate-fade-in bg-bg-base text-text-primary flex min-h-screen flex-col justify-between px-4 py-12 sm:px-6">

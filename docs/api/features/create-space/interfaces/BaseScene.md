@@ -6,7 +6,7 @@
 
 # Interface: BaseScene
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:77](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L77)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:77](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L77)
 
 Common base properties shared by all scenes in a space.
 
@@ -20,7 +20,7 @@ Common base properties shared by all scenes in a space.
 
 > **icon**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:87](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L87)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:87](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L87)
 
 Lucide icon name for navigation.
 
@@ -30,7 +30,7 @@ Lucide icon name for navigation.
 
 > **id**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:79](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L79)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:79](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L79)
 
 Unique scene identifier.
 
@@ -40,7 +40,7 @@ Unique scene identifier.
 
 > **order**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:89](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L89)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:89](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L89)
 
 Sequential zero-indexed display order.
 
@@ -50,7 +50,7 @@ Sequential zero-indexed display order.
 
 > **subtitle**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:85](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L85)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:85](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L85)
 
 Emotional subtitle or description.
 
@@ -60,7 +60,7 @@ Emotional subtitle or description.
 
 > **title**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:83](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L83)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:83](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L83)
 
 Tab and header title.
 
@@ -70,6 +70,6 @@ Tab and header title.
 
 > **type**: [`SceneType`](../type-aliases/SceneType.md)
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:81](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L81)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:81](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L81)
 
 Polymorphic scene discriminator.

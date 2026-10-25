@@ -6,7 +6,7 @@
 
 # Interface: ThemeModeSelectorProps
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L10)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:10](htt
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L14)
+Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L14)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:14](htt
 
 > **onSelectTemplate**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L12)
+Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L12)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:12](htt
 
 > `optional` **orientation?**: `"horizontal"` \| `"vertical"`
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L13)
+Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L13)
 
 ---
 
@@ -48,4 +48,4 @@ Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:13](htt
 
 > **selectedTemplateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L11)
+Defined in: [apps/web/src/features/create-space/ui/ThemeModeSelector.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ThemeModeSelector.tsx#L11)

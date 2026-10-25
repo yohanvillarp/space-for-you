@@ -4,7 +4,7 @@ import type {
   ToolboxItemDef,
   SpatialItemType,
   SpatialItemData,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 import { TangibleSpecimenPreview } from './TangibleSpecimenPreview'
 
 export interface ObjectsTabContentProps {

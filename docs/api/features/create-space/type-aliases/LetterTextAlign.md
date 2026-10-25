@@ -8,6 +8,6 @@
 
 > **LetterTextAlign** = `"left"` \| `"center"` \| `"justify"`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L37)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L37)
 
 Text alignment options for letter contents.

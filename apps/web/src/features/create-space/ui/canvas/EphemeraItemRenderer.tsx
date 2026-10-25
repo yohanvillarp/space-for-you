@@ -1,4 +1,4 @@
-import type { SpatialItem } from '../../model/spatial-stage.types'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { WashiTape } from '@/features/space-themes/shared'
 import { playSpatialSfx } from '@/shared/lib'
 

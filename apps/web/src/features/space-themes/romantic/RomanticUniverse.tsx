@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { Heart, Lock } from 'lucide-react'
-import { WaxSeal, PolaroidFrame, VinylPlayer, WashiTape } from '../shared'
+import {
+  WaxSeal,
+  PolaroidFrame,
+  VinylPlayer,
+  WashiTape,
+} from '@/features/space-themes/shared'
 import './romantic.css'
 
 export function RomanticUniverse() {

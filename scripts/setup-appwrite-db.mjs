@@ -317,8 +317,11 @@ async function main() {
     await ensureStringAttr(SPACES_COLL_ID, 'themeConfig', 5000, false, '')
     await ensureStringAttr(SPACES_COLL_ID, 'userId', 36, true)
     await ensureIntegerAttr(SPACES_COLL_ID, 'scenesCount', false, 1)
-    await ensureIntegerAttr(SPACES_COLL_ID, 'artifactsCount', false, 0)
     await ensureBooleanAttr(SPACES_COLL_ID, 'isProtected', false, false)
+    await ensureStringAttr(SPACES_COLL_ID, 'passcodeHash', 128, false, '')
+    await ensureStringAttr(SPACES_COLL_ID, 'passcodeSalt', 64, false, '')
+    await ensureStringAttr(SPACES_COLL_ID, 'passcodeHint', 120, false, '')
+    await ensureStringAttr(SPACES_COLL_ID, 'protectionTheme', 1000, false, '')
 
     console.log('   Waiting for spaces attributes to be ready...')
     await waitForAttributesAvailable(SPACES_COLL_ID, [

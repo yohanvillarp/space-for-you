@@ -8,7 +8,7 @@
 
 > **createNewSpace**(`templateId`, `title?`, `recipientName?`): [`UserSpace`](../interfaces/UserSpace.md)
 
-Defined in: [apps/web/src/entities/space/model/spaces-storage.ts:115](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/spaces-storage.ts#L115)
+Defined in: [apps/web/src/entities/space/model/spaces-storage.ts:204](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/spaces-storage.ts#L204)
 
 ## Parameters
 

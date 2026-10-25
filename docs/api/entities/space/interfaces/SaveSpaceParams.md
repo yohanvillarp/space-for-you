@@ -6,7 +6,7 @@
 
 # Interface: SaveSpaceParams
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:114](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L114)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:126](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L126)
 
 Parameters for creating or updating a space in Appwrite Databases.
 
@@ -16,9 +16,41 @@ Parameters for creating or updating a space in Appwrite Databases.
 
 > `optional` **dedicationMessage?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:124](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L124)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:136](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L136)
 
 Optional dedication message.
+
+---
+
+### passcodeHash?
+
+> `optional` **passcodeHash?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/space-database.ts:141](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L141)
+
+---
+
+### passcodeHint?
+
+> `optional` **passcodeHint?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/space-database.ts:143](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L143)
+
+---
+
+### passcodeSalt?
+
+> `optional` **passcodeSalt?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/space-database.ts:142](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L142)
+
+---
+
+### protectionTheme?
+
+> `optional` **protectionTheme?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/space-database.ts:144](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L144)
 
 ---
 
@@ -26,7 +58,7 @@ Optional dedication message.
 
 > `optional` **scenes?**: [`SpaceScene`](../../../features/create-space/type-aliases/SpaceScene.md)[]
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:118](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L118)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:130](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L130)
 
 Optional array of scenes (free-canvas items or heartfelt letters).
 
@@ -36,7 +68,7 @@ Optional array of scenes (free-canvas items or heartfelt letters).
 
 > `optional` **senderName?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:122](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L122)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:134](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L134)
 
 Optional sender name.
 
@@ -46,7 +78,7 @@ Optional sender name.
 
 > `optional` **slug?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:128](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L128)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:140](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L140)
 
 Optional slug override.
 
@@ -56,7 +88,7 @@ Optional slug override.
 
 > **space**: [`UserSpace`](UserSpace.md)
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:116](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L116)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:128](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L128)
 
 Space metadata to save or update.
 
@@ -66,7 +98,7 @@ Space metadata to save or update.
 
 > `optional` **themeConfig?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:126](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L126)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:138](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L138)
 
 Optional JSON-serialized theme customization.
 
@@ -76,6 +108,6 @@ Optional JSON-serialized theme customization.
 
 > **userId**: `string`
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:120](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L120)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:132](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L132)
 
 Owner user ID matching Appwrite Auth `$id`.

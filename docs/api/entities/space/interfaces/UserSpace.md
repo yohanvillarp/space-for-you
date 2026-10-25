@@ -6,7 +6,7 @@
 
 # Interface: UserSpace
 
-Defined in: [apps/web/src/entities/space/model/types.ts:59](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L59)
+Defined in: [apps/web/src/entities/space/model/types.ts:59](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L59)
 
 Complete domain entity representing a user-created space.
 
@@ -16,7 +16,7 @@ Complete domain entity representing a user-created space.
 
 > **artifactsCount**: `number`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:71](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L71)
+Defined in: [apps/web/src/entities/space/model/types.ts:71](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L71)
 
 Total count of memories, letters, and artifacts.
 
@@ -26,7 +26,7 @@ Total count of memories, letters, and artifacts.
 
 > **createdAt**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:75](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L75)
+Defined in: [apps/web/src/entities/space/model/types.ts:75](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L75)
 
 ISO timestamp of space creation.
 
@@ -36,7 +36,7 @@ ISO timestamp of space creation.
 
 > `optional` **description?**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:86](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L86)
+Defined in: [apps/web/src/entities/space/model/types.ts:86](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L86)
 
 Short summary or dedication note.
 
@@ -46,7 +46,7 @@ Short summary or dedication note.
 
 > **id**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:61](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L61)
+Defined in: [apps/web/src/entities/space/model/types.ts:61](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L61)
 
 Unique identifier (local ID or Appwrite document ID).
 
@@ -56,7 +56,7 @@ Unique identifier (local ID or Appwrite document ID).
 
 > `optional` **isProtected?**: `boolean`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:84](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L84)
+Defined in: [apps/web/src/entities/space/model/types.ts:84](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L84)
 
 Whether the space is gated behind a privacy code.
 
@@ -66,7 +66,7 @@ Whether the space is gated behind a privacy code.
 
 > **recipientName**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:65](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L65)
+Defined in: [apps/web/src/entities/space/model/types.ts:65](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L65)
 
 Recipient name.
 
@@ -76,7 +76,7 @@ Recipient name.
 
 > **scenesCount**: `number`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:69](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L69)
+Defined in: [apps/web/src/entities/space/model/types.ts:69](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L69)
 
 Total count of scenes/rooms inside the space.
 
@@ -86,7 +86,7 @@ Total count of scenes/rooms inside the space.
 
 > **status**: `"draft"` \| `"ready"` \| `"published"`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:82](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L82)
+Defined in: [apps/web/src/entities/space/model/types.ts:82](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L82)
 
 Publication lifecycle:
 
@@ -100,7 +100,7 @@ Publication lifecycle:
 
 > **templateId**: [`SpaceTemplateId`](../type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/entities/space/model/types.ts:67](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L67)
+Defined in: [apps/web/src/entities/space/model/types.ts:67](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L67)
 
 Associated theme template.
 
@@ -110,7 +110,7 @@ Associated theme template.
 
 > **title**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:63](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L63)
+Defined in: [apps/web/src/entities/space/model/types.ts:63](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L63)
 
 Sanctuary title.
 
@@ -120,6 +120,6 @@ Sanctuary title.
 
 > **updatedAt**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:73](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/model/types.ts#L73)
+Defined in: [apps/web/src/entities/space/model/types.ts:73](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L73)
 
 ISO timestamp of the last modification.

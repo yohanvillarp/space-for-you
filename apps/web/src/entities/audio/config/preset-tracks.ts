@@ -1,5 +1,5 @@
 import type { SpaceTemplateId } from '@/entities/space'
-import type { AudioTrack } from '../model/types'
+import type { AudioTrack } from '@/entities/audio/model/types'
 
 export const PRESET_AUDIO_TRACKS: Record<SpaceTemplateId, AudioTrack> = {
   birthday: {

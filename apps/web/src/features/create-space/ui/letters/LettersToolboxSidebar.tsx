@@ -19,6 +19,7 @@ export interface LettersToolboxSidebarProps {
   onAddLetter?: () => void
   onUpdateLetter: (updated: LetterItem) => void
   onDeleteLetter: (id: string) => void
+  onAssignLetterPhoto?: (letterId: string, url: string, file?: File) => void
   isCompact?: boolean
   className?: string
 }
@@ -29,6 +30,7 @@ export function LettersToolboxSidebar({
   openLetterId = null,
   onAddLetter: _onAddLetter,
   onUpdateLetter,
+  onAssignLetterPhoto,
   isCompact = false,
   className,
 }: LettersToolboxSidebarProps) {
@@ -88,9 +90,10 @@ export function LettersToolboxSidebar({
                 <LetterPhotoEnclosureTab
                   imageUrl={activeLetter.imageUrl}
                   searchQuery={searchQuery}
-                  onAssignPhoto={(url) =>
+                  onAssignPhoto={(url, file) => {
                     onUpdateLetter({ ...activeLetter, imageUrl: url })
-                  }
+                    onAssignLetterPhoto?.(activeLetter.id, url, file)
+                  }}
                   onRemovePhoto={() =>
                     onUpdateLetter({ ...activeLetter, imageUrl: undefined })
                   }

@@ -14,6 +14,10 @@ import {
   toSpaceScene,
   generateSpaceSlug,
 } from './space-converters'
+import {
+  saveScenesToDatabase,
+  deleteSpaceScenes,
+} from '@/entities/space/api/space-database-scenes'
 
 const DB_ID = ENV.APPWRITE_DATABASE_ID
 const SPACES_COLL = ENV.APPWRITE_SPACES_COLLECTION_ID
@@ -83,6 +87,10 @@ export async function fetchSpaceById(
       dedicationMessage: rawSpace.dedicationMessage,
       themeConfig: rawSpace.themeConfig,
       slug: rawSpace.slug,
+      passcodeHash: rawSpace.passcodeHash,
+      passcodeSalt: rawSpace.passcodeSalt,
+      passcodeHint: rawSpace.passcodeHint,
+      protectionTheme: rawSpace.protectionTheme,
     }
   } catch {
     return null
@@ -130,6 +138,10 @@ export interface SaveSpaceParams {
   themeConfig?: string
   /** Optional slug override. */
   slug?: string
+  passcodeHash?: string
+  passcodeSalt?: string
+  passcodeHint?: string
+  protectionTheme?: string
 }
 
 /**
@@ -160,13 +172,17 @@ export async function saveSpaceToDatabase({
   dedicationMessage = '',
   themeConfig = '',
   slug,
+  passcodeHash,
+  passcodeSalt,
+  passcodeHint,
+  protectionTheme,
 }: SaveSpaceParams): Promise<UserSpace> {
   const isPublished = space.status === 'published'
   const perms = buildPermissions(userId, isPublished)
   const resolvedSlug =
     slug || generateSpaceSlug(space.title, space.recipientName)
 
-  const spacePayload = {
+  const spacePayload: Record<string, unknown> = {
     title: space.title,
     recipientName: space.recipientName,
     senderName,
@@ -180,6 +196,11 @@ export async function saveSpaceToDatabase({
     isProtected: Boolean(space.isProtected),
     userId,
   }
+  if (passcodeHash !== undefined) spacePayload.passcodeHash = passcodeHash
+  if (passcodeSalt !== undefined) spacePayload.passcodeSalt = passcodeSalt
+  if (passcodeHint !== undefined) spacePayload.passcodeHint = passcodeHint
+  if (protectionTheme !== undefined)
+    spacePayload.protectionTheme = protectionTheme
 
   let savedDoc
   try {
@@ -204,47 +225,7 @@ export async function saveSpaceToDatabase({
     )
   }
 
-  const spaceId = savedDoc.$id
-
-  if (scenes.length > 0) {
-    for (let index = 0; index < scenes.length; index++) {
-      const scene = scenes[index]
-      const scenePayload = {
-        spaceId,
-        order: index,
-        type: scene.type,
-        title: scene.title,
-        subtitle: scene.subtitle || '',
-        icon: scene.icon || 'Sparkles',
-        payload: JSON.stringify(
-          scene.type === 'letters' ? scene.letters : scene.items,
-        ),
-      }
-
-      try {
-        await databases.updateDocument(
-          DB_ID,
-          SCENES_COLL,
-          scene.id,
-          scenePayload,
-          perms,
-        )
-      } catch {
-        const sceneDocId =
-          scene.id.startsWith('scene_') && scene.id.length <= 36
-            ? scene.id
-            : ID.unique()
-        await databases.createDocument(
-          DB_ID,
-          SCENES_COLL,
-          sceneDocId,
-          scenePayload,
-          perms,
-        )
-      }
-    }
-  }
-
+  await saveScenesToDatabase(savedDoc.$id, scenes, perms)
   return toUserSpace(savedDoc)
 }
 
@@ -255,16 +236,7 @@ export async function saveSpaceToDatabase({
  */
 export async function deleteSpaceFromDatabase(spaceId: string): Promise<void> {
   try {
-    const scenes = await databases.listDocuments(DB_ID, SCENES_COLL, [
-      Query.equal('spaceId', spaceId),
-    ])
-    for (const sc of scenes.documents) {
-      try {
-        await databases.deleteDocument(DB_ID, SCENES_COLL, sc.$id)
-      } catch {
-        // ignore individual scene delete errors
-      }
-    }
+    await deleteSpaceScenes(spaceId)
     await databases.deleteDocument(DB_ID, SPACES_COLL, spaceId)
   } catch {
     // ignore

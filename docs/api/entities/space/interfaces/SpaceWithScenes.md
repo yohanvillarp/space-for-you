@@ -6,7 +6,7 @@
 
 # Interface: SpaceWithScenes
 
-Defined in: [apps/web/src/entities/space/api/types.ts:66](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L66)
+Defined in: [apps/web/src/entities/space/api/types.ts:74](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L74)
 
 Aggregated domain structure combining a space and its ordered scenes.
 
@@ -16,9 +16,41 @@ Aggregated domain structure combining a space and its ordered scenes.
 
 > `optional` **dedicationMessage?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:74](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L74)
+Defined in: [apps/web/src/entities/space/api/types.ts:82](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L82)
 
 Optional long-form dedication message.
+
+---
+
+### passcodeHash?
+
+> `optional` **passcodeHash?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/types.ts:87](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L87)
+
+---
+
+### passcodeHint?
+
+> `optional` **passcodeHint?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/types.ts:89](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L89)
+
+---
+
+### passcodeSalt?
+
+> `optional` **passcodeSalt?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/types.ts:88](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L88)
+
+---
+
+### protectionTheme?
+
+> `optional` **protectionTheme?**: `string`
+
+Defined in: [apps/web/src/entities/space/api/types.ts:90](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L90)
 
 ---
 
@@ -26,7 +58,7 @@ Optional long-form dedication message.
 
 > **scenes**: [`SpaceScene`](../../../features/create-space/type-aliases/SpaceScene.md)[]
 
-Defined in: [apps/web/src/entities/space/api/types.ts:70](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L70)
+Defined in: [apps/web/src/entities/space/api/types.ts:78](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L78)
 
 Ordered list of polymorphic scenes populated with items or letters.
 
@@ -36,7 +68,7 @@ Ordered list of polymorphic scenes populated with items or letters.
 
 > `optional` **senderName?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:72](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L72)
+Defined in: [apps/web/src/entities/space/api/types.ts:80](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L80)
 
 Optional sender name.
 
@@ -46,7 +78,7 @@ Optional sender name.
 
 > `optional` **slug?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:78](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L78)
+Defined in: [apps/web/src/entities/space/api/types.ts:86](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L86)
 
 Resolved public slug for sharing.
 
@@ -56,7 +88,7 @@ Resolved public slug for sharing.
 
 > **space**: [`UserSpace`](UserSpace.md)
 
-Defined in: [apps/web/src/entities/space/api/types.ts:68](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L68)
+Defined in: [apps/web/src/entities/space/api/types.ts:76](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L76)
 
 Domain representation of the space metadata.
 
@@ -66,6 +98,6 @@ Domain representation of the space metadata.
 
 > `optional` **themeConfig?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:76](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/types.ts#L76)
+Defined in: [apps/web/src/entities/space/api/types.ts:84](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L84)
 
 Optional JSON-serialized theme customization string.

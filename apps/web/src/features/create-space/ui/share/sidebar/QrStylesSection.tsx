@@ -1,6 +1,6 @@
 import { Check, QrCode, Sparkles, Star, Award, Square } from 'lucide-react'
-import type { QrStyleType } from '../share-customizer.types'
-import { QR_STYLE_PRESETS } from '../share-customizer.types'
+import type { QrStyleType } from '@/features/create-space/ui/share/share-customizer.types'
+import { QR_STYLE_PRESETS } from '@/features/create-space/ui/share/share-customizer.constants'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface QrStylesSectionProps {

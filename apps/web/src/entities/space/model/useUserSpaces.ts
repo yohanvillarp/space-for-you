@@ -34,8 +34,18 @@ export interface UseUserSpacesReturn {
   saveSpace: (space: UserSpace) => UserSpace
   /** Deletes a space by ID from local storage and Appwrite Databases. */
   deleteSpace: (id: string) => void
-  /** Creates a clone of an existing space and persists it. */
-  duplicateSpace: (id: string) => UserSpace | undefined
+  /** Creates a clone of an existing space with optional custom title and recipient. */
+  duplicateSpace: (
+    id: string,
+    customTitle?: string,
+    customRecipient?: string,
+  ) => UserSpace | undefined
+  /** Renames a space with a new title and recipient. */
+  renameSpace: (
+    id: string,
+    newTitle: string,
+    newRecipient?: string,
+  ) => UserSpace | undefined
   /** Re-reads spaces from local storage to sync UI state. */
   refreshSpaces: () => void
 }
@@ -151,8 +161,12 @@ export function useUserSpaces(): UseUserSpacesReturn {
   )
 
   const duplicateSpace = useCallback(
-    (id: string) => {
-      const duplicated = duplicateSpaceInStorage(id)
+    (id: string, customTitle?: string, customRecipient?: string) => {
+      const duplicated = duplicateSpaceInStorage(
+        id,
+        customTitle,
+        customRecipient,
+      )
       refreshSpaces()
 
       if (duplicated) {
@@ -170,6 +184,40 @@ export function useUserSpaces(): UseUserSpacesReturn {
     [refreshSpaces],
   )
 
+  const renameSpace = useCallback(
+    (id: string, newTitle: string, newRecipient?: string) => {
+      const target = spaces.find((s) => s.id === id)
+      if (!target) return undefined
+
+      const updated: UserSpace = {
+        ...target,
+        title: newTitle.trim() || target.title,
+        recipientName: newRecipient?.trim() || target.recipientName,
+        updatedAt: new Date().toISOString(),
+      }
+
+      try {
+        const metaRaw = localStorage.getItem(`sfy_meta_${id}`)
+        if (metaRaw) {
+          const parsed = JSON.parse(metaRaw)
+          localStorage.setItem(
+            `sfy_meta_${id}`,
+            JSON.stringify({
+              ...parsed,
+              title: updated.title,
+              recipientName: updated.recipientName,
+            }),
+          )
+        }
+      } catch {
+        // ignore
+      }
+
+      return saveSpace(updated)
+    },
+    [spaces, saveSpace],
+  )
+
   return {
     spaces,
     isLoading,
@@ -177,6 +225,7 @@ export function useUserSpaces(): UseUserSpacesReturn {
     saveSpace,
     deleteSpace,
     duplicateSpace,
+    renameSpace,
     refreshSpaces,
   }
 }
