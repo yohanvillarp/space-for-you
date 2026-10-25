@@ -6,7 +6,7 @@
 
 # Interface: ToolboxItemDef
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:90](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L90)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:90](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L90)
 
 Toolbox catalog definition describing an item that can be dragged onto the canvas.
 
@@ -16,7 +16,7 @@ Toolbox catalog definition describing an item that can be dragged onto the canva
 
 > **category**: `"stage"` \| `"universal"`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:96](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L96)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:96](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L96)
 
 Category grouping in the sidebar toolbox.
 
@@ -26,7 +26,7 @@ Category grouping in the sidebar toolbox.
 
 > **defaultData**: [`SpatialItemData`](SpatialItemData.md)
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:104](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L104)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:104](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L104)
 
 Initial default data upon placement.
 
@@ -36,7 +36,7 @@ Initial default data upon placement.
 
 > **description**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:98](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L98)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:98](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L98)
 
 Tooltip description.
 
@@ -46,7 +46,7 @@ Tooltip description.
 
 > **iconName**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:100](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L100)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:100](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L100)
 
 Lucide icon name.
 
@@ -56,7 +56,7 @@ Lucide icon name.
 
 > **label**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:94](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L94)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:94](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L94)
 
 Human-readable label.
 
@@ -66,7 +66,7 @@ Human-readable label.
 
 > **supportedTemplates**: `"all"` \| [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)[]
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:102](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L102)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:102](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L102)
 
 Supported theme templates or 'all'.
 
@@ -76,6 +76,6 @@ Supported theme templates or 'all'.
 
 > **type**: [`SpatialItemType`](../type-aliases/SpatialItemType.md)
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:92](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/spatial-stage.types.ts#L92)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:92](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L92)
 
 Item type archetype.

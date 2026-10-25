@@ -6,7 +6,7 @@
 
 # Interface: StylizedQrCodeProps
 
-Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L5)
+Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L5)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:5](https:/
 
 > `optional` **accentColor?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L7)
+Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L7)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:7](https:/
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L10)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:10](https:
 
 > `optional` **qrStyle?**: `"minimal"` \| `"vintage"` \| `"celestial"` \| `"stamp"` \| `"pill"`
 
-Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L9)
+Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L9)
 
 ---
 
@@ -38,7 +38,7 @@ Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:9](https:/
 
 > `optional` **size?**: `number`
 
-Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L8)
 
 ---
 
@@ -46,4 +46,4 @@ Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:8](https:/
 
 > **url**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L6)
+Defined in: [apps/web/src/features/create-space/ui/StylizedQrCode.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StylizedQrCode.tsx#L6)

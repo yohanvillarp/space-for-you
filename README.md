@@ -105,6 +105,7 @@ Space for You is shaped with gratitude to the open web and generous developer pl
 - **[Lucide Icons](https://lucide.dev/) & [Iconify](https://iconify.design/):** Beautiful open-source vector stickers and interface iconography.
 - **[Appwrite](https://appwrite.io/):** Secure open-source backend, authentication, and cloud storage engine.
 - **[Google Fonts](https://fonts.google.com/):** Contemporary editorial typography (`Lora` & `DM Sans`).
+- **[TinyURL API](https://tinyurl.com/):** Resilient URL shortening service generating clean, low-density QR codes for keepsake dedication cards.
 
 For full details, visit the dedicated [/attributions](https://spaceforyou.nikelyh.tech/attributions) page within the application.
 

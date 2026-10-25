@@ -6,7 +6,7 @@
 
 # Interface: SpaceCreationStepperProps
 
-Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L5)
+Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L5)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:5](h
 
 > **currentStep**: [`CreationStep`](../../../entities/space/type-aliases/CreationStep.md)
 
-Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L6)
+Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L6)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:6](h
 
 > `optional` **onStepClick?**: (`step`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L7)
+Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L7)
 
 #### Parameters
 
@@ -40,4 +40,4 @@ Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:7](h
 
 > `optional` **orientation?**: `"horizontal"` \| `"vertical"`
 
-Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpaceCreationStepper.tsx#L8)

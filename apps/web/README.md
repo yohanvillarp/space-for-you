@@ -43,6 +43,7 @@ We gratefully recognize:
 - **Iconify & Lucide Icons**: Open vector illustrations and iconography.
 - **Appwrite Cloud**: Open-source backend authentication and asset storage.
 - **Google Fonts**: Lora and DM Sans typography.
+- **TinyURL API**: Resilient link compression for clean, low-density QR code generation.
 
 Visit `/attributions` in the app for complete licenses and links.
 

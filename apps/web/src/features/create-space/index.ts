@@ -37,6 +37,7 @@ export { LettersScene } from './ui/letters/LettersScene'
 export { LettersToolboxSidebar } from './ui/letters/LettersToolboxSidebar'
 export { ShareScene } from './ui/share/ShareScene'
 export { ShareCustomizerSidebar } from './ui/share/sidebar/ShareCustomizerSidebar'
+export * from './ui/public'
 export * from './model/scenes.types'
 export * from './lib/space-tier-limits'
 export type {

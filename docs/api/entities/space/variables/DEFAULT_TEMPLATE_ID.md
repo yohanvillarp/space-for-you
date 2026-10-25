@@ -8,4 +8,4 @@
 
 > `const` **DEFAULT\_TEMPLATE\_ID**: `"birthday"` = `'birthday'`
 
-Defined in: [apps/web/src/entities/space/model/templates.ts:84](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/templates.ts#L84)
+Defined in: [apps/web/src/entities/space/model/templates.ts:84](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/templates.ts#L84)

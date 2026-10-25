@@ -6,7 +6,7 @@
 
 # Interface: StagePreviewPanelProps
 
-Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StagePreviewPanel.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StagePreviewPanel.tsx#L8)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:8](http
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StagePreviewPanel.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StagePreviewPanel.tsx#L10)
 
 ---
 
@@ -22,4 +22,4 @@ Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:10](htt
 
 > **templateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/StagePreviewPanel.tsx#L9)
+Defined in: [apps/web/src/features/create-space/ui/StagePreviewPanel.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/StagePreviewPanel.tsx#L9)
