@@ -49,7 +49,9 @@ export function SpatialStageStudio({
 
   const selectedItem = items.find((it) => it.id === selectedId)
   const isMusicSelected =
-    selectedItem?.type === 'music-box' || selectedItem?.type === 'vinyl-player'
+    selectedItem?.type === 'music-box' ||
+    selectedItem?.type === 'vinyl-player' ||
+    selectedItem?.type === 'vintage-radio'
   const selectedMusicItem = isMusicSelected ? selectedItem : null
 
   const isPhotoSelected = selectedItem?.type === 'polaroid'

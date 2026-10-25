@@ -12,7 +12,9 @@ export const MAX_SPACE_MUSIC = 1
 export const MAX_SPACE_VOICE_NOTES = 3
 
 export function isMusicItemType(type: SpatialItemType): boolean {
-  return type === 'music-box' || type === 'vinyl-player'
+  return (
+    type === 'music-box' || type === 'vinyl-player' || type === 'vintage-radio'
+  )
 }
 
 export function isVoiceNoteItemType(type: SpatialItemType): boolean {

@@ -150,16 +150,16 @@ export function getDefaultItemsForTemplate(
           },
         },
         {
-          id: 'f-cassette-1',
-          type: 'cassette-tape',
-          label: 'Roadtrip Mixtape',
+          id: 'f-radio-1',
+          type: 'vintage-radio',
+          label: 'Roadtrip Radio',
           x: 74,
           y: 38,
-          rotation: 3,
+          rotation: 2,
           zIndex: 6,
           data: {
             isPlaying: true,
-            title: 'Roadtrip Mixtape • Side A',
+            title: 'Roadtrip Mixtape • FM Dial',
           },
         },
         {

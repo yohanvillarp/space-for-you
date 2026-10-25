@@ -32,6 +32,7 @@ const KEEPSAKE_TYPES = new Set([
   'candle',
   'wax-envelope',
   'vinyl-player',
+  'vintage-radio',
   'cassette-tape',
   'music-box',
 ])

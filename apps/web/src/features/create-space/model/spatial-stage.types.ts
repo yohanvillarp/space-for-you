@@ -13,6 +13,7 @@ export type SpatialItemType =
   | 'vinyl-player'
   | 'cassette-tape'
   | 'music-box'
+  | 'vintage-radio'
   | 'polaroid'
   | 'greeting-card'
   | 'airmail-postcard'

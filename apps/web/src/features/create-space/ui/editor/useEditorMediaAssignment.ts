@@ -15,7 +15,7 @@ export function useEditorMediaAssignment({
   onAssignItemPhoto,
 }: UseEditorMediaAssignmentProps) {
   const selectedItem = items.find((it) => it.id === selectedId)
-  const isMusic = ['music-box', 'vinyl-player'].includes(
+  const isMusic = ['music-box', 'vinyl-player', 'vintage-radio'].includes(
     selectedItem?.type || '',
   )
   const selectedMusicItem = isMusic ? selectedItem : null
@@ -25,7 +25,9 @@ export function useEditorMediaAssignment({
   const handleAssignTrack = (track: AudioTrack) => {
     const target =
       selectedMusicItem ||
-      items.find((it) => ['music-box', 'vinyl-player'].includes(it.type))
+      items.find((it) =>
+        ['music-box', 'vinyl-player', 'vintage-radio'].includes(it.type),
+      )
     if (target) {
       onUpdateItemData(target.id, {
         title: track.title,

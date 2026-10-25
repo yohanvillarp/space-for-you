@@ -101,6 +101,20 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
     },
   },
   {
+    type: 'vintage-radio',
+    label: 'Roadtrip Radio',
+    category: 'stage',
+    description:
+      'Analog transistor radio tuned to friendship roadtrip melodies',
+    iconName: 'Radio',
+    supportedTemplates: ['friendship'],
+    defaultData: {
+      isPlaying: true,
+      title: 'Roadtrip Mixtape • Side A',
+      artist: 'Atelier Soundscape',
+    },
+  },
+  {
     type: 'cassette-tape',
     label: 'Voice Note Cassette',
     category: 'universal',
