@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Volume2, VolumeX, Heart, ArrowRight } from 'lucide-react'
+import { VolumeX } from 'lucide-react'
 import type { SpaceWithScenes, SpaceTemplateId } from '@/entities/space'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { getPresetTrackForTemplate } from '@/entities/audio'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
+import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { PublicStageCanvas } from '@/features/create-space/ui/public/PublicStageCanvas'
 import { PublicSceneDock } from '@/features/create-space/ui/public/PublicSceneDock'
 import { useSpatialAudioPlayer, cn, playSpatialSfx } from '@/shared/lib'
@@ -38,16 +39,6 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
 
   const activeScene = scenes.find((s) => s.id === activeSceneId) as
     SpaceScene | undefined
-
-  const handleEnterSanctuary = () => {
-    playSpatialSfx('tactile-tap')
-    if (scenes.length > 0) {
-      setActiveSceneId(scenes[0].id)
-    }
-    if (!isPlaying) {
-      togglePlay()
-    }
-  }
 
   return (
     <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-[#0D0907] text-[#FAF6F0] select-none">
@@ -111,61 +102,21 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
       {/* Scene Viewport */}
       <main className="relative flex h-[calc(100vh-56px)] w-full flex-1 overflow-hidden">
         {activeSceneId === 'hub' && (
-          <div className="animate-fade-in flex flex-1 flex-col items-center justify-center p-6 text-center">
-            <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-amber-400/30 bg-amber-400/10 shadow-2xl">
-              <Heart className="h-9 w-9 fill-amber-300/20 text-amber-300" />
-            </div>
-
-            <span className="font-heading text-sm tracking-wide text-amber-300 uppercase">
-              A private digital sanctuary
-            </span>
-            <h1 className="font-heading mt-2 text-3xl font-medium tracking-tight text-white sm:text-5xl">
-              {space.title}
-            </h1>
-            <p className="mt-3 max-w-md font-sans text-sm text-stone-400 sm:text-base">
-              Crafted with heartfelt love for{' '}
-              <strong className="font-medium text-stone-100">
-                {space.recipientName || 'Someone Special'}
-              </strong>
-              {data.senderName ? ` by ${data.senderName}` : ''}.
-            </p>
-
-            {data.dedicationMessage && (
-              <div className="mt-8 max-w-lg rounded-2xl border border-white/10 bg-white/5 p-6 text-left shadow-xl backdrop-blur-md">
-                <p className="font-heading text-center text-base leading-relaxed text-stone-200 italic">
-                  “{data.dedicationMessage}”
-                </p>
-              </div>
-            )}
-
-            <button
-              type="button"
-              onClick={handleEnterSanctuary}
-              className="mt-8 inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-amber-400/50 bg-amber-400/20 px-7 py-3 font-sans text-sm font-semibold text-amber-200 shadow-xl transition-all hover:scale-105 hover:bg-amber-400/30"
-            >
-              <span>Explore Sanctuary</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            {presetTrack && (
-              <button
-                type="button"
-                onClick={togglePlay}
-                className="mt-4 inline-flex cursor-pointer items-center gap-1.5 font-sans text-xs text-amber-300/70 transition-colors hover:text-amber-200"
-              >
-                {isPlaying ? (
-                  <Volume2 className="h-3 w-3" />
-                ) : (
-                  <VolumeX className="h-3 w-3" />
-                )}
-                <span>
-                  {isPlaying
-                    ? 'Ambient soundtrack active'
-                    : 'Tap to enable ambient sound'}
-                </span>
-              </button>
-            )}
-          </div>
+          <SpaceHubScene
+            templateId={templateId}
+            meta={{
+              title: space.title,
+              recipientName: space.recipientName,
+              senderName: data.senderName || '',
+              dedicationMessage: data.dedicationMessage || '',
+            }}
+            scenes={scenes}
+            isStudioPreview={false}
+            onOpenScene={(sceneId) => {
+              setActiveSceneId(sceneId)
+            }}
+            onOpenAddScene={() => {}}
+          />
         )}
 
         {activeScene?.type === 'letters' && (
@@ -191,6 +142,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
         activeSceneId={activeSceneId}
         onSelectScene={setActiveSceneId}
         hasHub={true}
+        accentColor={activeTheme.accentColor}
       />
     </div>
   )

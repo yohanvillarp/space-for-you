@@ -1,4 +1,4 @@
-import { Heart, Mail, Sparkles, Image } from 'lucide-react'
+import { Home, Mail, Sparkles, Image } from 'lucide-react'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
@@ -7,6 +7,7 @@ export interface PublicSceneDockProps {
   activeSceneId: string
   onSelectScene: (sceneId: string) => void
   hasHub?: boolean
+  accentColor?: string
   className?: string
 }
 
@@ -15,6 +16,7 @@ export function PublicSceneDock({
   activeSceneId,
   onSelectScene,
   hasHub = true,
+  accentColor = '#D97706',
   className,
 }: PublicSceneDockProps) {
   const handleSelect = (id: string) => {
@@ -23,7 +25,7 @@ export function PublicSceneDock({
   }
 
   const renderIcon = (sceneType: string, isHub?: boolean) => {
-    if (isHub) return <Heart className="h-4 w-4" />
+    if (isHub) return <Home className="h-4 w-4" />
     if (sceneType === 'letters') return <Mail className="h-4 w-4" />
     if (sceneType === 'photos') return <Image className="h-4 w-4" />
     return <Sparkles className="h-4 w-4" />
@@ -42,15 +44,24 @@ export function PublicSceneDock({
           <button
             type="button"
             onClick={() => handleSelect('hub')}
+            style={
+              activeSceneId === 'hub'
+                ? {
+                    borderColor: `${accentColor}55`,
+                    backgroundColor: `${accentColor}25`,
+                    color: '#FAF6F0',
+                  }
+                : undefined
+            }
             className={cn(
               'flex shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 py-2 font-sans text-xs font-medium transition-all',
               activeSceneId === 'hub'
-                ? 'border border-amber-400/30 bg-amber-400/20 text-amber-200 shadow-sm'
+                ? 'shadow-sm'
                 : 'text-stone-300 hover:bg-white/5 hover:text-white',
             )}
           >
             {renderIcon('', true)}
-            <span>Dedication</span>
+            <span>Home</span>
           </button>
         )}
 
@@ -61,10 +72,19 @@ export function PublicSceneDock({
               key={scene.id}
               type="button"
               onClick={() => handleSelect(scene.id)}
+              style={
+                isActive
+                  ? {
+                      borderColor: `${accentColor}55`,
+                      backgroundColor: `${accentColor}25`,
+                      color: '#FAF6F0',
+                    }
+                  : undefined
+              }
               className={cn(
                 'flex shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 py-2 font-sans text-xs font-medium transition-all',
                 isActive
-                  ? 'border border-amber-400/30 bg-amber-400/20 text-amber-200 shadow-sm'
+                  ? 'shadow-sm'
                   : 'text-stone-300 hover:bg-white/5 hover:text-white',
               )}
             >
