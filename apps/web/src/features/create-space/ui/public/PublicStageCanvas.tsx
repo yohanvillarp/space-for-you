@@ -10,6 +10,7 @@ import {
   VIRTUAL_CANVAS_WIDTH,
   VIRTUAL_CANVAS_HEIGHT,
 } from '@/features/create-space/ui/canvas/useVirtualCanvasScale'
+import { CanvasOrientationPrompt } from '@/features/create-space/ui/canvas/CanvasOrientationPrompt'
 import { PublicPhotoLightbox } from '@/features/create-space/ui/public/PublicPhotoLightbox'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
@@ -72,7 +73,14 @@ export function PublicStageCanvas({
     setItems(filterPublicItems(initialItems))
   }
   const [activePhoto, setActivePhoto] = useState<SpatialItem | null>(null)
-  const { containerRef, scale } = useVirtualCanvasScale()
+  const {
+    containerRef,
+    scale,
+    isMobile,
+    isPortrait,
+    isVirtualLandscape,
+    toggleVirtualLandscape,
+  } = useVirtualCanvasScale()
 
   const handleUpdateItemData = (
     id: string,
@@ -112,15 +120,24 @@ export function PublicStageCanvas({
         className,
       )}
     >
+      <CanvasOrientationPrompt
+        isMobile={isMobile}
+        isPortrait={isPortrait}
+        isVirtualLandscape={isVirtualLandscape}
+        onToggleVirtualLandscape={toggleVirtualLandscape}
+      />
+
       <div
         style={{
           width: VIRTUAL_CANVAS_WIDTH,
           height: VIRTUAL_CANVAS_HEIGHT,
-          transform: `scale(${scale})`,
+          transform: isVirtualLandscape
+            ? `rotate(90deg) scale(${scale})`
+            : `scale(${scale})`,
           transformOrigin: 'center center',
         }}
         className={cn(
-          'relative overflow-hidden rounded-2xl shadow-2xl transition-transform duration-200 ease-out',
+          'relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 ease-out',
           SURFACE_CLASSES[templateId] ?? 'celebration-table-surface',
         )}
       >
