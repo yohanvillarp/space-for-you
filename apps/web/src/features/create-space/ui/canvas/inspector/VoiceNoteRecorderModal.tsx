@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { Mic, Square, RotateCcw, Check, X, AlertCircle } from 'lucide-react'
+import {
+  Mic,
+  Square,
+  RotateCcw,
+  Check,
+  X,
+  AlertCircle,
+  Loader2,
+} from 'lucide-react'
 import { Button } from '@/shared/ui'
 import { useVoiceRecorder } from '@/features/create-space/lib/voice-recorder/useVoiceRecorder'
 import {
@@ -8,16 +16,13 @@ import {
   formatAudioDuration,
   validateVoiceQuotaWithServer,
 } from '@/features/create-space/lib/voice-recorder'
+import { uploadVoiceNoteAudio } from '@/features/create-space/lib/stage-audio-upload'
 import { AudioWaveformVisualizer } from './AudioWaveformVisualizer'
+import { VoiceNoteReviewSection } from './VoiceNoteReviewSection'
+import type { VoiceNoteRecorderModalProps } from './voice-note-recorder.types'
 import { playSpatialSfx, cn } from '@/shared/lib'
 
-export interface VoiceNoteRecorderModalProps {
-  isOpen: boolean
-  onClose: () => void
-  currentVoiceNotesCount: number
-  initialLabel?: string
-  onSaveVoiceNote: (url: string, duration: number, label: string) => void
-}
+export type { VoiceNoteRecorderModalProps }
 
 export function VoiceNoteRecorderModal({
   isOpen,
@@ -28,6 +33,7 @@ export function VoiceNoteRecorderModal({
 }: VoiceNoteRecorderModalProps) {
   const [label, setLabel] = useState(initialLabel)
   const [validationError, setValidationError] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
   const recorder = useVoiceRecorder()
 
   if (!isOpen) return null
@@ -49,24 +55,33 @@ export function VoiceNoteRecorderModal({
   }
 
   const handleSave = async () => {
-    if (!recorder.audioUrl) return
+    if (!recorder.audioUrl || !recorder.audioBlob) return
     setValidationError(null)
-    const res = await validateVoiceQuotaWithServer({
-      spaceId: 'current',
-      durationSeconds: recorder.elapsedSeconds || 1,
-      existingCount: currentVoiceNotesCount,
-    })
-    if (!res.allowed) {
-      setValidationError(res.error || 'Voice note limits exceeded.')
-      return
+    setIsUploading(true)
+    try {
+      const res = await validateVoiceQuotaWithServer({
+        spaceId: 'current',
+        durationSeconds: recorder.elapsedSeconds || 1,
+        existingCount: currentVoiceNotesCount,
+      })
+      if (!res.allowed) {
+        setValidationError(res.error || 'Voice note limits exceeded.')
+        setIsUploading(false)
+        return
+      }
+      const permanentUrl = await uploadVoiceNoteAudio(recorder.audioBlob)
+      playSpatialSfx('cassette-click')
+      onSaveVoiceNote(
+        permanentUrl,
+        recorder.elapsedSeconds || 1,
+        label.trim() || 'Personal Voice Message',
+      )
+      onClose()
+    } catch {
+      setValidationError('Failed to save audio.')
+    } finally {
+      setIsUploading(false)
     }
-    playSpatialSfx('cassette-click')
-    onSaveVoiceNote(
-      recorder.audioUrl,
-      recorder.elapsedSeconds || 1,
-      label.trim() || 'Personal Voice Message',
-    )
-    onClose()
   }
 
   const handleClose = () => {
@@ -151,26 +166,11 @@ export function VoiceNoteRecorderModal({
 
           {/* Review Mode: Preview & Label */}
           {isReviewing && recorder.audioUrl && (
-            <div className="animate-fade-in space-y-4 pt-2 text-left">
-              <audio
-                controls
-                src={recorder.audioUrl}
-                className="w-full rounded-xl bg-white/5"
-              />
-              <div>
-                <label className="mb-1 block font-sans text-xs font-medium text-stone-300">
-                  Cassette Label:
-                </label>
-                <input
-                  type="text"
-                  value={label}
-                  onChange={(e) => setLabel(e.target.value)}
-                  placeholder="e.g. For Carolina • Listen first"
-                  maxLength={40}
-                  className="w-full rounded-xl border border-white/15 bg-white/5 px-3.5 py-2 font-sans text-xs text-white focus:border-[#CF7056] focus:outline-hidden"
-                />
-              </div>
-            </div>
+            <VoiceNoteReviewSection
+              audioUrl={recorder.audioUrl}
+              label={label}
+              onChangeLabel={setLabel}
+            />
           )}
 
           {/* Primary Action Buttons */}
@@ -180,14 +180,8 @@ export function VoiceNoteRecorderModal({
                 type="button"
                 onClick={handleStart}
                 disabled={isQuotaFull}
-                className={cn(
-                  'group flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border-2 border-[#CF7056] bg-[#CF7056]/20 shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-40',
-                )}
-                title={
-                  isQuotaFull
-                    ? 'Maximum of 3 voice notes reached'
-                    : 'Click to start recording'
-                }
+                title={isQuotaFull ? 'Limit reached' : 'Start recording'}
+                className="group flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border-2 border-[#CF7056] bg-[#CF7056]/20 shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-40"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#CF7056] text-white shadow-lg">
                   <Mic className="h-6 w-6 transition-transform group-hover:scale-110" />
@@ -199,8 +193,8 @@ export function VoiceNoteRecorderModal({
               <button
                 type="button"
                 onClick={handleStop}
-                className="group flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border-2 border-rose-500 bg-rose-500/20 shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
                 title="Finish recording"
+                className="group flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border-2 border-rose-500 bg-rose-500/20 shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-rose-600 text-white shadow-lg">
                   <Square className="h-5 w-5 fill-current" />
@@ -225,6 +219,7 @@ export function VoiceNoteRecorderModal({
               type="button"
               variant="outline"
               size="sm"
+              disabled={isUploading}
               onClick={recorder.discardRecording}
               className="cursor-pointer gap-1.5 text-xs text-stone-300 hover:text-white"
             >
@@ -236,11 +231,16 @@ export function VoiceNoteRecorderModal({
               type="button"
               variant="primary"
               size="sm"
+              disabled={isUploading}
               onClick={handleSave}
               className="cursor-pointer gap-1.5 text-xs font-semibold shadow-md"
             >
-              <Check className="h-3.5 w-3.5" />
-              <span>Save to Cassette</span>
+              {isUploading ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Check className="h-3.5 w-3.5" />
+              )}
+              <span>{isUploading ? 'Saving...' : 'Save to Cassette'}</span>
             </Button>
           </div>
         )}
