@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Appwrite Cloud Function to validate voice note audio durations and enforce 3-note sanctuary quota",
-  "main": "src/main.js",
+  "main": "index.js",
   "dependencies": {
     "node-appwrite": "^14.1.0"
   }
