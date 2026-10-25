@@ -10,7 +10,7 @@ import {
 import type {
   SpatialItemType,
   SpatialItem,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
 import type { SpatialSfxName } from '@/shared/lib'
 

@@ -1,4 +1,4 @@
-import type { ToolboxItemDef } from '../model/spatial-stage.types'
+import type { ToolboxItemDef } from '@/features/create-space/model/spatial-stage.types'
 
 export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
   // --- Stage Specific Items ---

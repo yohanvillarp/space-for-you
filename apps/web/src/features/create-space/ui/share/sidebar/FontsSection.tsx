@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react'
-import type { ShareFontFamily } from '../share-customizer.types'
-import { SHARE_FONT_OPTIONS } from '../share-customizer.types'
+import type { ShareFontFamily } from '@/features/create-space/ui/share/share-customizer.types'
+import { SHARE_FONT_OPTIONS } from '@/features/create-space/ui/share/share-customizer.constants'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface FontsSectionProps {

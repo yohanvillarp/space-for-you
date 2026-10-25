@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
-import { ShareableKeepsakeCard } from '../ShareableKeepsakeCard'
+import { ShareableKeepsakeCard } from '@/features/create-space/ui/ShareableKeepsakeCard'
 
 export interface ShareSpaceModalProps {
   isOpen: boolean

@@ -3,10 +3,10 @@ import type { ContextMenuState } from './types'
 import type {
   SpatialItem,
   SpatialItemType,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 import { ItemContextMenuContent } from './ItemContextMenuContent'
 import { CanvasContextMenuContent } from './CanvasContextMenuContent'
-import { canAddStagePhoto } from '../../lib/stage-photo-limit'
+import { canAddStagePhoto } from '@/features/create-space/lib/stage-photo-limit'
 
 export interface StageContextMenuProps {
   state: ContextMenuState

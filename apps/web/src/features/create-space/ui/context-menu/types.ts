@@ -1,7 +1,7 @@
 import type {
   SpatialItem,
   SpatialItemType,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 
 export type ContextMenuTarget =
   | { type: 'item'; item: SpatialItem }

@@ -1,4 +1,4 @@
-import { StylizedQrCode } from '../StylizedQrCode'
+import { StylizedQrCode } from '@/features/create-space/ui/StylizedQrCode'
 import { WashiTape } from '@/features/space-themes/shared'
 
 export interface KeepsakeCardPreviewProps {

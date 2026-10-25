@@ -1,4 +1,4 @@
-import type { AudioTrack } from '../model/types'
+import type { AudioTrack } from '@/entities/audio/model/types'
 
 interface ITunesTrackResult {
   trackId: number

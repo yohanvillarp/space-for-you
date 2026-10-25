@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { Sun, Moon, Check } from 'lucide-react'
 import { useTheme, useClickOutside, cn } from '@/shared/lib'
-import { THEME_OPTIONS } from '../model/constants.ts'
-import type { ThemeToggleSize } from '../model/types.ts'
+import { THEME_OPTIONS } from '@/features/theme-toggle/model/constants'
+import type { ThemeToggleSize } from '@/features/theme-toggle/model/types'
 
 interface DropdownThemeToggleProps {
   size?: ThemeToggleSize
@@ -23,7 +23,10 @@ export function DropdownThemeToggle({
   const iconSize = size === 'sm' ? 15 : 17
 
   return (
-    <div ref={dropdownRef} className={cn('relative inline-block text-left', className)}>
+    <div
+      ref={dropdownRef}
+      className={cn('relative inline-block text-left', className)}
+    >
       <button
         type="button"
         aria-haspopup="true"
@@ -31,7 +34,7 @@ export function DropdownThemeToggle({
         aria-label="Opciones de tema"
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          'inline-flex items-center justify-center gap-1.5 rounded-md border border-border-base bg-bg-surface text-text-primary hover:bg-bg-subtle transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus',
+          'border-border-base bg-bg-surface text-text-primary hover:bg-bg-subtle focus-visible:ring-border-focus inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-md border transition-colors focus-visible:ring-2 focus-visible:outline-none',
           size === 'sm' ? 'h-8 px-2.5 text-xs' : 'h-9 px-3 text-sm',
         )}
       >
@@ -43,7 +46,7 @@ export function DropdownThemeToggle({
         <div
           role="menu"
           aria-orientation="vertical"
-          className="absolute right-0 mt-1.5 w-36 origin-top-right rounded-md border border-border-base bg-bg-surface p-1 shadow-md z-50 animate-in fade-in zoom-in-95 duration-100"
+          className="border-border-base bg-bg-surface animate-in fade-in zoom-in-95 absolute right-0 z-50 mt-1.5 w-36 origin-top-right rounded-md border p-1 shadow-md duration-100"
         >
           {THEME_OPTIONS.map((option) => {
             const Icon = option.icon
@@ -59,7 +62,7 @@ export function DropdownThemeToggle({
                   setIsOpen(false)
                 }}
                 className={cn(
-                  'w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-sm text-xs text-left cursor-pointer transition-colors',
+                  'flex w-full cursor-pointer items-center justify-between gap-2 rounded-sm px-2.5 py-1.5 text-left text-xs transition-colors',
                   isSelected
                     ? 'bg-bg-subtle text-text-primary font-medium'
                     : 'text-text-secondary hover:bg-bg-subtle hover:text-text-primary',

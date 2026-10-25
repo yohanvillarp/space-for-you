@@ -1,5 +1,9 @@
 import { Users, Compass, Smile } from 'lucide-react'
-import { PolaroidFrame, PushPin, CassetteTape } from '../shared'
+import {
+  PolaroidFrame,
+  PushPin,
+  CassetteTape,
+} from '@/features/space-themes/shared'
 import './friendship.css'
 
 export function FriendshipUniverse() {

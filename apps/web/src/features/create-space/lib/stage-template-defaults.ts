@@ -1,5 +1,5 @@
 import type { SpaceTemplateId } from '@/entities/space'
-import type { SpatialItem } from '../model/spatial-stage.types'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 
 export function getDefaultItemsForTemplate(
   templateId: SpaceTemplateId,

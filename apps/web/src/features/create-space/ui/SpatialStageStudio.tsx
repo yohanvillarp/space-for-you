@@ -15,7 +15,7 @@ import { SpatialToolboxSidebar } from './SpatialToolboxSidebar'
 import { Button } from '@/shared/ui'
 import { cn } from '@/shared/lib'
 import { useSpatialStageItems } from './editor/useSpatialStageItems'
-import { countStagePhotos } from '../lib/stage-photo-limit'
+import { countStagePhotos } from '@/features/create-space/lib/stage-photo-limit'
 
 export interface SpatialStageStudioProps {
   templateId: SpaceTemplateId

@@ -4,7 +4,7 @@ import type {
   QrStyleType,
   ShareFontFamily,
   ShareColorTarget,
-} from '../share-customizer.types'
+} from '@/features/create-space/ui/share/share-customizer.types'
 import { QrStylesSection } from './QrStylesSection'
 import { ColorsSection } from './ColorsSection'
 import { FontsSection } from './FontsSection'

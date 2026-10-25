@@ -58,6 +58,14 @@ export function StageBottomDock({
     )
 
   const isMany = scenes.length >= 2
+  const dockBtnClass = (isActive: boolean) =>
+    cn(
+      'flex shrink-0 cursor-pointer items-center rounded-full font-sans text-xs font-medium transition-all duration-200',
+      isMany ? 'h-7 w-7 justify-center' : 'gap-1.5 px-3 py-1.5',
+      isActive
+        ? 'bg-[#CF7056] text-white shadow-md shadow-[#CF7056]/20'
+        : 'text-stone-300 hover:bg-white/10 hover:text-white',
+    )
 
   return (
     <>
@@ -76,13 +84,7 @@ export function StageBottomDock({
             onClick={() => handleSwitch('hub')}
             onContextMenu={(e) => openMenu(e, { type: 'hub' })}
             title="Space Hub: Central Sanctuary Portal"
-            className={cn(
-              'flex shrink-0 cursor-pointer items-center rounded-full font-sans text-xs font-medium transition-all duration-200',
-              isMany ? 'h-7 w-7 justify-center' : 'gap-1.5 px-3 py-1.5',
-              activeSceneId === 'hub'
-                ? 'bg-[#CF7056] text-white shadow-md shadow-[#CF7056]/20'
-                : 'text-stone-300 hover:bg-white/10 hover:text-white',
-            )}
+            className={dockBtnClass(activeSceneId === 'hub')}
           >
             <Home className="h-3.5 w-3.5 shrink-0" />
             {!isMany && <span className="hidden sm:inline">Space Hub</span>}
@@ -93,13 +95,7 @@ export function StageBottomDock({
             onClick={() => handleSwitch('gate')}
             onContextMenu={(e) => openMenu(e, { type: 'vault' })}
             title="Entrance Vault: Passcode protection settings"
-            className={cn(
-              'relative flex shrink-0 cursor-pointer items-center rounded-full font-sans text-xs font-medium transition-all duration-200',
-              isMany ? 'h-7 w-7 justify-center' : 'gap-1.5 px-3 py-1.5',
-              activeSceneId === 'gate'
-                ? 'bg-[#CF7056] text-white shadow-md shadow-[#CF7056]/20'
-                : 'text-stone-300 hover:bg-white/10 hover:text-white',
-            )}
+            className={cn('relative', dockBtnClass(activeSceneId === 'gate'))}
           >
             <Lock className="h-3.5 w-3.5 shrink-0" />
             {!isMany && (
@@ -233,13 +229,7 @@ export function StageBottomDock({
             onClick={() => handleSwitch('share')}
             title="Share Invitation Keepsake"
             aria-label="Share invitation"
-            className={cn(
-              'flex shrink-0 cursor-pointer items-center rounded-full font-sans text-xs font-medium transition-all duration-200',
-              isMany ? 'h-7 w-7 justify-center' : 'gap-1.5 px-3 py-1.5',
-              activeSceneId === 'share'
-                ? 'bg-[#CF7056] text-white shadow-md shadow-[#CF7056]/20'
-                : 'text-stone-300 hover:bg-white/10 hover:text-white',
-            )}
+            className={dockBtnClass(activeSceneId === 'share')}
           >
             <Share2 className="h-3.5 w-3.5 shrink-0" />
             {!isMany && <span className="hidden sm:inline">Share</span>}

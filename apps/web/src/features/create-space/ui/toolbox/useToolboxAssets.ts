@@ -6,7 +6,7 @@ import type {
   SpatialItem,
   SpatialItemType,
   SpatialItemData,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 
 export const INITIAL_POPULAR_STICKERS = [
   { id: 'fluent-emoji-flat:birthday-cake', name: 'Birthday Cake' },

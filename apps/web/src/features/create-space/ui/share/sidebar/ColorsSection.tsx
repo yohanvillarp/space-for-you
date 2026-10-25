@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react'
-import type { HarmonyPalette } from '../share-customizer.types'
-import { HARMONY_PALETTES } from '../share-customizer.types'
+import type { HarmonyPalette } from '@/features/create-space/ui/share/share-customizer.types'
+import { HARMONY_PALETTES } from '@/features/create-space/ui/share/share-customizer.constants'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface ColorsSectionProps {

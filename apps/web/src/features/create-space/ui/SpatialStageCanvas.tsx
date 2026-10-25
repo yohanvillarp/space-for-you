@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
-import type { SpatialItem, SpatialItemType } from '../model/spatial-stage.types'
+import type {
+  SpatialItem,
+  SpatialItemType,
+} from '@/features/create-space/model/spatial-stage.types'
 import { SpatialCanvasItem } from './SpatialCanvasItem'
 import { SpatialStageAtmosphere } from './canvas/SpatialStageAtmosphere'
 import { useCanvasDragAndDrop } from './canvas/useCanvasDragAndDrop'

@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { Sparkles, Share2, Layers, Heart } from 'lucide-react'
-import type { UserSpace } from '../model/types'
+import type { UserSpace } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'

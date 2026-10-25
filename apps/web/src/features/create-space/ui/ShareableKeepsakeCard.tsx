@@ -5,8 +5,8 @@ import {
   generateKeepsakeCardCanvas,
   copyCardImageToClipboard,
   downloadCardImage,
-} from '../lib/card-canvas-generator'
-import type { KeepsakeCardData } from '../lib/card-canvas-generator'
+} from '@/features/create-space/lib/card-canvas-generator'
+import type { KeepsakeCardData } from '@/features/create-space/lib/card-canvas-generator'
 import { cn } from '@/shared/lib'
 
 export interface ShareableKeepsakeCardProps {
