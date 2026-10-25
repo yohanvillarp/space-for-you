@@ -11,6 +11,8 @@ export interface UseCanvasDragAndDropProps {
   selectedId: string | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onDeleteItem: (id: string) => void
   onAddItem: (
     type: SpatialItemType,
@@ -25,6 +27,8 @@ export function useCanvasDragAndDrop({
   selectedId,
   onSelectItem,
   onUpdateItemPosition,
+  onStartDragItem,
+  onCommitItemPosition,
   onDeleteItem,
   onAddItem,
 }: UseCanvasDragAndDropProps) {
@@ -45,6 +49,7 @@ export function useCanvasDragAndDrop({
       const item = items.find((it) => it.id === id)
       if (!item || !containerRef.current) return
 
+      onStartDragItem?.(id)
       setDraggingId(id)
       activeDragRef.current = {
         id,
@@ -54,7 +59,7 @@ export function useCanvasDragAndDrop({
         itemStartY: item.y,
       }
     },
-    [items],
+    [items, onStartDragItem],
   )
 
   useEffect(() => {
@@ -81,6 +86,7 @@ export function useCanvasDragAndDrop({
       if (activeDragRef.current) {
         activeDragRef.current = null
         setDraggingId(null)
+        onCommitItemPosition?.()
       }
     }
 
@@ -90,7 +96,7 @@ export function useCanvasDragAndDrop({
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('pointerup', handlePointerUp)
     }
-  }, [onUpdateItemPosition])
+  }, [onUpdateItemPosition, onCommitItemPosition])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

@@ -49,6 +49,8 @@ export interface EditorSceneRendererProps {
   copiedItem: SpatialItem | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onRotateItem: (id: string, delta: number) => void
   onSetRotation: (id: string, rotation: number) => void
   onResetRotation: (id: string) => void
@@ -113,6 +115,8 @@ export function EditorSceneRenderer({
   copiedItem,
   onSelectItem,
   onUpdateItemPosition,
+  onStartDragItem,
+  onCommitItemPosition,
   onRotateItem,
   onSetRotation,
   onResetRotation,
@@ -222,6 +226,8 @@ export function EditorSceneRenderer({
       copiedItem={copiedItem}
       onSelectItem={onSelectItem}
       onUpdateItemPosition={onUpdateItemPosition}
+      onStartDragItem={onStartDragItem}
+      onCommitItemPosition={onCommitItemPosition}
       onRotateItem={onRotateItem}
       onSetRotation={onSetRotation}
       onResetRotation={onResetRotation}

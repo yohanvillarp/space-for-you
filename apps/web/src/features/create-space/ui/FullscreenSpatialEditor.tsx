@@ -158,6 +158,10 @@ export function FullscreenSpatialEditor({
           onToggleSidebar={handleToggleSidebar}
           itemCount={items.length}
           selectedId={selectedId}
+          canUndo={stage.canUndo}
+          canRedo={stage.canRedo}
+          onUndo={stage.handleUndo}
+          onRedo={stage.handleRedo}
           onDeleteSelected={stage.handleDeleteItem}
           onResetToDefaults={handleResetToDefaults}
           onOpenShare={() => handleOpenScene('share')}

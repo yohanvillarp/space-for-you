@@ -28,6 +28,8 @@ export interface SpatialStageCanvasProps {
   copiedItem?: SpatialItem | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onRotateItem: (id: string, delta: number) => void
   onSetRotation?: (id: string, angle: number) => void
   onResetRotation?: (id: string) => void
@@ -65,6 +67,8 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
     copiedItem = null,
     onSelectItem,
     onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
     onRotateItem,
     onSetRotation,
     onResetRotation,
@@ -88,10 +92,8 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
   // Automatically close context menu if the targeted item was deleted
   useEffect(() => {
     if (menuState.isOpen && menuState.target?.type === 'item') {
-      const targetId = menuState.target.item.id
-      if (!items.some((it) => it.id === targetId)) {
-        closeMenu()
-      }
+      const targetItem = menuState.target.item
+      if (!items.some((it) => it.id === targetItem.id)) closeMenu()
     }
   }, [items, menuState, closeMenu])
 
@@ -119,6 +121,8 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
     selectedId,
     onSelectItem,
     onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
     onDeleteItem: handleDeleteItem,
     onAddItem,
   })

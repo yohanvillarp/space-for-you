@@ -131,6 +131,8 @@ export function useFullscreenEditorHandlers({
 
   const stageItemHandlers = {
     onUpdateItemPosition: stage.handleUpdatePosition,
+    onStartDragItem: stage.handleStartDragItem,
+    onCommitItemPosition: stage.handleCommitItemPosition,
     onRotateItem: stage.handleRotateItem,
     onSetRotation: stage.handleSetItemRotation,
     onResetRotation: stage.handleResetRotation,

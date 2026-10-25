@@ -183,6 +183,10 @@ export function useEditorStageWorkflow({
   useStageKeyboardShortcuts({
     selectedItem: selectedItem ?? null,
     copiedItem,
+    canUndo: stage.canUndo,
+    canRedo: stage.canRedo,
+    onUndo: stage.handleUndo,
+    onRedo: stage.handleRedo,
     onCopyItem: stage.handleCopyItem,
     onPasteItem: handleGuardedPasteItem,
     onDuplicateItem: handleGuardedDuplicateItem,

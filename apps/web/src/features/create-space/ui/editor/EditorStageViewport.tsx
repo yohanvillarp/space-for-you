@@ -42,6 +42,8 @@ export interface EditorStageViewportProps {
   copiedItem: SpatialItem | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onRotateItem: (id: string, delta: number) => void
   onSetRotation: (id: string, rotation: number) => void
   onResetRotation: (id: string) => void

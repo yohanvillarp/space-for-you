@@ -31,6 +31,8 @@ export function SpatialStageStudio({
     selectedId,
     setSelectedId,
     handleUpdatePosition,
+    handleStartDragItem,
+    handleCommitItemPosition,
     handleRotateItem,
     handleSetItemRotation,
     handleResetRotation,
@@ -183,6 +185,8 @@ export function SpatialStageStudio({
             selectedId={selectedId}
             onSelectItem={setSelectedId}
             onUpdateItemPosition={handleUpdatePosition}
+            onStartDragItem={handleStartDragItem}
+            onCommitItemPosition={handleCommitItemPosition}
             onRotateItem={handleRotateItem}
             onSetRotation={handleSetItemRotation}
             onResetRotation={handleResetRotation}

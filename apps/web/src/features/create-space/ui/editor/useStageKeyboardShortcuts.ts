@@ -5,6 +5,10 @@ import { playSpatialSfx } from '@/shared/lib'
 export interface StageKeyboardShortcutsProps {
   selectedItem: SpatialItem | null
   copiedItem: SpatialItem | null
+  canUndo?: boolean
+  canRedo?: boolean
+  onUndo?: () => void
+  onRedo?: () => void
   onCopyItem: (item: SpatialItem) => void
   onPasteItem: (x?: number, y?: number) => void
   onDuplicateItem: (id: string) => void
@@ -19,6 +23,10 @@ export interface StageKeyboardShortcutsProps {
 export function useStageKeyboardShortcuts({
   selectedItem,
   copiedItem,
+  canUndo = false,
+  canRedo = false,
+  onUndo,
+  onRedo,
   onCopyItem,
   onPasteItem,
   onDuplicateItem,
@@ -61,6 +69,29 @@ export function useStageKeyboardShortcuts({
         target?.tagName === 'TEXTAREA' ||
         target?.isContentEditable
       ) {
+        return
+      }
+
+      // Undo: Ctrl+Z / Cmd+Z (without Shift)
+      if (isCtrlOrCmd && !e.shiftKey && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault()
+        if (canUndo && onUndo) {
+          onUndo()
+          playSpatialSfx('tactile-tap')
+        }
+        return
+      }
+
+      // Redo: Ctrl+Y / Cmd+Y or Ctrl+Shift+Z / Cmd+Shift+Z
+      if (
+        (isCtrlOrCmd && (e.key === 'y' || e.key === 'Y')) ||
+        (isCtrlOrCmd && e.shiftKey && (e.key === 'z' || e.key === 'Z'))
+      ) {
+        e.preventDefault()
+        if (canRedo && onRedo) {
+          onRedo()
+          playSpatialSfx('tactile-tap')
+        }
         return
       }
 
@@ -134,6 +165,10 @@ export function useStageKeyboardShortcuts({
   }, [
     selectedItem,
     copiedItem,
+    canUndo,
+    canRedo,
+    onUndo,
+    onRedo,
     onCopyItem,
     onPasteItem,
     onDuplicateItem,
