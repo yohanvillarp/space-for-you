@@ -53,6 +53,11 @@ export function useStudioSave({
       saveToStorage(keys.metaKey, spaceMeta)
       if (protectionConfig) saveToStorage(keys.protectionKey, protectionConfig)
 
+      const resolvedStatus =
+        existing?.status === 'published'
+          ? 'published'
+          : (existing?.status ?? 'draft')
+
       return saveSpace({
         id: targetId,
         title: spaceMeta.title?.trim() || existing?.title || fallbackTitle,
@@ -63,7 +68,7 @@ export function useStudioSave({
         templateId,
         scenesCount,
         artifactsCount,
-        status: 'ready',
+        status: resolvedStatus,
         isProtected: Boolean(protectionConfig?.enabled),
         createdAt: existing?.createdAt ?? new Date().toISOString(),
         updatedAt: new Date().toISOString(),

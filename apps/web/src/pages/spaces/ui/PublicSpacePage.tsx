@@ -17,6 +17,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 export function PublicSpacePage() {
   const { slug } = useParams<{ slug: string }>()
   const [data, setData] = useState<SpaceWithScenes | null>(null)
+  const [draftNotice, setDraftNotice] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(() => Boolean(slug))
   const [isUnlocked, setIsUnlocked] = useState(false)
 
@@ -35,7 +36,8 @@ export function PublicSpacePage() {
             setIsUnlocked(true)
           }
         } else {
-          setData(null)
+          setData(result.data || null)
+          setDraftNotice(result.error || null)
           setIsLoading(false)
         }
       })
@@ -112,7 +114,20 @@ export function PublicSpacePage() {
 
   // Once unlocked and loaded, render the immersive read-only public viewer
   if (!isLoading && data && isUnlocked) {
-    return <PublicSanctuaryViewer data={data} />
+    const isDraftPreview = data.space.status === 'draft'
+    return (
+      <div className="relative">
+        {isDraftPreview && (
+          <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-center gap-2 bg-amber-500/95 px-4 py-2 text-center font-sans text-xs font-medium text-stone-950 shadow-md backdrop-blur-xs">
+            <span>
+              Creator Preview: Sanctuary is in draft mode. Recipients will see a
+              preparation page until published.
+            </span>
+          </div>
+        )}
+        <PublicSanctuaryViewer data={data} />
+      </div>
+    )
   }
 
   return (
@@ -147,6 +162,33 @@ export function PublicSpacePage() {
             <p className="text-text-secondary font-sans text-sm">
               Gathering memories and letters from the cloud.
             </p>
+          </div>
+        ) : draftNotice ? (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h1 className="font-heading text-text-primary text-3xl font-medium tracking-tight sm:text-4xl">
+                Sanctuary in Preparation
+              </h1>
+              <p className="text-text-secondary mx-auto max-w-md font-sans text-sm leading-relaxed">
+                {space?.recipientName
+                  ? `${space.recipientName}'s space is still being crafted by its creator. Please check back once it has been officially published.`
+                  : 'This sanctuary is still being crafted by its creator. Please check back once it has been officially published.'}
+              </p>
+            </div>
+
+            <Card className="border-border-base bg-bg-surface/90 space-y-4 p-8 text-center backdrop-blur-sm sm:p-10">
+              <Compass className="text-primary mx-auto h-8 w-8 opacity-70" />
+              <p className="text-text-secondary font-sans text-sm">
+                Keepsakes, letters, and celebration memories will illuminate
+                this space once its creator finishes and publishes it.
+              </p>
+            </Card>
+
+            <div>
+              <Button asChild variant="primary" size="md">
+                <Link to={ROUTES.HOME}>Explore Space For You</Link>
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-6">

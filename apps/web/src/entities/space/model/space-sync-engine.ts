@@ -79,11 +79,11 @@ export function resolveSpaceDisplayStatus(
     return 'archived'
   }
 
-  if (space.status === 'draft') {
+  if (space.status !== 'published') {
     return 'draft'
   }
 
-  // If status is published or ready, inspect scenes for time-locked schedules
+  // If status is published, inspect scenes for time-locked schedules
   const resolvedScenes = scenes || loadSpaceScenes(space.id, space.templateId)
   const hasFutureSchedule = resolvedScenes.some((s) => isSceneTimeLocked(s))
 

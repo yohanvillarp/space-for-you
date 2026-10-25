@@ -166,7 +166,7 @@ export async function saveSpaceToDatabase({
   passcodeHint,
   protectionTheme,
 }: SaveSpaceParams): Promise<UserSpace> {
-  const isPublished = space.status === 'published' || space.status === 'ready'
+  const isPublished = space.status === 'published'
   const perms = buildPermissions(userId, isPublished)
   const resolvedSlug =
     slug || generateSpaceSlug(space.title, space.recipientName)

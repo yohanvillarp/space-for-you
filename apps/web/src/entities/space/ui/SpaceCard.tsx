@@ -52,7 +52,7 @@ export function SpaceCard({
   const theme = THEME_REGISTRY[space.templateId] ?? THEME_REGISTRY.birthday
   const studioUrl = `${ROUTES.STUDIO}?template=${encodeURIComponent(space.templateId)}&spaceId=${encodeURIComponent(space.id)}`
   const shareSceneUrl = `${studioUrl}&scene=share`
-  const publicUrl = `${window.location.origin}/s/${space.id}`
+  const publicUrl = `${window.location.origin}/s/${space.slug || space.id}`
 
   const displayStatus = resolveSpaceDisplayStatus(space)
   const isLiveOrScheduled =

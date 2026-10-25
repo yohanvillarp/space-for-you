@@ -139,6 +139,24 @@ export default async ({ req, res, log, error }) => {
     return res.json({ error: 'Sanctuary not found' }, 404)
   }
 
+  if (spaceDoc.status !== 'published') {
+    return res.json(
+      {
+        error:
+          'This sanctuary is still being prepared and has not been published yet.',
+        isDraft: true,
+        space: {
+          id: spaceDoc.$id,
+          title: spaceDoc.title,
+          recipientName: spaceDoc.recipientName,
+          status: spaceDoc.status,
+        },
+        scenes: [],
+      },
+      403,
+    )
+  }
+
   const isProtected = Boolean(spaceDoc.isProtected)
 
   // If protected and no passcode provided: return metadata only with scenes: []
