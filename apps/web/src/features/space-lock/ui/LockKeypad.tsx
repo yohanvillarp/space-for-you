@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { AlertCircle, ShieldAlert, Lock, Loader2 } from 'lucide-react'
-import type { LockKeypadTheme } from '@/features/space-lock/model/lock.types'
 import {
   verifyPasscode,
   checkPasscodeRateLimit,
@@ -10,20 +9,9 @@ import {
 import { playSpatialSfx, cn } from '@/shared/lib'
 import { KEYPAD_STYLES } from './keypad-styles'
 import { LockKeypadButtons } from './LockKeypadButtons'
+import type { LockKeypadProps } from './lock-keypad.types'
 
-export interface LockKeypadProps {
-  expectedPasscode?: string
-  passcodeLength?: number
-  passcodeHash?: string
-  passcodeSalt?: string
-  rateLimitKey?: string
-  isUnlocked: boolean
-  onUnlockSuccess: () => void
-  onVerifyPasscode?: (
-    code: string,
-  ) => Promise<{ success: boolean; errorMessage?: string }>
-  theme?: LockKeypadTheme
-}
+export type { LockKeypadProps }
 
 export function LockKeypad({
   expectedPasscode,
