@@ -37,7 +37,15 @@ export function PublicSpacePage() {
       })
       .then((spaceData) => {
         if (isMounted) {
-          const resolved = spaceData ?? getLocalSpaceWithScenes(slug)
+          const localFallback = getLocalSpaceWithScenes(slug)
+          const resolved = spaceData ?? localFallback
+          if (
+            resolved &&
+            localFallback?.passcodeLength &&
+            !resolved.passcodeLength
+          ) {
+            resolved.passcodeLength = localFallback.passcodeLength
+          }
           setData(resolved)
           setIsLoading(false)
           if (resolved && !resolved.space?.isProtected) {
@@ -70,10 +78,19 @@ export function PublicSpacePage() {
     } catch {
       parsedTheme = {}
     }
+
+    const resolvedPasscodeLength =
+      data?.passcodeLength ??
+      parsedTheme.passcodeLength ??
+      (parsedTheme.passcode ? parsedTheme.passcode.length : undefined) ??
+      4
+
     return {
       ...DEFAULT_PROTECTION_CONFIG,
       ...parsedTheme,
       enabled: Boolean(space?.isProtected),
+      passcode: undefined,
+      passcodeLength: resolvedPasscodeLength,
       passcodeHash: data?.passcodeHash,
       passcodeSalt: data?.passcodeSalt,
       hint: data?.passcodeHint,

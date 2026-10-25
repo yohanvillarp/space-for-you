@@ -27,14 +27,20 @@ export function useSpaceProtectionState(
   const currentKey = getSpaceStorageKeys(spaceId, templateId).protectionKey
 
   const [protectionConfig, setProtectionConfig] =
-    useState<SpaceProtectionConfig>(() =>
-      loadFromStorage(currentKey, DEFAULT_PROTECTION_CONFIG),
-    )
+    useState<SpaceProtectionConfig>(() => {
+      const loaded = loadFromStorage(currentKey, DEFAULT_PROTECTION_CONFIG)
+      const passcodeLength =
+        loaded.passcodeLength ?? (loaded.passcode ? loaded.passcode.length : 4)
+      return { ...loaded, passcodeLength }
+    })
 
   const [prevKey, setPrevKey] = useState(currentKey)
   if (prevKey !== currentKey) {
     setPrevKey(currentKey)
-    setProtectionConfig(loadFromStorage(currentKey, DEFAULT_PROTECTION_CONFIG))
+    const loaded = loadFromStorage(currentKey, DEFAULT_PROTECTION_CONFIG)
+    const passcodeLength =
+      loaded.passcodeLength ?? (loaded.passcode ? loaded.passcode.length : 4)
+    setProtectionConfig({ ...loaded, passcodeLength })
   }
 
   // Save to isolated localStorage on any state modification
@@ -44,29 +50,38 @@ export function useSpaceProtectionState(
 
   // Handler that handles cryptographic hash derivation seamlessly
   const handleUpdateProtection = useCallback(
-    async (updates: Partial<SpaceProtectionConfig>) => {
-      let finalUpdates = { ...updates }
+    (updates: Partial<SpaceProtectionConfig>) => {
+      let syncUpdates: Partial<SpaceProtectionConfig> = { ...updates }
 
-      if (updates.passcode !== undefined && updates.passcode.trim() !== '') {
+      if (updates.passcode !== undefined) {
         const rawCode = updates.passcode.trim()
-        const salt =
-          protectionConfig.passcodeSalt || generateCryptographicSalt()
-        try {
-          const hash = await derivePasscodeHash(rawCode, salt)
-          finalUpdates = {
-            ...finalUpdates,
-            passcodeSalt: salt,
-            passcodeHash: hash,
-          }
-        } catch {
-          // Fallback if subtle crypto error occurs
+        syncUpdates = {
+          ...syncUpdates,
+          passcodeLength: rawCode.length > 0 ? rawCode.length : undefined,
         }
       }
 
       setProtectionConfig((prev) => ({
         ...prev,
-        ...finalUpdates,
+        ...syncUpdates,
       }))
+
+      if (updates.passcode !== undefined && updates.passcode.trim() !== '') {
+        const rawCode = updates.passcode.trim()
+        const salt =
+          protectionConfig.passcodeSalt || generateCryptographicSalt()
+        derivePasscodeHash(rawCode, salt)
+          .then((hash) => {
+            setProtectionConfig((prev) => ({
+              ...prev,
+              passcodeSalt: salt,
+              passcodeHash: hash,
+            }))
+          })
+          .catch(() => {
+            // Fallback if subtle crypto error occurs
+          })
+      }
     },
     [protectionConfig.passcodeSalt],
   )
