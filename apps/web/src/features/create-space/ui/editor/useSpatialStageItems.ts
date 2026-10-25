@@ -12,6 +12,14 @@ import {
 import { getNextItemLabel } from '../../lib/stage-item-naming'
 import { canAddStagePhoto } from '../../lib/stage-photo-limit'
 
+/**
+ * Custom hook managing interactive spatial items placed on the 2D diorama canvas.
+ * Handles drag-and-drop coordinate updates (0-100%), rotation, z-index layering,
+ * clipboard copy/paste, and in-memory deferred photo attachments.
+ *
+ * @param templateId - Theme template identifier ('birthday' | 'anniversary' | 'friendship').
+ * @returns State and event handlers for canvas stage interactions.
+ */
 export function useSpatialStageItems(templateId: SpaceTemplateId) {
   const [items, setItems] = useState<SpatialItem[]>(() =>
     getDefaultItemsForTemplate(templateId),

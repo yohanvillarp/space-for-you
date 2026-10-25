@@ -37,5 +37,6 @@ export * from './model/scenes.types'
 export type {
   SpatialItem,
   SpatialItemType,
+  SpatialItemData,
   ToolboxItemDef,
 } from './model/spatial-stage.types'
