@@ -27,6 +27,14 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         }
       } catch {
         if (isMounted) {
+          try {
+            const current = window.location.pathname + window.location.search
+            if (current && current !== ROUTES.AUTH) {
+              sessionStorage.setItem('sfy_auth_return', current)
+            }
+          } catch {
+            // ignore storage error
+          }
           navigate(ROUTES.AUTH, { replace: true })
         }
       }

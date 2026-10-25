@@ -48,6 +48,8 @@ export interface EditorSceneRendererProps {
   onReorderScenes?: (fromIndex: number, toIndex: number) => void
   onToggleProtection?: () => void
   templateId: SpaceTemplateId
+  isPublished?: boolean
+  onOpenPublish?: () => void
   // Spatial Stage Canvas props
   items: SpatialItem[]
   selectedId: string | null
@@ -148,6 +150,8 @@ export function EditorSceneRenderer({
   onUpdateLetter,
   shareUrl,
   shareCustomizer,
+  isPublished,
+  onOpenPublish,
 }: EditorSceneRendererProps) {
   if (activeSceneId === 'gate') {
     return (
@@ -199,6 +203,8 @@ export function EditorSceneRenderer({
         onUpdateCustomization={shareCustomizer.updateCustomization}
         onBackToHub={() => onOpenScene('hub')}
         isStudioPreview={true}
+        isPublished={isPublished}
+        onOpenPublish={onOpenPublish}
       />
     )
   }

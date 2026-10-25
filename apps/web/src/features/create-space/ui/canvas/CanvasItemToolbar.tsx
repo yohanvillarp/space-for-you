@@ -4,25 +4,31 @@ import {
   Trash2,
   BringToFront,
   GripHorizontal,
+  Mic,
 } from 'lucide-react'
+import type { SpatialItemType } from '@/features/create-space/model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
 
 export interface CanvasItemToolbarProps {
   itemId: string
+  itemType?: SpatialItemType
   currentRotation?: number
   onRotate: (id: string, delta: number) => void
   onResetRotation?: (id: string) => void
   onBringToFront: (id: string) => void
   onDelete: (id: string) => void
+  onRecordVoiceNote?: (id: string) => void
 }
 
 export function CanvasItemToolbar({
   itemId,
+  itemType,
   currentRotation = 0,
   onRotate,
   onResetRotation,
   onBringToFront,
   onDelete,
+  onRecordVoiceNote,
 }: CanvasItemToolbarProps) {
   const isTilted = Math.abs(currentRotation) > 0.5
 
@@ -97,6 +103,22 @@ export function CanvasItemToolbar({
       >
         <BringToFront className="h-3 w-3" />
       </button>
+
+      {/* Record Voice Note for Cassettes */}
+      {itemType === 'cassette-tape' && onRecordVoiceNote && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            playSpatialSfx('tactile-tap')
+            onRecordVoiceNote(itemId)
+          }}
+          title="Record voice note (max 1 min)"
+          className="hover:bg-bg-subtle text-text-secondary cursor-pointer rounded-full p-1 transition-colors hover:text-[#CF7056]"
+        >
+          <Mic className="h-3 w-3 text-[#CF7056]" />
+        </button>
+      )}
 
       <div className="bg-border-base/60 mx-0.5 h-3 w-px" />
 

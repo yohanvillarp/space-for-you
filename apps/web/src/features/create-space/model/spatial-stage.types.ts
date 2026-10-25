@@ -58,6 +58,10 @@ export interface SpatialItemData {
   artist?: string
   /** Additional subtitle info. */
   subtitle?: string
+  /** Indicates whether the audio is a personal voice note. */
+  isVoiceNote?: boolean
+  /** Duration in seconds. */
+  duration?: number
 }
 
 /**

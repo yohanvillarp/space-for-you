@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { VolumeX } from 'lucide-react'
+import { VolumeX, Gift } from 'lucide-react'
 import type { SpaceWithScenes, SpaceTemplateId } from '@/entities/space'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { getPresetTrackForTemplate } from '@/entities/audio'
@@ -8,7 +8,10 @@ import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
 import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { PublicStageCanvas } from '@/features/create-space/ui/public/PublicStageCanvas'
 import { PublicSceneDock } from '@/features/create-space/ui/public/PublicSceneDock'
-import { SanctuaryWelcomeIntro } from '@/features/create-space/ui/public/SanctuaryWelcomeIntro'
+import {
+  SanctuaryUnboxingCeremony,
+  hasSanctuaryBeenUnboxed,
+} from '@/features/create-space/ui/public/unboxing'
 import { SceneTeaserModal } from '@/features/create-space/ui/public/SceneTeaserModal'
 import { isSceneTimeLocked } from '@/features/create-space/lib/scene-schedule-utils'
 import { useSpatialAudioPlayer, cn, playSpatialSfx } from '@/shared/lib'
@@ -23,7 +26,9 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const [activeSceneId, setActiveSceneId] = useState<string>('hub')
-  const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(false)
+  const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(() =>
+    hasSanctuaryBeenUnboxed(space.id),
+  )
   const [teaserScene, setTeaserScene] = useState<SpaceScene | null>(null)
 
   const presetTrack = getPresetTrackForTemplate(templateId)
@@ -103,7 +108,24 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {hasSeenWelcome && (
+            <button
+              type="button"
+              onClick={() => {
+                playSpatialSfx('tactile-tap')
+                setHasSeenWelcome(false)
+              }}
+              title="Relive unboxing ceremony"
+              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-stone-400 transition-colors hover:border-white/20 hover:text-white"
+            >
+              <Gift className="h-3.5 w-3.5 text-amber-300/80" />
+              <span className="hidden font-sans text-xs sm:inline">
+                Relive Intro
+              </span>
+            </button>
+          )}
+
           {presetTrack && (
             <button
               type="button"
@@ -142,17 +164,19 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
       {/* Scene Viewport */}
       <main className="relative flex h-[calc(100vh-56px)] w-full flex-1 overflow-hidden">
         {!hasSeenWelcome ? (
-          <SanctuaryWelcomeIntro
+          <SanctuaryUnboxingCeremony
+            spaceId={space.id}
             spaceTitle={space.title}
             recipientName={space.recipientName}
             senderName={data.senderName}
             dedicationMessage={data.dedicationMessage}
+            templateId={templateId}
             accentColor={activeTheme.accentColor}
             ambientGlow={activeTheme.ambientGlow}
             isPlayingAudio={isPlaying}
             hasAudioTrack={Boolean(presetTrack)}
             onToggleAudio={togglePlay}
-            onEnter={handleEnterSanctuary}
+            onComplete={handleEnterSanctuary}
           />
         ) : (
           <>

@@ -1,6 +1,7 @@
 import {
   Account,
   Databases,
+  Functions,
   ID,
   OAuthProvider,
   Permission,
@@ -30,6 +31,7 @@ export {
 export const account = new Account(client)
 export const storage = new Storage(client)
 export const databases = new Databases(client)
+export const functions = new Functions(client)
 
 export type AppwriteUser = Models.User<Models.Preferences>
 

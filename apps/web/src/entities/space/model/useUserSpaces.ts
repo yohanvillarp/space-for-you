@@ -13,6 +13,7 @@ import {
   SPACES_CHANGED_EVENT,
   SPACES_STORAGE_KEY,
 } from './spaces-storage'
+import { mergeSpaces } from './space-sync-engine'
 import { getCurrentUser } from '@/shared/api'
 import {
   fetchUserSpaces,
@@ -20,51 +21,27 @@ import {
   saveSpaceToDatabase,
 } from '@/entities/space/api'
 
-/**
- * Return interface for the `useUserSpaces` hook.
- */
 export interface UseUserSpacesReturn {
-  /** Array of active spaces owned by or available to the user. */
   spaces: UserSpace[]
-  /** Whether spaces are currently being fetched from Appwrite Databases. */
   isLoading: boolean
-  /** Whether the user is authenticated and cloud sync is connected. */
   isCloudConnected: boolean
-  /** Saves or updates a space, synchronizing to storage and cloud. */
   saveSpace: (space: UserSpace) => UserSpace
-  /** Deletes a space by ID from local storage and Appwrite Databases. */
   deleteSpace: (id: string) => void
-  /** Creates a clone of an existing space with optional custom title and recipient. */
   duplicateSpace: (
     id: string,
     customTitle?: string,
     customRecipient?: string,
   ) => UserSpace | undefined
-  /** Renames a space with a new title and recipient. */
   renameSpace: (
     id: string,
     newTitle: string,
     newRecipient?: string,
   ) => UserSpace | undefined
-  /** Re-reads spaces from local storage to sync UI state. */
+  archiveSpace: (id: string) => void
+  restoreSpace: (id: string) => void
   refreshSpaces: () => void
 }
 
-/**
- * Custom hook providing reactive access to user spaces with hybrid offline/cloud support.
- *
- * @remarks
- * 1. Instantly initializes with local storage data for zero layout shift (optimistic UI).
- * 2. On mount, detects Appwrite Auth session and fetches live spaces from `sfy_primary_db`.
- * 3. Listens to `StorageEvent` and internal `SPACES_CHANGED_EVENT` to synchronize across tabs.
- *
- * @returns State and mutation methods for user spaces.
- *
- * @example
- * ```tsx
- * const { spaces, isLoading, deleteSpace } = useUserSpaces()
- * ```
- */
 export function useUserSpaces(): UseUserSpacesReturn {
   const [spaces, setSpaces] = useState<UserSpace[]>(() => getSavedSpaces())
   const [isLoading, setIsLoading] = useState(false)
@@ -85,13 +62,12 @@ export function useUserSpaces(): UseUserSpacesReturn {
         setIsLoading(true)
         try {
           const cloudSpaces = await fetchUserSpaces(user.$id)
-          if (isMounted && cloudSpaces.length > 0) {
-            setSpaces(cloudSpaces)
+          if (isMounted) {
+            const currentLocal = getSavedSpaces()
+            const merged = mergeSpaces(currentLocal, cloudSpaces)
+            setSpaces(merged)
             try {
-              localStorage.setItem(
-                SPACES_STORAGE_KEY,
-                JSON.stringify(cloudSpaces),
-              )
+              localStorage.setItem(SPACES_STORAGE_KEY, JSON.stringify(merged))
             } catch {
               // ignore quota
             }
@@ -112,19 +88,13 @@ export function useUserSpaces(): UseUserSpacesReturn {
   }, [])
 
   useEffect(() => {
-    const handleCustomChange = () => {
-      refreshSpaces()
-    }
-
+    const handleCustomChange = () => refreshSpaces()
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === null || e.key === SPACES_STORAGE_KEY) {
-        refreshSpaces()
-      }
+      if (e.key === null || e.key === SPACES_STORAGE_KEY) refreshSpaces()
     }
 
     window.addEventListener(SPACES_CHANGED_EVENT, handleCustomChange)
     window.addEventListener('storage', handleStorageChange)
-
     return () => {
       window.removeEventListener(SPACES_CHANGED_EVENT, handleCustomChange)
       window.removeEventListener('storage', handleStorageChange)
@@ -142,9 +112,7 @@ export function useUserSpaces(): UseUserSpacesReturn {
             await saveSpaceToDatabase({ space: saved, userId: user.$id })
           }
         })
-        .catch(() => {
-          // ignore
-        })
+        .catch(() => {})
 
       return saved
     },
@@ -182,6 +150,32 @@ export function useUserSpaces(): UseUserSpacesReturn {
       return duplicated
     },
     [refreshSpaces],
+  )
+
+  const archiveSpace = useCallback(
+    (id: string) => {
+      const target = spaces.find((s) => s.id === id)
+      if (!target) return
+      saveSpace({
+        ...target,
+        status: 'archived',
+        updatedAt: new Date().toISOString(),
+      })
+    },
+    [spaces, saveSpace],
+  )
+
+  const restoreSpace = useCallback(
+    (id: string) => {
+      const target = spaces.find((s) => s.id === id)
+      if (!target) return
+      saveSpace({
+        ...target,
+        status: 'draft',
+        updatedAt: new Date().toISOString(),
+      })
+    },
+    [spaces, saveSpace],
   )
 
   const renameSpace = useCallback(
@@ -226,6 +220,8 @@ export function useUserSpaces(): UseUserSpacesReturn {
     deleteSpace,
     duplicateSpace,
     renameSpace,
+    archiveSpace,
+    restoreSpace,
     refreshSpaces,
   }
 }

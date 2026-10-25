@@ -138,6 +138,8 @@ export interface SpaceMeta {
   title: string
   /** Long-form dedication message. */
   dedicationMessage?: string
+  /** Publication lifecycle state. */
+  status?: 'draft' | 'ready' | 'published'
 }
 
 export const INITIAL_LETTERS_DATA: LetterItem[] = [
@@ -163,4 +165,5 @@ export const DEFAULT_SPACE_META: SpaceMeta = {
   title: '',
   dedicationMessage:
     'An intimate collection of moments, letters, and memories curated just for you.',
+  status: 'draft',
 }
