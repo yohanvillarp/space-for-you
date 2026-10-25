@@ -15,6 +15,15 @@ import { RenameSceneModal } from '@/features/create-space/ui/dock/RenameSceneMod
 import { useScenesDragReorder } from '@/features/create-space/ui/hub/useScenesDragReorder'
 import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { cn } from '@/shared/lib'
+import '@/features/space-themes/birthday/birthday.css'
+import '@/features/space-themes/romantic/romantic.css'
+import '@/features/space-themes/friendship/friendship.css'
+
+const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
+}
 
 export interface SpaceHubSceneProps {
   templateId?: SpaceTemplateId
@@ -90,6 +99,7 @@ export function SpaceHubScene({
         onContextMenu={(e) => openMenu(e, { type: 'background' })}
         className={cn(
           '@container relative flex h-full min-h-full w-full flex-col items-center justify-start overflow-y-auto px-4 py-8 pb-24 sm:px-6 sm:py-12 sm:pb-28 lg:px-12',
+          SURFACE_CLASSES[templateId] ?? 'celebration-table-surface',
           className,
         )}
       >
@@ -135,12 +145,14 @@ export function SpaceHubScene({
               />
             ))}
 
-            {/* Add Scene Card */}
-            <AddSceneCard
-              accentColor={activeTheme.accentColor}
-              onAddScene={onOpenAddScene}
-              onContextMenu={(e) => openMenu(e, { type: 'add-card' })}
-            />
+            {/* Add Scene Card (editor mode only) */}
+            {isEffectiveEditor && (
+              <AddSceneCard
+                accentColor={activeTheme.accentColor}
+                onAddScene={onOpenAddScene}
+                onContextMenu={(e) => openMenu(e, { type: 'add-card' })}
+              />
+            )}
           </div>
         </div>
       </div>
