@@ -22,6 +22,7 @@ import { useFullscreenEditorHandlers } from '@/features/create-space/ui/editor/u
 import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEditorStageWorkflow'
 import { useConfirmDialog } from '@/shared/ui'
 import { ROUTES } from '@/shared/config'
+import { getCanonicalPublicUrl } from '@/features/create-space/lib/url-shortener'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -119,9 +120,9 @@ export function FullscreenSpatialEditor({
     onResetScene: () => handleOpenScene('hub'),
   })
 
-  const shareOrigin =
-    typeof window !== 'undefined' ? window.location.origin : ''
-  const shareUrl = `${shareOrigin}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+  const shareUrl = spaceId
+    ? getCanonicalPublicUrl(spaceId)
+    : `${typeof window !== 'undefined' ? window.location.origin : ''}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
   const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
 
   const navigate = useNavigate()

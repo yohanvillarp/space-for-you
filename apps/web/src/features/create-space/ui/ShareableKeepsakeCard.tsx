@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { shortenSanctuaryUrl } from '@/features/create-space/lib/url-shortener'
 import { KeepsakeCardPreview } from './share/KeepsakeCardPreview'
 import { ShareActionsPanel } from './share/ShareActionsPanel'
 import {
@@ -31,13 +32,28 @@ export function ShareableKeepsakeCard({
   const [copiedImage, setCopiedImage] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [resolvedUrl, setResolvedUrl] = useState(url)
   const [customNote, setCustomNote] = useState(
     'A quiet, private world meant solely for you.',
   )
 
+  useEffect(() => {
+    let isMounted = true
+    if (url) {
+      shortenSanctuaryUrl(url).then((short) => {
+        if (isMounted) setResolvedUrl(short)
+      })
+    }
+    return () => {
+      isMounted = false
+    }
+  }, [url])
+
+  const activeUrl = resolvedUrl || url
+
   const cardData: KeepsakeCardData = {
     recipientName,
-    url,
+    url: activeUrl,
     accentColor,
     tapeColor,
     note: customNote,
@@ -78,7 +94,7 @@ export function ShareableKeepsakeCard({
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(activeUrl)
       setCopiedLink(true)
       setTimeout(() => setCopiedLink(false), 2500)
     } catch {
@@ -88,7 +104,7 @@ export function ShareableKeepsakeCard({
 
   const handleOpenWhatsApp = () => {
     const message = encodeURIComponent(
-      `He creado un espacio digital íntimo especialmente para ti. Abre este enlace: ${url}`,
+      `He creado un espacio digital íntimo especialmente para ti. Abre este enlace: ${activeUrl}`,
     )
     window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank')
   }
@@ -103,7 +119,7 @@ export function ShareableKeepsakeCard({
       {/* Left Column: Keepsake Gift Card Preview */}
       <KeepsakeCardPreview
         recipientName={recipientName}
-        url={url}
+        url={activeUrl}
         accentColor={accentColor}
         tapeColor={tapeColor}
         customNote={customNote}
