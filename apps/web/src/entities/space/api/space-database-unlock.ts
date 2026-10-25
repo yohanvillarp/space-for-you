@@ -26,7 +26,7 @@ export interface UnlockSpaceResult {
 }
 
 /**
- * Unlocks a space by calling the Appwrite Cloud Function 'unlock-sanctuary'.
+ * Unlocks a space by calling the Appwrite Cloud Function 'unlock-space'.
  * Falls back to offline/local storage if cloud function execution is unavailable.
  */
 export async function unlockSpaceViaFunction({
@@ -36,7 +36,7 @@ export async function unlockSpaceViaFunction({
   // 1. Try server-side Appwrite Cloud Function first
   try {
     const execution = await functions.createExecution(
-      'unlock-sanctuary',
+      'unlock-space',
       JSON.stringify({ slug, passcode }),
       false,
     )

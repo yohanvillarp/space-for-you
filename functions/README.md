@@ -6,7 +6,7 @@ Server-side security hardening functions designed for Appwrite Cloud (Node.js 18
 
 ## 1. Functions Overview
 
-### `unlock-sanctuary`
+### `unlock-space`
 
 - **Purpose:** Server-authoritative lock gate verification and time-locked scene filtering.
 - **Security Protections:**
