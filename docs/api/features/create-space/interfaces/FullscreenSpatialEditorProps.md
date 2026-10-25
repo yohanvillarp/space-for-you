@@ -6,7 +6,7 @@
 
 # Interface: FullscreenSpatialEditorProps
 
-Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:25](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L25)
+Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:27](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L27)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:2
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:29](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L29)
+Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:31](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L31)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:2
 
 > `optional` **initialSceneId?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:27](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L27)
+Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:29](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L29)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:2
 
 > `optional` **spaceId?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:28](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L28)
+Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:30](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L30)
 
 ---
 
@@ -38,4 +38,4 @@ Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:2
 
 > **templateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:26](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L26)
+Defined in: [apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx:28](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/FullscreenSpatialEditor.tsx#L28)

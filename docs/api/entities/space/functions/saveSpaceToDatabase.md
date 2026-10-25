@@ -8,7 +8,7 @@
 
 > **saveSpaceToDatabase**(`params`): `Promise`\<[`UserSpace`](../interfaces/UserSpace.md)\>
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:151](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/entities/space/api/space-database.ts#L151)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:167](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/space-database.ts#L167)
 
 Saves a space and all its scenes to Appwrite Databases with Document-Level Security.
 Performs idempotent update or creation of both space and scene documents.

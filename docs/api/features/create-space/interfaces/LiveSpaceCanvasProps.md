@@ -6,7 +6,7 @@
 
 # Interface: LiveSpaceCanvasProps
 
-Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx#L5)
+Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx#L5)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:5](https:
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx#L7)
+Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx#L7)
 
 ---
 
@@ -22,4 +22,4 @@ Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:7](https:
 
 > **templateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx#L6)
+Defined in: [apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/LiveSpaceCanvas.tsx#L6)

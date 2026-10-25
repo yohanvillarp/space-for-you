@@ -1,0 +1,29 @@
+[**Space For You - Architecture & API Documentation**](../../../README.md)
+
+---
+
+[Space For You - Architecture & API Documentation](../../../modules.md) / [features/create-space](../README.md) / validateSpaceCreation
+
+# Function: validateSpaceCreation()
+
+> **validateSpaceCreation**(`currentSpacesCount`, `confirm`, `isDuplicate?`): `boolean`
+
+Defined in: apps/web/src/features/create-space/lib/space-tier-limits.ts:144
+
+## Parameters
+
+### currentSpacesCount
+
+`number`
+
+### confirm
+
+[`ConfirmAlertFn`](../type-aliases/ConfirmAlertFn.md)
+
+### isDuplicate?
+
+`boolean` = `false`
+
+## Returns
+
+`boolean`

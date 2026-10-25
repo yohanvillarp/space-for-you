@@ -6,7 +6,7 @@
 
 # Interface: ShareSpaceModalProps
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L5)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L5)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:5](
 
 > **accentColor**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L13)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L13)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:13]
 
 > **isOpen**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L6)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L6)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:6](
 
 > **onClose**: () => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L7)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L7)
 
 #### Returns
 
@@ -42,7 +42,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:7](
 
 > `optional` **onRecipientNameChange?**: (`name`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L9)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L9)
 
 #### Parameters
 
@@ -60,7 +60,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:9](
 
 > **recipientName**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L8)
 
 ---
 
@@ -68,7 +68,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:8](
 
 > **stageName**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L11)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L11)
 
 ---
 
@@ -76,7 +76,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:11]
 
 > `optional` **tapeColor?**: `"gold"` \| `"rose"` \| `"sage"`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L14)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L14)
 
 ---
 
@@ -84,7 +84,7 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:14]
 
 > **title**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L10)
 
 ---
 
@@ -92,4 +92,4 @@ Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:10]
 
 > **url**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L12)
+Defined in: [apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/share/ShareSpaceModal.tsx#L12)
