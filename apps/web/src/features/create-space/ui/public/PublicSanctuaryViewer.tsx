@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Volume2, VolumeX, Heart, ArrowRight } from 'lucide-react'
 import type { SpaceWithScenes, SpaceTemplateId } from '@/entities/space'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
@@ -25,6 +25,16 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
     trackUrl: presetTrack?.url || '',
     loop: true,
   })
+
+  // Dynamic Document Title
+  useEffect(() => {
+    if (space?.title) {
+      document.title = `${space.title} • Space For You`
+    }
+    return () => {
+      document.title = 'Space For You'
+    }
+  }, [space?.title])
 
   const activeScene = scenes.find((s) => s.id === activeSceneId) as
     SpaceScene | undefined
@@ -80,13 +90,17 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
             >
               {isPlaying ? (
                 <>
-                  <Volume2 className="h-3.5 w-3.5 animate-pulse text-amber-300" />
+                  <div className="flex h-3.5 w-3 items-end gap-0.5">
+                    <span className="h-2 w-0.5 animate-pulse rounded-full bg-amber-300" />
+                    <span className="h-3.5 w-0.5 animate-pulse rounded-full bg-amber-300" />
+                    <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-amber-300" />
+                  </div>
                   <span className="hidden sm:inline">Soundscape</span>
                 </>
               ) : (
                 <>
                   <VolumeX className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Sound Off</span>
+                  <span className="hidden sm:inline">Play Music</span>
                 </>
               )}
             </button>
@@ -132,6 +146,25 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
               <span>Explore Sanctuary</span>
               <ArrowRight className="h-4 w-4" />
             </button>
+
+            {presetTrack && (
+              <button
+                type="button"
+                onClick={togglePlay}
+                className="mt-4 inline-flex cursor-pointer items-center gap-1.5 font-sans text-xs text-amber-300/70 transition-colors hover:text-amber-200"
+              >
+                {isPlaying ? (
+                  <Volume2 className="h-3 w-3" />
+                ) : (
+                  <VolumeX className="h-3 w-3" />
+                )}
+                <span>
+                  {isPlaying
+                    ? 'Ambient soundtrack active'
+                    : 'Tap to enable ambient sound'}
+                </span>
+              </button>
+            )}
           </div>
         )}
 
