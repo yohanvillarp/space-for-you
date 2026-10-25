@@ -78,8 +78,9 @@ export interface UserSpace {
    * - `draft`: Initial editing phase.
    * - `ready`: Prepared with all letters and artifacts placed.
    * - `published`: Shared with recipient (public read access enabled).
+   * - `archived`: Historical or archived space kept for records.
    */
-  status: 'draft' | 'ready' | 'published'
+  status: 'draft' | 'ready' | 'published' | 'archived'
   /** Whether the space is gated behind a privacy code. */
   isProtected?: boolean
   /** Short summary or dedication note. */
