@@ -102,14 +102,14 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
   },
   {
     type: 'cassette-tape',
-    label: 'Roadtrip Mixtape',
-    category: 'stage',
-    description: 'Vintage audio cassette with dual spinning reels',
+    label: 'Voice Note Cassette',
+    category: 'universal',
+    description: 'Vintage audio cassette with live microphone voice recorder',
     iconName: 'CassetteTape',
-    supportedTemplates: ['friendship'],
+    supportedTemplates: 'all',
     defaultData: {
-      isPlaying: true,
-      title: 'Roadtrip Mixtape • Side A',
+      isPlaying: false,
+      title: 'Personal Voice Message',
     },
   },
 
