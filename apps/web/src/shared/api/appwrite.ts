@@ -65,8 +65,9 @@ export async function signInWithGoogle(): Promise<void> {
   const success = `${window.location.origin}/auth/success`
   const failure = `${window.location.origin}/auth/failure`
 
-  // createOAuth2Session directly navigates to provider and sets session cookie upon completion
-  await account.createOAuth2Session({
+  // Use createOAuth2Token so userId & secret are returned in callback URL,
+  // bypassing Firefox/Safari third-party cookie blocking on localhost.
+  await account.createOAuth2Token({
     provider: OAuthProvider.Google,
     success,
     failure,

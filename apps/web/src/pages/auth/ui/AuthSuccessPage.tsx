@@ -18,44 +18,57 @@ export function AuthSuccessPage() {
     async function processOAuthCallback() {
       try {
         const url = new URL(window.location.href)
-        const secret = url.searchParams.get('secret')
-        const userId = url.searchParams.get('userId')
+        let secret = url.searchParams.get('secret')
+        let userId = url.searchParams.get('userId')
 
-        // 1. If token credentials are present, exchange them for a session
-        if (secret && userId) {
-          try {
-            await appwriteAccount.createSession({ userId, secret })
-          } catch (sessionErr) {
-            // Secret might have already been consumed or session already active
-            console.warn('OAuth token exchange notice:', sessionErr)
-          }
+        // Support hash-based callback parameters if provider rewrites query
+        if ((!secret || !userId) && url.hash) {
+          const hashParams = new URLSearchParams(url.hash.replace(/^#\/?/, ''))
+          secret = secret || hashParams.get('secret')
+          userId = userId || hashParams.get('userId')
         }
 
-        // 2. Verify that an active session exists in Appwrite
-        const user = await appwriteAccount.get()
-        if (user) {
-          setSessionHint(true)
-          if (isMounted) {
-            window.location.assign(ROUTES.DASHBOARD)
-            return
-          }
-        }
-
-        throw new Error('Missing active session. Please sign in again.')
-      } catch (err) {
-        if (isMounted) {
-          // Fallback check: verify if the session was established despite token exchange warning
+        // If no token credentials in URL, check if a session is already alive
+        if (!secret || !userId) {
           try {
             const user = await appwriteAccount.get()
-            if (user) {
+            if (user && isMounted) {
               setSessionHint(true)
               window.location.assign(ROUTES.DASHBOARD)
               return
             }
           } catch {
-            // Truly unauthenticated
+            // Not authenticated
           }
+          if (isMounted) {
+            setIsProcessing(false)
+            setError(
+              'Authentication token expired or not found. Please sign in again.',
+            )
+          }
+          return
+        }
 
+        // Exchange single-use OAuth token credentials for an active session
+        try {
+          await appwriteAccount.createSession({ userId, secret })
+        } catch (sessionErr) {
+          console.warn('OAuth token exchange notice:', sessionErr)
+        }
+
+        // Verify authenticated user
+        const user = await appwriteAccount.get()
+        if (user && isMounted) {
+          setSessionHint(true)
+          window.location.assign(ROUTES.DASHBOARD)
+          return
+        }
+
+        throw new Error(
+          'Unable to verify your account session. Please try signing in again.',
+        )
+      } catch (err) {
+        if (isMounted) {
           setIsProcessing(false)
           setError(
             err instanceof Error
@@ -96,7 +109,7 @@ export function AuthSuccessPage() {
               </div>
               <div className="space-y-2">
                 <h1 className="font-heading text-text-primary text-xl font-medium">
-                  Authentication Failed
+                  Authentication Notice
                 </h1>
                 <p className="text-text-secondary font-sans text-sm leading-relaxed">
                   {error}
