@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
 import {
   DEFAULT_PROTECTION_CONFIG,
+  BACKGROUND_THEMES_CATALOG,
   derivePasscodeHash,
   generateCryptographicSalt,
 } from '@/features/space-lock'
@@ -31,7 +32,9 @@ export function useSpaceProtectionState(
       const loaded = loadFromStorage(currentKey, DEFAULT_PROTECTION_CONFIG)
       const passcodeLength =
         loaded.passcodeLength ?? (loaded.passcode ? loaded.passcode.length : 4)
-      return { ...loaded, passcodeLength }
+      const backgroundTheme =
+        loaded.backgroundTheme || BACKGROUND_THEMES_CATALOG[0].id
+      return { ...loaded, passcodeLength, backgroundTheme }
     })
 
   const [prevKey, setPrevKey] = useState(currentKey)
@@ -40,7 +43,9 @@ export function useSpaceProtectionState(
     const loaded = loadFromStorage(currentKey, DEFAULT_PROTECTION_CONFIG)
     const passcodeLength =
       loaded.passcodeLength ?? (loaded.passcode ? loaded.passcode.length : 4)
-    setProtectionConfig({ ...loaded, passcodeLength })
+    const backgroundTheme =
+      loaded.backgroundTheme || BACKGROUND_THEMES_CATALOG[0].id
+    setProtectionConfig({ ...loaded, passcodeLength, backgroundTheme })
   }
 
   // Save to isolated localStorage on any state modification
