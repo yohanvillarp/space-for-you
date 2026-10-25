@@ -55,6 +55,9 @@ export function CreateSpaceModal({
       return
     }
 
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('sfy_active_creation_draft')
+    }
     onClose()
     navigate(
       `${ROUTES.NEW_SPACE}?recipient=${encodeURIComponent(finalRecipient)}&title=${encodeURIComponent(finalTitle)}`,

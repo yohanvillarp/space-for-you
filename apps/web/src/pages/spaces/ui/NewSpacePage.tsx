@@ -1,9 +1,16 @@
-import type { SpaceTemplateId } from '@/entities/space'
+import type { SpaceTemplateId, UserSpace } from '@/entities/space'
 import {
   DEFAULT_TEMPLATE_ID,
   createNewSpace,
+  getSpaceById,
+  saveSpace,
   useUserSpaces,
 } from '@/entities/space'
+import {
+  getSpaceStorageKeys,
+  saveToStorage,
+  createInitialScenesForTemplate,
+} from '@/features/create-space/ui/editor/multi-scene-storage'
 import {
   ProtectedRoute,
   StagePreviewPanel,
@@ -45,13 +52,47 @@ export function NewSpacePage() {
       navigate(ROUTES.DASHBOARD)
       return
     }
-    const newSpace = createNewSpace(
-      selectedTemplateId,
-      spaceTitle,
-      recipientName,
-    )
+
+    const activeDraftId =
+      searchParams.get('spaceId')?.trim() ||
+      (typeof window !== 'undefined'
+        ? sessionStorage.getItem('sfy_active_creation_draft')
+        : null)
+
+    const existingDraft = activeDraftId
+      ? getSpaceById(activeDraftId)
+      : undefined
+    let spaceToOpen: UserSpace
+
+    if (existingDraft && existingDraft.status === 'draft') {
+      const keys = getSpaceStorageKeys(existingDraft.id, selectedTemplateId)
+      if (existingDraft.templateId !== selectedTemplateId) {
+        saveToStorage(
+          keys.scenesKey,
+          createInitialScenesForTemplate(selectedTemplateId),
+        )
+      }
+      spaceToOpen = saveSpace({
+        ...existingDraft,
+        templateId: selectedTemplateId,
+        title: spaceTitle,
+        recipientName,
+        updatedAt: new Date().toISOString(),
+      })
+    } else {
+      spaceToOpen = createNewSpace(
+        selectedTemplateId,
+        spaceTitle,
+        recipientName,
+      )
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('sfy_active_creation_draft', spaceToOpen.id)
+      }
+    }
+
     navigate(
-      `${ROUTES.STUDIO}?template=${encodeURIComponent(selectedTemplateId)}&spaceId=${encodeURIComponent(newSpace.id)}`,
+      `${ROUTES.STUDIO}?template=${encodeURIComponent(selectedTemplateId)}&spaceId=${encodeURIComponent(spaceToOpen.id)}`,
+      { replace: true },
     )
   }
 
