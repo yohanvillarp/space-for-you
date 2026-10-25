@@ -4,6 +4,7 @@
  */
 
 import { functions } from '@/shared/api'
+import { ENV } from '@/shared/config'
 import { verifyPasscode } from '@/shared/lib/crypto'
 import type { SpaceWithScenes } from './types'
 import { fetchSpaceBySlug, fetchSpaceById } from './space-database'
@@ -35,8 +36,9 @@ export async function unlockSpaceViaFunction({
 }: UnlockSpaceParams): Promise<UnlockSpaceResult> {
   // 1. Try server-side Appwrite Cloud Function first
   try {
+    const functionId = ENV.APPWRITE_FUNCTION_UNLOCK_SPACE_ID || 'unlock-space'
     const execution = await functions.createExecution(
-      'unlock-space',
+      functionId,
       JSON.stringify({ slug, passcode }),
       false,
     )

@@ -1,4 +1,5 @@
 import { functions } from '@/shared/api'
+import { ENV } from '@/shared/config'
 import {
   MAX_VOICE_NOTE_DURATION_SEC,
   MAX_VOICE_NOTES_PER_SPACE,
@@ -22,8 +23,10 @@ export async function validateVoiceQuotaWithServer({
 }: ValidateVoiceQuotaParams): Promise<ValidateVoiceQuotaResult> {
   // 1. Try server-side Appwrite Cloud Function
   try {
+    const functionId =
+      ENV.APPWRITE_FUNCTION_VALIDATE_VOICE_QUOTA_ID || 'validate-voice-quota'
     const execution = await functions.createExecution(
-      'validate-voice-quota',
+      functionId,
       JSON.stringify({ spaceId, durationSeconds, existingCount }),
       false,
     )
