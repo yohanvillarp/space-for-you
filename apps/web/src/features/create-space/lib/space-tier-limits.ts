@@ -9,11 +9,14 @@ export const MAX_SPACE_SCENES = 5
 export const MAX_SPACE_ARTIFACTS = 15
 export const MAX_SPACE_PHOTOS = 3
 export const MAX_SPACE_MUSIC = 1
+export const MAX_SPACE_VOICE_NOTES = 3
 
 export function isMusicItemType(type: SpatialItemType): boolean {
-  return (
-    type === 'music-box' || type === 'vinyl-player' || type === 'cassette-tape'
-  )
+  return type === 'music-box' || type === 'vinyl-player'
+}
+
+export function isVoiceNoteItemType(type: SpatialItemType): boolean {
+  return type === 'cassette-tape'
 }
 
 export function countTotalArtifacts(
@@ -39,6 +42,22 @@ export function countTotalMusicItems(
   for (const s of scenes) {
     if (s.id !== activeSceneId && s.type === 'free-canvas') {
       count += (s.items || []).filter((it) => isMusicItemType(it.type)).length
+    }
+  }
+  return count
+}
+
+export function countTotalVoiceNoteItems(
+  scenes: SpaceScene[],
+  activeItems: SpatialItem[],
+  activeSceneId: string,
+): number {
+  let count = activeItems.filter((it) => isVoiceNoteItemType(it.type)).length
+  for (const s of scenes) {
+    if (s.id !== activeSceneId && s.type === 'free-canvas') {
+      count += (s.items || []).filter((it) =>
+        isVoiceNoteItemType(it.type),
+      ).length
     }
   }
   return count
@@ -107,6 +126,21 @@ export function validateItemAddition(
       title: 'One Melody per Sanctuary',
       description:
         'Each sanctuary features a single ambient soundtrack to preserve a serene mood. You can customize the existing music player melody.',
+      confirmText: 'Understood',
+      type: 'info',
+      showCancel: false,
+    })
+    return false
+  }
+
+  if (
+    isVoiceNoteItemType(type) &&
+    countTotalVoiceNoteItems(scenes, activeItems, activeSceneId) >=
+      MAX_SPACE_VOICE_NOTES
+  ) {
+    confirm({
+      title: 'Voice Notes Limit',
+      description: `Each sanctuary can feature up to ${MAX_SPACE_VOICE_NOTES} personal voice note cassettes. You can re-record or replace an existing cassette anytime.`,
       confirmText: 'Understood',
       type: 'info',
       showCancel: false,
