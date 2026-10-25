@@ -52,7 +52,7 @@ export function LockGateSidebar({
             <KeyRound className="h-4 w-4" />
           </div>
           <h3 className="font-heading text-xs font-semibold tracking-wide text-amber-200">
-            Lock Gate Workshop
+            Entrance Vault
           </h3>
         </div>
       </div>
@@ -89,24 +89,47 @@ export function LockGateSidebar({
             </button>
           </div>
 
-          {/* Passcode Input (when enabled) */}
+          {/* Passcode & Clue Inputs (when enabled) */}
           {config.enabled && (
-            <div className="space-y-1.5 pt-1">
-              <label className="text-[11px] font-medium text-amber-200">
-                Secret Passcode (PIN or word)
-              </label>
-              <div className="relative">
+            <>
+              <div className="space-y-1.5 pt-1">
+                <label className="text-[11px] font-medium text-amber-200">
+                  Secret Passcode (PIN or word)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={config.passcode || ''}
+                    maxLength={8}
+                    onChange={(e) =>
+                      onChangeConfig({ passcode: e.target.value })
+                    }
+                    placeholder="e.g. 1234 or LOVE"
+                    className="w-full rounded-lg border border-[#4A3B32] bg-[#120E0C] px-3 py-2 font-mono text-xs tracking-wider text-amber-100 focus:border-amber-400 focus:outline-hidden"
+                  />
+                  <Lock className="absolute top-2.5 right-3 h-3.5 w-3.5 text-[#A99B90]" />
+                </div>
+              </div>
+
+              <div className="space-y-1.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-medium text-amber-200">
+                    Secret Clue (Hint for Recipient)
+                  </label>
+                  <span className="font-mono text-[10px] text-stone-500">
+                    {(config.hint || '').length}/80
+                  </span>
+                </div>
                 <input
                   type="text"
-                  value={config.passcode}
-                  maxLength={8}
-                  onChange={(e) => onChangeConfig({ passcode: e.target.value })}
-                  placeholder="e.g. 1234 or LOVE"
-                  className="w-full rounded-lg border border-[#4A3B32] bg-[#120E0C] px-3 py-2 font-mono text-xs tracking-wider text-amber-100 focus:border-amber-400 focus:outline-hidden"
+                  value={config.hint || ''}
+                  maxLength={80}
+                  onChange={(e) => onChangeConfig({ hint: e.target.value })}
+                  placeholder="e.g. The day we first met in Paris"
+                  className="w-full rounded-lg border border-[#4A3B32] bg-[#120E0C] px-3 py-2 font-sans text-xs text-amber-100 placeholder:text-stone-600 focus:border-amber-400 focus:outline-hidden"
                 />
-                <Lock className="absolute top-2.5 right-3 h-3.5 w-3.5 text-[#A99B90]" />
               </div>
-            </div>
+            </>
           )}
         </LockGateCollapsibleSection>
 

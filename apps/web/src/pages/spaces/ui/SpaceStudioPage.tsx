@@ -36,7 +36,7 @@ export function SpaceStudioPage() {
 
   return (
     <FullscreenSpatialEditor
-      key={`${validTemplateId}_${rawSpaceId ?? 'default'}`}
+      key={`${validTemplateId}_${rawSpaceId ?? 'default'}_${rawScene ?? 'default'}`}
       templateId={validTemplateId}
       initialSceneId={rawScene}
       spaceId={rawSpaceId}

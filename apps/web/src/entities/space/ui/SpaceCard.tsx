@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
-import { Sparkles, Share2, Check, Layers, Heart } from 'lucide-react'
+import { Link } from 'react-router'
+import { Sparkles, Share2, Layers, Heart } from 'lucide-react'
 import type { UserSpace } from '../model/types'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
@@ -11,6 +10,7 @@ export interface SpaceCardProps {
   space: UserSpace
   onDelete?: (id: string) => void
   onDuplicate?: (id: string) => void
+  onRename?: (id: string) => void
   className?: string
 }
 
@@ -38,35 +38,12 @@ export function SpaceCard({
   space,
   onDelete,
   onDuplicate,
+  onRename,
   className,
 }: SpaceCardProps) {
-  const navigate = useNavigate()
-  const [copied, setCopied] = useState(false)
-
   const theme = THEME_REGISTRY[space.templateId] ?? THEME_REGISTRY.birthday
   const studioUrl = `${ROUTES.STUDIO}?template=${encodeURIComponent(space.templateId)}&spaceId=${encodeURIComponent(space.id)}`
   const shareSceneUrl = `${studioUrl}&scene=share`
-
-  const handleShare = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    const fullShareUrl =
-      typeof window !== 'undefined'
-        ? `${window.location.origin}${shareSceneUrl}`
-        : shareSceneUrl
-
-    if (navigator.clipboard) {
-      try {
-        await navigator.clipboard.writeText(fullShareUrl)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2400)
-      } catch {
-        navigate(shareSceneUrl)
-      }
-    } else {
-      navigate(shareSceneUrl)
-    }
-  }
 
   return (
     <article
@@ -118,6 +95,7 @@ export function SpaceCard({
           shareSceneUrl={shareSceneUrl}
           onDelete={onDelete}
           onDuplicate={onDuplicate}
+          onRename={onRename}
         />
       </div>
 
@@ -169,31 +147,14 @@ export function SpaceCard({
           <span>Open Studio</span>
         </Link>
 
-        <button
-          type="button"
-          onClick={handleShare}
-          title={
-            copied ? 'Link copied to clipboard!' : 'Copy direct share link'
-          }
-          className={cn(
-            'flex cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3.5 py-2.5 font-sans text-xs font-medium shadow-sm transition-all',
-            copied
-              ? 'border border-emerald-500/40 bg-emerald-500/20 text-emerald-300'
-              : 'border border-[#CF7056]/30 bg-[#CF7056]/15 text-[#F3EAE1] hover:border-[#CF7056]/60 hover:bg-[#CF7056] hover:text-white',
-          )}
+        <Link
+          to={shareSceneUrl}
+          title="Open share & keepsake panel"
+          className="flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-[#CF7056]/30 bg-[#CF7056]/15 px-3.5 py-2.5 font-sans text-xs font-medium text-[#F3EAE1] shadow-sm transition-all hover:border-[#CF7056]/60 hover:bg-[#CF7056] hover:text-white"
         >
-          {copied ? (
-            <>
-              <Check className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Copied!</span>
-            </>
-          ) : (
-            <>
-              <Share2 className="h-3.5 w-3.5" />
-              <span>Share</span>
-            </>
-          )}
-        </button>
+          <Share2 className="h-3.5 w-3.5" />
+          <span>Share</span>
+        </Link>
       </div>
     </article>
   )

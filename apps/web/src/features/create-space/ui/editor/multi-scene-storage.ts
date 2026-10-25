@@ -11,10 +11,58 @@ import {
   DEFAULT_SPACE_META,
   INITIAL_LETTERS_DATA,
 } from '@/features/create-space/model/scenes.types'
+import type { SpaceTemplateId } from '@/entities/space'
+import { getDefaultItemsForTemplate } from '@/features/create-space/lib/spatial-stage-defaults'
 
 export const SCENE_STORAGE_KEY = 'sfy_active_scene_id'
 export const SCENES_STORAGE_KEY = 'sfy_scenes_draft'
 export const META_STORAGE_KEY = 'sfy_space_meta_draft'
+
+export function getSpaceStorageKeys(
+  spaceId?: string,
+  templateId?: SpaceTemplateId,
+) {
+  if (!spaceId) {
+    const scope = templateId ? `draft_${templateId}` : 'ephemeral'
+    return {
+      scenesKey: `sfy_${scope}_scenes`,
+      metaKey: `sfy_${scope}_meta`,
+      activeSceneKey: `sfy_${scope}_active_scene`,
+      protectionKey: `sfy_${scope}_protection`,
+    }
+  }
+  return {
+    scenesKey: `sfy_space_${spaceId}_scenes`,
+    metaKey: `sfy_meta_${spaceId}`,
+    activeSceneKey: `sfy_space_${spaceId}_active_scene`,
+    protectionKey: `sfy_space_${spaceId}_protection`,
+  }
+}
+
+export function createInitialScenesForTemplate(
+  templateId: SpaceTemplateId = 'birthday',
+): SpaceScene[] {
+  return [
+    {
+      id: `scene-canvas-${Date.now()}`,
+      type: 'free-canvas',
+      title: 'Memory Canvas',
+      subtitle: 'Creative stage for keepsakes & moments',
+      icon: 'Sparkles',
+      order: 1,
+      items: getDefaultItemsForTemplate(templateId),
+    },
+    {
+      id: `scene-letters-${Date.now()}`,
+      type: 'letters',
+      title: 'Heartfelt Letters',
+      subtitle: 'Read what I wrote for you',
+      icon: 'Mail',
+      order: 2,
+      letters: INITIAL_LETTERS_DATA.map((item) => ({ ...item })),
+    },
+  ]
+}
 
 /**
  * Interface returned by the `useMultiSceneState` hook.

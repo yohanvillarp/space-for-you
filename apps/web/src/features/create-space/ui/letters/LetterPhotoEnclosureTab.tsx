@@ -6,7 +6,7 @@ import { cn, playSpatialSfx } from '@/shared/lib'
 export interface LetterPhotoEnclosureTabProps {
   imageUrl?: string
   searchQuery?: string
-  onAssignPhoto: (url: string) => void
+  onAssignPhoto: (url: string, file?: File) => void
   onRemovePhoto: () => void
 }
 
@@ -18,9 +18,9 @@ export function LetterPhotoEnclosureTab({
 }: LetterPhotoEnclosureTabProps) {
   const [subTab, setSubTab] = useState<'web' | 'upload'>('web')
 
-  const handleSelect = (url: string) => {
+  const handleSelect = (url: string, file?: File) => {
     playSpatialSfx('tactile-tap')
-    onAssignPhoto(url)
+    onAssignPhoto(url, file)
   }
 
   const handleRemove = () => {
@@ -112,7 +112,9 @@ export function LetterPhotoEnclosureTab({
             onSelectPhoto={handleSelect}
           />
         ) : (
-          <PhotoUploadTab onSelectPhoto={(url) => handleSelect(url)} />
+          <PhotoUploadTab
+            onSelectPhoto={(url, file) => handleSelect(url, file)}
+          />
         )}
       </div>
     </div>

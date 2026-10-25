@@ -3,7 +3,7 @@ import type { SpatialItem } from '../model/spatial-stage.types'
 /**
  * Strict maximum number of photos allowed per spatial space.
  */
-export const MAX_STAGE_PHOTOS = 2
+export const MAX_STAGE_PHOTOS = 3
 
 /**
  * Counts how many items on the stage represent photos or polaroids.

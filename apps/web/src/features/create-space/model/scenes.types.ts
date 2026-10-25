@@ -128,47 +128,25 @@ export interface SpaceMeta {
 
 export const INITIAL_LETTERS_DATA: LetterItem[] = [
   {
-    id: 'letter-1',
-    title: 'The day we first laughed together',
-    content:
-      'I still remember the gentle afternoon sunlight and how effortlessly we talked. That moment made me realize how rare and special your presence is in my life.',
+    id: 'letter-welcome',
+    title: 'A Guide to Your Heartfelt Letters',
+    date: 'Everything you can create',
     envelopeColor: 'rose',
     waxSeal: 'heart',
-    date: 'A cherished memory',
-  },
-  {
-    id: 'letter-2',
-    title: 'A quiet promise for your days ahead',
+    paperColor: 'ivory',
+    blocksOrder: ['title', 'text', 'photo'],
+    fontStyle: 'serif',
+    textAlign: 'left',
+    fontSize: 'base',
     content:
-      'Whenever life gets noisy or overwhelming, remember this place. You have a resilient and beautiful heart, and I will always be cheering for your joy.',
-    envelopeColor: 'sky',
-    waxSeal: 'sun',
-    date: 'Words to keep close',
-  },
-  {
-    id: 'letter-3',
-    title: 'Little things that make you you',
-    content:
-      'The way your eyes light up when you speak of things you love, your quiet kindness to strangers, and how you make every room warmer just by being in it.',
-    envelopeColor: 'lavender',
-    waxSeal: 'sparkle',
-    date: 'With all my admiration',
-  },
-  {
-    id: 'letter-4',
-    title: 'A wish for this milestone',
-    content:
-      'May the year ahead bring you peace, adventures that take your breath away, and memories as luminous as starlight.',
-    envelopeColor: 'amber',
-    waxSeal: 'star',
-    date: 'To celebrate you',
+      'Welcome to your private desk of letters. This intimate space is designed to hold your memories, unspoken feelings, and gentle wishes for someone truly special.\n\nHere is everything you can personalize:\n\n• Envelopes & Wax Seals: Select curated envelope tones and signature wax seals from the studio sidebar to set the mood for each message.\n\n• Fine Stationery: Tailor paper colors, editorial fonts, and text alignments to match your personal writing voice.\n\n• Keepsake Photographs: Tuck a memorable photograph inside any letter to accompany your words with visual warmth.\n\n• Layout Order: Arrange the unfolding order of your title, date, photo, and message to create your ideal reveal.\n\n• Multiple Notes: Fold as many letters as you wish using the "Add New Letter" button below to craft a complete journey of letters waiting to be discovered.',
   },
 ]
 
 export const DEFAULT_SPACE_META: SpaceMeta = {
-  recipientName: 'Sophia',
-  senderName: 'Yohan',
-  title: 'A Digital Sanctuary',
+  recipientName: '',
+  senderName: '',
+  title: '',
   dedicationMessage:
     'An intimate collection of moments, letters, and memories curated just for you.',
 }

@@ -1,6 +1,9 @@
 export { AlertModal } from './AlertModal'
 export { ConfirmProvider } from './ConfirmProvider'
-export { useConfirmDialog } from './useConfirmDialog'
+export {
+  useConfirmDialog,
+  useConfirmDialog as useAlert,
+} from './useConfirmDialog'
 export type {
   AlertModalProps,
   AlertModalType,

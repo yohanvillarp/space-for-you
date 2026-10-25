@@ -1,6 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { MoreVertical, CopyPlus, ExternalLink, Trash2 } from 'lucide-react'
+import {
+  MoreVertical,
+  CopyPlus,
+  ExternalLink,
+  Trash2,
+  Pencil,
+} from 'lucide-react'
+import { useAlert } from '@/shared/ui'
 
 export interface SpaceCardOptionsMenuProps {
   spaceId: string
@@ -8,6 +15,7 @@ export interface SpaceCardOptionsMenuProps {
   shareSceneUrl: string
   onDelete?: (id: string) => void
   onDuplicate?: (id: string) => void
+  onRename?: (id: string) => void
 }
 
 export function SpaceCardOptionsMenu({
@@ -16,8 +24,10 @@ export function SpaceCardOptionsMenu({
   shareSceneUrl,
   onDelete,
   onDuplicate,
+  onRename,
 }: SpaceCardOptionsMenuProps) {
   const navigate = useNavigate()
+  const { confirm } = useAlert()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -68,6 +78,19 @@ export function SpaceCardOptionsMenu({
             onClick={(e) => {
               e.stopPropagation()
               setIsOpen(false)
+              onRename?.(spaceId)
+            }}
+            className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left font-sans text-xs text-stone-300 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <Pencil className="h-3.5 w-3.5 text-stone-400" />
+            <span>Change Title</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsOpen(false)
               onDuplicate?.(spaceId)
             }}
             className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left font-sans text-xs text-stone-300 transition-colors hover:bg-white/10 hover:text-white"
@@ -93,10 +116,17 @@ export function SpaceCardOptionsMenu({
 
           <button
             type="button"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.stopPropagation()
               setIsOpen(false)
-              if (window.confirm(`Delete "${spaceTitle}"?`)) {
+              const confirmed = await confirm({
+                title: 'Delete Space?',
+                description: `Are you sure you want to delete "${spaceTitle}"? This will permanently remove this sanctuary and all its memories.`,
+                type: 'danger',
+                confirmText: 'Delete Space',
+                cancelText: 'Cancel',
+              })
+              if (confirmed) {
                 onDelete?.(spaceId)
               }
             }}

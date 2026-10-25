@@ -13,8 +13,6 @@ export function AuthSuccessPage() {
     if (isExecutingRef.current) return
     isExecutingRef.current = true
 
-    let isMounted = true
-
     async function processOAuthCallback() {
       try {
         const url = new URL(window.location.href)
@@ -28,62 +26,55 @@ export function AuthSuccessPage() {
           userId = userId || hashParams.get('userId')
         }
 
-        // If no token credentials in URL, check if a session is already alive
-        if (!secret || !userId) {
+        // Fallback: decode userId from JWT secret payload if missing
+        if (!userId && secret) {
           try {
-            const user = await appwriteAccount.get()
-            if (user && isMounted) {
-              setSessionHint(true)
-              window.location.assign(ROUTES.DASHBOARD)
-              return
+            const parts = secret.split('.')
+            if (parts.length >= 2) {
+              const base64Url = parts[1].replace(/-/g, '+').replace(/_/g, '/')
+              const decoded = JSON.parse(atob(base64Url))
+              userId = decoded.userId || decoded.sub || decoded.id || null
             }
           } catch {
-            // Not authenticated
+            // ignore malformed token
           }
-          if (isMounted) {
-            setIsProcessing(false)
-            setError(
-              'Authentication token expired or not found. Please sign in again.',
-            )
-          }
-          return
         }
 
-        // Exchange single-use OAuth token credentials for an active session
-        try {
-          await appwriteAccount.createSession({ userId, secret })
-        } catch (sessionErr) {
-          console.warn('OAuth token exchange notice:', sessionErr)
+        // If credentials exist, exchange for an active session
+        if (secret && userId) {
+          try {
+            await appwriteAccount.createSession({ userId, secret })
+          } catch (sessionErr) {
+            console.warn('OAuth token exchange notice:', sessionErr)
+          }
         }
 
         // Verify authenticated user
-        const user = await appwriteAccount.get()
-        if (user && isMounted) {
-          setSessionHint(true)
-          window.location.assign(ROUTES.DASHBOARD)
-          return
+        try {
+          const user = await appwriteAccount.get()
+          if (user) {
+            setSessionHint(true)
+            window.location.replace(ROUTES.DASHBOARD)
+            return
+          }
+        } catch {
+          // Fall through to error
         }
 
         throw new Error(
           'Unable to verify your account session. Please try signing in again.',
         )
       } catch (err) {
-        if (isMounted) {
-          setIsProcessing(false)
-          setError(
-            err instanceof Error
-              ? err.message
-              : 'An error occurred while establishing your session.',
-          )
-        }
+        setIsProcessing(false)
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'An error occurred while establishing your session.',
+        )
       }
     }
 
     void processOAuthCallback()
-
-    return () => {
-      isMounted = false
-    }
   }, [])
 
   return (

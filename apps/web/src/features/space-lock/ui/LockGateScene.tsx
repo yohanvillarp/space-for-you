@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, RotateCcw } from 'lucide-react'
+import { ArrowRight, RotateCcw, LockOpen, Lock, HelpCircle } from 'lucide-react'
 import type { SpaceProtectionConfig } from '@/features/space-lock/model/lock.types'
 import { SpatialVaultObject } from '@/features/space-lock/ui/SpatialVaultObject'
 import { LockKeypad } from '@/features/space-lock/ui/LockKeypad'
@@ -24,8 +24,16 @@ export function LockGateScene({
   onChangeConfig,
   onProceedToStage,
 }: LockGateSceneProps) {
-  const [isUnlocked, setIsUnlocked] = useState(false)
+  const [isUnlocked, setIsUnlocked] = useState(() => !config.enabled)
   const [isSelected, setIsSelected] = useState(false)
+  const [showHint, setShowHint] = useState(false)
+
+  // Keep lock state synchronized with configuration toggle
+  const [prevEnabled, setPrevEnabled] = useState(config.enabled)
+  if (prevEnabled !== config.enabled) {
+    setPrevEnabled(config.enabled)
+    setIsUnlocked(!config.enabled)
+  }
 
   const handleUnlockSuccess = () => {
     setIsUnlocked(true)
@@ -41,7 +49,9 @@ export function LockGateScene({
       ? config.customTitle
       : spaceTitle
 
-  const defaultSubtitle = 'Enter the secret combination to unlock'
+  const defaultSubtitle = config.enabled
+    ? 'Enter the secret combination to unlock'
+    : 'Sanctuary is unlocked and open'
   const displaySubtitle =
     config.customSubtitle !== undefined && config.customSubtitle !== ''
       ? config.customSubtitle
@@ -56,10 +66,8 @@ export function LockGateScene({
       onClick={() => setIsSelected(false)}
       className="relative flex h-full min-h-full w-full items-center justify-center overflow-hidden px-4 py-8 pb-24 select-none sm:px-6 sm:py-10 sm:pb-28 lg:px-12 lg:pb-24"
     >
-      {/* Selectable Universal Entrance Atmospheres */}
       <GateAtmosphereBackdrop theme={config.backgroundTheme} />
 
-      {/* Main Responsive Scene Container */}
       <div className="relative z-10 flex h-full w-full max-w-5xl flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
         {/* Interactive Spatial Vault Stage Area */}
         <div className="relative flex h-72 w-full flex-1 items-center justify-center sm:h-96 lg:h-[480px]">
@@ -83,9 +91,10 @@ export function LockGateScene({
 
         {/* Right Station: Keypad & Inline Editable Greetings */}
         <div className="flex w-full max-w-sm shrink-0 flex-col items-center space-y-5 text-center sm:max-w-md lg:items-center">
-          {/* Header Title Information */}
           <div className="w-full space-y-2">
-            {isStudioPreview && onChangeConfig && !isUnlocked ? (
+            {isStudioPreview &&
+            onChangeConfig &&
+            (!isUnlocked || !config.enabled) ? (
               <div className="space-y-1.5">
                 <input
                   type="text"
@@ -122,16 +131,72 @@ export function LockGateScene({
             )}
           </div>
 
-          {/* Keypad or Unlock Success Actions */}
-          {!isUnlocked ? (
-            <div className="w-full pt-1">
+          {/* Conditional Gate Station Content */}
+          {!config.enabled ? (
+            <div className="animate-fade-in flex w-full flex-col items-center space-y-4 rounded-2xl border border-white/10 bg-black/40 p-6 text-center backdrop-blur-md">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300">
+                <LockOpen className="h-6 w-6" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-heading text-sm font-semibold text-amber-100">
+                  Open Entrance
+                </h4>
+                <p className="font-sans text-xs leading-relaxed text-stone-400">
+                  Passcode protection is off. Anyone with the link can explore
+                  directly.
+                </p>
+              </div>
+              {isStudioPreview && onChangeConfig && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    playSpatialSfx('tactile-tap')
+                    onChangeConfig({ enabled: true })
+                  }}
+                  className="cursor-pointer gap-2 border-amber-500/40 font-sans text-xs text-amber-200 hover:bg-amber-500/10"
+                >
+                  <Lock className="h-3.5 w-3.5" />
+                  <span>Set up Passcode</span>
+                </Button>
+              )}
+            </div>
+          ) : !isUnlocked ? (
+            <div className="w-full space-y-3 pt-1">
               <LockKeypad
-                key={`${config.passcode}-${config.keypadTheme || 'classic'}`}
+                key={`${config.passcode}-${config.passcodeHash}-${config.keypadTheme || 'classic'}`}
                 expectedPasscode={config.passcode}
+                passcodeHash={config.passcodeHash}
+                passcodeSalt={config.passcodeSalt}
+                rateLimitKey={`vault_${config.passcodeSalt || 'default'}`}
                 theme={config.keypadTheme || 'classic'}
                 isUnlocked={isUnlocked}
                 onUnlockSuccess={handleUnlockSuccess}
               />
+
+              {config.hint && (
+                <div className="pt-1">
+                  {!showHint ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        playSpatialSfx('tactile-tap')
+                        setShowHint(true)
+                      }}
+                      className="inline-flex cursor-pointer items-center gap-1.5 font-sans text-xs text-amber-300/80 hover:text-amber-200 hover:underline"
+                    >
+                      <HelpCircle className="h-3.5 w-3.5" />
+                      <span>Need a clue?</span>
+                    </button>
+                  ) : (
+                    <div className="animate-fade-in rounded-xl border border-amber-500/30 bg-amber-950/30 px-3.5 py-2 text-center font-sans text-xs text-amber-200">
+                      <span className="font-medium text-amber-300">Clue: </span>
+                      <span>{config.hint}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <div className="animate-scale-in flex flex-col items-center space-y-4 pt-4">
@@ -156,6 +221,7 @@ export function LockGateScene({
                   onClick={() => {
                     playSpatialSfx('tactile-tap')
                     setIsUnlocked(false)
+                    setShowHint(false)
                   }}
                   className="inline-flex cursor-pointer items-center gap-1.5 font-sans text-xs text-stone-400 hover:text-white"
                 >

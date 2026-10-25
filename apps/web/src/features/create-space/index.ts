@@ -22,6 +22,10 @@ export { SpatialStageStudio } from './ui/SpatialStageStudio'
 export type { SpatialStageStudioProps } from './ui/SpatialStageStudio'
 export { FullscreenSpatialEditor } from './ui/FullscreenSpatialEditor'
 export type { FullscreenSpatialEditorProps } from './ui/FullscreenSpatialEditor'
+export { CreateSpaceModal } from './ui/CreateSpaceModal'
+export type { CreateSpaceModalProps } from './ui/CreateSpaceModal'
+export { RenameSpaceModal } from './ui/RenameSpaceModal'
+export type { RenameSpaceModalProps } from './ui/RenameSpaceModal'
 export { SpatialStageCanvas } from './ui/SpatialStageCanvas'
 export type { SpatialStageCanvasProps } from './ui/SpatialStageCanvas'
 export { SpatialToolboxSidebar } from './ui/SpatialToolboxSidebar'
@@ -34,6 +38,7 @@ export { LettersToolboxSidebar } from './ui/letters/LettersToolboxSidebar'
 export { ShareScene } from './ui/share/ShareScene'
 export { ShareCustomizerSidebar } from './ui/share/sidebar/ShareCustomizerSidebar'
 export * from './model/scenes.types'
+export * from './lib/space-tier-limits'
 export type {
   SpatialItem,
   SpatialItemType,

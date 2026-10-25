@@ -1,5 +1,6 @@
 export * from './model/lock.types'
 export * from './model/useLockGateToolbox'
+export * from './lib/crypto'
 export { LockGateScene } from './ui/LockGateScene'
 export { LockGateSidebar } from './ui/LockGateSidebar'
 export { LockGateCollapsibleSection } from './ui/sidebar/LockGateCollapsibleSection'

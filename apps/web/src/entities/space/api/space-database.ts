@@ -83,6 +83,10 @@ export async function fetchSpaceById(
       dedicationMessage: rawSpace.dedicationMessage,
       themeConfig: rawSpace.themeConfig,
       slug: rawSpace.slug,
+      passcodeHash: rawSpace.passcodeHash,
+      passcodeSalt: rawSpace.passcodeSalt,
+      passcodeHint: rawSpace.passcodeHint,
+      protectionTheme: rawSpace.protectionTheme,
     }
   } catch {
     return null
@@ -130,6 +134,10 @@ export interface SaveSpaceParams {
   themeConfig?: string
   /** Optional slug override. */
   slug?: string
+  passcodeHash?: string
+  passcodeSalt?: string
+  passcodeHint?: string
+  protectionTheme?: string
 }
 
 /**
@@ -160,13 +168,17 @@ export async function saveSpaceToDatabase({
   dedicationMessage = '',
   themeConfig = '',
   slug,
+  passcodeHash,
+  passcodeSalt,
+  passcodeHint,
+  protectionTheme,
 }: SaveSpaceParams): Promise<UserSpace> {
   const isPublished = space.status === 'published'
   const perms = buildPermissions(userId, isPublished)
   const resolvedSlug =
     slug || generateSpaceSlug(space.title, space.recipientName)
 
-  const spacePayload = {
+  const spacePayload: Record<string, unknown> = {
     title: space.title,
     recipientName: space.recipientName,
     senderName,
@@ -180,6 +192,11 @@ export async function saveSpaceToDatabase({
     isProtected: Boolean(space.isProtected),
     userId,
   }
+  if (passcodeHash !== undefined) spacePayload.passcodeHash = passcodeHash
+  if (passcodeSalt !== undefined) spacePayload.passcodeSalt = passcodeSalt
+  if (passcodeHint !== undefined) spacePayload.passcodeHint = passcodeHint
+  if (protectionTheme !== undefined)
+    spacePayload.protectionTheme = protectionTheme
 
   let savedDoc
   try {

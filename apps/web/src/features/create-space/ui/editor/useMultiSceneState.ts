@@ -1,42 +1,61 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import type {
   SpaceScene,
-  SpaceMeta,
   LetterItem,
 } from '@/features/create-space/model/scenes.types'
 import {
   SpaceSceneCollection,
   SpaceSceneEntity,
 } from '@/features/create-space/model/domain'
+import type { SpaceTemplateId } from '@/entities/space'
 import {
-  SCENE_STORAGE_KEY,
-  SCENES_STORAGE_KEY,
-  META_STORAGE_KEY,
   INITIAL_SCENES,
-  DEFAULT_SPACE_META,
   loadFromStorage,
   saveToStorage,
+  getSpaceStorageKeys,
+  createInitialScenesForTemplate,
 } from './multi-scene-storage'
 import type { UseMultiSceneStateReturn } from './multi-scene-storage'
+import { useSpaceMetaState } from './useSpaceMetaState'
+import { INITIAL_LETTERS_DATA } from '@/features/create-space/model/scenes.types'
 
 export type { UseMultiSceneStateReturn }
 
+const LEGACY_SEED_IDS = new Set([
+  'letter-1',
+  'letter-2',
+  'letter-3',
+  'letter-4',
+])
+
+const sanitizeLegacyLetters = (scenes: SpaceScene[]): SpaceScene[] =>
+  scenes.map((s) =>
+    s.type === 'letters' &&
+    s.letters.length === 4 &&
+    s.letters.every((l) => LEGACY_SEED_IDS.has(l.id))
+      ? { ...s, letters: INITIAL_LETTERS_DATA.map((item) => ({ ...item })) }
+      : s,
+  )
+
 export function useMultiSceneState(
   initialSceneId?: string,
+  spaceId?: string,
+  templateId?: SpaceTemplateId,
 ): UseMultiSceneStateReturn {
+  const keys = getSpaceStorageKeys(spaceId, templateId)
+  const defaultScenes = templateId
+    ? createInitialScenesForTemplate(templateId)
+    : INITIAL_SCENES
+
   const [collection, setCollection] = useState<SpaceSceneCollection>(() => {
-    const saved = loadFromStorage<SpaceScene[]>(
-      SCENES_STORAGE_KEY,
-      INITIAL_SCENES,
-    )
-    return SpaceSceneCollection.fromDTOs(
-      Array.isArray(saved) && saved.length > 0 ? saved : INITIAL_SCENES,
-    )
+    const saved = loadFromStorage<SpaceScene[] | null>(keys.scenesKey, null)
+    if (Array.isArray(saved) && saved.length > 0) {
+      return SpaceSceneCollection.fromDTOs(sanitizeLegacyLetters(saved))
+    }
+    return SpaceSceneCollection.fromDTOs(defaultScenes)
   })
 
-  const [spaceMeta, setSpaceMeta] = useState<SpaceMeta>(() =>
-    loadFromStorage<SpaceMeta>(META_STORAGE_KEY, DEFAULT_SPACE_META),
-  )
+  const { spaceMeta, setSpaceMeta } = useSpaceMetaState(spaceId)
 
   const [activeSceneId, setActiveSceneIdState] = useState<string>(() => {
     if (
@@ -46,35 +65,33 @@ export function useMultiSceneState(
     ) {
       return initialSceneId
     }
-    const saved = loadFromStorage<string>(SCENE_STORAGE_KEY, 'hub')
+    const saved = loadFromStorage<string>(keys.activeSceneKey, 'hub')
     if (saved === 'hub' || saved === 'gate' || saved === 'share') return saved
     const savedScenes = loadFromStorage<SpaceScene[]>(
-      SCENES_STORAGE_KEY,
-      INITIAL_SCENES,
+      keys.scenesKey,
+      defaultScenes,
     )
-    if (Array.isArray(savedScenes) && savedScenes.some((s) => s.id === saved)) {
-      return saved
-    }
-    return 'hub'
+    return Array.isArray(savedScenes) && savedScenes.some((s) => s.id === saved)
+      ? saved
+      : 'hub'
   })
 
-  const setActiveSceneId = useCallback((id: string) => {
-    setActiveSceneIdState(id)
-    saveToStorage(SCENE_STORAGE_KEY, id)
-  }, [])
+  const setActiveSceneId = useCallback(
+    (id: string) => {
+      setActiveSceneIdState(id)
+      saveToStorage(keys.activeSceneKey, id)
+    },
+    [keys.activeSceneKey],
+  )
 
   const [selectedLetterId, setSelectedLetterId] = useState<string | null>(null)
   const [openLetterId, setOpenLetterId] = useState<string | null>(null)
 
-  const scenes = collection.toDTOs()
+  const scenes = useMemo(() => collection.toDTOs(), [collection])
 
   useEffect(() => {
-    saveToStorage(SCENES_STORAGE_KEY, collection.toDTOs())
-  }, [collection])
-
-  useEffect(() => {
-    saveToStorage(META_STORAGE_KEY, spaceMeta)
-  }, [spaceMeta])
+    saveToStorage(keys.scenesKey, scenes)
+  }, [scenes, keys.scenesKey])
 
   const setScenes: React.Dispatch<React.SetStateAction<SpaceScene[]>> =
     useCallback((action) => {

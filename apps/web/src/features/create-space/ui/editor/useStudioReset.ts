@@ -1,11 +1,14 @@
 import { useConfirmDialog } from '@/shared/ui'
+import { getSpaceStorageKeys } from './multi-scene-storage'
 
 export interface UseStudioResetOptions {
+  spaceId?: string
   onResetStage: () => void
   onResetScene: () => void
 }
 
 export function useStudioReset({
+  spaceId,
   onResetStage,
   onResetScene,
 }: UseStudioResetOptions) {
@@ -23,9 +26,10 @@ export function useStudioReset({
     if (!ok) return
     onResetStage()
     try {
-      localStorage.removeItem('sfy_scenes_draft')
-      localStorage.removeItem('sfy_space_meta_draft')
-      localStorage.removeItem('sfy_active_scene_id')
+      const keys = getSpaceStorageKeys(spaceId)
+      localStorage.removeItem(keys.scenesKey)
+      localStorage.removeItem(keys.metaKey)
+      localStorage.removeItem(keys.activeSceneKey)
     } catch {
       // ignore
     }

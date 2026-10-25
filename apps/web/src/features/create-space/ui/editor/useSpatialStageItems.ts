@@ -18,11 +18,17 @@ import { canAddStagePhoto } from '../../lib/stage-photo-limit'
  * clipboard copy/paste, and in-memory deferred photo attachments.
  *
  * @param templateId - Theme template identifier ('birthday' | 'anniversary' | 'friendship').
+ * @param initialItems - Optional initial stage items for the scene.
  * @returns State and event handlers for canvas stage interactions.
  */
-export function useSpatialStageItems(templateId: SpaceTemplateId) {
+export function useSpatialStageItems(
+  templateId: SpaceTemplateId,
+  initialItems?: SpatialItem[],
+) {
   const [items, setItems] = useState<SpatialItem[]>(() =>
-    getDefaultItemsForTemplate(templateId),
+    initialItems && initialItems.length > 0
+      ? initialItems
+      : getDefaultItemsForTemplate(templateId),
   )
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [copiedItem, setCopiedItem] = useState<SpatialItem | null>(null)
@@ -117,10 +123,14 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
 
   const handleAssignItemPhoto = (id: string, photoUrl: string, file?: File) => {
     handleUpdateItemData(id, { photoUrl })
-    if (file) {
-      setPendingPhotos((prev) => new Map(prev).set(id, file))
-    }
+    if (file) setPendingPhotos((prev) => new Map(prev).set(id, file))
   }
+
+  const setPendingPhoto = (targetId: string, file: File) => {
+    setPendingPhotos((prev) => new Map(prev).set(targetId, file))
+  }
+
+  const clearPendingPhotos = () => setPendingPhotos(new Map())
 
   const handleAddItem = (
     type: SpatialItemType,
@@ -223,6 +233,8 @@ export function useSpatialStageItems(templateId: SpaceTemplateId) {
     setSelectedId,
     copiedItem,
     pendingPhotos,
+    setPendingPhoto,
+    clearPendingPhotos,
     handleUpdatePosition,
     handleRotateItem,
     handleSetItemRotation,
