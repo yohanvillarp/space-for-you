@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Custom hook for querying and synchronizing user spaces across local and cloud tiers.
+ * Integrates Appwrite Databases queries with optimistic local storage fallback.
+ */
+
 import { useState, useEffect, useCallback } from 'react'
 import type { UserSpace } from './types'
 import {
@@ -15,16 +20,41 @@ import {
   saveSpaceToDatabase,
 } from '@/entities/space/api'
 
+/**
+ * Return interface for the `useUserSpaces` hook.
+ */
 export interface UseUserSpacesReturn {
+  /** Array of active spaces owned by or available to the user. */
   spaces: UserSpace[]
+  /** Whether spaces are currently being fetched from Appwrite Databases. */
   isLoading: boolean
+  /** Whether the user is authenticated and cloud sync is connected. */
   isCloudConnected: boolean
+  /** Saves or updates a space, synchronizing to storage and cloud. */
   saveSpace: (space: UserSpace) => UserSpace
+  /** Deletes a space by ID from local storage and Appwrite Databases. */
   deleteSpace: (id: string) => void
+  /** Creates a clone of an existing space and persists it. */
   duplicateSpace: (id: string) => UserSpace | undefined
+  /** Re-reads spaces from local storage to sync UI state. */
   refreshSpaces: () => void
 }
 
+/**
+ * Custom hook providing reactive access to user spaces with hybrid offline/cloud support.
+ *
+ * @remarks
+ * 1. Instantly initializes with local storage data for zero layout shift (optimistic UI).
+ * 2. On mount, detects Appwrite Auth session and fetches live spaces from `sfy_primary_db`.
+ * 3. Listens to `StorageEvent` and internal `SPACES_CHANGED_EVENT` to synchronize across tabs.
+ *
+ * @returns State and mutation methods for user spaces.
+ *
+ * @example
+ * ```tsx
+ * const { spaces, isLoading, deleteSpace } = useUserSpaces()
+ * ```
+ */
 export function useUserSpaces(): UseUserSpacesReturn {
   const [spaces, setSpaces] = useState<UserSpace[]>(() => getSavedSpaces())
   const [isLoading, setIsLoading] = useState(false)

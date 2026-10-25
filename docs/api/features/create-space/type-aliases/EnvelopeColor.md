@@ -1,0 +1,13 @@
+[**Space For You - Architecture & API Documentation**](../../../README.md)
+
+---
+
+[Space For You - Architecture & API Documentation](../../../modules.md) / [features/create-space](../README.md) / EnvelopeColor
+
+# Type Alias: EnvelopeColor
+
+> **EnvelopeColor** = `"rose"` \| `"amber"` \| `"sky"` \| `"emerald"` \| `"lavender"`
+
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:17](https://github.com/yohanvillarp/space-for-you/blob/6ac43e5873aaeb772b7f2bba8208e4197971a20e/apps/web/src/features/create-space/model/scenes.types.ts#L17)
+
+Curated color palette options for letter envelopes.

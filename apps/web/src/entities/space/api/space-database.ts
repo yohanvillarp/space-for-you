@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Data access layer for Spaces and Scenes in Appwrite Databases.
+ * Enforces Document-Level Security (RBAC) and handles queries with compound indexes.
+ */
+
 import { ID, Permission, Query, Role } from 'appwrite'
 import { databases } from '@/shared/api'
 import { ENV } from '@/shared/config'
@@ -14,6 +19,14 @@ const DB_ID = ENV.APPWRITE_DATABASE_ID
 const SPACES_COLL = ENV.APPWRITE_SPACES_COLLECTION_ID
 const SCENES_COLL = ENV.APPWRITE_SCENES_COLLECTION_ID
 
+/**
+ * Builds native Document-Level Security permissions for Appwrite.
+ * Always grants full CRUD to the creator. If published, adds public read access.
+ *
+ * @param userId - Owner's Appwrite Auth account `$id`.
+ * @param isPublished - Whether the space is published and publicly accessible.
+ * @returns Array of Appwrite Permission descriptors.
+ */
 function buildPermissions(userId: string, isPublished: boolean) {
   const perms = [
     Permission.read(Role.user(userId)),
@@ -26,6 +39,12 @@ function buildPermissions(userId: string, isPublished: boolean) {
   return perms
 }
 
+/**
+ * Retrieves all spaces owned by the authenticated user, sorted by last updated.
+ *
+ * @param userId - Owner's Appwrite Auth account `$id`.
+ * @returns Array of spaces belonging to the user.
+ */
 export async function fetchUserSpaces(userId: string): Promise<UserSpace[]> {
   const res = await databases.listDocuments(DB_ID, SPACES_COLL, [
     Query.equal('userId', userId),
@@ -34,6 +53,12 @@ export async function fetchUserSpaces(userId: string): Promise<UserSpace[]> {
   return res.documents.map(toUserSpace)
 }
 
+/**
+ * Retrieves a single space and all its associated scenes by space ID.
+ *
+ * @param spaceId - Unique document identifier in the `spaces` collection.
+ * @returns The aggregated space and its scenes, or `null` if not found.
+ */
 export async function fetchSpaceById(
   spaceId: string,
 ): Promise<SpaceWithScenes | null> {
@@ -64,6 +89,12 @@ export async function fetchSpaceById(
   }
 }
 
+/**
+ * Resolves a space and its scenes by its public unique slug without requiring login.
+ *
+ * @param slug - Human-friendly URL slug (e.g., "sophia-sanctuary-a81f").
+ * @returns The aggregated space with its scenes, or `null` if not found.
+ */
 export async function fetchSpaceBySlug(
   slug: string,
 ): Promise<SpaceWithScenes | null> {
@@ -81,16 +112,46 @@ export async function fetchSpaceBySlug(
   }
 }
 
+/**
+ * Parameters for creating or updating a space in Appwrite Databases.
+ */
 export interface SaveSpaceParams {
+  /** Space metadata to save or update. */
   space: UserSpace
+  /** Optional array of scenes (free-canvas items or heartfelt letters). */
   scenes?: SpaceScene[]
+  /** Owner user ID matching Appwrite Auth `$id`. */
   userId: string
+  /** Optional sender name. */
   senderName?: string
+  /** Optional dedication message. */
   dedicationMessage?: string
+  /** Optional JSON-serialized theme customization. */
   themeConfig?: string
+  /** Optional slug override. */
   slug?: string
 }
 
+/**
+ * Saves a space and all its scenes to Appwrite Databases with Document-Level Security.
+ * Performs idempotent update or creation of both space and scene documents.
+ *
+ * @param params - Save parameters containing space, scenes, and owner info.
+ * @returns The persisted space model with updated timestamps.
+ *
+ * @remarks
+ * This function persists the master space document and loops over scenes,
+ * serializing polymorphic payloads (diorama canvas items or letters).
+ *
+ * @example
+ * ```ts
+ * const savedSpace = await saveSpaceToDatabase({
+ *   space: currentSpace,
+ *   scenes: currentScenes,
+ *   userId: user.$id,
+ * })
+ * ```
+ */
 export async function saveSpaceToDatabase({
   space,
   scenes = [],
@@ -122,7 +183,6 @@ export async function saveSpaceToDatabase({
 
   let savedDoc
   try {
-    // Try updating existing
     savedDoc = await databases.updateDocument(
       DB_ID,
       SPACES_COLL,
@@ -131,7 +191,6 @@ export async function saveSpaceToDatabase({
       perms,
     )
   } catch {
-    // Document does not exist or creation needed
     const docId =
       space.id.startsWith('space_') && space.id.length <= 36
         ? space.id
@@ -147,7 +206,6 @@ export async function saveSpaceToDatabase({
 
   const spaceId = savedDoc.$id
 
-  // Persist scenes if provided
   if (scenes.length > 0) {
     for (let index = 0; index < scenes.length; index++) {
       const scene = scenes[index]
@@ -190,6 +248,11 @@ export async function saveSpaceToDatabase({
   return toUserSpace(savedDoc)
 }
 
+/**
+ * Deletes a space and all its related scene documents from Appwrite Databases.
+ *
+ * @param spaceId - Unique document ID of the space to delete.
+ */
 export async function deleteSpaceFromDatabase(spaceId: string): Promise<void> {
   try {
     const scenes = await databases.listDocuments(DB_ID, SCENES_COLL, [
