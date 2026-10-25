@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { VolumeX } from 'lucide-react'
 import type { SpaceWithScenes, SpaceTemplateId } from '@/entities/space'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
@@ -29,6 +29,20 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
     loop: true,
   })
 
+  // Filter out empty scenes so the recipient only experiences populated memories
+  const visibleScenes = useMemo(() => {
+    const populated = scenes.filter((scene) => {
+      if (scene.type === 'free-canvas') {
+        return Boolean(scene.items && scene.items.length > 0)
+      }
+      if (scene.type === 'letters') {
+        return Boolean(scene.letters && scene.letters.length > 0)
+      }
+      return true
+    })
+    return populated.length > 0 ? populated : scenes
+  }, [scenes])
+
   const handleEnterSanctuary = () => {
     setHasSeenWelcome(true)
     setActiveSceneId('hub')
@@ -47,7 +61,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
     }
   }, [space?.title])
 
-  const activeScene = scenes.find((s) => s.id === activeSceneId) as
+  const activeScene = visibleScenes.find((s) => s.id === activeSceneId) as
     SpaceScene | undefined
 
   return (
@@ -135,7 +149,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                   senderName: data.senderName || '',
                   dedicationMessage: data.dedicationMessage || '',
                 }}
-                scenes={scenes}
+                scenes={visibleScenes}
                 isStudioPreview={false}
                 onOpenScene={(sceneId) => {
                   setActiveSceneId(sceneId)
@@ -166,7 +180,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
       {/* Floating Bottom Scene Dock (rendered only after entering) */}
       {hasSeenWelcome && (
         <PublicSceneDock
-          scenes={scenes}
+          scenes={visibleScenes}
           activeSceneId={activeSceneId}
           onSelectScene={setActiveSceneId}
           hasHub={true}
