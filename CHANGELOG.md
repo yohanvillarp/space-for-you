@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.9.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.8.0...space-for-you-v0.9.0) (2026-10-25)
+
+
+### Features
+
+* **appwrite:** export databases client and configure environment ([014f1ea](https://github.com/yohanvillarp/space-for-you/commit/014f1ea79097fa24262858e273842582c7a2a919))
+* **db:** add automated database provisioning script ([a5edb38](https://github.com/yohanvillarp/space-for-you/commit/a5edb385439d4fbf1aff2288bf22677b4052338f))
+* **db:** integrate appwrite databases, provisioning script and public sanctuary resolution ([db0fa6e](https://github.com/yohanvillarp/space-for-you/commit/db0fa6e2fc063dfcfa0076c4a964f514aa704095))
+* **docs:** setup typedoc and markdown documentation generator ([0855b24](https://github.com/yohanvillarp/space-for-you/commit/0855b24e7db473ef1fecf68fb629a4f292328225))
+* enhance spatial studio, mobile canvas, space cards and fix oauth ([c188216](https://github.com/yohanvillarp/space-for-you/commit/c188216477aa5c70a1ae78fb278bde2a7cabf02a))
+* **mobile:** add virtual canvas scaling and mobile overlay drawer ([7738ed0](https://github.com/yohanvillarp/space-for-you/commit/7738ed0199f31240d40e2dd909473641c49432cf))
+* **security:** implement client-side zero-knowledge passcode protection ([aea892e](https://github.com/yohanvillarp/space-for-you/commit/aea892e4474cce1fc03fe259c7091a216db0c4d0))
+* **share:** add dedicated keepsake scene with inline customizer ([c6cf96e](https://github.com/yohanvillarp/space-for-you/commit/c6cf96e43253e63300c566600934b88cd5db2913))
+* **share:** route space card share button to studio share scene ([d1ef601](https://github.com/yohanvillarp/space-for-you/commit/d1ef6019fbfeba35da2dd34d6599611538fea696))
+* **share:** wire public space page to query database by slug or id ([3b59ad8](https://github.com/yohanvillarp/space-for-you/commit/3b59ad855a119fe6cb34f9708a95cbd5d0c355e8))
+* **spaces:** add appwrite database service and data access layer ([fcce52d](https://github.com/yohanvillarp/space-for-you/commit/fcce52dffd57361f2ef5e18653b4b06c29fce04a))
+* **spaces:** add space card component with direct studio actions ([61b18ec](https://github.com/yohanvillarp/space-for-you/commit/61b18ecec83eb5c84353bb385840df1a66e28a7f))
+* **spaces:** add tier limits, sanctuary protection, and share studio flow ([24fd29b](https://github.com/yohanvillarp/space-for-you/commit/24fd29beb8c266d81ee101ddb08fe0906e731e1f))
+* **spaces:** enforce plan tier limits and isolate scene canvas stages ([69e7bde](https://github.com/yohanvillarp/space-for-you/commit/69e7bdece8febae53f6087578ae2cdbdb048ac8a))
+* **studio:** add drag-and-drop reordering for letters and scenes ([d2565aa](https://github.com/yohanvillarp/space-for-you/commit/d2565aaab8e6d8b4773f7ee7f423c76b48e56b35))
+* **studio:** connect studio save and user spaces with appwrite cloud ([5c434c6](https://github.com/yohanvillarp/space-for-you/commit/5c434c6b8325c1e7721e33d48736db079a647da5))
+
+
+### Bug Fixes
+
+* **auth:** fix oauth session race condition in callback ([87a42ef](https://github.com/yohanvillarp/space-for-you/commit/87a42ef7f0aa74282300a9953eccd3986f71ec37))
+* **auth:** use oauth token to fix localhost session in firefox ([970b6aa](https://github.com/yohanvillarp/space-for-you/commit/970b6aad3a4c600671678fbeacae2cfef28f0613))
+* **db:** avoid default on required attributes and await availability ([6ac43e5](https://github.com/yohanvillarp/space-for-you/commit/6ac43e5873aaeb772b7f2bba8208e4197971a20e))
+* **spaces:** close card options menu on click outside and escape ([25b6f82](https://github.com/yohanvillarp/space-for-you/commit/25b6f82fc37f28c0aebe8a9aca34d3ab1f6f9f17))
+* **spaces:** elevate options menu stacking context and modularize menu ([0058c0c](https://github.com/yohanvillarp/space-for-you/commit/0058c0c2c28550da39b52569f1ed872d1411fec8))
+
 ## [0.8.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.7.0...space-for-you-v0.8.0) (2026-10-24)
 
 
