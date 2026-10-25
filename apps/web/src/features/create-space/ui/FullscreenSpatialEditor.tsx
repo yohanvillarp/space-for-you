@@ -7,6 +7,7 @@ import { EditorSidebarRenderer } from '@/features/create-space/ui/editor/EditorS
 import { EditorSidebarDrawer } from '@/features/create-space/ui/editor/EditorSidebarDrawer'
 import { EditorStageViewport } from '@/features/create-space/ui/editor/EditorStageViewport'
 import { AddSceneModal } from '@/features/create-space/ui/hub/AddSceneModal'
+import { PublishSanctuaryModal } from '@/features/create-space/ui/editor/PublishSanctuaryModal'
 import { useSidebarResize } from '@/features/create-space/ui/editor/useSidebarResize'
 import { useSpatialStageItems } from '@/features/create-space/ui/editor/useSpatialStageItems'
 import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSceneState'
@@ -17,6 +18,7 @@ import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/Studio
 import { useStudioReset } from '@/features/create-space/ui/editor/useStudioReset'
 import { useShareCardCustomizer } from '@/features/create-space/ui/share/useShareCardCustomizer'
 import { useStudioSave } from '@/features/create-space/ui/editor/useStudioSave'
+import { usePublishSanctuary } from '@/features/create-space/ui/editor/usePublishSanctuary'
 import { useSpaceProtectionState } from '@/features/create-space/ui/editor/useSpaceProtectionState'
 import { useFullscreenEditorHandlers } from '@/features/create-space/ui/editor/useFullscreenEditorHandlers'
 import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEditorStageWorkflow'
@@ -42,17 +44,8 @@ export function FullscreenSpatialEditor({
   const { protectionConfig, setProtectionConfig, handleUpdateProtection } =
     useSpaceProtectionState(spaceId, templateId)
   const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false)
-
   const multiScene = useMultiSceneState(initialSceneId, spaceId, templateId)
-  const {
-    activeSceneId,
-    spaceMeta,
-    scenes,
-    handleDeleteScene,
-    handleDuplicateLetter,
-    handleReorderScenes,
-    handleReorderLetters,
-  } = multiScene
+  const { activeSceneId, spaceMeta, scenes } = multiScene
 
   const initialCanvasItems = scenes.find((s) => s.type === 'free-canvas')?.items
   const stage = useSpatialStageItems(
@@ -70,13 +63,7 @@ export function FullscreenSpatialEditor({
     handleOpenSidebar,
   } = useSidebarResize()
 
-  const {
-    selectedItem,
-    selectedMusicItem,
-    selectedPhotoItem,
-    handleAssignTrack,
-    handleAssignPhoto,
-  } = useEditorMediaAssignment({
+  const mediaAssignment = useEditorMediaAssignment({
     items,
     selectedId,
     onUpdateItemData: stage.handleUpdateItemData,
@@ -88,13 +75,12 @@ export function FullscreenSpatialEditor({
     stage,
     confirm,
     setIsAddSceneModalOpen,
-    selectedItem,
+    selectedItem: mediaAssignment.selectedItem,
     showSidebar,
     onOpenSidebar: handleOpenSidebar,
   })
   const { activeScene, resolvedScenes, handleOpenScene, handleOpenAddScene } =
     workflow
-
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const {
@@ -118,6 +104,17 @@ export function FullscreenSpatialEditor({
     spaceId,
     onResetStage: stage.handleResetToDefaults,
     onResetScene: () => handleOpenScene('hub'),
+  })
+
+  const publishState = usePublishSanctuary({
+    spaceId,
+    templateId,
+    spaceMeta,
+    scenes: resolvedScenes,
+    protectionConfig,
+    pendingPhotos: stage.pendingPhotos,
+    onPhotosUploaded: handlePhotosUploaded,
+    onPublishSuccess: () => handleUpdateSpaceMeta({ status: 'published' }),
   })
 
   const shareUrl = spaceId
@@ -144,7 +141,45 @@ export function FullscreenSpatialEditor({
     navigate(ROUTES.DASHBOARD)
   }
 
+  const commonSceneProps = {
+    activeSceneId,
+    activeScene,
+    scenes,
+    spaceMeta,
+    protectionConfig,
+    templateId,
+    onChangeProtectionConfig: handleUpdateProtection,
+    onChangeSpaceMeta: handleUpdateSpaceMeta,
+    onOpenScene: handleOpenScene,
+    onOpenAddScene: handleOpenAddScene,
+    onOpenVault: () => handleOpenScene('gate'),
+  }
+
   const isFreeCanvas = activeScene?.type === 'free-canvas'
+  const isPublished = spaceMeta.status === 'published'
+
+  const topHeaderProps = {
+    activeTheme,
+    showSidebar,
+    onToggleSidebar: handleToggleSidebar,
+    itemCount: items.length,
+    selectedId,
+    showUndoRedo: isFreeCanvas,
+    canUndo: isFreeCanvas && stage.canUndo,
+    canRedo: isFreeCanvas && stage.canRedo,
+    onUndo: stage.handleUndo,
+    onRedo: stage.handleRedo,
+    onDeleteSelected: stage.handleDeleteItem,
+    onResetToDefaults: handleResetToDefaults,
+    onOpenPublish: publishState.openPublishModal,
+    onOpenShare: () => handleOpenScene('share'),
+    onSave: handleSave,
+    onBackToDashboard: handleBackToDashboard,
+    isPublished,
+    isSaved,
+    isSaving,
+    isDirty,
+  }
 
   return (
     <StudioBehaviorProvider initialMode="editor">
@@ -154,26 +189,7 @@ export function FullscreenSpatialEditor({
           className,
         )}
       >
-        <EditorTopHeader
-          activeTheme={activeTheme}
-          showSidebar={showSidebar}
-          onToggleSidebar={handleToggleSidebar}
-          itemCount={items.length}
-          selectedId={selectedId}
-          showUndoRedo={isFreeCanvas}
-          canUndo={isFreeCanvas && stage.canUndo}
-          canRedo={isFreeCanvas && stage.canRedo}
-          onUndo={stage.handleUndo}
-          onRedo={stage.handleRedo}
-          onDeleteSelected={stage.handleDeleteItem}
-          onResetToDefaults={handleResetToDefaults}
-          onOpenShare={() => handleOpenScene('share')}
-          onSave={handleSave}
-          onBackToDashboard={handleBackToDashboard}
-          isSaved={isSaved}
-          isSaving={isSaving}
-          isDirty={isDirty}
-        />
+        <EditorTopHeader {...topHeaderProps} />
 
         <div className="relative flex flex-1 overflow-hidden">
           <EditorSidebarDrawer
@@ -185,43 +201,26 @@ export function FullscreenSpatialEditor({
             onResizeStart={handleResizeStart}
           >
             <EditorSidebarRenderer
-              activeSceneId={activeSceneId}
-              protectionConfig={protectionConfig}
-              onChangeProtectionConfig={handleUpdateProtection}
-              spaceMeta={spaceMeta}
-              onChangeSpaceMeta={handleUpdateSpaceMeta}
-              scenes={scenes}
-              activeScene={activeScene}
-              onOpenScene={handleOpenScene}
-              onAddScene={workflow.handleGuardedAddScene}
-              onOpenAddScene={handleOpenAddScene}
-              onDeleteScene={handleDeleteScene}
-              onOpenVault={() => handleOpenScene('gate')}
-              templateId={templateId}
-              onAddItem={workflow.handleGuardedAddItem}
-              onAssignTrack={handleAssignTrack}
-              selectedMusicItem={selectedMusicItem}
-              selectedPhotoItem={selectedPhotoItem}
-              onAssignPhoto={handleAssignPhoto}
-              photoCount={countStagePhotos(items)}
+              {...commonSceneProps}
               {...letterHandlers}
+              onAddScene={workflow.handleGuardedAddScene}
+              onDeleteScene={multiScene.handleDeleteScene}
+              onAddItem={workflow.handleGuardedAddItem}
+              onAssignTrack={mediaAssignment.handleAssignTrack}
+              selectedMusicItem={mediaAssignment.selectedMusicItem}
+              selectedPhotoItem={mediaAssignment.selectedPhotoItem}
+              onAssignPhoto={mediaAssignment.handleAssignPhoto}
+              photoCount={countStagePhotos(items)}
               isCompact={sidebarWidth < 280}
               shareCustomizer={shareCustomizer}
             />
           </EditorSidebarDrawer>
 
           <EditorStageViewport
-            activeSceneId={activeSceneId}
-            activeScene={activeScene}
-            scenes={scenes}
-            spaceMeta={spaceMeta}
-            protectionConfig={protectionConfig}
-            templateId={templateId}
-            onChangeProtectionConfig={handleUpdateProtection}
-            onChangeSpaceMeta={handleUpdateSpaceMeta}
-            onOpenScene={handleOpenScene}
-            onOpenAddScene={handleOpenAddScene}
-            onOpenVault={() => handleOpenScene('gate')}
+            {...commonSceneProps}
+            {...sceneCrudHandlers}
+            {...stageItemHandlers}
+            {...letterHandlers}
             onToggleProtection={() =>
               setProtectionConfig((p) => ({ ...p, enabled: !p.enabled }))
             }
@@ -234,12 +233,9 @@ export function FullscreenSpatialEditor({
               setSelectedId(item.id)
               handleOpenSidebar()
             }}
-            {...sceneCrudHandlers}
-            {...stageItemHandlers}
-            {...letterHandlers}
-            onDuplicateLetter={handleDuplicateLetter}
-            onReorderLetters={handleReorderLetters}
-            onReorderScenes={handleReorderScenes}
+            onDuplicateLetter={multiScene.handleDuplicateLetter}
+            onReorderLetters={multiScene.handleReorderLetters}
+            onReorderScenes={multiScene.handleReorderScenes}
             shareUrl={shareUrl}
             shareCustomizer={shareCustomizer}
           />
@@ -250,6 +246,14 @@ export function FullscreenSpatialEditor({
           onClose={() => setIsAddSceneModalOpen(false)}
           onAddScene={workflow.handleGuardedAddScene}
           existingScenesCount={scenes.length}
+        />
+
+        <PublishSanctuaryModal
+          isOpen={publishState.publishStep !== 'idle'}
+          publishState={publishState}
+          onClose={publishState.closePublishModal}
+          onNavigateToScene={(sceneId) => handleOpenScene(sceneId)}
+          accentColor={activeTheme.accentColor}
         />
       </div>
     </StudioBehaviorProvider>
