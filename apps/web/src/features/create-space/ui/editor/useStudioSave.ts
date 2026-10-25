@@ -13,7 +13,11 @@ import type {
 } from '@/features/create-space/model/scenes.types'
 import { getSpaceStorageKeys, saveToStorage } from './multi-scene-storage'
 import type { SpaceProtectionConfig } from '@/features/space-lock'
-import { uploadAllPendingPhotos } from '../../lib/stage-photo-upload'
+import { serializeProtectionTheme } from '@/features/space-lock'
+import {
+  uploadAllPendingPhotos,
+  applyUploadedUrlsToScenes,
+} from '@/features/create-space/lib/stage-photo-upload'
 
 /**
  * Configuration options supplied to the `useStudioSave` hook.
@@ -50,34 +54,18 @@ export interface UseStudioSaveReturn {
   /** Whether unsaved modifications exist in the current session. */
   isDirty: boolean
   /** Trigger function to save the space locally and sync to Appwrite Databases. */
-  handleSave: () => Promise<UserSpace | undefined>
+  handleSave: () => UserSpace
   /** Flushes any pending debounced autosave immediately. */
-  flushSave: () => Promise<UserSpace | undefined>
+  flushSave: () => Promise<UserSpace>
 }
 
 /**
  * Custom hook managing the studio save workflow.
- *
- * @remarks
- * Saves synchronously to `localStorage` first to ensure instant UI responsiveness
- * with zero perceptible latency. If the user has an active Appwrite session, it
- * dispatches a background task to upsert documents in `spaces` and `space_scenes`.
+ * Saves synchronously to `localStorage` first for instant UI responsiveness,
+ * and debounces background synchronization to Appwrite Databases and Storage.
  *
  * @param options - Configuration options and active studio state.
- * @returns State flags and trigger handler.
- *
- * @example
- * ```tsx
- * const { isSaving, isSaved, isDirty, handleSave, flushSave } = useStudioSave({
- *   spaceId,
- *   templateId: 'birthday',
- *   spaceMeta,
- *   scenes: resolvedScenes,
- *   scenesCount: scenes.length,
- *   artifactsCount: items.length,
- *   fallbackTitle: 'Birthday Sanctuary',
- * })
- * ```
+ * @returns State flags and trigger handlers.
  */
 export function useStudioSave({
   spaceId,
@@ -108,9 +96,7 @@ export function useStudioSave({
       saveToStorage(keys.scenesKey, scenes)
       saveToStorage(keys.metaKey, spaceMeta)
 
-      if (protectionConfig) {
-        saveToStorage(keys.protectionKey, protectionConfig)
-      }
+      if (protectionConfig) saveToStorage(keys.protectionKey, protectionConfig)
 
       return saveSpace({
         id: targetId,
@@ -154,60 +140,14 @@ export function useStudioSave({
           if (pendingPhotos && pendingPhotos.size > 0) {
             const uploadedUrls = await uploadAllPendingPhotos(pendingPhotos)
             if (uploadedUrls.size > 0) {
-              scenesToSave = scenes.map((scene) => {
-                if (scene.type === 'free-canvas') {
-                  return {
-                    ...scene,
-                    items: scene.items.map((it) =>
-                      uploadedUrls.has(it.id)
-                        ? {
-                            ...it,
-                            data: {
-                              ...it.data,
-                              photoUrl: uploadedUrls.get(it.id)!,
-                            },
-                          }
-                        : it,
-                    ),
-                  }
-                }
-                if (scene.type === 'letters') {
-                  return {
-                    ...scene,
-                    letters: scene.letters.map((letItem) =>
-                      uploadedUrls.has(letItem.id)
-                        ? {
-                            ...letItem,
-                            imageUrl: uploadedUrls.get(letItem.id)!,
-                          }
-                        : letItem,
-                    ),
-                  }
-                }
-                return scene
-              })
-
+              scenesToSave = applyUploadedUrlsToScenes(scenes, uploadedUrls)
               onPhotosUploaded?.(uploadedUrls)
               const keys = getSpaceStorageKeys(localSaved.id, templateId)
               saveToStorage(keys.scenesKey, scenesToSave)
             }
           }
 
-          const protectionTheme = protectionConfig?.enabled
-            ? JSON.stringify({
-                vaultTheme: protectionConfig.vaultTheme,
-                keypadTheme: protectionConfig.keypadTheme,
-                backgroundTheme: protectionConfig.backgroundTheme,
-                customTitle: protectionConfig.customTitle,
-                customSubtitle: protectionConfig.customSubtitle,
-                vaultX: protectionConfig.vaultX,
-                vaultY: protectionConfig.vaultY,
-                vaultRotation: protectionConfig.vaultRotation,
-                keypadX: protectionConfig.keypadX,
-                keypadY: protectionConfig.keypadY,
-                keypadRotation: protectionConfig.keypadRotation,
-              })
-            : undefined
+          const protectionTheme = serializeProtectionTheme(protectionConfig)
 
           await saveSpaceToDatabase({
             space: localSaved,

@@ -14,6 +14,10 @@ import {
   toSpaceScene,
   generateSpaceSlug,
 } from './space-converters'
+import {
+  saveScenesToDatabase,
+  deleteSpaceScenes,
+} from '@/entities/space/api/space-database-scenes'
 
 const DB_ID = ENV.APPWRITE_DATABASE_ID
 const SPACES_COLL = ENV.APPWRITE_SPACES_COLLECTION_ID
@@ -221,47 +225,7 @@ export async function saveSpaceToDatabase({
     )
   }
 
-  const spaceId = savedDoc.$id
-
-  if (scenes.length > 0) {
-    for (let index = 0; index < scenes.length; index++) {
-      const scene = scenes[index]
-      const scenePayload = {
-        spaceId,
-        order: index,
-        type: scene.type,
-        title: scene.title,
-        subtitle: scene.subtitle || '',
-        icon: scene.icon || 'Sparkles',
-        payload: JSON.stringify(
-          scene.type === 'letters' ? scene.letters : scene.items,
-        ),
-      }
-
-      try {
-        await databases.updateDocument(
-          DB_ID,
-          SCENES_COLL,
-          scene.id,
-          scenePayload,
-          perms,
-        )
-      } catch {
-        const sceneDocId =
-          scene.id.startsWith('scene_') && scene.id.length <= 36
-            ? scene.id
-            : ID.unique()
-        await databases.createDocument(
-          DB_ID,
-          SCENES_COLL,
-          sceneDocId,
-          scenePayload,
-          perms,
-        )
-      }
-    }
-  }
-
+  await saveScenesToDatabase(savedDoc.$id, scenes, perms)
   return toUserSpace(savedDoc)
 }
 
@@ -272,16 +236,7 @@ export async function saveSpaceToDatabase({
  */
 export async function deleteSpaceFromDatabase(spaceId: string): Promise<void> {
   try {
-    const scenes = await databases.listDocuments(DB_ID, SCENES_COLL, [
-      Query.equal('spaceId', spaceId),
-    ])
-    for (const sc of scenes.documents) {
-      try {
-        await databases.deleteDocument(DB_ID, SCENES_COLL, sc.$id)
-      } catch {
-        // ignore individual scene delete errors
-      }
-    }
+    await deleteSpaceScenes(spaceId)
     await databases.deleteDocument(DB_ID, SPACES_COLL, spaceId)
   } catch {
     // ignore
