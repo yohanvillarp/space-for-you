@@ -10,6 +10,10 @@ import type {
 import type { SpaceProtectionConfig } from '@/features/space-lock'
 import { serializeProtectionTheme } from '@/features/space-lock'
 import {
+  derivePasscodeHash,
+  generateCryptographicSalt,
+} from '@/shared/lib/crypto'
+import {
   validateSanctuaryForPublish,
   type SanctuaryPublishValidation,
 } from '@/features/create-space/lib/sanctuary-publish-validator'
@@ -131,6 +135,20 @@ export function usePublishSanctuary({
         updatedAt: new Date().toISOString(),
       }
 
+      let finalPasscodeHash = protectionConfig?.passcodeHash
+      let finalPasscodeSalt = protectionConfig?.passcodeSalt
+
+      if (protectionConfig?.enabled) {
+        if (!finalPasscodeHash || !finalPasscodeSalt) {
+          const rawCode = protectionConfig.passcode || '1234'
+          finalPasscodeSalt = finalPasscodeSalt || generateCryptographicSalt()
+          finalPasscodeHash = await derivePasscodeHash(
+            rawCode,
+            finalPasscodeSalt,
+          )
+        }
+      }
+
       saveSpace(spacePayload)
 
       const persisted = await saveSpaceToDatabase({
@@ -140,11 +158,15 @@ export function usePublishSanctuary({
         senderName: spaceMeta.senderName,
         dedicationMessage: spaceMeta.dedicationMessage,
         slug,
-        passcodeHash: protectionConfig?.passcodeHash,
-        passcodeSalt: protectionConfig?.passcodeSalt,
+        passcodeHash: finalPasscodeHash,
+        passcodeSalt: finalPasscodeSalt,
         passcodeHint: protectionConfig?.hint,
         protectionTheme: protectionConfig
-          ? serializeProtectionTheme(protectionConfig)
+          ? serializeProtectionTheme({
+              ...protectionConfig,
+              passcodeHash: finalPasscodeHash,
+              passcodeSalt: finalPasscodeSalt,
+            })
           : undefined,
       })
 

@@ -71,24 +71,40 @@ export function useSpaceProtectionState(
         ...syncUpdates,
       }))
 
-      if (updates.passcode !== undefined && updates.passcode.trim() !== '') {
-        const rawCode = updates.passcode.trim()
-        const salt =
-          protectionConfig.passcodeSalt || generateCryptographicSalt()
-        derivePasscodeHash(rawCode, salt)
-          .then((hash) => {
-            setProtectionConfig((prev) => ({
-              ...prev,
-              passcodeSalt: salt,
-              passcodeHash: hash,
-            }))
-          })
-          .catch(() => {
-            // Fallback if subtle crypto error occurs
-          })
+      const isTargetEnabled = updates.enabled ?? protectionConfig.enabled
+      const rawCode = (
+        updates.passcode ??
+        protectionConfig.passcode ??
+        '1234'
+      ).trim()
+
+      if (
+        isTargetEnabled &&
+        (updates.passcode !== undefined || !protectionConfig.passcodeHash)
+      ) {
+        if (rawCode !== '') {
+          const salt =
+            protectionConfig.passcodeSalt || generateCryptographicSalt()
+          derivePasscodeHash(rawCode, salt)
+            .then((hash) => {
+              setProtectionConfig((prev) => ({
+                ...prev,
+                passcodeSalt: salt,
+                passcodeHash: hash,
+              }))
+            })
+            .catch(() => {
+              // Fallback if subtle crypto error occurs
+            })
+        }
       }
     },
-    [protectionConfig.passcodeSalt],
+    [
+      protectionConfig.enabled,
+      protectionConfig.passcode,
+      protectionConfig.passcodeHash,
+      protectionConfig.passcodeSalt,
+    ],
   )
 
   return {
