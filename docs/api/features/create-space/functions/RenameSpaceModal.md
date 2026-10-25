@@ -8,7 +8,7 @@
 
 > **RenameSpaceModal**(`__namedParameters`): `Element` \| `null`
 
-Defined in: apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:14
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L14)
 
 ## Parameters
 

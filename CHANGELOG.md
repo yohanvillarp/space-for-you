@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.10.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.9.0...space-for-you-v0.10.0) (2026-10-25)
+
+
+### Features
+
+* **share:** add short route /s/:slug and resilient url shortener ([cd1588f](https://github.com/yohanvillarp/space-for-you/commit/cd1588f901d8d9737579fba623937e090497b6f5))
+* **viewer:** add ambient audio entry prompt and responsive dock ([20463d0](https://github.com/yohanvillarp/space-for-you/commit/20463d01b116b13735894bc05384fdcd0f861ca1))
+* **viewer:** add local storage fallback and public read permissions ([7a0d43e](https://github.com/yohanvillarp/space-for-you/commit/7a0d43e6b2a1e375095f956cd2083ea32cece3b8))
+* **viewer:** add read-only public viewer and resilient url shortener ([4e5b08f](https://github.com/yohanvillarp/space-for-you/commit/4e5b08f08dac13cf3e8818e5d9a1dc55fea5b130))
+* **viewer:** implement read-only public sanctuary viewer and stage ([91abef2](https://github.com/yohanvillarp/space-for-you/commit/91abef2fd3507ce5cdabd61df3f9378164de76c3))
+
 ## [0.9.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.8.0...space-for-you-v0.9.0) (2026-10-25)
 
 

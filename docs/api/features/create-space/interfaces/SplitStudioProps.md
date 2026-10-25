@@ -6,7 +6,7 @@
 
 # Interface: SplitStudioProps
 
-Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SplitStudio.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SplitStudio.tsx#L8)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:8](https://gi
 
 > **onSelectTemplate**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SplitStudio.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SplitStudio.tsx#L10)
 
 #### Parameters
 
@@ -32,4 +32,4 @@ Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:10](https://g
 
 > **selectedTemplateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SplitStudio.tsx#L9)
+Defined in: [apps/web/src/features/create-space/ui/SplitStudio.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SplitStudio.tsx#L9)

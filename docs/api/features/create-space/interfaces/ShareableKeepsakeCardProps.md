@@ -6,7 +6,7 @@
 
 # Interface: ShareableKeepsakeCardProps
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L12)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L13)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:12]
 
 > **accentColor**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:17](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L17)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:18](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L18)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:17]
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:20](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L20)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:21](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L21)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:20]
 
 > `optional` **onRecipientNameChange?**: (`name`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:19](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L19)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:20](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L20)
 
 #### Parameters
 
@@ -48,7 +48,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:19]
 
 > **recipientName**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L13)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L14)
 
 ---
 
@@ -56,7 +56,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:13]
 
 > **stageName**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:15](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L15)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:16](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L16)
 
 ---
 
@@ -64,7 +64,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:15]
 
 > `optional` **tapeColor?**: `"gold"` \| `"rose"` \| `"sage"`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:18](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L18)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:19](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L19)
 
 ---
 
@@ -72,7 +72,7 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:18]
 
 > **title**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L14)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:15](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L15)
 
 ---
 
@@ -80,4 +80,4 @@ Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:14]
 
 > **url**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:16](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L16)
+Defined in: [apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx:17](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/ShareableKeepsakeCard.tsx#L17)

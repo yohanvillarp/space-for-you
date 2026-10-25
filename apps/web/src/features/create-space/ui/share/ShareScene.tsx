@@ -10,7 +10,8 @@ import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBe
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import { Compass } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { shortenSanctuaryUrl } from '@/features/create-space/lib/url-shortener'
 import { ShareActionsPanel } from './ShareActionsPanel'
 import { ShareCardInlineEditor } from './ShareCardInlineEditor'
 import type {
@@ -51,12 +52,25 @@ export function ShareScene({
   const [copiedImage, setCopiedImage] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [resolvedUrl, setResolvedUrl] = useState(url)
+
+  useEffect(() => {
+    let isMounted = true
+    if (url) {
+      shortenSanctuaryUrl(url).then((short) => {
+        if (isMounted) setResolvedUrl(short)
+      })
+    }
+    return () => {
+      isMounted = false
+    }
+  }, [url])
 
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const cardData: KeepsakeCardData = {
     recipientName: spaceMeta.recipientName,
-    url,
+    url: resolvedUrl || url,
     accentColor: customization.qrColor,
     cardBg: customization.cardBg,
     textColor: customization.textColor,
@@ -102,9 +116,11 @@ export function ShareScene({
     }
   }
 
+  const activeShareUrl = resolvedUrl || url
+
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(activeShareUrl)
       setCopiedLink(true)
       setTimeout(() => setCopiedLink(false), 2500)
     } catch {
@@ -114,7 +130,7 @@ export function ShareScene({
 
   const handleOpenWhatsApp = () => {
     const message = encodeURIComponent(
-      `He creado un espacio digital íntimo especialmente para ti. Abre este enlace: ${url}`,
+      `He creado un espacio digital íntimo especialmente para ti. Abre este enlace: ${activeShareUrl}`,
     )
     window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank')
   }
@@ -161,7 +177,7 @@ export function ShareScene({
               onCustomNoteChange={(note) =>
                 onUpdateCustomization({ customNote: note })
               }
-              url={url}
+              url={activeShareUrl}
               customization={customization}
               selectedTarget={selectedTarget}
               onSelectTarget={onSelectTarget}

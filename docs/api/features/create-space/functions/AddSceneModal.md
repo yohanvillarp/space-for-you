@@ -8,7 +8,7 @@
 
 > **AddSceneModal**(`__namedParameters`): `Element` \| `null`
 
-Defined in: [apps/web/src/features/create-space/ui/hub/AddSceneModal.tsx:17](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/hub/AddSceneModal.tsx#L17)
+Defined in: [apps/web/src/features/create-space/ui/hub/AddSceneModal.tsx:17](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/hub/AddSceneModal.tsx#L17)
 
 ## Parameters
 

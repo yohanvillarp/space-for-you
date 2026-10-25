@@ -6,6 +6,7 @@ import {
   Type,
   ExternalLink,
   Heart,
+  Link2,
 } from 'lucide-react'
 import { Container, Card } from '@/shared/ui'
 
@@ -69,6 +70,16 @@ const ATTRIBUTIONS: AttributionResource[] = [
     url: 'https://fonts.google.com',
     icon: Type,
     license: 'Open Font License (OFL)',
+  },
+  {
+    name: 'TinyURL API',
+    role: 'Resilient Link Shortening & QR Codes',
+    category: 'URL Shortener API',
+    description:
+      'Fast, open URL compression service used to generate low-density, easily scannable QR codes for physical keepsake dedication cards.',
+    url: 'https://tinyurl.com',
+    icon: Link2,
+    license: 'Free public service',
   },
 ]
 

@@ -90,3 +90,33 @@ The repository is organized as a monorepo containing:
   - Dedicated configurations, defaults, and audio synthesis modules.
   - Reusable atomic primitives in `src/shared/`.
 - **Barrel Exports:** Use clean `index.ts` files in feature directories to export clean public APIs without monolithic file structures.
+
+---
+
+## 8. Domain Model & Multi-Scene System
+
+- **Sanctuary Container (`UserSpace`):** Holds top-level metadata (title, recipient, sender, dedication message, theme ID, privacy settings, status).
+- **Multi-Scene Structure (`SpaceScene`):**
+  - **Memory Canvas (`free-canvas`):** Diorama-like 3D stage holding spatial items (`SpatialItemData`): polaroid photos, interactive candles, keepsake cards, sticky notes, soundscape/music players.
+  - **Heartfelt Letters (`letters`):** Intimate collection of handwritten-style letters with customizable envelopes, wax seals, and reading modal.
+  - **Share Hub (`share`):** Dedicated keepsake dedication card customizer generating downloadable/printable visual cards and low-density QR codes.
+- **Public Sanctuary Viewer (`/s/:slug` and `/spaces/:slug`):** Dedicated read-only presentation mode for recipients. Completely free of editing toolbars and scaffolding, featuring interactive lighting, audio playback, letter reading, and photo lightbox modals.
+- **Passcode Protection (`LockGateScene`):** Optional client-verified privacy gate with salt, hash, and hint.
+
+---
+
+## 9. Persistence Model & Public Permissions
+
+- **Local-First (`localStorage`):** Keys prefixed with `sfy_` (`sfy_user_spaces_v1`, `sfy_space_<id>_scenes`, `sfy_meta_<id>`). Instant responsiveness with zero API cost during drafting.
+- **Resilient Fallback (`getLocalSpaceWithScenes`):** When testing on localhost or offline, `PublicSpacePage` seamlessly falls back to local storage if Appwrite Cloud is unreachable or the document was only saved locally.
+- **Cloud Database (Appwrite Cloud):** Persists `spaces` and `space_scenes` collections.
+- **Public Read Access:** Spaces with `status: 'published'` or `status: 'ready'` automatically grant `Permission.read(Role.any())` to allow account-free access to recipients.
+- **Deferred Media Uploads:** Photos stay in client memory (compressed WebP Blob/DataURL) while drafting, and upload to the `space-photos` bucket only upon final save.
+
+---
+
+## 10. External Integrations & APIs
+
+- **TinyURL API:** Fast, open URL shortener used in `apps/web/src/features/create-space/lib/url-shortener.ts` to compress sanctuary URLs for easily scannable, low-density QR codes. Includes in-memory caching, 2500ms timeout, and silent fallback to canonical `/s/:slug`.
+- **Lucide Icons & Iconify:** Open vector iconography and illustration stickers.
+- **Google Fonts:** `Lora` (headings) and `DM Sans` (body and UI).

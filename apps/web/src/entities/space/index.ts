@@ -9,6 +9,7 @@ export {
   SPACES_STORAGE_KEY,
   SPACES_CHANGED_EVENT,
 } from './model/spaces-storage'
+export { getLocalSpaceWithScenes } from './model/local-space-resolver'
 export { useUserSpaces } from './model/useUserSpaces'
 export type { UseUserSpacesReturn } from './model/useUserSpaces'
 export { SpaceCard } from './ui/SpaceCard'

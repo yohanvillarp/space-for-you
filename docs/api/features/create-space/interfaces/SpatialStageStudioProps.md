@@ -6,7 +6,7 @@
 
 # Interface: SpatialStageStudioProps
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:20](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialStageStudio.tsx#L20)
+Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:20](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageStudio.tsx#L20)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:20](ht
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:22](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialStageStudio.tsx#L22)
+Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:22](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageStudio.tsx#L22)
 
 ---
 
@@ -22,4 +22,4 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:22](ht
 
 > **templateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:21](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/ui/SpatialStageStudio.tsx#L21)
+Defined in: [apps/web/src/features/create-space/ui/SpatialStageStudio.tsx:21](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageStudio.tsx#L21)

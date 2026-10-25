@@ -6,7 +6,7 @@
 
 # Interface: CreateSpaceModalProps
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:9
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L9)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:9
 
 > `optional` **initialRecipientName?**: `string`
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:12
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L12)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:12
 
 > `optional` **initialTitle?**: `string`
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:13
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L13)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:13
 
 > **isOpen**: `boolean`
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:10
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L10)
 
 ---
 
@@ -38,7 +38,7 @@ Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:10
 
 > **onClose**: () => `void`
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:11
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L11)
 
 #### Returns
 
@@ -50,7 +50,7 @@ Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:11
 
 > `optional` **onDuplicate?**: (`sourceId`, `title`, `recipient`) => `void`
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:15
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:15](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L15)
 
 #### Parameters
 
@@ -76,4 +76,4 @@ Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:15
 
 > `optional` **sourceSpaceId?**: `string`
 
-Defined in: apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:14
+Defined in: [apps/web/src/features/create-space/ui/CreateSpaceModal.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/CreateSpaceModal.tsx#L14)

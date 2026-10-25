@@ -6,7 +6,7 @@
 
 # Interface: SpaceTemplate
 
-Defined in: [apps/web/src/entities/space/model/types.ts:13](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L13)
+Defined in: [apps/web/src/entities/space/model/types.ts:13](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L13)
 
 Visual and textual configuration for a curated space template.
 
@@ -16,7 +16,7 @@ Visual and textual configuration for a curated space template.
 
 > **accentColor**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:27](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L27)
+Defined in: [apps/web/src/entities/space/model/types.ts:27](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L27)
 
 Primary accent color hex token.
 
@@ -26,7 +26,7 @@ Primary accent color hex token.
 
 > **badge**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:25](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L25)
+Defined in: [apps/web/src/entities/space/model/types.ts:25](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L25)
 
 Visual badge text (e.g., "Celebratory", "Romantic").
 
@@ -36,7 +36,7 @@ Visual badge text (e.g., "Celebratory", "Romantic").
 
 > **cardBgGlow**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:29](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L29)
+Defined in: [apps/web/src/entities/space/model/types.ts:29](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L29)
 
 Ambient background glow gradient CSS class.
 
@@ -46,7 +46,7 @@ Ambient background glow gradient CSS class.
 
 > **category**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:21](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L21)
+Defined in: [apps/web/src/entities/space/model/types.ts:21](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L21)
 
 Broad thematic category.
 
@@ -56,7 +56,7 @@ Broad thematic category.
 
 > **description**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:23](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L23)
+Defined in: [apps/web/src/entities/space/model/types.ts:23](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L23)
 
 Long-form description explaining the emotional feel.
 
@@ -66,7 +66,7 @@ Long-form description explaining the emotional feel.
 
 > **features**: `string`[]
 
-Defined in: [apps/web/src/entities/space/model/types.ts:35](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L35)
+Defined in: [apps/web/src/entities/space/model/types.ts:35](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L35)
 
 Highlighted feature bullets.
 
@@ -76,7 +76,7 @@ Highlighted feature bullets.
 
 > **id**: [`SpaceTemplateId`](../type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/entities/space/model/types.ts:15](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L15)
+Defined in: [apps/web/src/entities/space/model/types.ts:15](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L15)
 
 Unique template identifier.
 
@@ -86,7 +86,7 @@ Unique template identifier.
 
 > **sampleNote**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:33](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L33)
+Defined in: [apps/web/src/entities/space/model/types.ts:33](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L33)
 
 Suggested default dedication note.
 
@@ -96,7 +96,7 @@ Suggested default dedication note.
 
 > **sampleRecipient**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:31](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L31)
+Defined in: [apps/web/src/entities/space/model/types.ts:31](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L31)
 
 Suggested default recipient name.
 
@@ -106,7 +106,7 @@ Suggested default recipient name.
 
 > **subtitle**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:19](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L19)
+Defined in: [apps/web/src/entities/space/model/types.ts:19](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L19)
 
 Poetic subtitle.
 
@@ -116,7 +116,7 @@ Poetic subtitle.
 
 > **tags**: `string`[]
 
-Defined in: [apps/web/src/entities/space/model/types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L37)
+Defined in: [apps/web/src/entities/space/model/types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L37)
 
 Descriptive search tags.
 
@@ -126,6 +126,6 @@ Descriptive search tags.
 
 > **title**: `string`
 
-Defined in: [apps/web/src/entities/space/model/types.ts:17](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/model/types.ts#L17)
+Defined in: [apps/web/src/entities/space/model/types.ts:17](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/types.ts#L17)
 
 Editorial display title.

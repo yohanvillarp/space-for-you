@@ -6,7 +6,7 @@
 
 # Interface: SpaceMeta
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:118](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L118)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:118](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L118)
 
 Master metadata identifying the dedication recipient and creator.
 
@@ -16,7 +16,7 @@ Master metadata identifying the dedication recipient and creator.
 
 > `optional` **dedicationMessage?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:126](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L126)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:126](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L126)
 
 Long-form dedication message.
 
@@ -26,7 +26,7 @@ Long-form dedication message.
 
 > **recipientName**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:120](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L120)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:120](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L120)
 
 Name of the recipient.
 
@@ -36,7 +36,7 @@ Name of the recipient.
 
 > **senderName**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:122](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L122)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:122](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L122)
 
 Name of the creator / sender.
 
@@ -46,6 +46,6 @@ Name of the creator / sender.
 
 > **title**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:124](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/features/create-space/model/scenes.types.ts#L124)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:124](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L124)
 
 Sanctuary title.

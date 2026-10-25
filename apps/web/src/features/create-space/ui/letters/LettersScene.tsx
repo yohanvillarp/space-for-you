@@ -80,34 +80,20 @@ export function LettersScene(props: LettersSceneProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const { state: menuState, openMenu, closeMenu } = useLettersContextMenu()
 
-  const handleEnvelopeClick = (letter: LetterItem) => {
-    if (!isEffectiveEditor) {
-      // In user/preview mode, clicking directly opens the letter
-      onSelectLetter?.(letter.id)
-      onOpenLetter?.(letter.id)
-      setInternalActiveLetter(letter)
-      return
-    }
-
-    // In editor mode: if the letter is already selected and pressed again, open it
-    if (currentSelectedLetterId === letter.id) {
-      playSpatialSfx('paper-rustle')
-      handleOpenLetterModal(letter)
-    } else {
-      // First click: select the envelope to customize in sidebar
-      onSelectLetter?.(letter.id)
-      setInternalSelectedLetterId(letter.id)
-    }
-  }
-
-  const handleEnvelopeDoubleClick = (letter: LetterItem) => {
-    handleOpenLetterModal(letter)
-  }
-
   const handleOpenLetterModal = (letter: LetterItem) => {
     onSelectLetter?.(letter.id)
     onOpenLetter?.(letter.id)
     setInternalActiveLetter(letter)
+  }
+
+  const handleEnvelopeClick = (letter: LetterItem) => {
+    if (!isEffectiveEditor || currentSelectedLetterId === letter.id) {
+      playSpatialSfx('paper-rustle')
+      handleOpenLetterModal(letter)
+      return
+    }
+    onSelectLetter?.(letter.id)
+    setInternalSelectedLetterId(letter.id)
   }
 
   const handleCloseModal = () => {
@@ -209,15 +195,17 @@ export function LettersScene(props: LettersSceneProps) {
                 isDragOver={dragOverIndex === index}
                 isSelected={currentSelectedLetterId === letter.id}
                 onOpen={handleEnvelopeClick}
-                onDoubleClick={handleEnvelopeDoubleClick}
+                onDoubleClick={handleOpenLetterModal}
                 onContextMenu={(e) =>
                   isEffectiveEditor && openMenu(e, { type: 'envelope', letter })
                 }
               />
             ))}
 
-            {/* Add New Letter Card */}
-            {onAddLetter && <AddLetterCard onAddLetter={onAddLetter} />}
+            {/* Add New Letter Card (Strictly in editor mode) */}
+            {onAddLetter && isEffectiveEditor && (
+              <AddLetterCard onAddLetter={onAddLetter} />
+            )}
           </div>
         </div>
 

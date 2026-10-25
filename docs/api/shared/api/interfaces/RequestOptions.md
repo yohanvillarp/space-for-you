@@ -6,7 +6,7 @@
 
 # Interface: RequestOptions
 
-Defined in: [apps/web/src/shared/api/client.ts:1](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/shared/api/client.ts#L1)
+Defined in: [apps/web/src/shared/api/client.ts:1](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/shared/api/client.ts#L1)
 
 ## Extends
 
@@ -130,7 +130,7 @@ A string to indicate whether the request will use CORS, or will be restricted to
 
 > `optional` **params?**: `Record`\<`string`, `string` \| `number` \| `boolean` \| `undefined`\>
 
-Defined in: [apps/web/src/shared/api/client.ts:2](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/shared/api/client.ts#L2)
+Defined in: [apps/web/src/shared/api/client.ts:2](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/shared/api/client.ts#L2)
 
 ---
 

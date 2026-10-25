@@ -83,6 +83,10 @@ export const appRouter = createBrowserRouter([
         element: <PublicSpacePage />,
       },
       {
+        path: '/spaces/:slug',
+        element: <PublicSpacePage />,
+      },
+      {
         path: ROUTES.NOT_FOUND,
         element: <NotFoundPage />,
       },

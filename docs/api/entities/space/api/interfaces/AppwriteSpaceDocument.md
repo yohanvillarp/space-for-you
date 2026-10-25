@@ -6,7 +6,7 @@
 
 # Interface: AppwriteSpaceDocument
 
-Defined in: [apps/web/src/entities/space/api/types.ts:15](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L15)
+Defined in: [apps/web/src/entities/space/api/types.ts:15](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L15)
 
 Raw document model stored in the Appwrite `spaces` collection.
 Enforces Document-Level Security where only the owner has write access,
@@ -136,7 +136,7 @@ Document update date in ISO 8601 format.
 
 > **artifactsCount**: `number`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:33](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L33)
+Defined in: [apps/web/src/entities/space/api/types.ts:33](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L33)
 
 Total count of memories/artifacts placed across all scenes.
 
@@ -146,7 +146,7 @@ Total count of memories/artifacts placed across all scenes.
 
 > `optional` **dedicationMessage?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:29](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L29)
+Defined in: [apps/web/src/entities/space/api/types.ts:29](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L29)
 
 Optional long-form dedication message or greeting note.
 
@@ -156,7 +156,7 @@ Optional long-form dedication message or greeting note.
 
 > `optional` **isProtected?**: `boolean`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L37)
+Defined in: [apps/web/src/entities/space/api/types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L37)
 
 Whether the sanctuary requires a passcode or privacy gate to access.
 
@@ -166,7 +166,7 @@ Whether the sanctuary requires a passcode or privacy gate to access.
 
 > `optional` **passcodeHash?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:39](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L39)
+Defined in: [apps/web/src/entities/space/api/types.ts:39](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L39)
 
 Cryptographic hash (SHA-256) of the protection passcode.
 
@@ -176,7 +176,7 @@ Cryptographic hash (SHA-256) of the protection passcode.
 
 > `optional` **passcodeHint?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:43](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L43)
+Defined in: [apps/web/src/entities/space/api/types.ts:43](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L43)
 
 Optional hint displayed on the passcode gate.
 
@@ -186,7 +186,7 @@ Optional hint displayed on the passcode gate.
 
 > `optional` **passcodeSalt?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:41](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L41)
+Defined in: [apps/web/src/entities/space/api/types.ts:41](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L41)
 
 Cryptographic salt for passcode hashing.
 
@@ -196,7 +196,7 @@ Cryptographic salt for passcode hashing.
 
 > `optional` **protectionTheme?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:45](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L45)
+Defined in: [apps/web/src/entities/space/api/types.ts:45](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L45)
 
 Passcode gate theme design variant.
 
@@ -206,7 +206,7 @@ Passcode gate theme design variant.
 
 > **recipientName**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:19](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L19)
+Defined in: [apps/web/src/entities/space/api/types.ts:19](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L19)
 
 Name of the intended recipient.
 
@@ -216,7 +216,7 @@ Name of the intended recipient.
 
 > **scenesCount**: `number`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:31](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L31)
+Defined in: [apps/web/src/entities/space/api/types.ts:31](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L31)
 
 Total count of scenes contained in this space.
 
@@ -226,7 +226,7 @@ Total count of scenes contained in this space.
 
 > **senderName**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:21](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L21)
+Defined in: [apps/web/src/entities/space/api/types.ts:21](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L21)
 
 Optional display name or nickname of the creator/sender.
 
@@ -236,7 +236,7 @@ Optional display name or nickname of the creator/sender.
 
 > **slug**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:27](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L27)
+Defined in: [apps/web/src/entities/space/api/types.ts:27](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L27)
 
 Unique, human-friendly URL slug (e.g., "sophia-sanctuary-a81f").
 
@@ -246,7 +246,7 @@ Unique, human-friendly URL slug (e.g., "sophia-sanctuary-a81f").
 
 > **status**: `"draft"` \| `"ready"` \| `"published"`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:25](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L25)
+Defined in: [apps/web/src/entities/space/api/types.ts:25](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L25)
 
 Publication lifecycle status.
 
@@ -256,7 +256,7 @@ Publication lifecycle status.
 
 > **templateId**: [`SpaceTemplateId`](../../type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/entities/space/api/types.ts:23](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L23)
+Defined in: [apps/web/src/entities/space/api/types.ts:23](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L23)
 
 Selected aesthetic theme ('birthday' | 'anniversary' | 'friendship').
 
@@ -266,7 +266,7 @@ Selected aesthetic theme ('birthday' | 'anniversary' | 'friendship').
 
 > `optional` **themeConfig?**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:35](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L35)
+Defined in: [apps/web/src/entities/space/api/types.ts:35](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L35)
 
 JSON-serialized theme customization (colors, fonts, QR code styling).
 
@@ -276,7 +276,7 @@ JSON-serialized theme customization (colors, fonts, QR code styling).
 
 > **title**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:17](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L17)
+Defined in: [apps/web/src/entities/space/api/types.ts:17](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L17)
 
 Display title of the digital sanctuary (e.g., "Sophia's 25th Birthday").
 
@@ -286,6 +286,6 @@ Display title of the digital sanctuary (e.g., "Sophia's 25th Birthday").
 
 > **userId**: `string`
 
-Defined in: [apps/web/src/entities/space/api/types.ts:47](https://github.com/yohanvillarp/space-for-you/blob/970b6aad3a4c600671678fbeacae2cfef28f0613/apps/web/src/entities/space/api/types.ts#L47)
+Defined in: [apps/web/src/entities/space/api/types.ts:47](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/types.ts#L47)
 
 Owner user ID matching Appwrite Auth `$id`.
