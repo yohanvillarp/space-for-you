@@ -8,6 +8,7 @@ import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
 import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { PublicStageCanvas } from '@/features/create-space/ui/public/PublicStageCanvas'
 import { PublicSceneDock } from '@/features/create-space/ui/public/PublicSceneDock'
+import { SanctuaryWelcomeIntro } from '@/features/create-space/ui/public/SanctuaryWelcomeIntro'
 import { useSpatialAudioPlayer, cn, playSpatialSfx } from '@/shared/lib'
 
 export interface PublicSanctuaryViewerProps {
@@ -20,12 +21,21 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const [activeSceneId, setActiveSceneId] = useState<string>('hub')
+  const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(false)
 
   const presetTrack = getPresetTrackForTemplate(templateId)
   const { isPlaying, togglePlay } = useSpatialAudioPlayer({
     trackUrl: presetTrack?.url || '',
     loop: true,
   })
+
+  const handleEnterSanctuary = () => {
+    setHasSeenWelcome(true)
+    setActiveSceneId('hub')
+    if (presetTrack && !isPlaying) {
+      togglePlay()
+    }
+  }
 
   // Dynamic Document Title
   useEffect(() => {
@@ -101,49 +111,68 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
 
       {/* Scene Viewport */}
       <main className="relative flex h-[calc(100vh-56px)] w-full flex-1 overflow-hidden">
-        {activeSceneId === 'hub' && (
-          <SpaceHubScene
-            templateId={templateId}
-            meta={{
-              title: space.title,
-              recipientName: space.recipientName,
-              senderName: data.senderName || '',
-              dedicationMessage: data.dedicationMessage || '',
-            }}
-            scenes={scenes}
-            isStudioPreview={false}
-            onOpenScene={(sceneId) => {
-              setActiveSceneId(sceneId)
-            }}
-            onOpenAddScene={() => {}}
+        {!hasSeenWelcome ? (
+          <SanctuaryWelcomeIntro
+            spaceTitle={space.title}
+            recipientName={space.recipientName}
+            senderName={data.senderName}
+            dedicationMessage={data.dedicationMessage}
+            accentColor={activeTheme.accentColor}
+            ambientGlow={activeTheme.ambientGlow}
+            isPlayingAudio={isPlaying}
+            hasAudioTrack={Boolean(presetTrack)}
+            onToggleAudio={togglePlay}
+            onEnter={handleEnterSanctuary}
           />
-        )}
+        ) : (
+          <>
+            {activeSceneId === 'hub' && (
+              <SpaceHubScene
+                templateId={templateId}
+                meta={{
+                  title: space.title,
+                  recipientName: space.recipientName,
+                  senderName: data.senderName || '',
+                  dedicationMessage: data.dedicationMessage || '',
+                }}
+                scenes={scenes}
+                isStudioPreview={false}
+                onOpenScene={(sceneId) => {
+                  setActiveSceneId(sceneId)
+                }}
+                onOpenAddScene={() => {}}
+              />
+            )}
 
-        {activeScene?.type === 'letters' && (
-          <LettersScene
-            scene={activeScene}
-            templateId={templateId}
-            isStudioPreview={false}
-            onBackToHub={() => setActiveSceneId('hub')}
-          />
-        )}
+            {activeScene?.type === 'letters' && (
+              <LettersScene
+                scene={activeScene}
+                templateId={templateId}
+                isStudioPreview={false}
+                onBackToHub={() => setActiveSceneId('hub')}
+              />
+            )}
 
-        {activeScene?.type === 'free-canvas' && (
-          <PublicStageCanvas
-            templateId={templateId}
-            items={activeScene.items || []}
-          />
+            {activeScene?.type === 'free-canvas' && (
+              <PublicStageCanvas
+                templateId={templateId}
+                items={activeScene.items || []}
+              />
+            )}
+          </>
         )}
       </main>
 
-      {/* Floating Bottom Scene Dock */}
-      <PublicSceneDock
-        scenes={scenes}
-        activeSceneId={activeSceneId}
-        onSelectScene={setActiveSceneId}
-        hasHub={true}
-        accentColor={activeTheme.accentColor}
-      />
+      {/* Floating Bottom Scene Dock (rendered only after entering) */}
+      {hasSeenWelcome && (
+        <PublicSceneDock
+          scenes={scenes}
+          activeSceneId={activeSceneId}
+          onSelectScene={setActiveSceneId}
+          hasHub={true}
+          accentColor={activeTheme.accentColor}
+        />
+      )}
     </div>
   )
 }
