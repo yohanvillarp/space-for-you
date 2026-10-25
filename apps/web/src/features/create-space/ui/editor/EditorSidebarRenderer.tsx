@@ -15,6 +15,11 @@ import { LockGateSidebar } from '@/features/space-lock'
 import { SpaceGeneralSidebar } from '@/features/create-space/ui/hub/SpaceGeneralSidebar'
 import { SpatialToolboxSidebar } from '@/features/create-space/ui/SpatialToolboxSidebar'
 import { LettersToolboxSidebar } from '@/features/create-space/ui/letters/LettersToolboxSidebar'
+import { ShareCustomizerSidebar } from '@/features/create-space/ui/share/sidebar/ShareCustomizerSidebar'
+import type {
+  ShareCardCustomization,
+  ShareColorTarget,
+} from '@/features/create-space/ui/share/share-customizer.types'
 
 export interface EditorSidebarRendererProps {
   activeSceneId: string
@@ -48,7 +53,20 @@ export interface EditorSidebarRendererProps {
   onAddLetter: () => void
   onUpdateLetter: (updated: LetterItem) => void
   onDeleteLetter: (id: string) => void
+  onAssignLetterPhoto?: (letterId: string, url: string, file?: File) => void
   isCompact: boolean
+  shareCustomizer?: {
+    customization: ShareCardCustomization
+    selectedTarget: ShareColorTarget
+    setSelectedTarget: (target: ShareColorTarget) => void
+    updateCustomization: (updates: Partial<ShareCardCustomization>) => void
+    applyColorToSelectedTarget: (hex: string) => void
+    applyHarmonyPalette: (palette: {
+      qrColor: string
+      cardBg: string
+      textColor: string
+    }) => void
+  }
 }
 
 export function EditorSidebarRenderer({
@@ -78,7 +96,9 @@ export function EditorSidebarRenderer({
   onAddLetter,
   onUpdateLetter,
   onDeleteLetter,
+  onAssignLetterPhoto,
   isCompact,
+  shareCustomizer,
 }: EditorSidebarRendererProps) {
   if (activeSceneId === 'gate') {
     return (
@@ -102,6 +122,30 @@ export function EditorSidebarRenderer({
     )
   }
 
+  if (activeSceneId === 'share' && shareCustomizer) {
+    return (
+      <ShareCustomizerSidebar
+        currentQrStyle={shareCustomizer.customization.qrStyle}
+        onSelectQrStyle={(s) =>
+          shareCustomizer.updateCustomization({ qrStyle: s })
+        }
+        selectedTarget={shareCustomizer.selectedTarget}
+        onSelectTarget={shareCustomizer.setSelectedTarget}
+        currentQrColor={shareCustomizer.customization.qrColor}
+        currentCardBg={shareCustomizer.customization.cardBg}
+        currentTextColor={shareCustomizer.customization.textColor}
+        onApplyColor={shareCustomizer.applyColorToSelectedTarget}
+        onApplyPalette={shareCustomizer.applyHarmonyPalette}
+        currentFont={shareCustomizer.customization.fontFamily}
+        onSelectFont={(f) =>
+          shareCustomizer.updateCustomization({ fontFamily: f })
+        }
+        isCompact={isCompact}
+        className="h-full w-full"
+      />
+    )
+  }
+
   if (activeScene?.type === 'letters') {
     return (
       <LettersToolboxSidebar
@@ -113,6 +157,7 @@ export function EditorSidebarRenderer({
         onAddLetter={onAddLetter}
         onUpdateLetter={onUpdateLetter}
         onDeleteLetter={onDeleteLetter}
+        onAssignLetterPhoto={onAssignLetterPhoto}
         isCompact={isCompact}
         className="h-full w-full"
       />

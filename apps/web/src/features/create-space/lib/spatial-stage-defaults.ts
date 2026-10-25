@@ -1,5 +1,5 @@
 import type { SpaceTemplateId } from '@/entities/space'
-import type { ToolboxItemDef } from '../model/spatial-stage.types'
+import type { ToolboxItemDef } from '@/features/create-space/model/spatial-stage.types'
 import { TOOLBOX_ITEMS } from './stage-toolbox-items'
 
 export { TOOLBOX_ITEMS } from './stage-toolbox-items'

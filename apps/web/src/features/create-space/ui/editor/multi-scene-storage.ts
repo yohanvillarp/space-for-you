@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Types and storage helpers for multi-scene state management.
+ */
+
 import type {
   SpaceScene,
   SpaceMeta,
@@ -7,37 +11,119 @@ import {
   DEFAULT_SPACE_META,
   INITIAL_LETTERS_DATA,
 } from '@/features/create-space/model/scenes.types'
+import type { SpaceTemplateId } from '@/entities/space'
+import { getDefaultItemsForTemplate } from '@/features/create-space/lib/spatial-stage-defaults'
 
 export const SCENE_STORAGE_KEY = 'sfy_active_scene_id'
 export const SCENES_STORAGE_KEY = 'sfy_scenes_draft'
 export const META_STORAGE_KEY = 'sfy_space_meta_draft'
 
+export function getSpaceStorageKeys(
+  spaceId?: string,
+  templateId?: SpaceTemplateId,
+) {
+  if (!spaceId) {
+    const scope = templateId ? `draft_${templateId}` : 'ephemeral'
+    return {
+      scenesKey: `sfy_${scope}_scenes`,
+      metaKey: `sfy_${scope}_meta`,
+      activeSceneKey: `sfy_${scope}_active_scene`,
+      protectionKey: `sfy_${scope}_protection`,
+    }
+  }
+  return {
+    scenesKey: `sfy_space_${spaceId}_scenes`,
+    metaKey: `sfy_meta_${spaceId}`,
+    activeSceneKey: `sfy_space_${spaceId}_active_scene`,
+    protectionKey: `sfy_space_${spaceId}_protection`,
+  }
+}
+
+export function createInitialScenesForTemplate(
+  templateId: SpaceTemplateId = 'birthday',
+): SpaceScene[] {
+  return [
+    {
+      id: `scene-canvas-${Date.now()}`,
+      type: 'free-canvas',
+      title: 'Memory Canvas',
+      subtitle: 'Creative stage for keepsakes & moments',
+      icon: 'Sparkles',
+      order: 1,
+      items: getDefaultItemsForTemplate(templateId),
+    },
+    {
+      id: `scene-letters-${Date.now()}`,
+      type: 'letters',
+      title: 'Heartfelt Letters',
+      subtitle: 'Read what I wrote for you',
+      icon: 'Mail',
+      order: 2,
+      letters: INITIAL_LETTERS_DATA.map((item) => ({ ...item })),
+    },
+  ]
+}
+
+/**
+ * Interface returned by the `useMultiSceneState` hook.
+ */
 export interface UseMultiSceneStateReturn {
+  /** Active scene identifier ('hub' | 'gate' | 'share' | custom scene id). */
   activeSceneId: string
+  /** Switches the active scene viewport. */
   setActiveSceneId: (id: string) => void
+  /** Space title, recipient, sender, and dedication message. */
   spaceMeta: SpaceMeta
+  /** React state setter for space metadata. */
   setSpaceMeta: React.Dispatch<React.SetStateAction<SpaceMeta>>
+  /** List of scenes contained in the space. */
   scenes: SpaceScene[]
+  /** React state setter for the scenes array. */
   setScenes: React.Dispatch<React.SetStateAction<SpaceScene[]>>
+  /** Selected letter ID in the letters desk. */
   selectedLetterId: string | null
+  /** Updates the currently selected letter ID. */
   setSelectedLetterId: (id: string | null) => void
+  /** Open letter ID displayed in reading modal mode. */
   openLetterId: string | null
+  /** Updates open letter ID. */
   setOpenLetterId: (id: string | null) => void
+  /** Appends a new scene to the space. */
   handleAddScene: (newScene: SpaceScene) => void
+  /** Deletes a scene by ID. */
   handleDeleteScene: (sceneId: string) => void
+  /** Renames a scene. */
   handleRenameScene: (sceneId: string, newTitle: string) => void
+  /** Updates scene properties. */
   handleUpdateScene: (
     sceneId: string,
     updates: { title?: string; subtitle?: string },
   ) => void
+  /** Duplicates an existing scene. */
   handleDuplicateScene: (sceneId: string) => void
+  /** Moves a scene left or right in navigation. */
   handleMoveScene: (sceneId: string, direction: 'left' | 'right') => void
+  /** Drag-and-drop reordering for scenes. */
+  handleReorderScenes: (fromIndex: number, toIndex: number) => void
+  /** Updates a letter's content, envelope color, or seal. */
   handleUpdateLetter: (updatedLetter: LetterItem) => void
+  /** Adds a new letter to the letters scene. */
   handleAddLetter: () => void
+  /** Duplicates a letter. */
   handleDuplicateLetter: (id: string) => void
+  /** Deletes a letter. */
   handleDeleteLetter: (id: string) => void
+  /** Drag-and-drop reordering for heartfelt letters. */
+  handleReorderLetters: (
+    fromIndex: number,
+    toIndex: number,
+    sceneId?: string,
+  ) => void
 }
 
+/**
+ * Loads a value safely from `localStorage` with fallback.
+ */
 export function loadFromStorage<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback
   try {
@@ -48,33 +134,27 @@ export function loadFromStorage<T>(key: string, fallback: T): T {
   }
 }
 
+/**
+ * Saves a JSON-serializable value to `localStorage`.
+ */
 export function saveToStorage(key: string, value: unknown) {
   if (typeof window === 'undefined') return
   try {
     localStorage.setItem(key, JSON.stringify(value))
   } catch {
-    // Ignore storage quota or permission errors
+    // ignore
   }
 }
 
 export const INITIAL_SCENES: SpaceScene[] = [
   {
-    id: 'scene-canvas',
-    type: 'free-canvas',
-    title: 'Memory Canvas',
-    subtitle: 'Creative stage for keepsakes & moments',
-    icon: 'Sparkles',
-    order: 1,
-    items: [],
-  },
-  {
     id: 'scene-letters',
     type: 'letters',
     title: 'Heartfelt Letters',
-    subtitle: 'Read what I wrote for you',
+    subtitle: 'Envelopes sealed with care and memories',
     icon: 'Mail',
-    order: 2,
-    letters: [...INITIAL_LETTERS_DATA],
+    order: 0,
+    letters: INITIAL_LETTERS_DATA,
   },
 ]
 

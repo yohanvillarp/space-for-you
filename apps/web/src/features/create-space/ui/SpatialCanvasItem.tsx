@@ -4,7 +4,7 @@ import type {
   MouseEvent as ReactMouseEvent,
 } from 'react'
 import { Lock } from 'lucide-react'
-import type { SpatialItem } from '../model/spatial-stage.types'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import { CanvasItemToolbar } from './canvas/CanvasItemToolbar'
 import { RotationHandle } from './canvas/RotationHandle'

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { UploadCloud, CheckCircle2, Sparkles } from 'lucide-react'
-import { compressImageFile } from '../../lib/image-compression'
-import type { CompressedImageResult } from '../../lib/image-compression'
+import { compressImageFile } from '@/features/create-space/lib/image-compression'
+import type { CompressedImageResult } from '@/features/create-space/lib/image-compression'
 import { Button } from '@/shared/ui'
 import { playSpatialSfx } from '@/shared/lib'
 

@@ -1,73 +1,64 @@
-import type { CreationStep, SpaceTemplateId } from '@/entities/space'
-import { DEFAULT_TEMPLATE_ID } from '@/entities/space'
+import type { SpaceTemplateId } from '@/entities/space'
+import {
+  DEFAULT_TEMPLATE_ID,
+  createNewSpace,
+  useUserSpaces,
+} from '@/entities/space'
 import {
   ProtectedRoute,
-  ShareableKeepsakeCard,
   StagePreviewPanel,
   THEME_REGISTRY,
+  ThemeModeSelector,
+  validateSpaceCreation,
 } from '@/features'
 import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
-import { Card, Container } from '@/shared/ui'
-import { ArrowLeft, Sparkles } from 'lucide-react'
+import { Button, Container, useConfirmDialog } from '@/shared/ui'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
-import { DetailsStepSidebar } from './wizard/DetailsStepSidebar'
-import { PreviewStepSidebar } from './wizard/PreviewStepSidebar'
-import { StepIndicator } from './wizard/StepIndicator'
-import { ThemeStepSidebar } from './wizard/ThemeStepSidebar'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 
 export function NewSpacePage() {
-  const [currentStep, setCurrentStep] = useState<CreationStep>('template')
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const { spaces } = useUserSpaces()
+  const { confirm } = useConfirmDialog()
+
+  const rawRecipient = searchParams.get('recipient')?.trim()
+  const rawTitle = searchParams.get('title')?.trim()
+  const recipientName = rawRecipient || 'Someone Special'
+
   const [selectedTemplateId, setSelectedTemplateId] =
     useState<SpaceTemplateId>(DEFAULT_TEMPLATE_ID)
-  const [recipientName, setRecipientName] = useState('Sophia')
-  const navigate = useNavigate()
 
   const activeTheme =
     THEME_REGISTRY[selectedTemplateId] ?? THEME_REGISTRY.birthday
 
-  const previewPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(selectedTemplateId)}`
-  const fullShareUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}${previewPath}`
-      : previewPath
+  const spaceTitle =
+    rawTitle ||
+    (rawRecipient
+      ? `${rawRecipient}'s ${activeTheme.title} Sanctuary`
+      : `${activeTheme.title} Sanctuary`)
 
-  const handleNextStep = () => {
-    if (currentStep === 'template') {
-      setCurrentStep('details')
-    } else if (currentStep === 'details') {
-      setCurrentStep('preview')
-    }
-  }
-
-  const handlePrevStep = () => {
-    if (currentStep === 'details') {
-      setCurrentStep('template')
-    } else if (currentStep === 'preview') {
-      setCurrentStep('details')
-    } else {
+  const handleStartCrafting = () => {
+    if (!validateSpaceCreation(spaces.length, confirm)) {
       navigate(ROUTES.DASHBOARD)
+      return
     }
-  }
-
-  const getTapeColor = () => {
-    switch (selectedTemplateId) {
-      case 'birthday':
-        return 'gold'
-      case 'anniversary':
-        return 'rose'
-      case 'friendship':
-        return 'sage'
-      default:
-        return 'rose'
-    }
+    const newSpace = createNewSpace(
+      selectedTemplateId,
+      spaceTitle,
+      recipientName,
+    )
+    navigate(
+      `${ROUTES.STUDIO}?template=${encodeURIComponent(selectedTemplateId)}&spaceId=${encodeURIComponent(newSpace.id)}`,
+    )
   }
 
   return (
     <ProtectedRoute>
       {() => (
-        <div className="animate-fade-in relative min-h-[calc(100vh-80px)] py-6 sm:py-8 md:py-10">
+        <div className="animate-fade-in relative min-h-[calc(100vh-80px)] py-6 sm:py-8">
           {/* Dynamic Ambient Full-Screen Atmosphere */}
           <div
             className={cn(
@@ -77,7 +68,7 @@ export function NewSpacePage() {
             aria-hidden="true"
           />
 
-          <Container className="max-w-[1520px] space-y-6">
+          <Container className="max-w-[1360px] space-y-6">
             {/* Minimalist Top Studio Bar */}
             <div className="border-border-base/40 flex items-center justify-between border-b pb-4">
               <Link
@@ -94,93 +85,47 @@ export function NewSpacePage() {
               </div>
             </div>
 
-            {/* Studio Lateral Layout Grid */}
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start xl:gap-8">
-              {/* Left Column: Clean Sidebar Controls */}
-              <aside className="space-y-6 lg:col-span-4 xl:col-span-3">
-                <div className="space-y-1">
-                  <h1 className="font-heading text-text-primary text-2xl font-medium tracking-tight sm:text-3xl">
-                    {currentStep === 'preview'
-                      ? 'Share Your Sanctuary'
-                      : 'Craft a New Space'}
-                  </h1>
-                  <p className="text-text-secondary font-sans text-xs leading-relaxed sm:text-sm">
-                    {currentStep === 'preview'
-                      ? 'Copy your customized keepsake card image to paste in WhatsApp.'
-                      : 'Select the physical stage where their memories will live.'}
-                  </p>
-                </div>
+            {/* Page Title Header */}
+            <div className="space-y-1 text-center">
+              <h3 className="text-text-secondary font-sans text-xs sm:text-sm">
+                {rawRecipient
+                  ? `Select the physical stage where ${rawRecipient}'s memories will live.`
+                  : 'Select the physical stage where their memories will live.'}
+              </h3>
+            </div>
 
-                {currentStep === 'template' && (
-                  <ThemeStepSidebar
-                    selectedTemplateId={selectedTemplateId}
-                    onSelectTemplate={setSelectedTemplateId}
-                    activeTheme={activeTheme}
-                    onNextStep={handleNextStep}
-                  />
-                )}
-
-                {currentStep === 'details' && (
-                  <DetailsStepSidebar
-                    activeTheme={activeTheme}
-                    onPrevStep={handlePrevStep}
-                    onNextStep={handleNextStep}
-                  />
-                )}
-
-                {currentStep === 'preview' && (
-                  <PreviewStepSidebar
-                    activeTheme={activeTheme}
-                    recipientName={recipientName}
-                    onPrevStep={handlePrevStep}
-                  />
-                )}
+            {/* Main Stage Selection Grid */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-stretch">
+              {/* Left: Dynamic Vertical Mode Selector */}
+              <aside className="flex flex-col lg:col-span-5 xl:col-span-4">
+                <ThemeModeSelector
+                  selectedTemplateId={selectedTemplateId}
+                  onSelectTemplate={setSelectedTemplateId}
+                  orientation="vertical"
+                />
               </aside>
 
-              {/* Right Column: Central Step Progress + Content */}
-              <main className="animate-fade-in space-y-5 lg:col-span-8 xl:col-span-9">
-                <StepIndicator
-                  currentStep={currentStep}
-                  onSelectStep={setCurrentStep}
+              {/* Right: Stage Preview Panel */}
+              <main className="flex flex-col lg:col-span-7 xl:col-span-8">
+                <StagePreviewPanel
+                  key={selectedTemplateId}
+                  templateId={selectedTemplateId}
                 />
-
-                {currentStep === 'template' && (
-                  <StagePreviewPanel
-                    key={selectedTemplateId}
-                    templateId={selectedTemplateId}
-                  />
-                )}
-
-                {currentStep === 'details' && (
-                  <Card className="border-border-base bg-bg-surface/60 space-y-4 border-2 border-dashed p-8 text-center sm:p-12">
-                    <div className="bg-primary/10 text-primary mx-auto flex h-12 w-12 items-center justify-center rounded-2xl">
-                      <Sparkles className="h-6 w-6" />
-                    </div>
-                    <div className="mx-auto max-w-md space-y-1.5">
-                      <h3 className="font-heading text-text-primary text-lg font-medium">
-                        Story & Letters Hub
-                      </h3>
-                      <p className="text-text-secondary font-sans text-xs leading-relaxed sm:text-sm">
-                        In this step you will write the personal letter,
-                        dedicate the milestone songs, and attach photos for{' '}
-                        <strong>{recipientName}</strong>.
-                      </p>
-                    </div>
-                  </Card>
-                )}
-
-                {currentStep === 'preview' && (
-                  <ShareableKeepsakeCard
-                    recipientName={recipientName}
-                    onRecipientNameChange={setRecipientName}
-                    title={activeTheme.title}
-                    stageName={activeTheme.stageName}
-                    url={fullShareUrl}
-                    accentColor={activeTheme.accentColor}
-                    tapeColor={getTapeColor()}
-                  />
-                )}
               </main>
+            </div>
+
+            {/* Action Button: Directly Enter Studio */}
+            <div className="flex justify-center pt-4 pb-8">
+              <Button
+                type="button"
+                variant="primary"
+                size="md"
+                onClick={handleStartCrafting}
+                className="group cursor-pointer gap-2 px-8 py-3 shadow-md"
+              >
+                <span>Start Crafting in Studio</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           </Container>
         </div>

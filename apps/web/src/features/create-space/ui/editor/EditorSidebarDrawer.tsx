@@ -34,6 +34,15 @@ export function EditorSidebarDrawer({
 
   return (
     <>
+      {/* Mobile Backdrop Overlay */}
+      {showSidebar && (
+        <div
+          onClick={onToggleSidebar}
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-xs md:hidden"
+          aria-hidden="true"
+        />
+      )}
+
       {/* Floating Cue Button to reopen sidebar when collapsed */}
       {!showSidebar && (
         <button
@@ -49,24 +58,27 @@ export function EditorSidebarDrawer({
         </button>
       )}
 
-      {/* Resizable Sidebar Container */}
+      {/* Resizable Sidebar Container: Fixed slide-over on mobile, inline flex child on desktop */}
       <div
         style={{ width: showSidebar ? `${sidebarWidth}px` : '0px' }}
         className={cn(
-          'relative h-full shrink-0 overflow-hidden border-r border-[#3B302A] transition-[width] duration-150 ease-out',
-          !showSidebar && 'pointer-events-none invisible border-none',
+          'h-full overflow-hidden border-r border-[#3B302A] transition-all duration-200 ease-out',
+          'fixed inset-y-0 left-0 z-50 max-w-[85vw] bg-[#16120F] shadow-2xl',
+          'md:relative md:inset-auto md:z-auto md:max-w-none md:shrink-0',
+          !showSidebar &&
+            'pointer-events-none invisible -translate-x-full border-none md:translate-x-0',
         )}
       >
         {children}
 
-        {/* Resizer Handle on Right Edge of Left Sidebar */}
+        {/* Resizer Handle on Right Edge of Left Sidebar (Desktop Only) */}
         <div
           onPointerDown={onResizeStart}
           role="separator"
           aria-orientation="vertical"
           title="Drag to resize"
           className={cn(
-            'group absolute top-0 -right-2 bottom-0 z-50 flex w-4 cursor-col-resize items-center justify-center transition-colors',
+            'group absolute top-0 -right-2 bottom-0 z-50 hidden w-4 cursor-col-resize items-center justify-center transition-colors md:flex',
             isResizingSidebar && 'bg-[#CF7056]/20',
           )}
         >

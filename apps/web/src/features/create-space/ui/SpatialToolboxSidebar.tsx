@@ -5,8 +5,8 @@ import type {
   SpatialItem,
   SpatialItemType,
   SpatialItemData,
-} from '../model/spatial-stage.types'
-import { getToolboxItemsForTemplate } from '../lib/spatial-stage-defaults'
+} from '@/features/create-space/model/spatial-stage.types'
+import { getToolboxItemsForTemplate } from '@/features/create-space/lib/spatial-stage-defaults'
 import { cn } from '@/shared/lib'
 import { ToolboxHeader } from './toolbox/ToolboxHeader'
 import type { ToolboxCategory } from './toolbox/ToolboxHeader'

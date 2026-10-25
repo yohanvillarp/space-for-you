@@ -6,9 +6,9 @@ import {
   Image as ImageIcon,
   AlertCircle,
 } from 'lucide-react'
-import { PhotoWebTab } from '../photo/PhotoWebTab'
-import { PhotoUploadTab } from '../photo/PhotoUploadTab'
-import { MAX_STAGE_PHOTOS } from '../../lib/stage-photo-limit'
+import { PhotoWebTab } from '@/features/create-space/ui/photo/PhotoWebTab'
+import { PhotoUploadTab } from '@/features/create-space/ui/photo/PhotoUploadTab'
+import { MAX_STAGE_PHOTOS } from '@/features/create-space/lib/stage-photo-limit'
 
 export interface PhotosTabContentProps {
   selectedItemName?: string

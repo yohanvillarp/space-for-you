@@ -1,4 +1,4 @@
-import type { SpatialItemType } from '../../model/spatial-stage.types'
+import type { SpatialItemType } from '@/features/create-space/model/spatial-stage.types'
 
 /**
  * Dedicated visual thumbnail renderer that accurately represents each physical keepsake

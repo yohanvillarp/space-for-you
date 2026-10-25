@@ -1,0 +1,33 @@
+/* Stage Diorama Preview Viewport - Ensures the full miniature scene is visible without cropping */
+.stage-diorama-viewport .universe-birthday,
+.stage-diorama-viewport .universe-romantic,
+.stage-diorama-viewport .universe-friendship {
+  min-height: 0 !important;
+  height: 100% !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1.5rem !important;
+  justify-content: center !important;
+}
+
+/* Hide redundant inner universe title banners in preview mode (already shown in preview status bar) */
+.stage-diorama-viewport
+  .universe-birthday
+  .space-y-8
+  > .text-center:first-child,
+.stage-diorama-viewport
+  .universe-romantic
+  .space-y-8
+  > .text-center:first-child,
+.stage-diorama-viewport
+  .universe-friendship
+  .space-y-8
+  > .text-center:first-child {
+  display: none !important;
+}
+
+/* Compact spacing for the diorama centerpiece items */
+.stage-diorama-viewport .space-y-8 {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+  gap: 1.25rem !important;
+}

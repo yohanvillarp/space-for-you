@@ -1,9 +1,7 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
-import { DEFAULT_PROTECTION_CONFIG } from '@/features/space-lock'
-import type { SpaceProtectionConfig } from '@/features/space-lock'
-import type { SpaceMeta } from '@/features/create-space/model/scenes.types'
 import { EditorTopHeader } from '@/features/create-space/ui/editor/EditorTopHeader'
 import { EditorSidebarRenderer } from '@/features/create-space/ui/editor/EditorSidebarRenderer'
 import { EditorSidebarDrawer } from '@/features/create-space/ui/editor/EditorSidebarDrawer'
@@ -11,53 +9,65 @@ import { EditorStageViewport } from '@/features/create-space/ui/editor/EditorSta
 import { AddSceneModal } from '@/features/create-space/ui/hub/AddSceneModal'
 import { useSidebarResize } from '@/features/create-space/ui/editor/useSidebarResize'
 import { useSpatialStageItems } from '@/features/create-space/ui/editor/useSpatialStageItems'
-import { useStageKeyboardShortcuts } from '@/features/create-space/ui/editor/useStageKeyboardShortcuts'
 import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSceneState'
 import { useEditorMediaAssignment } from '@/features/create-space/ui/editor/useEditorMediaAssignment'
 import { countStagePhotos } from '@/features/create-space/lib/stage-photo-limit'
+import { countTotalArtifacts } from '@/features/create-space/lib/space-tier-limits'
 import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/StudioBehaviorProvider'
+import { useStudioReset } from '@/features/create-space/ui/editor/useStudioReset'
+import { useShareCardCustomizer } from '@/features/create-space/ui/share/useShareCardCustomizer'
+import { useStudioSave } from '@/features/create-space/ui/editor/useStudioSave'
+import { useSpaceProtectionState } from '@/features/create-space/ui/editor/useSpaceProtectionState'
+import { useFullscreenEditorHandlers } from '@/features/create-space/ui/editor/useFullscreenEditorHandlers'
+import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEditorStageWorkflow'
 import { useConfirmDialog } from '@/shared/ui'
+import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
   templateId: SpaceTemplateId
+  initialSceneId?: string
+  spaceId?: string
   className?: string
 }
 
 export function FullscreenSpatialEditor({
   templateId,
+  initialSceneId,
+  spaceId,
   className,
 }: FullscreenSpatialEditorProps) {
   const { confirm } = useConfirmDialog()
-  const [protectionConfig, setProtectionConfig] =
-    useState<SpaceProtectionConfig>(DEFAULT_PROTECTION_CONFIG)
+  const { protectionConfig, setProtectionConfig, handleUpdateProtection } =
+    useSpaceProtectionState(spaceId, templateId)
   const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false)
 
-  const multiScene = useMultiSceneState()
+  const multiScene = useMultiSceneState(initialSceneId, spaceId, templateId)
   const {
     activeSceneId,
-    setActiveSceneId,
     spaceMeta,
-    setSpaceMeta,
     scenes,
-    selectedLetterId,
-    setSelectedLetterId,
-    openLetterId,
-    setOpenLetterId,
-    handleAddScene,
     handleDeleteScene,
-    handleRenameScene,
-    handleUpdateScene,
-    handleDuplicateScene,
-    handleMoveScene,
-    handleUpdateLetter,
-    handleAddLetter,
     handleDuplicateLetter,
-    handleDeleteLetter,
+    handleReorderScenes,
+    handleReorderLetters,
   } = multiScene
 
-  const stage = useSpatialStageItems(templateId)
+  const initialCanvasItems = scenes.find((s) => s.type === 'free-canvas')?.items
+  const stage = useSpatialStageItems(
+    templateId,
+    initialCanvasItems?.length ? initialCanvasItems : undefined,
+  )
   const { items, selectedId, setSelectedId, copiedItem } = stage
+
+  const {
+    showSidebar,
+    sidebarWidth,
+    isResizingSidebar,
+    handleResizeStart,
+    handleToggleSidebar,
+    handleOpenSidebar,
+  } = useSidebarResize()
 
   const {
     selectedItem,
@@ -72,56 +82,65 @@ export function FullscreenSpatialEditor({
     onAssignItemPhoto: stage.handleAssignItemPhoto,
   })
 
-  const {
-    showSidebar,
-    sidebarWidth,
-    isResizingSidebar,
-    handleResizeStart,
-    handleToggleSidebar,
-    handleOpenSidebar,
-  } = useSidebarResize()
-
-  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
-  const activeScene = scenes.find((s) => s.id === activeSceneId)
-
-  useStageKeyboardShortcuts({
-    selectedItem: selectedItem ?? null,
-    copiedItem,
-    onCopyItem: stage.handleCopyItem,
-    onPasteItem: stage.handlePasteItem,
-    onDuplicateItem: stage.handleDuplicateItem,
-    onDeleteItem: stage.handleDeleteItem,
-    onBringToFront: stage.handleBringToFront,
-    onSendToBack: stage.handleSendToBack,
-    onResetRotation: stage.handleResetRotation,
+  const workflow = useEditorStageWorkflow({
+    multiScene,
+    stage,
+    confirm,
+    setIsAddSceneModalOpen,
+    selectedItem,
     showSidebar,
     onOpenSidebar: handleOpenSidebar,
   })
+  const { activeScene, resolvedScenes, handleOpenScene, handleOpenAddScene } =
+    workflow
 
-  const handleUpdateProtection = (u: Partial<SpaceProtectionConfig>) =>
-    setProtectionConfig((p) => ({ ...p, ...u }))
-  const handleUpdateSpaceMeta = (u: Partial<SpaceMeta>) =>
-    setSpaceMeta((p) => ({ ...p, ...u }))
+  const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
-  const handleResetToDefaults = async () => {
-    const ok = await confirm({
-      title: 'Reset workspace to defaults?',
-      description:
-        'This will restore all stage elements, letter drafts, and layout back to their initial template settings. Any unsaved custom work will be removed.',
-      confirmText: 'Reset workspace',
-      cancelText: 'Keep working',
-      type: 'danger',
-    })
-    if (!ok) return
-    stage.handleResetToDefaults()
-    try {
-      localStorage.removeItem('sfy_scenes_draft')
-      localStorage.removeItem('sfy_space_meta_draft')
-      localStorage.removeItem('sfy_active_scene_id')
-    } catch {
-      // ignore
-    }
-    setActiveSceneId('hub')
+  const {
+    letterHandlers,
+    sceneCrudHandlers,
+    stageItemHandlers,
+    handleUpdateSpaceMeta,
+    handlePhotosUploaded,
+  } = useFullscreenEditorHandlers({
+    multiScene,
+    stage,
+    confirm,
+    onAddItem: workflow.handleGuardedAddItem,
+    onDuplicateItem: workflow.handleGuardedDuplicateItem,
+    onPasteItem: workflow.handleGuardedPasteItem,
+    onAddScene: workflow.handleGuardedAddScene,
+    onDuplicateScene: workflow.handleGuardedDuplicateScene,
+  })
+
+  const { handleResetToDefaults } = useStudioReset({
+    spaceId,
+    onResetStage: stage.handleResetToDefaults,
+    onResetScene: () => handleOpenScene('hub'),
+  })
+
+  const shareOrigin =
+    typeof window !== 'undefined' ? window.location.origin : ''
+  const shareUrl = `${shareOrigin}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+  const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
+
+  const navigate = useNavigate()
+  const { isSaved, isSaving, isDirty, handleSave, flushSave } = useStudioSave({
+    spaceId,
+    templateId,
+    spaceMeta,
+    protectionConfig,
+    scenes: resolvedScenes,
+    scenesCount: scenes.length,
+    artifactsCount: countTotalArtifacts(resolvedScenes, items, activeSceneId),
+    fallbackTitle: `${activeTheme.title} Space`,
+    pendingPhotos: stage.pendingPhotos,
+    onPhotosUploaded: handlePhotosUploaded,
+  })
+
+  const handleBackToDashboard = async () => {
+    if (isDirty) await flushSave()
+    navigate(ROUTES.DASHBOARD)
   }
 
   return (
@@ -140,6 +159,12 @@ export function FullscreenSpatialEditor({
           selectedId={selectedId}
           onDeleteSelected={stage.handleDeleteItem}
           onResetToDefaults={handleResetToDefaults}
+          onOpenShare={() => handleOpenScene('share')}
+          onSave={handleSave}
+          onBackToDashboard={handleBackToDashboard}
+          isSaved={isSaved}
+          isSaving={isSaving}
+          isDirty={isDirty}
         />
 
         <div className="relative flex flex-1 overflow-hidden">
@@ -159,26 +184,21 @@ export function FullscreenSpatialEditor({
               onChangeSpaceMeta={handleUpdateSpaceMeta}
               scenes={scenes}
               activeScene={activeScene}
-              onOpenScene={setActiveSceneId}
-              onAddScene={handleAddScene}
-              onOpenAddScene={() => setIsAddSceneModalOpen(true)}
+              onOpenScene={handleOpenScene}
+              onAddScene={workflow.handleGuardedAddScene}
+              onOpenAddScene={handleOpenAddScene}
               onDeleteScene={handleDeleteScene}
-              onOpenVault={() => setActiveSceneId('gate')}
+              onOpenVault={() => handleOpenScene('gate')}
               templateId={templateId}
-              onAddItem={stage.handleAddItem}
+              onAddItem={workflow.handleGuardedAddItem}
               onAssignTrack={handleAssignTrack}
               selectedMusicItem={selectedMusicItem}
               selectedPhotoItem={selectedPhotoItem}
               onAssignPhoto={handleAssignPhoto}
               photoCount={countStagePhotos(items)}
-              selectedLetterId={selectedLetterId}
-              openLetterId={openLetterId}
-              onSelectLetter={setSelectedLetterId}
-              onOpenLetter={setOpenLetterId}
-              onAddLetter={handleAddLetter}
-              onUpdateLetter={handleUpdateLetter}
-              onDeleteLetter={handleDeleteLetter}
+              {...letterHandlers}
               isCompact={sidebarWidth < 280}
+              shareCustomizer={shareCustomizer}
             />
           </EditorSidebarDrawer>
 
@@ -191,15 +211,9 @@ export function FullscreenSpatialEditor({
             templateId={templateId}
             onChangeProtectionConfig={handleUpdateProtection}
             onChangeSpaceMeta={handleUpdateSpaceMeta}
-            onOpenScene={setActiveSceneId}
-            onOpenAddScene={() => setIsAddSceneModalOpen(true)}
-            onOpenVault={() => setActiveSceneId('gate')}
-            onAddScene={handleAddScene}
-            onRenameScene={handleRenameScene}
-            onUpdateScene={handleUpdateScene}
-            onDuplicateScene={handleDuplicateScene}
-            onMoveScene={handleMoveScene}
-            onDeleteScene={handleDeleteScene}
+            onOpenScene={handleOpenScene}
+            onOpenAddScene={handleOpenAddScene}
+            onOpenVault={() => handleOpenScene('gate')}
             onToggleProtection={() =>
               setProtectionConfig((p) => ({ ...p, enabled: !p.enabled }))
             }
@@ -207,40 +221,26 @@ export function FullscreenSpatialEditor({
             selectedId={selectedId}
             copiedItem={copiedItem}
             onSelectItem={setSelectedId}
-            onUpdateItemPosition={stage.handleUpdatePosition}
-            onRotateItem={stage.handleRotateItem}
-            onSetRotation={stage.handleSetItemRotation}
-            onResetRotation={stage.handleResetRotation}
-            onBringToFront={stage.handleBringToFront}
-            onSendToBack={stage.handleSendToBack}
-            onDeleteItem={stage.handleDeleteItem}
-            onDuplicateItem={stage.handleDuplicateItem}
-            onToggleLock={stage.handleToggleLock}
-            onCopyItem={stage.handleCopyItem}
-            onPasteItem={stage.handlePasteItem}
             onResetToDefaults={handleResetToDefaults}
-            onClearCanvas={stage.handleClearCanvas}
-            onUpdateItemData={stage.handleUpdateItemData}
-            onAddItem={stage.handleAddItem}
             onOpenPhotoPicker={(item) => {
               setSelectedId(item.id)
               handleOpenSidebar()
             }}
-            selectedLetterId={selectedLetterId}
-            openLetterId={openLetterId}
-            onSelectLetter={setSelectedLetterId}
-            onOpenLetter={setOpenLetterId}
-            onAddLetter={handleAddLetter}
+            {...sceneCrudHandlers}
+            {...stageItemHandlers}
+            {...letterHandlers}
             onDuplicateLetter={handleDuplicateLetter}
-            onDeleteLetter={handleDeleteLetter}
-            onUpdateLetter={handleUpdateLetter}
+            onReorderLetters={handleReorderLetters}
+            onReorderScenes={handleReorderScenes}
+            shareUrl={shareUrl}
+            shareCustomizer={shareCustomizer}
           />
         </div>
 
         <AddSceneModal
           isOpen={isAddSceneModalOpen}
           onClose={() => setIsAddSceneModalOpen(false)}
-          onAddScene={handleAddScene}
+          onAddScene={workflow.handleGuardedAddScene}
           existingScenesCount={scenes.length}
         />
       </div>

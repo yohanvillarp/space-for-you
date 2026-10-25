@@ -1,4 +1,13 @@
-import { Account, ID, OAuthProvider, Storage } from 'appwrite'
+import {
+  Account,
+  Databases,
+  ID,
+  OAuthProvider,
+  Permission,
+  Query,
+  Role,
+  Storage,
+} from 'appwrite'
 import type { Models } from 'appwrite'
 import {
   client,
@@ -7,10 +16,20 @@ import {
   APPWRITE_PROJECT_NAME,
 } from '@/appwrite'
 
-export { client, APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, APPWRITE_PROJECT_NAME }
+export {
+  client,
+  APPWRITE_ENDPOINT,
+  APPWRITE_PROJECT_ID,
+  APPWRITE_PROJECT_NAME,
+  ID,
+  Query,
+  Permission,
+  Role,
+}
 
 export const account = new Account(client)
 export const storage = new Storage(client)
+export const databases = new Databases(client)
 
 export type AppwriteUser = Models.User<Models.Preferences>
 
@@ -46,7 +65,8 @@ export async function signInWithGoogle(): Promise<void> {
   const success = `${window.location.origin}/auth/success`
   const failure = `${window.location.origin}/auth/failure`
 
-  // createOAuth2Token navigates the browser to the provider; do not redirect manually.
+  // Use createOAuth2Token so userId & secret are returned in callback URL,
+  // bypassing Firefox/Safari third-party cookie blocking on localhost.
   await account.createOAuth2Token({
     provider: OAuthProvider.Google,
     success,
@@ -90,10 +110,16 @@ export async function handleOAuthSuccess(): Promise<void> {
   const url = new URL(window.location.href)
   const secret = url.searchParams.get('secret')
   const userId = url.searchParams.get('userId')
-  if (!secret || !userId) {
-    throw new Error('Missing OAuth credentials')
+
+  if (secret && userId) {
+    try {
+      await account.createSession({ userId, secret })
+    } catch {
+      // Ignore if session was already established
+    }
   }
-  await account.createSession({ userId, secret })
+
+  await account.get()
   setSessionHint(true)
   window.location.assign('/dashboard')
 }

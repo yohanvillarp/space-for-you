@@ -14,6 +14,11 @@ import { LockGateScene } from '@/features/space-lock'
 import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
 import { SpatialStageCanvas } from '@/features/create-space/ui/SpatialStageCanvas'
+import { ShareScene } from '@/features/create-space/ui/share/ShareScene'
+import type {
+  ShareCardCustomization,
+  ShareColorTarget,
+} from '@/features/create-space/ui/share/share-customizer.types'
 
 export interface EditorSceneRendererProps {
   activeSceneId: string
@@ -35,6 +40,7 @@ export interface EditorSceneRendererProps {
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
   onDeleteScene?: (sceneId: string) => void
+  onReorderScenes?: (fromIndex: number, toIndex: number) => void
   onToggleProtection?: () => void
   templateId: SpaceTemplateId
   // Spatial Stage Canvas props
@@ -71,7 +77,15 @@ export interface EditorSceneRendererProps {
   onAddLetter?: () => void
   onDuplicateLetter?: (id: string) => void
   onDeleteLetter?: (id: string) => void
+  onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateLetter: (updated: LetterItem) => void
+  shareUrl?: string
+  shareCustomizer?: {
+    customization: ShareCardCustomization
+    selectedTarget: ShareColorTarget
+    setSelectedTarget: (target: ShareColorTarget) => void
+    updateCustomization: (updates: Partial<ShareCardCustomization>) => void
+  }
 }
 
 export function EditorSceneRenderer({
@@ -91,6 +105,7 @@ export function EditorSceneRenderer({
   onDuplicateScene,
   onMoveScene,
   onDeleteScene,
+  onReorderScenes,
   onToggleProtection,
   templateId,
   items,
@@ -120,7 +135,10 @@ export function EditorSceneRenderer({
   onAddLetter,
   onDuplicateLetter,
   onDeleteLetter,
+  onReorderLetters,
   onUpdateLetter,
+  shareUrl,
+  shareCustomizer,
 }: EditorSceneRendererProps) {
   if (activeSceneId === 'gate') {
     return (
@@ -152,7 +170,25 @@ export function EditorSceneRenderer({
         onDuplicateScene={onDuplicateScene}
         onMoveScene={onMoveScene}
         onDeleteScene={onDeleteScene}
+        onReorderScenes={onReorderScenes}
         onToggleProtection={onToggleProtection}
+      />
+    )
+  }
+
+  if (activeSceneId === 'share' && shareCustomizer) {
+    return (
+      <ShareScene
+        templateId={templateId}
+        spaceMeta={spaceMeta}
+        onChangeSpaceMeta={onChangeSpaceMeta}
+        url={shareUrl || ''}
+        customization={shareCustomizer.customization}
+        selectedTarget={shareCustomizer.selectedTarget}
+        onSelectTarget={shareCustomizer.setSelectedTarget}
+        onUpdateCustomization={shareCustomizer.updateCustomization}
+        onBackToHub={() => onOpenScene('hub')}
+        isStudioPreview={true}
       />
     )
   }
@@ -170,6 +206,7 @@ export function EditorSceneRenderer({
         onAddLetter={onAddLetter}
         onDuplicateLetter={onDuplicateLetter}
         onDeleteLetter={onDeleteLetter}
+        onReorderLetters={onReorderLetters}
         onUpdateLetter={onUpdateLetter}
         onUpdateScene={(updates) => onUpdateScene?.(activeScene.id, updates)}
         onBackToHub={() => onOpenScene('hub')}

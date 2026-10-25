@@ -3,7 +3,7 @@ import { Plus, Loader2 } from 'lucide-react'
 import type {
   SpatialItemType,
   SpatialItemData,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 
 export interface StickerItem {
   id: string

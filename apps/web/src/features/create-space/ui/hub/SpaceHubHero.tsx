@@ -25,6 +25,27 @@ export function SpaceHubHero({
         className,
       )}
     >
+      {/* 0: Space Title */}
+      <div className="w-full max-w-md px-2">
+        {isEditable ? (
+          <input
+            type="text"
+            value={meta.title ?? ''}
+            onChange={(e) => onChangeMeta?.({ title: e.target.value })}
+            placeholder="Space Title (e.g. Birthday Sanctuary)"
+            aria-label="Space Title"
+            maxLength={60}
+            className="w-full rounded-lg border border-transparent bg-transparent py-0.5 text-center font-sans text-xs font-medium tracking-widest text-amber-200/70 uppercase transition-all hover:border-white/15 hover:bg-white/5 focus:border-amber-400/70 focus:bg-black/30 focus:ring-1 focus:ring-amber-400/40 focus:outline-none"
+          />
+        ) : (
+          meta.title && (
+            <span className="font-sans text-xs font-medium tracking-widest text-amber-200/70 uppercase">
+              {meta.title}
+            </span>
+          )
+        )}
+      </div>
+
       {/* 1: Recipient Name (Primary Focal Point) */}
       <div className="w-full max-w-xl px-2">
         {isEditable ? (
