@@ -1,0 +1,10 @@
+{
+  "name": "unlock-sanctuary",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Appwrite Cloud Function for server-side sanctuary unlocking and zero-exposure passcode validation",
+  "main": "src/main.js",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}

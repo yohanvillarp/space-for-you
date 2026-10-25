@@ -33,8 +33,14 @@ export {
   fetchSpaceBySlug,
   saveSpaceToDatabase,
   deleteSpaceFromDatabase,
+  unlockSpaceViaFunction,
   toUserSpace,
   toSpaceScene,
   generateSpaceSlug,
 } from './api'
-export type { SpaceWithScenes, SaveSpaceParams } from './api'
+export type {
+  SpaceWithScenes,
+  SaveSpaceParams,
+  UnlockSpaceParams,
+  UnlockSpaceResult,
+} from './api'

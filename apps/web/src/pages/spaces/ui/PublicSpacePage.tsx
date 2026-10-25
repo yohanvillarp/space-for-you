@@ -1,13 +1,9 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '@/shared/config'
 import { Container, Card, Button } from '@/shared/ui'
 import { Home, Loader2, Compass } from 'lucide-react'
-import {
-  fetchSpaceBySlug,
-  fetchSpaceById,
-  getLocalSpaceWithScenes,
-} from '@/entities/space'
+import { unlockSpaceViaFunction } from '@/entities/space'
 import type { SpaceWithScenes } from '@/entities/space'
 import {
   LockGateScene,
@@ -29,45 +25,48 @@ export function PublicSpacePage() {
 
     let isMounted = true
 
-    // Attempt fetching by slug first, then fallback to ID, and finally local storage
-    fetchSpaceBySlug(slug)
-      .then(async (result) => {
-        if (result) return result
-        return fetchSpaceById(slug)
-      })
-      .then((spaceData) => {
-        if (isMounted) {
-          const localFallback = getLocalSpaceWithScenes(slug)
-          const resolved = spaceData ?? localFallback
-          if (
-            resolved &&
-            localFallback?.passcodeLength &&
-            !resolved.passcodeLength
-          ) {
-            resolved.passcodeLength = localFallback.passcodeLength
-          }
-          setData(resolved)
+    unlockSpaceViaFunction({ slug })
+      .then((result) => {
+        if (!isMounted) return
+        if (result.success && result.data) {
+          setData(result.data)
           setIsLoading(false)
-          if (resolved && !resolved.space?.isProtected) {
+          if (!result.isProtected) {
             setIsUnlocked(true)
           }
+        } else {
+          setData(null)
+          setIsLoading(false)
         }
       })
       .catch(() => {
-        if (isMounted) {
-          const localFallback = getLocalSpaceWithScenes(slug)
-          setData(localFallback)
-          setIsLoading(false)
-          if (localFallback && !localFallback.space?.isProtected) {
-            setIsUnlocked(true)
-          }
-        }
+        if (!isMounted) return
+        setData(null)
+        setIsLoading(false)
       })
 
     return () => {
       isMounted = false
     }
   }, [slug])
+
+  const handleVerifyPasscode = useCallback(
+    async (passcode: string) => {
+      if (!slug) return { success: false, errorMessage: 'Sanctuary not found.' }
+      const result = await unlockSpaceViaFunction({ slug, passcode })
+      if (result.success && result.data) {
+        setData(result.data)
+        setIsUnlocked(true)
+        return { success: true }
+      }
+      return {
+        success: false,
+        errorMessage:
+          result.error || 'Incorrect secret code. Please try again.',
+      }
+    },
+    [slug],
+  )
 
   const space = data?.space
 
@@ -105,6 +104,7 @@ export function PublicSpacePage() {
           spaceTitle={space.title}
           recipientName={space.recipientName}
           onProceedToStage={() => setIsUnlocked(true)}
+          onVerifyPasscode={handleVerifyPasscode}
         />
       </div>
     )

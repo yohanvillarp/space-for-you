@@ -6,7 +6,8 @@ import {
   MAX_VOICE_NOTE_DURATION_SEC,
   MAX_VOICE_NOTES_PER_SPACE,
   formatAudioDuration,
-} from '@/features/create-space/lib/voice-recorder/voice-note-types'
+  validateVoiceQuotaWithServer,
+} from '@/features/create-space/lib/voice-recorder'
 import { AudioWaveformVisualizer } from './AudioWaveformVisualizer'
 import { playSpatialSfx, cn } from '@/shared/lib'
 
@@ -15,11 +16,7 @@ export interface VoiceNoteRecorderModalProps {
   onClose: () => void
   currentVoiceNotesCount: number
   initialLabel?: string
-  onSaveVoiceNote: (
-    audioUrl: string,
-    durationSeconds: number,
-    label: string,
-  ) => void
+  onSaveVoiceNote: (url: string, duration: number, label: string) => void
 }
 
 export function VoiceNoteRecorderModal({
@@ -30,6 +27,7 @@ export function VoiceNoteRecorderModal({
   onSaveVoiceNote,
 }: VoiceNoteRecorderModalProps) {
   const [label, setLabel] = useState(initialLabel)
+  const [validationError, setValidationError] = useState<string | null>(null)
   const recorder = useVoiceRecorder()
 
   if (!isOpen) return null
@@ -40,6 +38,7 @@ export function VoiceNoteRecorderModal({
   const isEndingSoon = isRecording && recorder.remainingSeconds <= 10
 
   const handleStart = async () => {
+    setValidationError(null)
     playSpatialSfx('pop-snap')
     await recorder.startRecording()
   }
@@ -49,16 +48,25 @@ export function VoiceNoteRecorderModal({
     recorder.stopRecording()
   }
 
-  const handleSave = () => {
-    if (recorder.audioUrl) {
-      playSpatialSfx('cassette-click')
-      onSaveVoiceNote(
-        recorder.audioUrl,
-        recorder.elapsedSeconds || 1,
-        label.trim() || 'Personal Voice Message',
-      )
-      onClose()
+  const handleSave = async () => {
+    if (!recorder.audioUrl) return
+    setValidationError(null)
+    const res = await validateVoiceQuotaWithServer({
+      spaceId: 'current',
+      durationSeconds: recorder.elapsedSeconds || 1,
+      existingCount: currentVoiceNotesCount,
+    })
+    if (!res.allowed) {
+      setValidationError(res.error || 'Voice note limits exceeded.')
+      return
     }
+    playSpatialSfx('cassette-click')
+    onSaveVoiceNote(
+      recorder.audioUrl,
+      recorder.elapsedSeconds || 1,
+      label.trim() || 'Personal Voice Message',
+    )
+    onClose()
   }
 
   const handleClose = () => {
@@ -105,10 +113,10 @@ export function VoiceNoteRecorderModal({
 
         {/* Body */}
         <div className="space-y-6 p-6 text-center">
-          {recorder.error && (
+          {(recorder.error || validationError) && (
             <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-left font-sans text-xs text-rose-300">
               <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{recorder.error}</span>
+              <span>{validationError || recorder.error}</span>
             </div>
           )}
 
@@ -149,7 +157,6 @@ export function VoiceNoteRecorderModal({
                 src={recorder.audioUrl}
                 className="w-full rounded-xl bg-white/5"
               />
-
               <div>
                 <label className="mb-1 block font-sans text-xs font-medium text-stone-300">
                   Cassette Label:

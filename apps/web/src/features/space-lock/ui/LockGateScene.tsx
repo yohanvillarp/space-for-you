@@ -14,6 +14,10 @@ export interface LockGateSceneProps {
   isStudioPreview?: boolean
   onChangeConfig?: (updates: Partial<SpaceProtectionConfig>) => void
   onProceedToStage?: () => void
+  onVerifyPasscode?: (code: string) => Promise<{
+    success: boolean
+    errorMessage?: string
+  }>
 }
 
 export function LockGateScene({
@@ -23,6 +27,7 @@ export function LockGateScene({
   isStudioPreview = false,
   onChangeConfig,
   onProceedToStage,
+  onVerifyPasscode,
 }: LockGateSceneProps) {
   const [isUnlocked, setIsUnlocked] = useState(() => !config.enabled)
   const [isSelected, setIsSelected] = useState(false)
@@ -174,6 +179,7 @@ export function LockGateScene({
                 theme={config.keypadTheme || 'classic'}
                 isUnlocked={isUnlocked}
                 onUnlockSuccess={handleUnlockSuccess}
+                onVerifyPasscode={onVerifyPasscode}
               />
 
               {config.hint && (

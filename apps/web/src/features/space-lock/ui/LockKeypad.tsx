@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Delete, AlertCircle, ShieldAlert, Lock } from 'lucide-react'
+import { AlertCircle, ShieldAlert, Lock } from 'lucide-react'
 import type { LockKeypadTheme } from '@/features/space-lock/model/lock.types'
 import {
   verifyPasscode,
@@ -9,6 +9,7 @@ import {
 } from '@/features/space-lock/lib/crypto'
 import { playSpatialSfx, cn } from '@/shared/lib'
 import { KEYPAD_STYLES } from './keypad-styles'
+import { LockKeypadButtons } from './LockKeypadButtons'
 
 export interface LockKeypadProps {
   expectedPasscode?: string
@@ -18,6 +19,10 @@ export interface LockKeypadProps {
   rateLimitKey?: string
   isUnlocked: boolean
   onUnlockSuccess: () => void
+  onVerifyPasscode?: (code: string) => Promise<{
+    success: boolean
+    errorMessage?: string
+  }>
   theme?: LockKeypadTheme
 }
 
@@ -29,6 +34,7 @@ export function LockKeypad({
   rateLimitKey = 'global_vault',
   isUnlocked,
   onUnlockSuccess,
+  onVerifyPasscode,
   theme = 'classic',
 }: LockKeypadProps) {
   const [digits, setDigits] = useState<string>('')
@@ -62,6 +68,30 @@ export function LockKeypad({
       if (isVerifyingRef.current) return
       isVerifyingRef.current = true
 
+      // If custom server verifier is provided, use it
+      if (onVerifyPasscode) {
+        try {
+          const res = await onVerifyPasscode(codeToTest)
+          if (res.success) {
+            resetPasscodeRateLimit(rateLimitKey)
+            setErrorMessage(null)
+            playSpatialSfx('pop-snap')
+            onUnlockSuccess()
+          } else {
+            setErrorMessage(res.errorMessage || 'Incorrect secret combination.')
+            playSpatialSfx('paper-rustle')
+            setTimeout(() => setDigits(''), 500)
+          }
+        } catch {
+          setErrorMessage('Unable to verify code. Please try again.')
+          playSpatialSfx('paper-rustle')
+          setTimeout(() => setDigits(''), 500)
+        }
+        isVerifyingRef.current = false
+        return
+      }
+
+      // Default client-side verification
       const rateStatus = checkPasscodeRateLimit(rateLimitKey)
       if (!rateStatus.allowed) {
         setLockoutRemaining(rateStatus.lockoutRemainingSeconds)
@@ -92,7 +122,6 @@ export function LockKeypad({
       } else {
         const failure = recordFailedPasscodeAttempt(rateLimitKey)
         playSpatialSfx('paper-rustle')
-
         if (!failure.allowed) {
           setLockoutRemaining(failure.lockoutRemainingSeconds)
           setErrorMessage(
@@ -110,11 +139,12 @@ export function LockKeypad({
       isVerifyingRef.current = false
     },
     [
+      onVerifyPasscode,
+      rateLimitKey,
+      onUnlockSuccess,
       passcodeHash,
       passcodeSalt,
       expectedPasscode,
-      rateLimitKey,
-      onUnlockSuccess,
     ],
   )
 
@@ -125,13 +155,11 @@ export function LockKeypad({
       if (isKeypadDisabled || isVerifyingRef.current) return
       playSpatialSfx(style.sfx)
       setErrorMessage(null)
-
       setDigits((prev) => {
         if (prev.length >= targetLength) return prev
         const next = prev + d
-        if (next.length === targetLength) {
+        if (next.length === targetLength)
           setTimeout(() => handleVerify(next), 100)
-        }
         return next
       })
     },
@@ -166,7 +194,6 @@ export function LockKeypad({
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      {/* Code Indicator Slots */}
       <div
         className={cn(
           'flex items-center justify-center gap-2.5 transition-transform',
@@ -190,7 +217,6 @@ export function LockKeypad({
         })}
       </div>
 
-      {/* Security Feedback */}
       {errorMessage && (
         <div className="animate-fade-in flex items-center gap-1.5 font-sans text-xs text-rose-400">
           {lockoutRemaining > 0 ? (
@@ -202,57 +228,14 @@ export function LockKeypad({
         </div>
       )}
 
-      {/* 3x4 Touch Keypad */}
-      <div className="grid grid-cols-3 gap-2 pt-1">
-        {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((key) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => handlePressDigit(key)}
-            disabled={isKeypadDisabled}
-            className={cn(
-              'flex h-12 w-14 cursor-pointer items-center justify-center transition-all disabled:cursor-not-allowed disabled:opacity-40',
-              style.button,
-            )}
-          >
-            {key}
-          </button>
-        ))}
-
-        <button
-          type="button"
-          onClick={() => {
-            playSpatialSfx('tactile-tap')
-            setDigits('')
-          }}
-          disabled={isKeypadDisabled || digits.length === 0}
-          className="flex h-12 w-14 cursor-pointer items-center justify-center rounded-xl font-sans text-xs text-stone-400 transition-colors hover:text-stone-200 disabled:opacity-30"
-        >
-          Clear
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handlePressDigit('0')}
-          disabled={isKeypadDisabled}
-          className={cn(
-            'flex h-12 w-14 cursor-pointer items-center justify-center transition-all disabled:cursor-not-allowed disabled:opacity-40',
-            style.button,
-          )}
-        >
-          0
-        </button>
-
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={isKeypadDisabled || digits.length === 0}
-          title="Delete last digit"
-          className="flex h-12 w-14 cursor-pointer items-center justify-center rounded-xl text-stone-400 transition-colors hover:text-stone-200 disabled:opacity-30"
-        >
-          <Delete className="h-4 w-4" />
-        </button>
-      </div>
+      <LockKeypadButtons
+        style={style}
+        isKeypadDisabled={isKeypadDisabled}
+        hasDigits={digits.length > 0}
+        onPressDigit={handlePressDigit}
+        onClear={() => setDigits('')}
+        onDelete={handleDelete}
+      />
 
       {lockoutRemaining > 0 && (
         <div className="flex items-center gap-1.5 font-mono text-[11px] text-amber-400/90">

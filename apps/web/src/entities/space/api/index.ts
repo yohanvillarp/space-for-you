@@ -18,3 +18,9 @@ export {
   deleteSpaceFromDatabase,
 } from './space-database'
 export type { SaveSpaceParams } from './space-database'
+
+export { unlockSpaceViaFunction } from './space-database-unlock'
+export type {
+  UnlockSpaceParams,
+  UnlockSpaceResult,
+} from './space-database-unlock'

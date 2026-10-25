@@ -9,3 +9,8 @@ export { useVoiceRecorder } from './useVoiceRecorder'
 export type { UseVoiceRecorderReturn } from './useVoiceRecorder'
 export { createWaveAnalyser, sampleWaveLevels } from './audio-wave-analyser'
 export type { WaveAnalyserSession } from './audio-wave-analyser'
+export { validateVoiceQuotaWithServer } from './validate-voice-quota'
+export type {
+  ValidateVoiceQuotaParams,
+  ValidateVoiceQuotaResult,
+} from './validate-voice-quota'
