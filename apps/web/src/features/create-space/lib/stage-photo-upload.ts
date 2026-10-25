@@ -68,6 +68,25 @@ export async function uploadAllPendingPhotos(
 }
 
 /**
+ * Removes an uploaded asset from Appwrite Storage if it was uploaded to our bucket.
+ * Protects default preset assets like the instructional voice guide.
+ */
+export async function deleteStorageFileByUrl(url?: string): Promise<void> {
+  if (!url || !url.includes('storage/buckets')) return
+  const match = url.match(/\/files\/([a-zA-Z0-9_-]+)\/(view|download)/)
+  if (!match || !match[1]) return
+  const fileId = match[1]
+  // Never delete the default ElevenLabs sample audio guide
+  if (fileId === '6ade885600247e215323') return
+
+  try {
+    await storage.deleteFile(SPACE_PHOTOS_BUCKET_ID, fileId)
+  } catch (err) {
+    console.warn('Could not delete file from Appwrite Storage:', err)
+  }
+}
+
+/**
  * Replaces pending photo IDs with permanent cloud URLs across all space scenes.
  */
 export function applyUploadedUrlsToScenes(
