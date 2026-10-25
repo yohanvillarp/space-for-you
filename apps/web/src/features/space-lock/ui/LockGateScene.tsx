@@ -4,7 +4,6 @@ import type { SpaceProtectionConfig } from '@/features/space-lock/model/lock.typ
 import { SpatialVaultObject } from '@/features/space-lock/ui/SpatialVaultObject'
 import { LockKeypad } from '@/features/space-lock/ui/LockKeypad'
 import { GateAtmosphereBackdrop } from '@/features/space-lock/ui/GateAtmosphereBackdrop'
-import { LockBackdropSelector } from '@/features/space-lock/ui/LockBackdropSelector'
 import { Button } from '@/shared/ui'
 import { playSpatialSfx } from '@/shared/lib'
 
@@ -68,13 +67,6 @@ export function LockGateScene({
       className="relative flex h-full min-h-full w-full items-center justify-center overflow-hidden px-4 py-8 pb-24 select-none sm:px-6 sm:py-10 sm:pb-28 lg:px-12 lg:pb-24"
     >
       <GateAtmosphereBackdrop theme={config.backgroundTheme} />
-
-      {isStudioPreview && onChangeConfig && (
-        <LockBackdropSelector
-          currentTheme={config.backgroundTheme}
-          onSelectTheme={(bg) => onChangeConfig({ backgroundTheme: bg })}
-        />
-      )}
 
       <div className="relative z-10 flex h-full w-full max-w-5xl flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
         {/* Interactive Spatial Vault Stage Area */}
