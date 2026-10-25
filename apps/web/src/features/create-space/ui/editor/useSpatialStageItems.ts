@@ -4,13 +4,18 @@ import type {
   SpatialItem,
   SpatialItemType,
   SpatialItemData,
-} from '../../model/spatial-stage.types'
+} from '@/features/create-space/model/spatial-stage.types'
 import {
   getDefaultItemsForTemplate,
   TOOLBOX_ITEMS,
-} from '../../lib/spatial-stage-defaults'
-import { getNextItemLabel } from '../../lib/stage-item-naming'
-import { canAddStagePhoto } from '../../lib/stage-photo-limit'
+} from '@/features/create-space/lib/spatial-stage-defaults'
+import { getNextItemLabel } from '@/features/create-space/lib/stage-item-naming'
+import { canAddStagePhoto } from '@/features/create-space/lib/stage-photo-limit'
+
+function normalizeAngle(a: number): number {
+  const n = ((a + 180) % 360) - 180
+  return Math.round((n < -180 ? n + 360 : n) * 10) / 10
+}
 
 /**
  * Custom hook managing interactive spatial items placed on the 2D diorama canvas.
@@ -38,32 +43,27 @@ export function useSpatialStageItems(
 
   const handleUpdatePosition = (id: string, x: number, y: number) => {
     setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id || item.isLocked) return item
-        return { ...item, x, y }
-      }),
+      prev.map((it) => (it.id === id && !it.isLocked ? { ...it, x, y } : it)),
     )
   }
 
   const handleSetItemRotation = (id: string, angle: number) => {
     setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id || item.isLocked) return item
-        let normalized = ((angle + 180) % 360) - 180
-        if (normalized < -180) normalized += 360
-        return { ...item, rotation: Math.round(normalized * 10) / 10 }
-      }),
+      prev.map((it) =>
+        it.id === id && !it.isLocked
+          ? { ...it, rotation: normalizeAngle(angle) }
+          : it,
+      ),
     )
   }
 
   const handleRotateItem = (id: string, delta: number) => {
     setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id || item.isLocked) return item
-        let normalized = ((item.rotation + delta + 180) % 360) - 180
-        if (normalized < -180) normalized += 360
-        return { ...item, rotation: Math.round(normalized * 10) / 10 }
-      }),
+      prev.map((it) =>
+        it.id === id && !it.isLocked
+          ? { ...it, rotation: normalizeAngle(it.rotation + delta) }
+          : it,
+      ),
     )
   }
 
@@ -76,17 +76,15 @@ export function useSpatialStageItems(
   const handleBringToFront = (id: string) => {
     setItems((prev) => {
       const maxZ = prev.reduce((max, it) => Math.max(max, it.zIndex), 0)
-      return prev.map((item) =>
-        item.id === id ? { ...item, zIndex: maxZ + 1 } : item,
-      )
+      return prev.map((it) => (it.id === id ? { ...it, zIndex: maxZ + 1 } : it))
     })
   }
 
   const handleSendToBack = (id: string) => {
     setItems((prev) => {
       const minZ = prev.reduce((min, it) => Math.min(min, it.zIndex), 10)
-      return prev.map((item) =>
-        item.id === id ? { ...item, zIndex: Math.max(1, minZ - 1) } : item,
+      return prev.map((it) =>
+        it.id === id ? { ...it, zIndex: Math.max(1, minZ - 1) } : it,
       )
     })
   }
@@ -104,9 +102,7 @@ export function useSpatialStageItems(
 
   const handleToggleLock = (id: string) => {
     setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, isLocked: !item.isLocked } : item,
-      ),
+      prev.map((it) => (it.id === id ? { ...it, isLocked: !it.isLocked } : it)),
     )
   }
 
@@ -115,8 +111,8 @@ export function useSpatialStageItems(
     updates: Partial<SpatialItemData>,
   ) => {
     setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, data: { ...item.data, ...updates } } : item,
+      prev.map((it) =>
+        it.id === id ? { ...it, data: { ...it.data, ...updates } } : it,
       ),
     )
   }
