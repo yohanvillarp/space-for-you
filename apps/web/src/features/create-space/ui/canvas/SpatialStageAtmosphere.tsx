@@ -4,12 +4,14 @@ export interface SpatialStageAtmosphereProps {
   templateId: SpaceTemplateId
   isDragOver: boolean
   isEmpty: boolean
+  isEditor?: boolean
 }
 
 export function SpatialStageAtmosphere({
   templateId,
   isDragOver,
   isEmpty,
+  isEditor = false,
 }: SpatialStageAtmosphereProps) {
   return (
     <>
@@ -57,8 +59,8 @@ export function SpatialStageAtmosphere({
         </div>
       )}
 
-      {/* Empty State Cue */}
-      {isEmpty && (
+      {/* Empty State Cue - ONLY rendered in editor mode */}
+      {isEditor && isEmpty && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
           <div className="bg-bg-surface/85 border-border-base max-w-sm rounded-2xl border p-6 shadow-xl backdrop-blur-md">
             <span className="text-3xl select-none">✨</span>

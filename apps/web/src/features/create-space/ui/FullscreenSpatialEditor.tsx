@@ -144,6 +144,8 @@ export function FullscreenSpatialEditor({
     navigate(ROUTES.DASHBOARD)
   }
 
+  const isFreeCanvas = activeScene?.type === 'free-canvas'
+
   return (
     <StudioBehaviorProvider initialMode="editor">
       <div
@@ -158,6 +160,11 @@ export function FullscreenSpatialEditor({
           onToggleSidebar={handleToggleSidebar}
           itemCount={items.length}
           selectedId={selectedId}
+          showUndoRedo={isFreeCanvas}
+          canUndo={isFreeCanvas && stage.canUndo}
+          canRedo={isFreeCanvas && stage.canRedo}
+          onUndo={stage.handleUndo}
+          onRedo={stage.handleRedo}
           onDeleteSelected={stage.handleDeleteItem}
           onResetToDefaults={handleResetToDefaults}
           onOpenShare={() => handleOpenScene('share')}

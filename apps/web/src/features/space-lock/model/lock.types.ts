@@ -14,6 +14,7 @@ export type LockBackgroundTheme =
 export interface SpaceProtectionConfig {
   enabled: boolean
   passcode?: string
+  passcodeLength?: number
   passcodeHash?: string
   passcodeSalt?: string
   hint?: string
@@ -59,6 +60,7 @@ export interface BackgroundThemeMeta {
 export const DEFAULT_PROTECTION_CONFIG: SpaceProtectionConfig = {
   enabled: false,
   passcode: '1234',
+  passcodeLength: 4,
   vaultTheme: 'snowy-safe',
   keypadTheme: 'classic',
   backgroundTheme: 'midnight-sanctuary',
@@ -188,6 +190,8 @@ export function serializeProtectionTheme(
   cfg?: SpaceProtectionConfig,
 ): string | undefined {
   if (!cfg?.enabled) return undefined
+  const passcodeLen =
+    cfg.passcodeLength ?? (cfg.passcode ? cfg.passcode.length : undefined)
   return JSON.stringify({
     vaultTheme: cfg.vaultTheme,
     keypadTheme: cfg.keypadTheme,
@@ -200,5 +204,6 @@ export function serializeProtectionTheme(
     keypadX: cfg.keypadX,
     keypadY: cfg.keypadY,
     keypadRotation: cfg.keypadRotation,
+    passcodeLength: passcodeLen,
   })
 }

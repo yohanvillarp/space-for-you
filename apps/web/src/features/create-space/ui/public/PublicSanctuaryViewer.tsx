@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react'
-import { Volume2, VolumeX, Heart, ArrowRight } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { VolumeX } from 'lucide-react'
 import type { SpaceWithScenes, SpaceTemplateId } from '@/entities/space'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { getPresetTrackForTemplate } from '@/entities/audio'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
+import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { PublicStageCanvas } from '@/features/create-space/ui/public/PublicStageCanvas'
 import { PublicSceneDock } from '@/features/create-space/ui/public/PublicSceneDock'
+import { SanctuaryWelcomeIntro } from '@/features/create-space/ui/public/SanctuaryWelcomeIntro'
+import { SceneTeaserModal } from '@/features/create-space/ui/public/SceneTeaserModal'
+import { isSceneTimeLocked } from '@/features/create-space/lib/scene-schedule-utils'
 import { useSpatialAudioPlayer, cn, playSpatialSfx } from '@/shared/lib'
 
 export interface PublicSanctuaryViewerProps {
@@ -19,12 +23,49 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const [activeSceneId, setActiveSceneId] = useState<string>('hub')
+  const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(false)
+  const [teaserScene, setTeaserScene] = useState<SpaceScene | null>(null)
 
   const presetTrack = getPresetTrackForTemplate(templateId)
   const { isPlaying, togglePlay } = useSpatialAudioPlayer({
     trackUrl: presetTrack?.url || '',
     loop: true,
   })
+
+  // Filter out empty scenes so the recipient only experiences populated memories
+  const visibleScenes = useMemo(() => {
+    const populated = scenes.filter((scene) => {
+      if (scene.type === 'free-canvas') {
+        return Boolean(scene.items && scene.items.length > 0)
+      }
+      if (scene.type === 'letters') {
+        return Boolean(scene.letters && scene.letters.length > 0)
+      }
+      return true
+    })
+    return populated.length > 0 ? populated : scenes
+  }, [scenes])
+
+  const handleSelectScene = (sceneId: string) => {
+    if (sceneId === 'hub') {
+      setActiveSceneId('hub')
+      return
+    }
+    const target = visibleScenes.find((s) => s.id === sceneId)
+    if (target && isSceneTimeLocked(target)) {
+      setTeaserScene(target)
+      return
+    }
+    setActiveSceneId(sceneId)
+  }
+
+  const handleEnterSanctuary = () => {
+    setHasSeenWelcome(true)
+    setActiveSceneId('hub')
+    if (presetTrack && !isPlaying) {
+      togglePlay()
+    }
+  }
 
   // Dynamic Document Title
   useEffect(() => {
@@ -36,18 +77,8 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
     }
   }, [space?.title])
 
-  const activeScene = scenes.find((s) => s.id === activeSceneId) as
+  const activeScene = visibleScenes.find((s) => s.id === activeSceneId) as
     SpaceScene | undefined
-
-  const handleEnterSanctuary = () => {
-    playSpatialSfx('tactile-tap')
-    if (scenes.length > 0) {
-      setActiveSceneId(scenes[0].id)
-    }
-    if (!isPlaying) {
-      togglePlay()
-    }
-  }
 
   return (
     <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-[#0D0907] text-[#FAF6F0] select-none">
@@ -110,88 +141,79 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
 
       {/* Scene Viewport */}
       <main className="relative flex h-[calc(100vh-56px)] w-full flex-1 overflow-hidden">
-        {activeSceneId === 'hub' && (
-          <div className="animate-fade-in flex flex-1 flex-col items-center justify-center p-6 text-center">
-            <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-amber-400/30 bg-amber-400/10 shadow-2xl">
-              <Heart className="h-9 w-9 fill-amber-300/20 text-amber-300" />
-            </div>
-
-            <span className="font-heading text-sm tracking-wide text-amber-300 uppercase">
-              A private digital sanctuary
-            </span>
-            <h1 className="font-heading mt-2 text-3xl font-medium tracking-tight text-white sm:text-5xl">
-              {space.title}
-            </h1>
-            <p className="mt-3 max-w-md font-sans text-sm text-stone-400 sm:text-base">
-              Crafted with heartfelt love for{' '}
-              <strong className="font-medium text-stone-100">
-                {space.recipientName || 'Someone Special'}
-              </strong>
-              {data.senderName ? ` by ${data.senderName}` : ''}.
-            </p>
-
-            {data.dedicationMessage && (
-              <div className="mt-8 max-w-lg rounded-2xl border border-white/10 bg-white/5 p-6 text-left shadow-xl backdrop-blur-md">
-                <p className="font-heading text-center text-base leading-relaxed text-stone-200 italic">
-                  “{data.dedicationMessage}”
-                </p>
-              </div>
+        {!hasSeenWelcome ? (
+          <SanctuaryWelcomeIntro
+            spaceTitle={space.title}
+            recipientName={space.recipientName}
+            senderName={data.senderName}
+            dedicationMessage={data.dedicationMessage}
+            accentColor={activeTheme.accentColor}
+            ambientGlow={activeTheme.ambientGlow}
+            isPlayingAudio={isPlaying}
+            hasAudioTrack={Boolean(presetTrack)}
+            onToggleAudio={togglePlay}
+            onEnter={handleEnterSanctuary}
+          />
+        ) : (
+          <>
+            {activeSceneId === 'hub' && (
+              <SpaceHubScene
+                templateId={templateId}
+                meta={{
+                  title: space.title,
+                  recipientName: space.recipientName,
+                  senderName: data.senderName || '',
+                  dedicationMessage: data.dedicationMessage || '',
+                }}
+                scenes={visibleScenes}
+                isStudioPreview={false}
+                onOpenScene={handleSelectScene}
+                onOpenAddScene={() => {}}
+              />
             )}
 
-            <button
-              type="button"
-              onClick={handleEnterSanctuary}
-              className="mt-8 inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-amber-400/50 bg-amber-400/20 px-7 py-3 font-sans text-sm font-semibold text-amber-200 shadow-xl transition-all hover:scale-105 hover:bg-amber-400/30"
-            >
-              <span>Explore Sanctuary</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
+            {activeScene &&
+              !isSceneTimeLocked(activeScene) &&
+              activeScene.type === 'letters' && (
+                <LettersScene
+                  scene={activeScene}
+                  templateId={templateId}
+                  isStudioPreview={false}
+                  onBackToHub={() => setActiveSceneId('hub')}
+                />
+              )}
 
-            {presetTrack && (
-              <button
-                type="button"
-                onClick={togglePlay}
-                className="mt-4 inline-flex cursor-pointer items-center gap-1.5 font-sans text-xs text-amber-300/70 transition-colors hover:text-amber-200"
-              >
-                {isPlaying ? (
-                  <Volume2 className="h-3 w-3" />
-                ) : (
-                  <VolumeX className="h-3 w-3" />
-                )}
-                <span>
-                  {isPlaying
-                    ? 'Ambient soundtrack active'
-                    : 'Tap to enable ambient sound'}
-                </span>
-              </button>
-            )}
-          </div>
-        )}
-
-        {activeScene?.type === 'letters' && (
-          <LettersScene
-            scene={activeScene}
-            templateId={templateId}
-            isStudioPreview={false}
-            onBackToHub={() => setActiveSceneId('hub')}
-          />
-        )}
-
-        {activeScene?.type === 'free-canvas' && (
-          <PublicStageCanvas
-            templateId={templateId}
-            items={activeScene.items || []}
-          />
+            {activeScene &&
+              !isSceneTimeLocked(activeScene) &&
+              activeScene.type === 'free-canvas' && (
+                <PublicStageCanvas
+                  templateId={templateId}
+                  items={activeScene.items || []}
+                />
+              )}
+          </>
         )}
       </main>
 
-      {/* Floating Bottom Scene Dock */}
-      <PublicSceneDock
-        scenes={scenes}
-        activeSceneId={activeSceneId}
-        onSelectScene={setActiveSceneId}
-        hasHub={true}
-      />
+      {/* Floating Bottom Scene Dock (rendered only after entering) */}
+      {hasSeenWelcome && (
+        <PublicSceneDock
+          scenes={visibleScenes}
+          activeSceneId={activeSceneId}
+          onSelectScene={handleSelectScene}
+          hasHub={true}
+          accentColor={activeTheme.accentColor}
+        />
+      )}
+
+      {/* Recipient Scene Teaser Modal */}
+      {teaserScene && (
+        <SceneTeaserModal
+          isOpen={true}
+          scene={teaserScene}
+          onClose={() => setTeaserScene(null)}
+        />
+      )}
     </div>
   )
 }

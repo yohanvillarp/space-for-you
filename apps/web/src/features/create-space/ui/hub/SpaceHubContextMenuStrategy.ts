@@ -11,6 +11,7 @@ import {
   Lock,
   ShieldCheck,
   ShieldAlert,
+  CalendarClock,
 } from 'lucide-react'
 import { createElement } from 'react'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
@@ -25,6 +26,7 @@ export interface SpaceHubContextMenuHandlers {
   isProtectionEnabled: boolean
   onOpenScene: (sceneId: string) => void
   onStartRename: (scene: SpaceScene) => void
+  onOpenSchedule?: (scene: SpaceScene) => void
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
   onDeleteScene?: (sceneId: string) => void
@@ -77,6 +79,21 @@ export class SpaceHubContextMenuStrategy {
         handler: () => h.onStartRename(scene),
       }),
     ]
+
+    if (h.onOpenSchedule) {
+      mainActions.push(
+        new ContextMenuAction({
+          id: 'hub-schedule-scene',
+          label: scene.schedule?.enabled
+            ? 'Edit Schedule...'
+            : 'Schedule Release...',
+          icon: createElement(CalendarClock, {
+            className: 'h-3.5 w-3.5 text-amber-400',
+          }),
+          handler: () => h.onOpenSchedule?.(scene),
+        }),
+      )
+    }
 
     if (h.onDuplicateScene) {
       mainActions.push(
@@ -160,7 +177,7 @@ export class SpaceHubContextMenuStrategy {
       )
     }
 
-    const sections: ContextMenuSection[] = [
+    return [
       new ContextMenuSection('quick-scenes', quickActions, 'Create New Scene'),
       new ContextMenuSection('browse-templates', [
         new ContextMenuAction({
@@ -173,8 +190,6 @@ export class SpaceHubContextMenuStrategy {
         }),
       ]),
     ]
-
-    return sections
   }
 
   private static buildSpaceActionsSections(
@@ -219,7 +234,6 @@ export class SpaceHubContextMenuStrategy {
     ]
 
     const configActions: ContextMenuAction[] = []
-
     if (h.onOpenVault) {
       configActions.push(
         new ContextMenuAction({

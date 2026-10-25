@@ -15,6 +15,7 @@ import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
 import { Button } from '@/shared/ui'
 import { StudioModeSwitch } from '@/features/create-space/ui/editor/StudioModeSwitch'
+import { UndoRedoControls } from '@/features/create-space/ui/editor/UndoRedoControls'
 
 export interface EditorTopHeaderProps {
   activeTheme: ThemeRegistryEntry
@@ -24,6 +25,11 @@ export interface EditorTopHeaderProps {
   selectedId: string | null
   onDeleteSelected: (id: string) => void
   onResetToDefaults: () => void
+  showUndoRedo?: boolean
+  canUndo?: boolean
+  canRedo?: boolean
+  onUndo?: () => void
+  onRedo?: () => void
   onOpenShare?: () => void
   onSave?: () => void
   onBackToDashboard?: () => void
@@ -40,6 +46,11 @@ export function EditorTopHeader({
   selectedId,
   onDeleteSelected,
   onResetToDefaults,
+  showUndoRedo = false,
+  canUndo = false,
+  canRedo = false,
+  onUndo,
+  onRedo,
   onOpenShare,
   onSave,
   onBackToDashboard,
@@ -126,6 +137,16 @@ export function EditorTopHeader({
               Del
             </kbd>
           </button>
+        )}
+
+        {/* Undo / Redo History Controls */}
+        {showUndoRedo && (
+          <UndoRedoControls
+            canUndo={canUndo}
+            canRedo={canRedo}
+            onUndo={onUndo}
+            onRedo={onRedo}
+          />
         )}
 
         {/* Reset Stage to Defaults */}

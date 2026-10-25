@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import type {
   SpaceScene,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import {
   SpaceSceneCollection,
@@ -102,49 +103,52 @@ export function useMultiSceneState(
       })
     }, [])
 
-  const handleAddScene = useCallback(
-    (newScene: SpaceScene) => {
+  const mutateCollection = useCallback(
+    (fn: (next: SpaceSceneCollection) => void) => {
       setCollection((prev) => {
         const next = prev.clone()
-        next.add(SpaceSceneEntity.fromDTO(newScene))
-        return next
-      })
-      setActiveSceneId(newScene.id)
-    },
-    [setActiveSceneId],
-  )
-
-  const handleDeleteScene = useCallback(
-    (sceneId: string) => {
-      setCollection((prev) => {
-        const next = prev.clone()
-        next.remove(sceneId)
-        return next
-      })
-      if (activeSceneId === sceneId) {
-        setActiveSceneId('hub')
-      }
-    },
-    [activeSceneId, setActiveSceneId],
-  )
-
-  const handleRenameScene = useCallback((sceneId: string, newTitle: string) => {
-    setCollection((prev) => {
-      const next = prev.clone()
-      next.rename(sceneId, newTitle)
-      return next
-    })
-  }, [])
-
-  const handleUpdateScene = useCallback(
-    (sceneId: string, updates: { title?: string; subtitle?: string }) => {
-      setCollection((prev) => {
-        const next = prev.clone()
-        next.updateScene(sceneId, updates)
+        fn(next)
         return next
       })
     },
     [],
+  )
+
+  const handleAddScene = useCallback(
+    (newScene: SpaceScene) => {
+      mutateCollection((next) => next.add(SpaceSceneEntity.fromDTO(newScene)))
+      setActiveSceneId(newScene.id)
+    },
+    [mutateCollection, setActiveSceneId],
+  )
+
+  const handleDeleteScene = useCallback(
+    (sceneId: string) => {
+      mutateCollection((next) => next.remove(sceneId))
+      if (activeSceneId === sceneId) setActiveSceneId('hub')
+    },
+    [activeSceneId, mutateCollection, setActiveSceneId],
+  )
+
+  const handleRenameScene = useCallback(
+    (sceneId: string, newTitle: string) => {
+      mutateCollection((next) => next.rename(sceneId, newTitle))
+    },
+    [mutateCollection],
+  )
+
+  const handleUpdateScene = useCallback(
+    (
+      sceneId: string,
+      updates: {
+        title?: string
+        subtitle?: string
+        schedule?: SceneScheduleConfig | null
+      },
+    ) => {
+      mutateCollection((next) => next.updateScene(sceneId, updates))
+    },
+    [mutateCollection],
   )
 
   const handleDuplicateScene = useCallback(
@@ -152,9 +156,7 @@ export function useMultiSceneState(
       setCollection((prev) => {
         const next = prev.clone()
         const duplicated = next.duplicate(sceneId)
-        if (duplicated) {
-          setActiveSceneId(duplicated.id)
-        }
+        if (duplicated) setActiveSceneId(duplicated.id)
         return next
       })
     },
@@ -163,75 +165,59 @@ export function useMultiSceneState(
 
   const handleMoveScene = useCallback(
     (sceneId: string, direction: 'left' | 'right') => {
-      setCollection((prev) => {
-        const next = prev.clone()
-        next.reorder(sceneId, direction)
-        return next
-      })
+      mutateCollection((next) => next.reorder(sceneId, direction))
     },
-    [],
+    [mutateCollection],
   )
 
-  const handleUpdateLetter = useCallback((updatedLetter: LetterItem) => {
-    setCollection((prev) => {
-      const next = prev.clone()
-      next.updateLetter(updatedLetter)
-      return next
-    })
-  }, [])
+  const handleUpdateLetter = useCallback(
+    (updatedLetter: LetterItem) => {
+      mutateCollection((next) => next.updateLetter(updatedLetter))
+    },
+    [mutateCollection],
+  )
 
   const handleAddLetter = useCallback(() => {
     setCollection((prev) => {
       const next = prev.clone()
       const letter = next.addLetter()
-      if (letter) {
-        setSelectedLetterId(letter.id)
-      }
+      if (letter) setSelectedLetterId(letter.id)
       return next
     })
   }, [])
 
-  const handleDeleteLetter = useCallback((id: string) => {
-    setCollection((prev) => {
-      const next = prev.clone()
-      next.removeLetter(id)
-      return next
-    })
-    setSelectedLetterId(null)
-    setOpenLetterId((prev) => (prev === id ? null : prev))
-  }, [])
+  const handleDeleteLetter = useCallback(
+    (id: string) => {
+      mutateCollection((next) => next.removeLetter(id))
+      setSelectedLetterId(null)
+      setOpenLetterId((prev) => (prev === id ? null : prev))
+    },
+    [mutateCollection],
+  )
 
   const handleDuplicateLetter = useCallback((id: string) => {
     setCollection((prev) => {
       const next = prev.clone()
       const duplicated = next.duplicateLetter(id)
-      if (duplicated) {
-        setSelectedLetterId(duplicated.id)
-      }
+      if (duplicated) setSelectedLetterId(duplicated.id)
       return next
     })
   }, [])
 
   const handleReorderScenes = useCallback(
     (fromIndex: number, toIndex: number) => {
-      setCollection((prev) => {
-        const next = prev.clone()
-        next.reorderScenes(fromIndex, toIndex)
-        return next
-      })
+      mutateCollection((next) => next.reorderScenes(fromIndex, toIndex))
     },
-    [],
+    [mutateCollection],
   )
 
   const handleReorderLetters = useCallback(
     (fromIndex: number, toIndex: number, sceneId?: string) => {
-      setCollection((prev) => {
-        const next = prev.clone()
-        next.reorderLetters(fromIndex, toIndex, sceneId)
-        return next
-      })
+      mutateCollection((next) =>
+        next.reorderLetters(fromIndex, toIndex, sceneId),
+      )
     },
-    [],
+    [mutateCollection],
   )
 
   return {

@@ -10,6 +10,7 @@ export interface SpaceHubContextMenuProps {
   onClose: () => void
   onOpenScene: (sceneId: string) => void
   onStartRename: (scene: SpaceScene) => void
+  onOpenSchedule?: (scene: SpaceScene) => void
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
   onDeleteScene?: (sceneId: string) => void

@@ -15,6 +15,7 @@ import {
   VIRTUAL_CANVAS_HEIGHT,
 } from './canvas/useVirtualCanvasScale'
 import { CanvasZoomControl } from './canvas/CanvasZoomControl'
+import { useStudioBehavior } from './editor/useStudioBehavior'
 import { cn } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
 import '@/features/space-themes/romantic/romantic.css'
@@ -27,6 +28,8 @@ export interface SpatialStageCanvasProps {
   copiedItem?: SpatialItem | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onRotateItem: (id: string, delta: number) => void
   onSetRotation?: (id: string, angle: number) => void
   onResetRotation?: (id: string) => void
@@ -51,44 +54,46 @@ export interface SpatialStageCanvasProps {
 }
 
 const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
-  birthday: 'celebration-table-surface',
-  anniversary: 'romantic-desk-surface',
-  friendship: 'corkboard-surface',
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
 }
 
-export function SpatialStageCanvas({
-  templateId,
-  items,
-  selectedId,
-  copiedItem = null,
-  onSelectItem,
-  onUpdateItemPosition,
-  onRotateItem,
-  onSetRotation,
-  onResetRotation,
-  onBringToFront,
-  onSendToBack,
-  onDeleteItem,
-  onDuplicateItem,
-  onToggleLock,
-  onCopyItem,
-  onPasteItem,
-  onResetToDefaults,
-  onClearCanvas,
-  onUpdateItemData,
-  onAddItem,
-  onOpenPhotoPicker,
-  className,
-}: SpatialStageCanvasProps) {
+export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
+  const {
+    templateId,
+    items,
+    selectedId,
+    copiedItem = null,
+    onSelectItem,
+    onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
+    onRotateItem,
+    onSetRotation,
+    onResetRotation,
+    onBringToFront,
+    onSendToBack,
+    onDeleteItem,
+    onDuplicateItem,
+    onToggleLock,
+    onCopyItem,
+    onPasteItem,
+    onResetToDefaults,
+    onClearCanvas,
+    onUpdateItemData,
+    onAddItem,
+    onOpenPhotoPicker,
+    className,
+  } = props
+  const { isEditorMode } = useStudioBehavior()
   const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
 
   // Automatically close context menu if the targeted item was deleted
   useEffect(() => {
     if (menuState.isOpen && menuState.target?.type === 'item') {
-      const targetId = menuState.target.item.id
-      if (!items.some((it) => it.id === targetId)) {
-        closeMenu()
-      }
+      const targetItem = menuState.target.item
+      if (!items.some((it) => it.id === targetItem.id)) closeMenu()
     }
   }, [items, menuState, closeMenu])
 
@@ -116,6 +121,8 @@ export function SpatialStageCanvas({
     selectedId,
     onSelectItem,
     onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
     onDeleteItem: handleDeleteItem,
     onAddItem,
   })
@@ -200,6 +207,7 @@ export function SpatialStageCanvas({
           templateId={templateId}
           isDragOver={isDragOver}
           isEmpty={items.length === 0}
+          isEditor={isEditorMode}
         />
 
         {/* Render All Draggable Items on the Stage */}

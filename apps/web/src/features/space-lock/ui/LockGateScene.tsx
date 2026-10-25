@@ -165,8 +165,9 @@ export function LockGateScene({
           ) : !isUnlocked ? (
             <div className="w-full space-y-3 pt-1">
               <LockKeypad
-                key={`${config.passcode}-${config.passcodeHash}-${config.keypadTheme || 'classic'}`}
+                key={`${config.passcode}-${config.passcodeHash}-${config.passcodeLength}-${config.keypadTheme || 'classic'}`}
                 expectedPasscode={config.passcode}
+                passcodeLength={config.passcodeLength}
                 passcodeHash={config.passcodeHash}
                 passcodeSalt={config.passcodeSalt}
                 rateLimitKey={`vault_${config.passcodeSalt || 'default'}`}

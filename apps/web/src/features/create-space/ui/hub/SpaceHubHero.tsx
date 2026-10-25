@@ -11,6 +11,7 @@ export interface SpaceHubHeroProps {
 
 export function SpaceHubHero({
   meta,
+  accentColor = '#D97706',
   onChangeMeta,
   onContextMenu,
   className,
@@ -35,11 +36,15 @@ export function SpaceHubHero({
             placeholder="Space Title (e.g. Birthday Sanctuary)"
             aria-label="Space Title"
             maxLength={60}
-            className="w-full rounded-lg border border-transparent bg-transparent py-0.5 text-center font-sans text-xs font-medium tracking-widest text-amber-200/70 uppercase transition-all hover:border-white/15 hover:bg-white/5 focus:border-amber-400/70 focus:bg-black/30 focus:ring-1 focus:ring-amber-400/40 focus:outline-none"
+            style={{ color: accentColor }}
+            className="w-full rounded-lg border border-transparent bg-transparent py-0.5 text-center font-sans text-xs font-semibold tracking-widest uppercase transition-all hover:border-white/15 hover:bg-white/5 focus:border-white/30 focus:bg-black/30 focus:ring-1 focus:outline-none"
           />
         ) : (
           meta.title && (
-            <span className="font-sans text-xs font-medium tracking-widest text-amber-200/70 uppercase">
+            <span
+              className="font-sans text-xs font-semibold tracking-widest uppercase"
+              style={{ color: accentColor }}
+            >
               {meta.title}
             </span>
           )
@@ -56,7 +61,7 @@ export function SpaceHubHero({
             placeholder="Recipient's Name..."
             aria-label="Recipient Name"
             maxLength={35}
-            className="w-full rounded-xl border border-transparent bg-transparent py-1 text-center font-serif text-3xl font-normal tracking-tight text-[#FAF6F0] transition-all hover:border-white/15 hover:bg-white/5 focus:border-amber-400/70 focus:bg-black/30 focus:ring-1 focus:ring-amber-400/40 focus:outline-none sm:text-5xl"
+            className="w-full rounded-xl border border-transparent bg-transparent py-1 text-center font-serif text-3xl font-normal tracking-tight text-[#FAF6F0] transition-all hover:border-white/15 hover:bg-white/5 focus:border-white/30 focus:bg-black/30 focus:ring-1 focus:outline-none sm:text-5xl"
           />
         ) : (
           <h1 className="font-serif text-3xl font-normal tracking-tight text-[#FAF6F0] sm:text-5xl">
@@ -76,10 +81,11 @@ export function SpaceHubHero({
             placeholder="Your Name..."
             aria-label="Sender Name"
             maxLength={30}
-            className="rounded-lg border border-transparent bg-transparent px-2 py-0.5 font-sans text-xs font-medium text-amber-200 transition-all hover:border-white/15 hover:bg-white/5 focus:border-amber-400/70 focus:bg-black/30 focus:ring-1 focus:ring-amber-400/40 focus:outline-none sm:text-sm"
+            style={{ color: accentColor }}
+            className="rounded-lg border border-transparent bg-transparent px-2 py-0.5 font-sans text-xs font-medium transition-all hover:border-white/15 hover:bg-white/5 focus:border-white/30 focus:bg-black/30 focus:ring-1 focus:outline-none sm:text-sm"
           />
         ) : (
-          <span className="font-medium text-amber-200">
+          <span className="font-medium" style={{ color: accentColor }}>
             {meta.senderName || 'Anonymous'}
           </span>
         )}
@@ -97,13 +103,15 @@ export function SpaceHubHero({
             placeholder="Write an intimate collection note for this space..."
             aria-label="Dedication Note"
             maxLength={180}
-            className="w-full resize-none rounded-xl border border-transparent bg-transparent p-2 text-center font-sans text-xs leading-relaxed text-stone-300 transition-all hover:border-white/15 hover:bg-white/5 focus:border-amber-400/70 focus:bg-black/30 focus:ring-1 focus:ring-amber-400/40 focus:outline-none sm:text-sm"
+            className="w-full resize-none rounded-xl border border-transparent bg-transparent p-2 text-center font-sans text-xs leading-relaxed text-stone-300 transition-all hover:border-white/15 hover:bg-white/5 focus:border-white/30 focus:bg-black/30 focus:ring-1 focus:outline-none sm:text-sm"
           />
         ) : (
           meta.dedicationMessage && (
-            <p className="font-sans text-xs leading-relaxed text-stone-300 sm:text-sm">
-              {meta.dedicationMessage}
-            </p>
+            <div className="rounded-2xl border border-white/10 bg-black/25 px-5 py-3 shadow-sm backdrop-blur-md">
+              <p className="font-heading text-xs leading-relaxed text-stone-200 italic sm:text-sm">
+                “{meta.dedicationMessage}”
+              </p>
+            </div>
           )
         )}
       </div>

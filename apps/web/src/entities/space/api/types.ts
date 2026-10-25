@@ -88,4 +88,5 @@ export interface SpaceWithScenes {
   passcodeSalt?: string
   passcodeHint?: string
   protectionTheme?: string
+  passcodeLength?: number
 }

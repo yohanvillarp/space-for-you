@@ -3,6 +3,7 @@ import type {
   SpaceMeta,
   SpaceScene,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import type { SpaceTemplateId } from '@/entities/space'
 import type {
@@ -35,7 +36,11 @@ export interface EditorSceneRendererProps {
   onRenameScene?: (sceneId: string, newTitle: string) => void
   onUpdateScene?: (
     sceneId: string,
-    updates: { title?: string; subtitle?: string },
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?: SceneScheduleConfig | null
+    },
   ) => void
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
@@ -49,6 +54,8 @@ export interface EditorSceneRendererProps {
   copiedItem: SpatialItem | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onRotateItem: (id: string, delta: number) => void
   onSetRotation: (id: string, rotation: number) => void
   onResetRotation: (id: string) => void
@@ -113,6 +120,8 @@ export function EditorSceneRenderer({
   copiedItem,
   onSelectItem,
   onUpdateItemPosition,
+  onStartDragItem,
+  onCommitItemPosition,
   onRotateItem,
   onSetRotation,
   onResetRotation,
@@ -167,6 +176,7 @@ export function EditorSceneRenderer({
         onOpenVault={onOpenVault}
         onAddScene={onAddScene}
         onRenameScene={onRenameScene}
+        onUpdateScene={onUpdateScene}
         onDuplicateScene={onDuplicateScene}
         onMoveScene={onMoveScene}
         onDeleteScene={onDeleteScene}
@@ -222,6 +232,8 @@ export function EditorSceneRenderer({
       copiedItem={copiedItem}
       onSelectItem={onSelectItem}
       onUpdateItemPosition={onUpdateItemPosition}
+      onStartDragItem={onStartDragItem}
+      onCommitItemPosition={onCommitItemPosition}
       onRotateItem={onRotateItem}
       onSetRotation={onSetRotation}
       onResetRotation={onResetRotation}

@@ -23,9 +23,9 @@ export interface PublicStageCanvasProps {
 }
 
 const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
-  birthday: 'celebration-table-surface',
-  anniversary: 'romantic-desk-surface',
-  friendship: 'corkboard-surface',
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
 }
 
 const KEEPSAKE_TYPES = new Set([
@@ -106,6 +106,7 @@ export function PublicStageCanvas({
           templateId={templateId}
           isDragOver={false}
           isEmpty={items.length === 0}
+          isEditor={false}
         />
 
         {items.map((item) => {

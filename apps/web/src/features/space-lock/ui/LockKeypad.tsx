@@ -12,6 +12,7 @@ import { KEYPAD_STYLES } from './keypad-styles'
 
 export interface LockKeypadProps {
   expectedPasscode?: string
+  passcodeLength?: number
   passcodeHash?: string
   passcodeSalt?: string
   rateLimitKey?: string
@@ -22,6 +23,7 @@ export interface LockKeypadProps {
 
 export function LockKeypad({
   expectedPasscode,
+  passcodeLength,
   passcodeHash,
   passcodeSalt,
   rateLimitKey = 'global_vault',
@@ -33,7 +35,8 @@ export function LockKeypad({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [lockoutRemaining, setLockoutRemaining] = useState<number>(0)
   const isVerifyingRef = useRef(false)
-  const targetLength = Math.max(3, expectedPasscode?.length || 4)
+  const targetLength =
+    passcodeLength ?? Math.max(3, expectedPasscode?.length || 4)
   const style = KEYPAD_STYLES[theme] || KEYPAD_STYLES.classic
 
   useEffect(() => {
