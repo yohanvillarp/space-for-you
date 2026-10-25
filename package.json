@@ -10,6 +10,7 @@
     "typecheck": "npm --prefix apps/web run typecheck",
     "preview": "npm --prefix apps/web run preview",
     "generate:favicons": "node scripts/generate-favicons.mjs",
+    "setup:db": "node scripts/setup-appwrite-db.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "prepare": "husky"

@@ -8,6 +8,7 @@ import {
   Trash2,
   Save,
   Share2,
+  Loader2,
 } from 'lucide-react'
 import type { ThemeRegistryEntry } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
@@ -26,6 +27,7 @@ export interface EditorTopHeaderProps {
   onOpenShare?: () => void
   onSave?: () => void
   isSaved?: boolean
+  isSaving?: boolean
 }
 
 export function EditorTopHeader({
@@ -39,6 +41,7 @@ export function EditorTopHeader({
   onOpenShare,
   onSave,
   isSaved = false,
+  isSaving = false,
 }: EditorTopHeaderProps) {
   return (
     <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-white/10 bg-black/90 px-3 py-3 backdrop-blur-md sm:px-6">
@@ -128,8 +131,21 @@ export function EditorTopHeader({
           variant="outline"
           size="sm"
           onClick={onSave}
-          title={isSaved ? 'Space saved!' : 'Save Space'}
-          aria-label={isSaved ? 'Space saved!' : 'Save Space'}
+          disabled={isSaving}
+          title={
+            isSaving
+              ? 'Saving space...'
+              : isSaved
+                ? 'Space saved!'
+                : 'Save Space'
+          }
+          aria-label={
+            isSaving
+              ? 'Saving space...'
+              : isSaved
+                ? 'Space saved!'
+                : 'Save Space'
+          }
           className={cn(
             'cursor-pointer gap-1.5 px-2.5 text-xs shadow-xs transition-all sm:px-3',
             isSaved
@@ -137,12 +153,16 @@ export function EditorTopHeader({
               : 'border-white/20 text-[#F3EAE1] hover:border-white/30 hover:bg-white/10',
           )}
         >
-          {isSaved ? (
+          {isSaving ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-[#CF7056]" />
+          ) : isSaved ? (
             <Check className="h-3.5 w-3.5 text-emerald-400" />
           ) : (
             <Save className="h-3.5 w-3.5 text-[#CF7056]" />
           )}
-          <span className="hidden md:inline">{isSaved ? 'Saved' : 'Save'}</span>
+          <span className="hidden md:inline">
+            {isSaving ? 'Saving...' : isSaved ? 'Saved' : 'Save'}
+          </span>
         </Button>
 
         {/* Share Sanctuary Keepsake Card Button */}
