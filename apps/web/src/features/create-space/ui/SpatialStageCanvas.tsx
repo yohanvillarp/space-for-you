@@ -51,9 +51,9 @@ export interface SpatialStageCanvasProps {
 }
 
 const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
-  birthday: 'celebration-table-surface',
-  anniversary: 'romantic-desk-surface',
-  friendship: 'corkboard-surface',
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
 }
 
 export function SpatialStageCanvas({
