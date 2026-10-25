@@ -106,6 +106,7 @@ export function PublicStageCanvas({
           templateId={templateId}
           isDragOver={false}
           isEmpty={items.length === 0}
+          isEditor={false}
         />
 
         {items.map((item) => {

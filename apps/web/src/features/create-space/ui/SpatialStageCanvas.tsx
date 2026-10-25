@@ -15,6 +15,7 @@ import {
   VIRTUAL_CANVAS_HEIGHT,
 } from './canvas/useVirtualCanvasScale'
 import { CanvasZoomControl } from './canvas/CanvasZoomControl'
+import { useStudioBehavior } from './editor/useStudioBehavior'
 import { cn } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
 import '@/features/space-themes/romantic/romantic.css'
@@ -56,30 +57,32 @@ const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
   friendship: 'universe-friendship corkboard-surface',
 }
 
-export function SpatialStageCanvas({
-  templateId,
-  items,
-  selectedId,
-  copiedItem = null,
-  onSelectItem,
-  onUpdateItemPosition,
-  onRotateItem,
-  onSetRotation,
-  onResetRotation,
-  onBringToFront,
-  onSendToBack,
-  onDeleteItem,
-  onDuplicateItem,
-  onToggleLock,
-  onCopyItem,
-  onPasteItem,
-  onResetToDefaults,
-  onClearCanvas,
-  onUpdateItemData,
-  onAddItem,
-  onOpenPhotoPicker,
-  className,
-}: SpatialStageCanvasProps) {
+export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
+  const {
+    templateId,
+    items,
+    selectedId,
+    copiedItem = null,
+    onSelectItem,
+    onUpdateItemPosition,
+    onRotateItem,
+    onSetRotation,
+    onResetRotation,
+    onBringToFront,
+    onSendToBack,
+    onDeleteItem,
+    onDuplicateItem,
+    onToggleLock,
+    onCopyItem,
+    onPasteItem,
+    onResetToDefaults,
+    onClearCanvas,
+    onUpdateItemData,
+    onAddItem,
+    onOpenPhotoPicker,
+    className,
+  } = props
+  const { isEditorMode } = useStudioBehavior()
   const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
 
   // Automatically close context menu if the targeted item was deleted
@@ -200,6 +203,7 @@ export function SpatialStageCanvas({
           templateId={templateId}
           isDragOver={isDragOver}
           isEmpty={items.length === 0}
+          isEditor={isEditorMode}
         />
 
         {/* Render All Draggable Items on the Stage */}
