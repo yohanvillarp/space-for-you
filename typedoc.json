@@ -1,0 +1,17 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "apps/web/src/entities/space/index.ts",
+    "apps/web/src/entities/space/api/index.ts",
+    "apps/web/src/features/create-space/index.ts",
+    "apps/web/src/shared/api/index.ts"
+  ],
+  "entryPointStrategy": "resolve",
+  "tsconfig": "apps/web/tsconfig.app.json",
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "README.md",
+  "name": "Space For You - Architecture & API Documentation",
+  "excludePrivate": true,
+  "excludeInternal": true
+}

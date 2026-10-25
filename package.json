@@ -11,6 +11,7 @@
     "preview": "npm --prefix apps/web run preview",
     "generate:favicons": "node scripts/generate-favicons.mjs",
     "setup:db": "node scripts/setup-appwrite-db.mjs",
+    "docs": "typedoc --options typedoc.json",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "prepare": "husky"
@@ -23,6 +24,8 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "sharp": "^0.35.5"
+    "sharp": "^0.35.5",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.14.1"
   }
 }
