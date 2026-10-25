@@ -1,20 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import {
-  Sparkles,
-  Share2,
-  Check,
-  Layers,
-  MoreVertical,
-  Trash2,
-  CopyPlus,
-  ExternalLink,
-  Heart,
-} from 'lucide-react'
+import { Sparkles, Share2, Check, Layers, Heart } from 'lucide-react'
 import type { UserSpace } from '../model/types'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
+import { SpaceCardOptionsMenu } from './SpaceCardOptionsMenu'
 
 export interface SpaceCardProps {
   space: UserSpace
@@ -51,7 +42,6 @@ export function SpaceCard({
 }: SpaceCardProps) {
   const navigate = useNavigate()
   const [copied, setCopied] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
 
   const theme = THEME_REGISTRY[space.templateId] ?? THEME_REGISTRY.birthday
   const studioUrl = `${ROUTES.STUDIO}?template=${encodeURIComponent(space.templateId)}&spaceId=${encodeURIComponent(space.id)}`
@@ -81,21 +71,25 @@ export function SpaceCard({
   return (
     <article
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#161210] p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-[#CF7056]/40 hover:shadow-2xl hover:shadow-black/60',
+        'group relative flex flex-col justify-between rounded-2xl border border-white/10 bg-[#161210] p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-[#CF7056]/40 hover:shadow-2xl hover:shadow-black/60',
         className,
       )}
     >
-      {/* Top Ambient Glow Pill */}
+      {/* Background Glow Container (isolated with overflow-hidden so card popups are not clipped) */}
       <div
-        className={cn(
-          'pointer-events-none absolute -top-16 -right-16 h-36 w-36 rounded-full bg-radial opacity-20 blur-2xl transition-opacity duration-500 group-hover:opacity-40',
-          theme.ambientGlow,
-        )}
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
         aria-hidden="true"
-      />
+      >
+        <div
+          className={cn(
+            'absolute -top-16 -right-16 h-36 w-36 rounded-full bg-radial opacity-20 blur-2xl transition-opacity duration-500 group-hover:opacity-40',
+            theme.ambientGlow,
+          )}
+        />
+      </div>
 
-      {/* Card Header: Dedication & Context Menu */}
-      <div className="relative z-10 flex items-start justify-between gap-3">
+      {/* Card Header (Elevated to z-20 so dropdown is always above the title) */}
+      <div className="relative z-20 flex items-start justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <span
             className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 font-sans text-[11px] font-medium tracking-wide uppercase"
@@ -117,78 +111,17 @@ export function SpaceCard({
           </span>
         </div>
 
-        {/* Options Menu */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setShowMenu((prev) => !prev)
-            }}
-            title="Space options"
-            aria-label="Space options"
-            className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-white/10 hover:text-stone-200"
-          >
-            <MoreVertical className="h-4 w-4" />
-          </button>
-
-          {showMenu && (
-            <>
-              <div
-                className="fixed inset-0 z-20"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setShowMenu(false)
-                }}
-              />
-              <div className="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-white/10 bg-[#1F1916] py-1 shadow-xl backdrop-blur-md">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setShowMenu(false)
-                    onDuplicate?.(space.id)
-                  }}
-                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left font-sans text-xs text-stone-300 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <CopyPlus className="h-3.5 w-3.5 text-stone-400" />
-                  <span>Duplicate Space</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setShowMenu(false)
-                    navigate(shareSceneUrl)
-                  }}
-                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left font-sans text-xs text-stone-300 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <ExternalLink className="h-3.5 w-3.5 text-stone-400" />
-                  <span>Open Keepsake Scene</span>
-                </button>
-                <div className="my-1 border-t border-white/10" />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setShowMenu(false)
-                    if (window.confirm(`Delete "${space.title}"?`)) {
-                      onDelete?.(space.id)
-                    }
-                  }}
-                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left font-sans text-xs text-rose-400 transition-colors hover:bg-rose-500/10"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  <span>Delete Space</span>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        {/* Options Menu with clean popup */}
+        <SpaceCardOptionsMenu
+          spaceId={space.id}
+          spaceTitle={space.title}
+          shareSceneUrl={shareSceneUrl}
+          onDelete={onDelete}
+          onDuplicate={onDuplicate}
+        />
       </div>
 
-      {/* Main Body */}
+      {/* Main Body (z-10 so it stays under the header's z-20 dropdown) */}
       <div className="relative z-10 my-4 space-y-2">
         <div className="font-heading flex items-center gap-1.5 text-xs text-[#E2927C] italic">
           <Heart className="h-3 w-3 fill-current text-[#E2927C]" />
@@ -226,14 +159,14 @@ export function SpaceCard({
         </span>
       </div>
 
-      {/* Direct Actions: Open Studio & Direct Share */}
+      {/* Direct Actions: Open Studio & Direct Share (Fluent English labels) */}
       <div className="relative z-10 flex items-center gap-2">
         <Link
           to={studioUrl}
           className="group/btn flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 font-sans text-xs font-medium text-[#FAF6F0] shadow-sm transition-all hover:border-[#CF7056]/60 hover:bg-[#CF7056]/15 hover:text-white"
         >
           <Sparkles className="h-3.5 w-3.5 text-[#CF7056] transition-transform group-hover/btn:scale-110" />
-          <span>Abrir Studio</span>
+          <span>Open Studio</span>
         </Link>
 
         <button
@@ -252,12 +185,12 @@ export function SpaceCard({
           {copied ? (
             <>
               <Check className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Copiado!</span>
+              <span>Copied!</span>
             </>
           ) : (
             <>
               <Share2 className="h-3.5 w-3.5" />
-              <span>Compartir</span>
+              <span>Share</span>
             </>
           )}
         </button>
