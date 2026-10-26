@@ -6,11 +6,18 @@ export {
   deleteSpace,
   duplicateSpace,
   createNewSpace,
+  clearAllLocalSpaces,
   SPACES_STORAGE_KEY,
   SPACES_CHANGED_EVENT,
 } from './model/spaces-storage'
 export {
   mergeSpaces,
+  reconcileSpacesWithCloud,
+  getPendingCloudSyncIds,
+  markPendingCloudSync,
+  clearPendingCloudSync,
+  getLastSyncedUserId,
+  setLastSyncedUserId,
   resolveSpaceDisplayStatus,
   type SpaceDisplayStatus,
 } from './model/space-sync-engine'

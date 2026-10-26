@@ -20,6 +20,7 @@ import { useSpaceProtectionState } from '@/features/create-space/ui/editor/useSp
 import { useFullscreenEditorHandlers } from '@/features/create-space/ui/editor/useFullscreenEditorHandlers'
 import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEditorStageWorkflow'
 import { useFullscreenStudioSync } from '@/features/create-space/ui/editor/useFullscreenStudioSync'
+import { useRemoteStudioHydration } from '@/features/create-space/ui/editor/useRemoteStudioHydration'
 import { useConfirmDialog } from '@/shared/ui'
 import { cn } from '@/shared/lib'
 
@@ -49,6 +50,15 @@ export function FullscreenSpatialEditor({
     initialCanvasItems?.length ? initialCanvasItems : undefined,
   )
   const { items, selectedId, setSelectedId, copiedItem } = stage
+
+  useRemoteStudioHydration({
+    spaceId,
+    templateId,
+    setScenes: multiScene.setScenes,
+    setItems: stage.setItems,
+    setSpaceMeta: multiScene.setSpaceMeta,
+    setProtectionConfig,
+  })
 
   const {
     showSidebar,
