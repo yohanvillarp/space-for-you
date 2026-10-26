@@ -5,9 +5,22 @@ import {
   BringToFront,
   GripHorizontal,
   Mic,
+  PenLine,
 } from 'lucide-react'
 import type { SpatialItemType } from '@/features/create-space/model/spatial-stage.types'
 import { playSpatialSfx } from '@/shared/lib'
+
+const SUPPORTS_TEXT_EDIT = new Set<SpatialItemType>([
+  'greeting-card',
+  'airmail-postcard',
+  'sticky-note',
+  'wax-envelope',
+  'polaroid',
+  'cassette-tape',
+  'vinyl-player',
+  'music-box',
+  'vintage-radio',
+])
 
 export interface CanvasItemToolbarProps {
   itemId: string
@@ -18,6 +31,7 @@ export interface CanvasItemToolbarProps {
   onBringToFront: (id: string) => void
   onDelete: (id: string) => void
   onRecordVoiceNote?: (id: string) => void
+  onStartEditText?: (id: string) => void
 }
 
 export function CanvasItemToolbar({
@@ -29,6 +43,7 @@ export function CanvasItemToolbar({
   onBringToFront,
   onDelete,
   onRecordVoiceNote,
+  onStartEditText,
 }: CanvasItemToolbarProps) {
   const isTilted = Math.abs(currentRotation) > 0.5
 
@@ -103,6 +118,22 @@ export function CanvasItemToolbar({
       >
         <BringToFront className="h-3 w-3" />
       </button>
+
+      {/* Edit Text for Text-Supported Keepsakes */}
+      {itemType && SUPPORTS_TEXT_EDIT.has(itemType) && onStartEditText && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            playSpatialSfx('tactile-tap')
+            onStartEditText(itemId)
+          }}
+          title="Edit text & dedication"
+          className="hover:bg-bg-subtle text-text-secondary cursor-pointer rounded-full p-1 transition-colors hover:text-amber-300"
+        >
+          <PenLine className="h-3 w-3 text-amber-300" />
+        </button>
+      )}
 
       {/* Record Voice Note for Cassettes */}
       {itemType === 'cassette-tape' && onRecordVoiceNote && (

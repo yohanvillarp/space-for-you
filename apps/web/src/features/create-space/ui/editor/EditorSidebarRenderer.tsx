@@ -46,6 +46,7 @@ export interface EditorSidebarRendererProps {
   selectedPhotoItem: SpatialItem | null | undefined
   onAssignPhoto: (url: string, file?: File) => void
   photoCount: number
+  uploadedPhotoCount?: number
   selectedLetterId: string | null
   openLetterId?: string | null
   onSelectLetter: (id: string | null) => void
@@ -89,6 +90,7 @@ export function EditorSidebarRenderer({
   selectedPhotoItem,
   onAssignPhoto,
   photoCount,
+  uploadedPhotoCount = 0,
   selectedLetterId,
   openLetterId,
   onSelectLetter,
@@ -173,6 +175,7 @@ export function EditorSidebarRenderer({
       selectedPhotoItem={selectedPhotoItem}
       onAssignPhoto={onAssignPhoto}
       photoCount={photoCount}
+      uploadedPhotoCount={uploadedPhotoCount}
       isCompact={isCompact}
       className="h-full w-full"
     />

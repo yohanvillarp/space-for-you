@@ -71,16 +71,18 @@ export function useSpatialAudioPlayer({
 
   // Initialize audio element when trackUrl changes
   useEffect(() => {
-    if (!trackUrl) {
+    const cleanUrl = trackUrl?.trim()
+    if (!cleanUrl) {
       if (audioRef.current) {
         audioRef.current.pause()
-        audioRef.current.src = ''
+        audioRef.current.removeAttribute('src')
+        audioRef.current.load()
         audioRef.current = null
       }
       return
     }
 
-    const audio = new Audio(trackUrl)
+    const audio = new Audio(cleanUrl)
     audio.preload = 'metadata'
     audio.loop = loopRef.current
     audio.volume = volumeRef.current
@@ -159,7 +161,8 @@ export function useSpatialAudioPlayer({
       audio.removeEventListener('pause', handlePause)
       audio.removeEventListener('ended', handleEnded)
       audio.removeEventListener('error', handleError)
-      audio.src = ''
+      audio.removeAttribute('src')
+      audio.load()
       audioRef.current = null
     }
   }, [trackUrl, autoPlay, playerId])

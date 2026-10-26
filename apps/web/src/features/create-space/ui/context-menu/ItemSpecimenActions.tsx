@@ -36,7 +36,9 @@ export function ItemSpecimenActions({
     item.type === 'polaroid' ||
     item.type === 'greeting-card' ||
     item.type === 'sticky-note' ||
-    item.type === 'airmail-postcard'
+    item.type === 'airmail-postcard' ||
+    item.type === 'wax-envelope' ||
+    item.type === 'cassette-tape'
 
   if (
     !isMusic &&

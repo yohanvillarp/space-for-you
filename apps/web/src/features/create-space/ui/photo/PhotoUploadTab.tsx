@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { UploadCloud, CheckCircle2, Sparkles } from 'lucide-react'
+import { UploadCloud, CheckCircle2, Sparkles, AlertCircle } from 'lucide-react'
 import { compressImageFile } from '@/features/create-space/lib/image-compression'
 import type { CompressedImageResult } from '@/features/create-space/lib/image-compression'
 import { Button } from '@/shared/ui'
@@ -7,9 +7,15 @@ import { playSpatialSfx } from '@/shared/lib'
 
 export interface PhotoUploadTabProps {
   onSelectPhoto: (photoUrl: string, file?: File) => void
+  isUploadLimitReached?: boolean
+  isPolaroidSelected?: boolean
 }
 
-export function PhotoUploadTab({ onSelectPhoto }: PhotoUploadTabProps) {
+export function PhotoUploadTab({
+  onSelectPhoto,
+  isUploadLimitReached = false,
+  isPolaroidSelected = false,
+}: PhotoUploadTabProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [previewResult, setPreviewResult] =
@@ -18,7 +24,10 @@ export function PhotoUploadTab({ onSelectPhoto }: PhotoUploadTabProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const isBlocked = isUploadLimitReached && !isPolaroidSelected
+
   const handleProcessFile = async (file: File) => {
+    if (isBlocked) return
     if (!file.type.startsWith('image/')) {
       setErrorMsg('Please select a valid image file (JPEG, PNG, WebP).')
       return
@@ -46,6 +55,7 @@ export function PhotoUploadTab({ onSelectPhoto }: PhotoUploadTabProps) {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(false)
+    if (isBlocked) return
     const file = e.dataTransfer.files[0]
     if (file) void handleProcessFile(file)
   }
@@ -64,18 +74,29 @@ export function PhotoUploadTab({ onSelectPhoto }: PhotoUploadTabProps) {
 
   return (
     <div className="space-y-4">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0]
-          if (file) void handleProcessFile(file)
-        }}
-      />
+      {isBlocked ? (
+        <div className="flex items-start gap-2.5 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" />
+          <p className="leading-relaxed">
+            Storage limit reached (maximum 3 uploaded files). You can still
+            select curated photos from the Web Library or click an existing
+            Polaroid on the canvas to swap its photo.
+          </p>
+        </div>
+      ) : (
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (file) void handleProcessFile(file)
+          }}
+        />
+      )}
 
-      {!previewResult ? (
+      {!previewResult && !isBlocked ? (
         <div
           onDragOver={(e) => {
             e.preventDefault()
@@ -104,7 +125,7 @@ export function PhotoUploadTab({ onSelectPhoto }: PhotoUploadTabProps) {
             Drag & drop here or click to browse (JPEG, PNG, WebP up to 15MB)
           </p>
         </div>
-      ) : (
+      ) : previewResult ? (
         <div className="space-y-3">
           <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-[#443831] bg-black/40">
             <img
@@ -121,29 +142,42 @@ export function PhotoUploadTab({ onSelectPhoto }: PhotoUploadTabProps) {
                 {formatSize(previewResult.compressedSize)}
               </strong>
             </span>
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="text-amber-300 underline hover:text-amber-200"
-            >
-              Choose different file
-            </button>
+            <span className="font-mono text-[10px] text-amber-400">
+              WebP 1200px
+            </span>
           </div>
 
-          <Button
-            type="button"
-            variant="primary"
-            onClick={handleConfirm}
-            className="w-full gap-2 text-xs"
-          >
-            <CheckCircle2 className="h-4 w-4" />
-            <span>Use this Photo</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setPreviewResult(null)
+                setSelectedFile(null)
+              }}
+              className="flex-1 border-[#443831] text-[#A99B90] hover:bg-white/5"
+            >
+              Choose Another
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              onClick={handleConfirm}
+              className="flex-1 gap-1.5"
+            >
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              <span>Use This Photo</span>
+            </Button>
+          </div>
         </div>
-      )}
+      ) : null}
 
       {errorMsg && (
-        <p className="text-center text-xs text-rose-400">{errorMsg}</p>
+        <p className="rounded-lg bg-rose-500/10 p-2 text-center text-xs text-rose-400">
+          {errorMsg}
+        </p>
       )}
     </div>
   )
