@@ -61,6 +61,13 @@ export function SpatialCanvasItem({
     item.type === 'confetti-stars' ||
     item.type === 'vector-sticker'
 
+  const isMusicOrPhoto =
+    item.type === 'polaroid' ||
+    item.type === 'music-box' ||
+    item.type === 'vinyl-player' ||
+    item.type === 'cassette-tape' ||
+    item.type === 'vintage-radio'
+
   return (
     <div
       ref={itemRef}
@@ -98,6 +105,7 @@ export function SpatialCanvasItem({
         isSelected &&
           isEditorMode &&
           'ring-primary/80 ring-offset-background/80 rounded-lg ring-2 ring-offset-2',
+        isSelected && isEditorMode && isMusicOrPhoto && 'animate-pulse-twice',
         item.isLocked && isEditorMode && 'cursor-not-allowed opacity-90',
       )}
     >

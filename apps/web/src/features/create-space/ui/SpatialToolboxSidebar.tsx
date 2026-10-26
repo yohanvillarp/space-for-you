@@ -35,6 +35,7 @@ export interface SpatialToolboxSidebarProps {
   selectedPhotoItem?: SpatialItem | null
   onAssignPhoto?: (photoUrl: string, file?: File) => void
   photoCount?: number
+  uploadedPhotoCount?: number
   isCompact?: boolean
   className?: string
 }
@@ -49,6 +50,7 @@ export function SpatialToolboxSidebar({
   selectedPhotoItem,
   onAssignPhoto,
   photoCount = 0,
+  uploadedPhotoCount = 0,
   isCompact = false,
   className,
 }: SpatialToolboxSidebarProps) {
@@ -61,6 +63,7 @@ export function SpatialToolboxSidebar({
   const [objectFilter, setObjectFilter] = useState<
     'all' | 'stage' | 'universal'
   >('all')
+  const [isSidebarPulsing, setIsSidebarPulsing] = useState(false)
 
   // Auto-switch to Music when a music item is selected
   const [prevSelectedMusicItem, setPrevSelectedMusicItem] =
@@ -70,6 +73,8 @@ export function SpatialToolboxSidebar({
     setSearchQuery('')
     if (selectedMusicItem) {
       setActiveCategory('music')
+      setIsSidebarPulsing(true)
+      setTimeout(() => setIsSidebarPulsing(false), 2400)
     } else if (activeCategory === 'music') {
       setActiveCategory('objects')
     }
@@ -83,6 +88,8 @@ export function SpatialToolboxSidebar({
     setSearchQuery('')
     if (selectedPhotoItem) {
       setActiveCategory('photos')
+      setIsSidebarPulsing(true)
+      setTimeout(() => setIsSidebarPulsing(false), 2400)
     } else if (activeCategory === 'photos') {
       setActiveCategory('objects')
     }
@@ -131,7 +138,8 @@ export function SpatialToolboxSidebar({
   return (
     <aside
       className={cn(
-        'flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] select-none',
+        'flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] transition-all select-none',
+        isSidebarPulsing && 'animate-pulse-twice ring-2 ring-amber-400/90',
         className,
       )}
     >
@@ -174,6 +182,7 @@ export function SpatialToolboxSidebar({
             selectedItemName={selectedPhotoItem?.label}
             currentPhotoUrl={selectedPhotoItem?.data?.photoUrl}
             photoCount={photoCount}
+            uploadedPhotoCount={uploadedPhotoCount}
             isPolaroidSelected={Boolean(selectedPhotoItem)}
             onAssignPhoto={(url, file) => onAssignPhoto?.(url, file)}
             onAddPolaroidWithPhoto={(url) => {

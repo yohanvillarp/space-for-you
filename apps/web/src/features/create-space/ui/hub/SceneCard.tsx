@@ -1,4 +1,4 @@
-import { CalendarClock, Lock } from 'lucide-react'
+import { CalendarClock, Lock, Pencil } from 'lucide-react'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import type { SpaceTemplateId } from '@/entities/space'
 import { SCENE_CARD_THEMES } from '@/features/create-space/ui/hub/scene-card-themes'
@@ -16,7 +16,9 @@ export interface SceneCardProps {
   templateId?: SpaceTemplateId
   accentColor?: string
   isEditor?: boolean
+  isHighlighted?: boolean
   onOpenScene: (sceneId: string) => void
+  onEditDetails?: (scene: SpaceScene) => void
   onOpenSchedule?: (scene: SpaceScene) => void
   onOpenTeaser?: (scene: SpaceScene) => void
   onContextMenu?: (e: React.MouseEvent) => void
@@ -37,7 +39,9 @@ export function SceneCard({
   templateId = 'birthday',
   accentColor,
   isEditor = false,
+  isHighlighted = false,
   onOpenScene,
+  onEditDetails,
   onOpenSchedule,
   onOpenTeaser,
   onContextMenu,
@@ -72,6 +76,7 @@ export function SceneCard({
 
   return (
     <div
+      id={`scene-card-${scene.id}`}
       role="button"
       tabIndex={0}
       draggable={isDraggable}
@@ -99,6 +104,7 @@ export function SceneCard({
           'pointer-events-none scale-95 opacity-35 shadow-2xl ring-2 ring-amber-400/60',
         isDragOver &&
           'scale-102 border-amber-400/80 bg-[#251D19] shadow-2xl ring-2 ring-amber-400',
+        isHighlighted && 'animate-pulse-twice ring-2 ring-amber-400',
         className,
       )}
     >
@@ -147,10 +153,22 @@ export function SceneCard({
             type="button"
             onClick={(e) => {
               e.stopPropagation()
+              onEditDetails?.(scene)
+            }}
+            className="flex cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-stone-300 transition-colors hover:bg-white/10 hover:text-amber-200"
+          >
+            <Pencil className="h-3 w-3 text-amber-400" />
+            <span>Edit details</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
               onOpenSchedule?.(scene)
             }}
             className={cn(
-              'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors',
+              'flex cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors',
               scene.schedule?.enabled
                 ? 'border border-amber-400/40 bg-amber-950/60 text-amber-200 hover:bg-amber-900/60'
                 : 'text-stone-400 hover:bg-white/5 hover:text-stone-200',

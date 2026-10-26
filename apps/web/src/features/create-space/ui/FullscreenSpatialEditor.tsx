@@ -11,7 +11,10 @@ import { useSidebarResize } from '@/features/create-space/ui/editor/useSidebarRe
 import { useSpatialStageItems } from '@/features/create-space/ui/editor/useSpatialStageItems'
 import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSceneState'
 import { useEditorMediaAssignment } from '@/features/create-space/ui/editor/useEditorMediaAssignment'
-import { countStagePhotos } from '@/features/create-space/lib/stage-photo-limit'
+import {
+  countStagePhotos,
+  countUploadedPhotos,
+} from '@/features/create-space/lib/stage-photo-limit'
 import { countTotalArtifacts } from '@/features/create-space/lib/space-tier-limits'
 import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/StudioBehaviorProvider'
 import { useStudioReset } from '@/features/create-space/ui/editor/useStudioReset'
@@ -226,6 +229,7 @@ export function FullscreenSpatialEditor({
               selectedPhotoItem={mediaAssignment.selectedPhotoItem}
               onAssignPhoto={mediaAssignment.handleAssignPhoto}
               photoCount={countStagePhotos(items)}
+              uploadedPhotoCount={countUploadedPhotos(items)}
               isCompact={sidebarWidth < 280}
               shareCustomizer={shareCustomizer}
             />

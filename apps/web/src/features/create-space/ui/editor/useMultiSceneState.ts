@@ -117,9 +117,11 @@ export function useMultiSceneState(
   const handleAddScene = useCallback(
     (newScene: SpaceScene) => {
       mutateCollection((next) => next.add(SpaceSceneEntity.fromDTO(newScene)))
-      setActiveSceneId(newScene.id)
+      if (activeSceneId !== 'hub') {
+        setActiveSceneId(newScene.id)
+      }
     },
-    [mutateCollection, setActiveSceneId],
+    [activeSceneId, mutateCollection, setActiveSceneId],
   )
 
   const handleDeleteScene = useCallback(
