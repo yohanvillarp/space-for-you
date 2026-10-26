@@ -64,7 +64,7 @@ export function PublishSanctuaryModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Publish Digital Sanctuary"
+      aria-label="Publish Space"
       className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md select-none sm:p-6"
     >
       <div className="relative my-auto w-full max-w-lg overflow-hidden rounded-3xl border border-white/10 bg-[#16120F] p-6 text-[#FAF6F0] shadow-2xl sm:p-8">

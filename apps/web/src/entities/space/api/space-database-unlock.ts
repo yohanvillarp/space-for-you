@@ -72,8 +72,7 @@ export async function unlockSpaceViaFunction({
           isUnlocked: false,
           isProtected: false,
           error:
-            res.error ||
-            'This sanctuary is still being prepared by its creator.',
+            res.error || 'This space is still being prepared by its creator.',
           data: res.space ? { space: res.space, scenes: [] } : undefined,
         }
       }
@@ -108,7 +107,7 @@ export async function unlockSpaceViaFunction({
       success: false,
       isUnlocked: false,
       isProtected: false,
-      error: 'Sanctuary not found.',
+      error: 'Space not found.',
     }
   }
 
@@ -122,7 +121,7 @@ export async function unlockSpaceViaFunction({
         isUnlocked: false,
         isProtected: false,
         error:
-          'This sanctuary is still being prepared by its creator and has not been published yet.',
+          'This space is still being prepared by its creator and has not been published yet.',
         data: { space: resolved.space, scenes: [] },
       }
     }

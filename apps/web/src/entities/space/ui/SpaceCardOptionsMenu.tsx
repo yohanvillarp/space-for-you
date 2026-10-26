@@ -191,7 +191,7 @@ export function SpaceCardOptionsMenu({
               className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left font-sans text-xs text-amber-300 transition-colors hover:bg-amber-500/15"
             >
               <RotateCcw className="h-3.5 w-3.5 text-amber-400" />
-              <span>Restore Sanctuary</span>
+              <span>Restore Space</span>
             </button>
           ) : (
             <button
@@ -215,7 +215,7 @@ export function SpaceCardOptionsMenu({
               setIsOpen(false)
               const confirmed = await confirm({
                 title: 'Delete Space?',
-                description: `Are you sure you want to delete "${spaceTitle}"? This will permanently remove this sanctuary and all its memories.`,
+                description: `Are you sure you want to delete "${spaceTitle}"? This will permanently remove this space and all its memories.`,
                 type: 'danger',
                 confirmText: 'Delete Space',
                 cancelText: 'Cancel',

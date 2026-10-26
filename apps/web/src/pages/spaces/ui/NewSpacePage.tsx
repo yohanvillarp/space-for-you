@@ -44,8 +44,8 @@ export function NewSpacePage() {
   const spaceTitle =
     rawTitle ||
     (rawRecipient
-      ? `${rawRecipient}'s ${activeTheme.title} Sanctuary`
-      : `${activeTheme.title} Sanctuary`)
+      ? `${rawRecipient}'s ${activeTheme.title} Space`
+      : `${activeTheme.title} Space`)
 
   const handleStartCrafting = () => {
     if (!validateSpaceCreation(spaces.length, confirm)) {

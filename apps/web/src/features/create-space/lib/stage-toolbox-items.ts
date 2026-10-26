@@ -65,7 +65,7 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
     defaultData: {
       isSealed: true,
       title: 'A Private Love Letter',
-      text: 'To the one who turned everyday moments into our favorite sanctuary.',
+      text: 'To the one who turned everyday moments into our favorite place.',
     },
   },
   {

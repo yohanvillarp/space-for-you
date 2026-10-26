@@ -201,7 +201,7 @@ export class FoldableCardRenderer {
     ctx.textAlign = 'center'
     ctx.fillStyle = textColor
     ctx.font = resolveCardFont(data.fontFamily, 32, '600')
-    ctx.fillText('Your Personal Sanctuary', rightCenterX, margin + 180)
+    ctx.fillText('A Space Created For You', rightCenterX, margin + 180)
 
     ctx.fillStyle = textColor
     ctx.globalAlpha = 0.8

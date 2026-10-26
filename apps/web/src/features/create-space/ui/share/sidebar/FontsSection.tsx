@@ -74,7 +74,7 @@ export function FontsSection({
                     isSelected && 'text-amber-300/80',
                   )}
                 >
-                  Sanctuary
+                  Special Space
                 </span>
 
                 {/* Selected Check Badge */}

@@ -36,12 +36,12 @@ export function PublishProgressView({
       {/* Progress Information */}
       <div className="space-y-2">
         <h3 className="font-heading text-xl font-medium tracking-tight text-[#FAF6F0]">
-          {isUploading ? 'Preserving Memories...' : 'Sealing Your Sanctuary...'}
+          {isUploading ? 'Preserving Memories...' : 'Preparing Your Space...'}
         </h3>
         <p className="max-w-xs font-sans text-xs text-stone-400">
           {isUploading
             ? `Uploading ${pendingPhotosCount} keepsake photos to cloud storage with privacy protection.`
-            : 'Setting up public recipient permissions, unique address, and soundscape.'}
+            : 'Setting up public recipient permissions, unique address, and music.'}
         </p>
       </div>
 

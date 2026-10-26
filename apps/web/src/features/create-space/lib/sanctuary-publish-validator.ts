@@ -54,8 +54,8 @@ export function validateSanctuaryForPublish({
   if (!title) {
     issues.push({
       id: 'title',
-      title: 'Missing Sanctuary Title',
-      message: 'Give your sanctuary a meaningful title before sharing.',
+      title: 'Missing Space Title',
+      message: 'Give your space a meaningful title before sharing.',
       severity: 'error',
       suggestedSceneId: 'hub',
     })
@@ -99,7 +99,7 @@ export function validateSanctuaryForPublish({
   if (populatedCount === 0) {
     issues.push({
       id: 'empty_content',
-      title: 'Sanctuary is Empty',
+      title: 'Space is Empty',
       message:
         'Place at least one keepsake memory or write a letter before publishing.',
       severity: 'error',
@@ -132,7 +132,7 @@ export function validateSanctuaryForPublish({
     isValid: !hasBlockingErrors,
     issues,
     summary: {
-      title: title || 'Untitled Sanctuary',
+      title: title || 'Untitled Space',
       recipientName: recipientName || 'Someone Special',
       senderName,
       totalScenes: scenes.length,

@@ -55,7 +55,7 @@ export function LockGateScene({
 
   const defaultSubtitle = config.enabled
     ? 'Enter the secret combination to unlock'
-    : 'Sanctuary is unlocked and open'
+    : 'Space is unlocked and open'
   const displaySubtitle =
     config.customSubtitle !== undefined && config.customSubtitle !== ''
       ? config.customSubtitle
@@ -110,7 +110,7 @@ export function LockGateScene({
                 </h2>
                 <p className="font-sans text-xs leading-relaxed text-stone-400">
                   {isUnlocked
-                    ? 'Combination confirmed — Sanctuary unlocked'
+                    ? 'Combination confirmed — Space unlocked'
                     : displaySubtitle}
                 </p>
               </>
@@ -198,7 +198,7 @@ export function LockGateScene({
                   }}
                   className="cursor-pointer gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 font-sans text-sm font-semibold text-stone-900 shadow-xl transition-all hover:scale-105"
                 >
-                  <span>Enter Sanctuary</span>
+                  <span>Enter Space</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               )}

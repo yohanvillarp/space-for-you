@@ -35,7 +35,7 @@ export function PublicSceneDock({
 
   return (
     <nav
-      aria-label="Sanctuary scene navigation"
+      aria-label="Scene navigation"
       className={cn(
         'animate-fade-in fixed bottom-6 left-1/2 z-40 -translate-x-1/2 select-none',
         className,

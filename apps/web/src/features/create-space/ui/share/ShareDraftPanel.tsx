@@ -51,8 +51,8 @@ export function ShareDraftPanel({
           Publish to Share
         </h3>
         <p className="font-sans text-xs leading-relaxed text-[#A99B90] sm:text-sm">
-          Your sanctuary is currently saved safely in your browser. Publishing
-          syncs it to the cloud so your recipient can open it, unlocking
+          Your space is currently saved safely in your browser. Publishing
+          connects it to the cloud so your recipient can open it, unlocking
           foldable keepsake card printing and direct sharing.
         </p>
       </div>
@@ -69,7 +69,7 @@ export function ShareDraftPanel({
             className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl px-5 py-3.5 font-sans text-sm font-semibold text-[#18110D] shadow-lg transition-all hover:brightness-110 active:scale-[0.98]"
           >
             <Sparkles className="h-4 w-4" />
-            <span>Publish Sanctuary</span>
+            <span>Publish Space</span>
           </button>
         )}
 

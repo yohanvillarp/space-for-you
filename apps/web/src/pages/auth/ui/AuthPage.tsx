@@ -47,7 +47,7 @@ export function AuthPage() {
                 </div>
 
                 <h1 className="font-heading text-text-primary text-3xl leading-tight font-medium tracking-tight xl:text-4xl">
-                  A personal sanctuary. Created just for them.
+                  A dedicated digital space. Created just for them.
                 </h1>
                 <p className="text-text-secondary max-w-lg font-sans text-sm leading-relaxed xl:text-base">
                   Craft an intimate space to hold letters, photographs, music,

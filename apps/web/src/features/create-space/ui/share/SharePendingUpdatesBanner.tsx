@@ -73,8 +73,8 @@ export function SharePendingUpdatesBanner({
             )}
           >
             {quota.isLimitReached
-              ? `You've reached the maximum of ${MAX_DAILY_UPDATES} updates for today. Changes remain safe in your draft.`
-              : `Your recipient views the previous version until you sync. (${quota.remaining} of ${MAX_DAILY_UPDATES} updates remaining today)`}
+              ? `You've reached the daily limit of ${MAX_DAILY_UPDATES} updates. Your new edits are saved safely in your browser.`
+              : `Your recipient will see the previous version until you publish these updates (${quota.remaining} left today).`}
           </p>
         </div>
       </div>

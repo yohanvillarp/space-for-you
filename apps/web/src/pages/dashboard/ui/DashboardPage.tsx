@@ -112,7 +112,7 @@ export function DashboardPage() {
                     {displayName}
                   </h1>
                   <p className="text-text-secondary font-sans text-sm">
-                    Manage your personal spaces, invitations, and sanctuary
+                    Manage your personal spaces, invitations, and keepsake
                     settings.
                   </p>
                 </div>

@@ -39,7 +39,7 @@ export function ThemeSelectorList({
   return (
     <div
       role="radiogroup"
-      aria-label="Sanctuary stage selection"
+      aria-label="Space theme selection"
       className={cn(
         isGrid ? 'grid grid-cols-1 gap-3 sm:grid-cols-3' : 'space-y-3',
       )}

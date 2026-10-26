@@ -38,7 +38,7 @@ export function PublishPreflightView({
           Ready for Delivery
         </span>
         <h2 className="font-heading text-2xl font-semibold tracking-tight text-[#FAF6F0]">
-          Publish Sanctuary
+          Publish Space
         </h2>
         <p className="font-sans text-xs text-stone-400">
           Review your gift before generating the public link for{' '}
@@ -46,7 +46,7 @@ export function PublishPreflightView({
         </p>
       </div>
 
-      {/* Sanctuary Summary Pill Grid */}
+      {/* Space Summary Pill Grid */}
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         <div className="rounded-xl border border-white/10 bg-white/5 p-3">
           <span className="font-sans text-[10px] text-stone-400 uppercase">
@@ -128,7 +128,8 @@ export function PublishPreflightView({
           <div className="flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-950/20 px-3.5 py-2.5 text-xs text-emerald-200">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
             <span>
-              Everything is in place. Your sanctuary is ready to take flight.
+              Everything is in place. Your space is ready for{' '}
+              {summary.recipientName}.
             </span>
           </div>
         )}
@@ -138,7 +139,7 @@ export function PublishPreflightView({
       {summary.pendingPhotosCount > 0 && (
         <p className="font-sans text-[11px] text-stone-400 italic">
           ✨ {summary.pendingPhotosCount} personal photos will be safely
-          compressed and stored in your sanctuary cloud storage.
+          compressed and stored in the cloud.
         </p>
       )}
 
@@ -163,7 +164,7 @@ export function PublishPreflightView({
           )}
         >
           <Sparkles className="h-4 w-4" />
-          <span>Publish Sanctuary</span>
+          <span>Publish Space</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Button>
       </div>

@@ -64,7 +64,7 @@ export function SanctuaryWelcomeIntro({
         className="font-heading text-xs font-semibold tracking-widest uppercase sm:text-sm"
         style={{ color: accentColor }}
       >
-        A private digital sanctuary
+        A dedicated digital space
       </span>
 
       <h1 className="font-heading mt-2 text-3xl font-medium tracking-tight text-white sm:text-5xl">
@@ -97,7 +97,7 @@ export function SanctuaryWelcomeIntro({
             backgroundColor: `${accentColor}33`,
           }}
         >
-          <span>Enter Sanctuary</span>
+          <span>Open Your Space</span>
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
         </button>
 
@@ -115,8 +115,8 @@ export function SanctuaryWelcomeIntro({
             )}
             <span>
               {isPlayingAudio
-                ? 'Soundscape active'
-                : 'Tap to enable ambient soundscape'}
+                ? 'Background music playing'
+                : 'Tap to enable background music'}
             </span>
           </button>
         )}

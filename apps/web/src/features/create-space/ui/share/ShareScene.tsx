@@ -131,7 +131,7 @@ export function ShareScene({
       <div className="relative z-10 flex w-full max-w-5xl flex-col items-center space-y-6 sm:space-y-8">
         <div className="flex w-full max-w-xl flex-col items-center space-y-2 px-4 text-center">
           <h2 className="font-heading text-3xl font-medium tracking-tight text-[#FAF6F0] sm:text-4xl">
-            Share Your Sanctuary
+            Share This Space
           </h2>
           <p className="max-w-md font-sans text-xs text-[#A99B90] sm:text-sm">
             {isPublished
@@ -140,7 +140,7 @@ export function ShareScene({
           </p>
         </div>
 
-        {/* Above-QR Alert when there are unpublished changes in a live sanctuary */}
+        {/* Above-QR Alert when there are unpublished changes in a live space */}
         {isPublished && isDirty && (
           <SharePendingUpdatesBanner
             spaceId={spaceId}

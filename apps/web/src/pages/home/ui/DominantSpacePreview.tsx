@@ -9,38 +9,38 @@ export function DominantSpacePreview({ className }: DominantSpacePreviewProps) {
     <article
       aria-label="Preview of a personalized digital space: For Clara"
       className={cn(
-        'relative rounded-2xl border border-border-base bg-bg-surface p-6 sm:p-7 shadow-xs',
-        'transition-all duration-300 ease-out hover:shadow-md hover:-translate-y-1',
-        'motion-reduce:transition-none motion-reduce:transform-none',
+        'border-border-base bg-bg-surface relative rounded-2xl border p-6 shadow-xs sm:p-7',
+        'transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md',
+        'motion-reduce:transform-none motion-reduce:transition-none',
         className,
       )}
     >
       {/* Space Header: Recipient & Quiet Token */}
-      <header className="flex items-center justify-between border-b border-border-subtle pb-4">
+      <header className="border-border-subtle flex items-center justify-between border-b pb-4">
         <div className="flex items-center gap-2.5">
-          <span className="font-heading text-lg sm:text-xl font-normal text-text-primary italic">
+          <span className="font-heading text-text-primary text-lg font-normal italic sm:text-xl">
             For Clara
           </span>
           {/* Brand Spark Motif */}
           <svg
             viewBox="0 0 16 16"
-            className="w-3.5 h-3.5 fill-primary shrink-0 opacity-80"
+            className="fill-primary h-3.5 w-3.5 shrink-0 opacity-80"
             aria-hidden="true"
           >
             <path d="M8 0L9.8 6.2L16 8L9.8 9.8L8 16L6.2 9.8L0 8L6.2 6.2L8 0Z" />
           </svg>
         </div>
-        <span className="font-sans text-xs text-text-muted tracking-wide">
+        <span className="text-text-muted font-sans text-xs tracking-wide">
           Quiet evening
         </span>
       </header>
 
-      {/* Space Sanctuary Window & Artwork */}
-      <div className="my-5 rounded-xl border border-border-subtle bg-bg-subtle/60 p-4 sm:p-5">
+      {/* Space Window & Artwork */}
+      <div className="border-border-subtle bg-bg-subtle/60 my-5 rounded-xl border p-4 sm:p-5">
         <div className="flex items-center justify-center py-4 sm:py-6">
           <svg
             viewBox="0 0 200 110"
-            className="w-full max-w-[220px] h-auto"
+            className="h-auto w-full max-w-[220px]"
             fill="none"
             aria-hidden="true"
           >
@@ -74,24 +74,40 @@ export function DominantSpacePreview({ className }: DominantSpacePreviewProps) {
         </div>
 
         {/* Thoughtful Reflection */}
-        <p className="font-heading text-center text-sm sm:text-base font-normal text-text-primary italic leading-relaxed pt-1">
-          &ldquo;A quiet corner for your thoughts, whenever the world gets too loud.&rdquo;
+        <p className="font-heading text-text-primary pt-1 text-center text-sm leading-relaxed font-normal italic sm:text-base">
+          &ldquo;A quiet corner for your thoughts, whenever the world gets too
+          loud.&rdquo;
         </p>
       </div>
 
       {/* Tactile Workshop Details */}
-      <footer className="flex items-center justify-between pt-1 text-xs text-text-muted">
+      <footer className="text-text-muted flex items-center justify-between pt-1 text-xs">
         {/* Color Palette Chips */}
-        <div className="flex items-center gap-1.5" title="Palette created for Clara">
-          <span className="w-2.5 h-2.5 rounded-full bg-primary" aria-label="Terracotta accent" />
-          <span className="w-2.5 h-2.5 rounded-full bg-arcilla" aria-label="Soft clay" />
-          <span className="w-2.5 h-2.5 rounded-full bg-accent" aria-label="Olive note" />
-          <span className="w-2.5 h-2.5 rounded-full border border-border-base bg-marfil" aria-label="Warm ivory" />
+        <div
+          className="flex items-center gap-1.5"
+          title="Palette created for Clara"
+        >
+          <span
+            className="bg-primary h-2.5 w-2.5 rounded-full"
+            aria-label="Terracotta accent"
+          />
+          <span
+            className="bg-arcilla h-2.5 w-2.5 rounded-full"
+            aria-label="Soft clay"
+          />
+          <span
+            className="bg-accent h-2.5 w-2.5 rounded-full"
+            aria-label="Olive note"
+          />
+          <span
+            className="border-border-base bg-marfil h-2.5 w-2.5 rounded-full border"
+            aria-label="Warm ivory"
+          />
         </div>
 
         {/* Warm Note Marker */}
-        <div className="flex items-center gap-1.5 text-text-secondary font-sans text-[11px]">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary/70 animate-pulse" />
+        <div className="text-text-secondary flex items-center gap-1.5 font-sans text-[11px]">
+          <span className="bg-primary/70 h-1.5 w-1.5 animate-pulse rounded-full" />
           <span>Leave a light on</span>
         </div>
       </footer>

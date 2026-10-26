@@ -41,7 +41,7 @@ export function SpaceStatusBadge({ status, className }: SpaceStatusBadgeProps) {
   if (status === 'archived') {
     return (
       <span
-        title="Archived sanctuary kept safe in your records"
+        title="Archived space kept safe in your records"
         className={cn(
           'inline-flex items-center gap-1.5 rounded-full border border-stone-700/50 bg-stone-900/60 px-2.5 py-0.5 font-sans text-[11px] font-medium text-stone-400 shadow-xs backdrop-blur-xs',
           className,

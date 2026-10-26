@@ -75,7 +75,7 @@ export function useShareActions({
         url: shareUrl,
       })
       const res = await shareViaWebShareOrClipboard({
-        title: title || 'Sanctuary Keepsake',
+        title: title || 'Space Keepsake',
         text,
         url: shareUrl,
         canvas,

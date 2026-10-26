@@ -112,7 +112,7 @@ export function validateItemAddition(
   ) {
     confirm({
       title: 'Artifact Limit Reached',
-      description: `You can place up to ${MAX_SPACE_ARTIFACTS} keepsakes across your space to keep the sanctuary lightweight and elegant.`,
+      description: `You can place up to ${MAX_SPACE_ARTIFACTS} keepsakes across your space to keep it lightweight and elegant.`,
       confirmText: 'Got It',
       type: 'info',
       showCancel: false,
@@ -125,9 +125,9 @@ export function validateItemAddition(
     countTotalMusicItems(scenes, activeItems, activeSceneId) >= MAX_SPACE_MUSIC
   ) {
     confirm({
-      title: 'One Melody per Sanctuary',
+      title: 'One Melody per Space',
       description:
-        'Each sanctuary features a single ambient soundtrack to preserve a serene mood. You can customize the existing music player melody.',
+        'Each space features a single ambient soundtrack to preserve a serene mood. You can customize the existing music player melody.',
       confirmText: 'Understood',
       type: 'info',
       showCancel: false,
@@ -142,7 +142,7 @@ export function validateItemAddition(
   ) {
     confirm({
       title: 'Voice Notes Limit',
-      description: `Each sanctuary can feature up to ${MAX_SPACE_VOICE_NOTES} personal voice note cassettes. You can re-record or replace an existing cassette anytime.`,
+      description: `Each space can feature up to ${MAX_SPACE_VOICE_NOTES} personal voice note cassettes. You can re-record or replace an existing cassette anytime.`,
       confirmText: 'Understood',
       type: 'info',
       showCancel: false,

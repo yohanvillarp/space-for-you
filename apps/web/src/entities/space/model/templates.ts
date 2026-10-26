@@ -13,7 +13,7 @@ export const SPACE_TEMPLATES: SpaceTemplate[] = [
     cardBgGlow: 'from-amber-500/10 via-amber-500/5 to-transparent',
     sampleRecipient: 'For Leo',
     sampleNote:
-      'Another year of light, warmth, and unforgettable stories. This sanctuary is dedicated to celebrating you.',
+      'Another year of light, warmth, and unforgettable stories. This space is dedicated to celebrating you.',
     tags: [
       'Birthday Letter',
       'Milestone Year',
@@ -30,7 +30,7 @@ export const SPACE_TEMPLATES: SpaceTemplate[] = [
   {
     id: 'anniversary',
     title: 'Romantic Journey',
-    subtitle: 'An intimate sanctuary honoring your shared love story',
+    subtitle: 'An intimate space honoring your shared love story',
     category: 'Love & Romance',
     badge: 'Anniversary & Romance',
     description:
