@@ -1,9 +1,11 @@
 import { X, Heart, Mail } from 'lucide-react'
 import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { WashiTape, PushPin } from '@/features/space-themes/shared'
+import { cn } from '@/shared/lib'
 
 export interface PublicCardReaderModalProps {
   item: SpatialItem | null
+  isRotated?: boolean
   onClose: () => void
 }
 
@@ -14,6 +16,7 @@ export interface PublicCardReaderModalProps {
  */
 export function PublicCardReaderModal({
   item,
+  isRotated = false,
   onClose,
 }: PublicCardReaderModalProps) {
   if (!item) return null
@@ -38,7 +41,12 @@ export function PublicCardReaderModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-md"
+        className={cn(
+          'relative transition-transform',
+          isRotated
+            ? 'max-h-[86vw] w-[82vh] max-w-md rotate-90'
+            : 'w-full max-w-md',
+        )}
       >
         <button
           type="button"
@@ -54,7 +62,12 @@ export function PublicCardReaderModal({
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <PushPin color="brass" />
             </div>
-            <p className="font-heading pt-2 text-base leading-relaxed whitespace-pre-wrap text-stone-800 italic sm:text-lg dark:text-stone-100">
+            <p
+              className={cn(
+                'font-heading overflow-y-auto pt-2 text-base leading-relaxed whitespace-pre-wrap text-stone-800 italic sm:text-lg dark:text-stone-100',
+                isRotated ? 'max-h-[62vw]' : 'max-h-[70vh]',
+              )}
+            >
               {text ? `\u201C${text}\u201D` : ''}
             </p>
           </div>
@@ -75,7 +88,12 @@ export function PublicCardReaderModal({
                     AIR MAIL
                   </span>
                 </div>
-                <p className="font-heading text-base leading-relaxed whitespace-pre-wrap text-stone-700 italic sm:text-lg dark:text-stone-200">
+                <p
+                  className={cn(
+                    'font-heading overflow-y-auto text-base leading-relaxed whitespace-pre-wrap text-stone-700 italic sm:text-lg dark:text-stone-200',
+                    isRotated ? 'max-h-[55vw]' : 'max-h-[65vh]',
+                  )}
+                >
                   {text ? `\u201C${text}\u201D` : ''}
                 </p>
               </div>
@@ -94,7 +112,12 @@ export function PublicCardReaderModal({
               </span>
               <Heart className="text-primary/70 h-4 w-4" />
             </div>
-            <p className="font-heading text-base leading-relaxed whitespace-pre-wrap text-stone-800 italic sm:text-lg dark:text-stone-100">
+            <p
+              className={cn(
+                'font-heading overflow-y-auto text-base leading-relaxed whitespace-pre-wrap text-stone-800 italic sm:text-lg dark:text-stone-100',
+                isRotated ? 'max-h-[55vw]' : 'max-h-[65vh]',
+              )}
+            >
               {text ? `\u201C${text}\u201D` : ''}
             </p>
           </div>
@@ -113,7 +136,12 @@ export function PublicCardReaderModal({
                 </span>
                 <Mail className="h-4 w-4 text-amber-500/70" />
               </div>
-              <p className="font-heading text-base leading-relaxed whitespace-pre-wrap text-stone-700 italic sm:text-lg dark:text-stone-200">
+              <p
+                className={cn(
+                  'font-heading overflow-y-auto text-base leading-relaxed whitespace-pre-wrap text-stone-700 italic sm:text-lg dark:text-stone-200',
+                  isRotated ? 'max-h-[55vw]' : 'max-h-[65vh]',
+                )}
+              >
                 {text ? `\u201C${text}\u201D` : ''}
               </p>
             </div>
