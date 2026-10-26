@@ -78,6 +78,7 @@ export interface EditorStageViewportProps {
   onDeleteLetter?: (id: string) => void
   onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateLetter: (updated: LetterItem) => void
+  spaceId?: string
   shareUrl?: string
   isPublished?: boolean
   isDirty?: boolean

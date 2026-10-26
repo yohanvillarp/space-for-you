@@ -20,6 +20,7 @@ export interface EditorSceneRendererProps extends Omit<
   SpatialStageCanvasProps,
   'className'
 > {
+  spaceId?: string
   activeSceneId: string
   protectionConfig: SpaceProtectionConfig
   onChangeProtectionConfig: (updates: Partial<SpaceProtectionConfig>) => void
@@ -69,6 +70,7 @@ export interface EditorSceneRendererProps extends Omit<
 
 export function EditorSceneRenderer(props: EditorSceneRendererProps) {
   const {
+    spaceId,
     activeSceneId,
     protectionConfig,
     onChangeProtectionConfig,
@@ -165,6 +167,7 @@ export function EditorSceneRenderer(props: EditorSceneRendererProps) {
   if (activeSceneId === 'share' && shareCustomizer) {
     return (
       <ShareScene
+        spaceId={spaceId}
         templateId={templateId}
         spaceMeta={spaceMeta}
         onChangeSpaceMeta={onChangeSpaceMeta}

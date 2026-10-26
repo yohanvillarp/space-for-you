@@ -6,8 +6,7 @@ import { EditorTopHeader } from '@/features/create-space/ui/editor/EditorTopHead
 import { EditorSidebarRenderer } from '@/features/create-space/ui/editor/EditorSidebarRenderer'
 import { EditorSidebarDrawer } from '@/features/create-space/ui/editor/EditorSidebarDrawer'
 import { EditorStageViewport } from '@/features/create-space/ui/editor/EditorStageViewport'
-import { AddSceneModal } from '@/features/create-space/ui/hub/AddSceneModal'
-import { PublishSanctuaryModal } from '@/features/create-space/ui/editor/PublishSanctuaryModal'
+import { EditorModals } from '@/features/create-space/ui/editor/EditorModals'
 import { useSidebarResize } from '@/features/create-space/ui/editor/useSidebarResize'
 import { useSpatialStageItems } from '@/features/create-space/ui/editor/useSpatialStageItems'
 import { useMultiSceneState } from '@/features/create-space/ui/editor/useMultiSceneState'
@@ -19,6 +18,7 @@ import { useStudioReset } from '@/features/create-space/ui/editor/useStudioReset
 import { useShareCardCustomizer } from '@/features/create-space/ui/share/useShareCardCustomizer'
 import { useStudioSave } from '@/features/create-space/ui/editor/useStudioSave'
 import { usePublishSanctuary } from '@/features/create-space/ui/editor/usePublishSanctuary'
+import { useSanctuarySyncState } from '@/features/create-space/ui/editor/useSanctuarySyncState'
 import { useSpaceProtectionState } from '@/features/create-space/ui/editor/useSpaceProtectionState'
 import { useFullscreenEditorHandlers } from '@/features/create-space/ui/editor/useFullscreenEditorHandlers'
 import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEditorStageWorkflow'
@@ -107,6 +107,15 @@ export function FullscreenSpatialEditor({
     onResetScene: () => handleOpenScene('hub'),
   })
 
+  const isPublished = spaceMeta.status === 'published'
+  const syncState = useSanctuarySyncState({
+    spaceId,
+    isPublished,
+    spaceMeta,
+    scenes: resolvedScenes,
+    protectionConfig,
+  })
+
   const publishState = usePublishSanctuary({
     spaceId,
     templateId,
@@ -115,7 +124,10 @@ export function FullscreenSpatialEditor({
     protectionConfig,
     pendingPhotos: stage.pendingPhotos,
     onPhotosUploaded: handlePhotosUploaded,
-    onPublishSuccess: () => handleUpdateSpaceMeta({ status: 'published' }),
+    onPublishSuccess: () => {
+      handleUpdateSpaceMeta({ status: 'published' })
+      syncState.markAsPublished()
+    },
   })
 
   const canonicalSlug = spaceId
@@ -161,7 +173,6 @@ export function FullscreenSpatialEditor({
   }
 
   const isFreeCanvas = activeScene?.type === 'free-canvas'
-  const isPublished = spaceMeta.status === 'published'
 
   return (
     <StudioBehaviorProvider initialMode="editor">
@@ -240,25 +251,21 @@ export function FullscreenSpatialEditor({
             onDuplicateLetter={multiScene.handleDuplicateLetter}
             onReorderLetters={multiScene.handleReorderLetters}
             onReorderScenes={multiScene.handleReorderScenes}
+            spaceId={spaceId}
             shareUrl={shareUrl}
             shareCustomizer={shareCustomizer}
             isPublished={isPublished}
-            isDirty={isDirty}
+            isDirty={syncState.hasUnpublishedChanges}
             onOpenPublish={publishState.openPublishModal}
           />
         </div>
 
-        <AddSceneModal
-          isOpen={isAddSceneModalOpen}
-          onClose={() => setIsAddSceneModalOpen(false)}
+        <EditorModals
+          isAddSceneModalOpen={isAddSceneModalOpen}
+          onCloseAddScene={() => setIsAddSceneModalOpen(false)}
           onAddScene={workflow.handleGuardedAddScene}
           existingScenesCount={scenes.length}
-        />
-
-        <PublishSanctuaryModal
-          isOpen={publishState.publishStep !== 'idle'}
           publishState={publishState}
-          onClose={publishState.closePublishModal}
           onNavigateToScene={(sceneId) => handleOpenScene(sceneId)}
           accentColor={activeTheme.accentColor}
         />

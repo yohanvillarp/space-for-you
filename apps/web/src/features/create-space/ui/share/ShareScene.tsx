@@ -29,6 +29,7 @@ const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
 }
 
 export interface ShareSceneProps {
+  spaceId?: string
   templateId?: SpaceTemplateId
   spaceMeta: SpaceMeta
   onChangeSpaceMeta: (updates: Partial<SpaceMeta>) => void
@@ -46,6 +47,7 @@ export interface ShareSceneProps {
 }
 
 export function ShareScene({
+  spaceId,
   templateId = 'birthday',
   spaceMeta,
   onChangeSpaceMeta,
@@ -140,7 +142,10 @@ export function ShareScene({
 
         {/* Above-QR Alert when there are unpublished changes in a live sanctuary */}
         {isPublished && isDirty && (
-          <SharePendingUpdatesBanner onOpenPublish={onOpenPublish} />
+          <SharePendingUpdatesBanner
+            spaceId={spaceId}
+            onOpenPublish={onOpenPublish}
+          />
         )}
 
         <div className="grid w-full grid-cols-1 items-start justify-items-center gap-8 lg:grid-cols-12 lg:gap-10">
