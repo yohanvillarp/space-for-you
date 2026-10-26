@@ -55,9 +55,10 @@ The repository is organized as a monorepo containing:
   - `feature/<name>`: New features or UI components.
   - `fix/<name>`: Bug fixes and regressions.
   - `chore/<name>`: Tooling, dependency, or configuration updates.
-- **Conventional Commits**:
+- **Conventional Commits & SemVer Discipline**:
   - Enforced by `@commitlint/cli` and `commitlint.config.mjs`.
   - Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+  - Use `fix(...)`, `perf(...)`, or `refactor(...)` for bug fixes, UI/UX adjustments, and incremental improvements so Release Please increments **PATCH (`x.y.Z`)**. Reserve `feat(...)` strictly for major new feature modules that warrant a **MINOR (`x.Y.0`)** bump.
   - Header max length: 72 characters, lowercase, no trailing period.
   - Pre-commit hook runs `npx lint-staged` and `npm run typecheck`.
 
