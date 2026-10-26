@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.4](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.3...space-for-you-v1.2.4) (2026-10-26)
+
+
+### Bug Fixes
+
+* **landing:** align public pages with real stages and youtube hero ([0892869](https://github.com/yohanvillarp/space-for-you/commit/0892869f2bfee06d4574efa3f3ae00dd2c5af86e))
+* **landing:** align public pages with real stages and youtube hero ([d7262f4](https://github.com/yohanvillarp/space-for-you/commit/d7262f453bcaca18523d3ef73ecd2eba430c8e5f))
+
 ## [1.2.3](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.2...space-for-you-v1.2.3) (2026-10-26)
 
 
