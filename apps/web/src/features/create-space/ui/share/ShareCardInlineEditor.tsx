@@ -1,3 +1,4 @@
+import { QrCode } from 'lucide-react'
 import { StylizedQrCode } from '@/features/create-space/ui/StylizedQrCode'
 import { WashiTape } from '@/features/space-themes/shared'
 import type {
@@ -17,6 +18,7 @@ export interface ShareCardInlineEditorProps {
   selectedTarget: ShareColorTarget
   onSelectTarget: (target: ShareColorTarget) => void
   isEditorMode?: boolean
+  isPublished?: boolean
   className?: string
 }
 
@@ -30,6 +32,7 @@ export function ShareCardInlineEditor({
   selectedTarget,
   onSelectTarget,
   isEditorMode = true,
+  isPublished = true,
   className,
 }: ShareCardInlineEditorProps) {
   const currentFont =
@@ -147,35 +150,57 @@ export function ShareCardInlineEditor({
           )}
         </div>
 
-        {/* Centered Stylized QR Code (Click to Select QR & Frame) */}
+        {/* Stylized QR Code or Draft Placeholder */}
         <div
           role="button"
           tabIndex={0}
           onClick={(e) => {
             e.stopPropagation()
-            onSelectTarget('qr')
+            if (isPublished) onSelectTarget('qr')
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') onSelectTarget('qr')
+            if (e.key === 'Enter' && isPublished) onSelectTarget('qr')
           }}
           className={cn(
             'group/qr relative flex flex-col items-center justify-center rounded-2xl p-3 transition-all',
             isEditorMode &&
+              isPublished &&
               selectedTarget === 'qr' &&
               'bg-amber-400/5 ring-2 ring-amber-400',
           )}
         >
-          <StylizedQrCode
-            url={url}
-            accentColor={customization.qrColor}
-            qrStyle={customization.qrStyle}
-            size={220}
-            className="shadow-sm transition-transform duration-300 group-hover/qr:scale-105"
-          />
-          {isEditorMode && selectedTarget === 'qr' && (
-            <span className="mt-2 font-sans text-[10px] font-medium tracking-widest text-amber-500 uppercase">
-              QR Selected • Customize Style & Color in Sidebar
-            </span>
+          {isPublished ? (
+            <StylizedQrCode
+              url={url}
+              accentColor={customization.qrColor}
+              qrStyle={customization.qrStyle}
+              size={220}
+              className="shadow-sm transition-transform duration-300 group-hover/qr:scale-105"
+            />
+          ) : (
+            <div className="flex h-[220px] w-[220px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-black/20 bg-black/[0.03] p-5 text-center shadow-inner">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/15 text-amber-700">
+                <QrCode className="h-6 w-6" />
+              </div>
+              <p
+                style={{ color: customization.textColor }}
+                className={cn(
+                  'mt-3 text-sm font-medium tracking-tight',
+                  currentFont.familyClass,
+                )}
+              >
+                Keepsake QR Code
+              </p>
+              <p
+                style={{ color: customization.textColor }}
+                className={cn(
+                  'mt-1 max-w-[170px] text-[11px] leading-snug opacity-75',
+                  currentFont.familyClass,
+                )}
+              >
+                Unlocks and generates automatically when you publish.
+              </p>
+            </div>
           )}
         </div>
 
@@ -185,7 +210,9 @@ export function ShareCardInlineEditor({
             style={{ color: customization.textColor }}
             className={cn('text-xs italic opacity-75', currentFont.familyClass)}
           >
-            Scan with your camera to open
+            {isPublished
+              ? 'Scan with your camera to open'
+              : 'Will be scan-ready once published'}
           </p>
           <p
             className={cn(

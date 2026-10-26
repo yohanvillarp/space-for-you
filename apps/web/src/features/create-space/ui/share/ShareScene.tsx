@@ -2,11 +2,6 @@ import { useState, useEffect } from 'react'
 import { Compass } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import type { KeepsakeCardData } from '@/features/create-space/lib/card-canvas-generator'
-import {
-  copyCardImageToClipboard,
-  downloadCardImage,
-  generateKeepsakeCardCanvas,
-} from '@/features/create-space/lib/card-canvas-generator'
 import type { SpaceMeta } from '@/features/create-space/model/scenes.types'
 import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { THEME_REGISTRY } from '@/features/space-themes'
@@ -14,13 +9,10 @@ import { cn, playSpatialSfx } from '@/shared/lib'
 import { shortenSanctuaryUrl } from '@/features/create-space/lib/url-shortener'
 import { ShareActionsPanel } from './ShareActionsPanel'
 import { ShareCardInlineEditor } from './ShareCardInlineEditor'
-import { ShareStatusBanner } from './ShareStatusBanner'
-import {
-  openWhatsAppShare,
-  openTelegramShare,
-  shareViaWebShareOrClipboard,
-  getInstagramStoryCaption,
-} from './share-messaging'
+import { ShareDraftPanel } from './ShareDraftPanel'
+import { SharePendingUpdatesBanner } from './SharePendingUpdatesBanner'
+import { useShareActions } from './useShareActions'
+import { openWhatsAppShare, openTelegramShare } from './share-messaging'
 import { PrintableKeepsakeModal } from './print/PrintableKeepsakeModal'
 import type {
   ShareCardCustomization,
@@ -48,6 +40,7 @@ export interface ShareSceneProps {
   onBackToHub: () => void
   isStudioPreview?: boolean
   isPublished?: boolean
+  isDirty?: boolean
   onOpenPublish?: () => void
   className?: string
 }
@@ -63,19 +56,14 @@ export function ShareScene({
   onUpdateCustomization,
   onBackToHub,
   isStudioPreview = true,
-  isPublished,
+  isPublished = false,
+  isDirty = false,
   onOpenPublish,
   className,
 }: ShareSceneProps) {
   const { isEditorMode } = useStudioBehavior()
   const isEffectiveEditor = Boolean(isStudioPreview) && isEditorMode
 
-  const [copiedImage, setCopiedImage] = useState(false)
-  const [copiedLink, setCopiedLink] = useState(false)
-  const [socialFeedback, setSocialFeedback] = useState<
-    'shared' | 'copied' | null
-  >(null)
-  const [isGenerating, setIsGenerating] = useState(false)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
   const [resolvedUrl, setResolvedUrl] = useState(url)
 
@@ -106,65 +94,21 @@ export function ShareScene({
     note: customization.customNote,
   }
 
-  const handleCopyCardImage = async () => {
-    setIsGenerating(true)
-    try {
-      const canvas = await generateKeepsakeCardCanvas(cardData)
-      const success = await copyCardImageToClipboard(canvas)
-      if (success) {
-        setCopiedImage(true)
-        setTimeout(() => setCopiedImage(false), 3500)
-      } else {
-        downloadCardImage(
-          canvas,
-          `invitation-for-${spaceMeta.recipientName || 'you'}.png`,
-        )
-      }
-    } finally {
-      setIsGenerating(false)
-    }
-  }
-
-  const handleDownloadImage = async () => {
-    setIsGenerating(true)
-    try {
-      const canvas = await generateKeepsakeCardCanvas(cardData)
-      downloadCardImage(
-        canvas,
-        `invitation-for-${spaceMeta.recipientName || 'you'}.png`,
-      )
-    } finally {
-      setIsGenerating(false)
-    }
-  }
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(activeShareUrl)
-      setCopiedLink(true)
-      setTimeout(() => setCopiedLink(false), 2500)
-    } catch {}
-  }
-
-  const handleShareSocial = async () => {
-    try {
-      const canvas = await generateKeepsakeCardCanvas(cardData)
-      const text = getInstagramStoryCaption({
-        recipientName: spaceMeta.recipientName,
-        url: activeShareUrl,
-      })
-      const res = await shareViaWebShareOrClipboard({
-        title: spaceMeta.title || 'Sanctuary Keepsake',
-        text,
-        url: activeShareUrl,
-        canvas,
-      })
-      if (res !== 'failed') {
-        setSocialFeedback(res)
-        setTimeout(() => setSocialFeedback(null), 3000)
-      }
-    } catch {}
-  }
+  const {
+    isGenerating,
+    copiedImage,
+    copiedLink,
+    socialFeedback,
+    handleCopyCardImage,
+    handleDownloadImage,
+    handleCopyLink,
+    handleShareSocial,
+  } = useShareActions({
+    cardData,
+    recipientName: spaceMeta.recipientName,
+    title: spaceMeta.title,
+    shareUrl: activeShareUrl,
+  })
 
   return (
     <div
@@ -182,22 +126,22 @@ export function ShareScene({
         aria-hidden="true"
       />
 
-      <div className="relative z-10 flex w-full max-w-5xl flex-col items-center space-y-8 sm:space-y-10">
+      <div className="relative z-10 flex w-full max-w-5xl flex-col items-center space-y-6 sm:space-y-8">
         <div className="flex w-full max-w-xl flex-col items-center space-y-2 px-4 text-center">
           <h2 className="font-heading text-3xl font-medium tracking-tight text-[#FAF6F0] sm:text-4xl">
             Share Your Sanctuary
           </h2>
           <p className="max-w-md font-sans text-xs text-[#A99B90] sm:text-sm">
-            {isEffectiveEditor
-              ? 'Click directly on the card texts to edit them, or pick styles in the sidebar.'
-              : 'Print a foldable keepsake card or share directly via messaging.'}
+            {isPublished
+              ? 'Print a foldable keepsake card or share directly via messaging.'
+              : 'Preview your keepsake dedication card or publish to share with your recipient.'}
           </p>
         </div>
 
-        <ShareStatusBanner
-          isPublished={Boolean(isPublished)}
-          onOpenPublish={onOpenPublish}
-        />
+        {/* Above-QR Alert when there are unpublished changes in a live sanctuary */}
+        {isPublished && isDirty && (
+          <SharePendingUpdatesBanner onOpenPublish={onOpenPublish} />
+        )}
 
         <div className="grid w-full grid-cols-1 items-start justify-items-center gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="flex w-full justify-center lg:col-span-7">
@@ -214,34 +158,43 @@ export function ShareScene({
               customization={customization}
               selectedTarget={selectedTarget}
               onSelectTarget={onSelectTarget}
-              isEditorMode={isEffectiveEditor}
+              isEditorMode={isEffectiveEditor && isPublished}
+              isPublished={isPublished}
             />
           </div>
 
           <div className="w-full max-w-md lg:col-span-5">
-            <ShareActionsPanel
-              onCopyCardImage={handleCopyCardImage}
-              onDownloadImage={handleDownloadImage}
-              onOpenPrintModal={() => setIsPrintModalOpen(true)}
-              onOpenWhatsApp={() =>
-                openWhatsAppShare({
-                  recipientName: spaceMeta.recipientName,
-                  url: activeShareUrl,
-                })
-              }
-              onOpenTelegram={() =>
-                openTelegramShare({
-                  recipientName: spaceMeta.recipientName,
-                  url: activeShareUrl,
-                })
-              }
-              onShareSocial={handleShareSocial}
-              onCopyLink={handleCopyLink}
-              isGenerating={isGenerating}
-              copiedImage={copiedImage}
-              copiedLink={copiedLink}
-              socialFeedback={socialFeedback}
-            />
+            {isPublished ? (
+              <ShareActionsPanel
+                onCopyCardImage={handleCopyCardImage}
+                onDownloadImage={handleDownloadImage}
+                onOpenPrintModal={() => setIsPrintModalOpen(true)}
+                onOpenWhatsApp={() =>
+                  openWhatsAppShare({
+                    recipientName: spaceMeta.recipientName,
+                    url: activeShareUrl,
+                  })
+                }
+                onOpenTelegram={() =>
+                  openTelegramShare({
+                    recipientName: spaceMeta.recipientName,
+                    url: activeShareUrl,
+                  })
+                }
+                onShareSocial={handleShareSocial}
+                onCopyLink={handleCopyLink}
+                isGenerating={isGenerating}
+                copiedImage={copiedImage}
+                copiedLink={copiedLink}
+                socialFeedback={socialFeedback}
+              />
+            ) : (
+              <ShareDraftPanel
+                onOpenPublish={onOpenPublish}
+                previewUrl={url}
+                accentColor={activeTheme.accentColor}
+              />
+            )}
           </div>
         </div>
       </div>

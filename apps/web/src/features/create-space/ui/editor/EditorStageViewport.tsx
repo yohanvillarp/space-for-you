@@ -80,6 +80,7 @@ export interface EditorStageViewportProps {
   onUpdateLetter: (updated: LetterItem) => void
   shareUrl?: string
   isPublished?: boolean
+  isDirty?: boolean
   onOpenPublish?: () => void
   shareCustomizer?: {
     customization: import('@/features/create-space/ui/share/share-customizer.types').ShareCardCustomization

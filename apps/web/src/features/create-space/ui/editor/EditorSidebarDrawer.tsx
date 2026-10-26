@@ -10,6 +10,7 @@ export interface EditorSidebarDrawerProps {
   onToggleSidebar: () => void
   onResizeStart: (e: React.PointerEvent) => void
   children: ReactNode
+  hideSidebarDrawer?: boolean
 }
 
 export function EditorSidebarDrawer({
@@ -20,7 +21,10 @@ export function EditorSidebarDrawer({
   onToggleSidebar,
   onResizeStart,
   children,
+  hideSidebarDrawer = false,
 }: EditorSidebarDrawerProps) {
+  if (hideSidebarDrawer) return null
+
   const getSidebarBadgeLabel = () => {
     switch (activeSceneId) {
       case 'gate':

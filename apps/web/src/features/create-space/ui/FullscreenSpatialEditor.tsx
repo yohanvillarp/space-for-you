@@ -121,9 +121,10 @@ export function FullscreenSpatialEditor({
   const canonicalSlug = spaceId
     ? generateSpaceSlug(spaceMeta.title, spaceMeta.recipientName, spaceId)
     : undefined
+  const fallbackShareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
   const shareUrl = canonicalSlug
     ? getCanonicalPublicUrl(canonicalSlug)
-    : `${typeof window !== 'undefined' ? window.location.origin : ''}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
+    : fallbackShareUrl
   const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
 
   const navigate = useNavigate()
@@ -162,29 +163,6 @@ export function FullscreenSpatialEditor({
   const isFreeCanvas = activeScene?.type === 'free-canvas'
   const isPublished = spaceMeta.status === 'published'
 
-  const topHeaderProps = {
-    activeTheme,
-    showSidebar,
-    onToggleSidebar: handleToggleSidebar,
-    itemCount: items.length,
-    selectedId,
-    showUndoRedo: isFreeCanvas,
-    canUndo: isFreeCanvas && stage.canUndo,
-    canRedo: isFreeCanvas && stage.canRedo,
-    onUndo: stage.handleUndo,
-    onRedo: stage.handleRedo,
-    onDeleteSelected: stage.handleDeleteItem,
-    onResetToDefaults: handleResetToDefaults,
-    onOpenPublish: publishState.openPublishModal,
-    onOpenShare: () => handleOpenScene('share'),
-    onSave: handleSave,
-    onBackToDashboard: handleBackToDashboard,
-    isPublished,
-    isSaved,
-    isSaving,
-    isDirty,
-  }
-
   return (
     <StudioBehaviorProvider initialMode="editor">
       <div
@@ -193,7 +171,28 @@ export function FullscreenSpatialEditor({
           className,
         )}
       >
-        <EditorTopHeader {...topHeaderProps} />
+        <EditorTopHeader
+          activeTheme={activeTheme}
+          showSidebar={showSidebar}
+          onToggleSidebar={handleToggleSidebar}
+          itemCount={items.length}
+          selectedId={selectedId}
+          showUndoRedo={isFreeCanvas}
+          canUndo={isFreeCanvas && stage.canUndo}
+          canRedo={isFreeCanvas && stage.canRedo}
+          onUndo={stage.handleUndo}
+          onRedo={stage.handleRedo}
+          onDeleteSelected={stage.handleDeleteItem}
+          onResetToDefaults={handleResetToDefaults}
+          onOpenPublish={publishState.openPublishModal}
+          onOpenShare={() => handleOpenScene('share')}
+          onSave={handleSave}
+          onBackToDashboard={handleBackToDashboard}
+          isPublished={isPublished}
+          isSaved={isSaved}
+          isSaving={isSaving}
+          isDirty={isDirty}
+        />
 
         <div className="relative flex flex-1 overflow-hidden">
           <EditorSidebarDrawer
@@ -203,6 +202,7 @@ export function FullscreenSpatialEditor({
             activeSceneId={activeSceneId}
             onToggleSidebar={handleToggleSidebar}
             onResizeStart={handleResizeStart}
+            hideSidebarDrawer={activeSceneId === 'share' && !isPublished}
           >
             <EditorSidebarRenderer
               {...commonSceneProps}
@@ -233,8 +233,8 @@ export function FullscreenSpatialEditor({
             copiedItem={copiedItem}
             onSelectItem={setSelectedId}
             onResetToDefaults={handleResetToDefaults}
-            onOpenPhotoPicker={(item) => {
-              setSelectedId(item.id)
+            onOpenPhotoPicker={(it) => {
+              setSelectedId(it.id)
               handleOpenSidebar()
             }}
             onDuplicateLetter={multiScene.handleDuplicateLetter}
@@ -243,6 +243,7 @@ export function FullscreenSpatialEditor({
             shareUrl={shareUrl}
             shareCustomizer={shareCustomizer}
             isPublished={isPublished}
+            isDirty={isDirty}
             onOpenPublish={publishState.openPublishModal}
           />
         </div>
