@@ -36,8 +36,8 @@ export function CreateSpaceModal({
 
   const isDuplicating = Boolean(sourceSpaceId)
   const suggestedTitle = recipientName.trim()
-    ? `${recipientName.trim()}'s Sanctuary`
-    : 'Special Sanctuary'
+    ? `${recipientName.trim()}'s Space`
+    : 'Special Space'
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,6 +55,9 @@ export function CreateSpaceModal({
       return
     }
 
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('sfy_active_creation_draft')
+    }
     onClose()
     navigate(
       `${ROUTES.NEW_SPACE}?recipient=${encodeURIComponent(finalRecipient)}&title=${encodeURIComponent(finalTitle)}`,
@@ -89,8 +92,8 @@ export function CreateSpaceModal({
             </h2>
             <p className="font-sans text-xs text-stone-400">
               {isDuplicating
-                ? 'Personalize title and recipient for this duplicated sanctuary.'
-                : 'Dedicate a private digital sanctuary to someone you cherish.'}
+                ? 'Personalize title and recipient for this duplicated space.'
+                : 'Dedicate a personalized digital space to someone you cherish.'}
             </p>
           </div>
           <button

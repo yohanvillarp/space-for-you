@@ -18,7 +18,7 @@ export function PreviewStepSidebar({
     <div className="animate-fade-in space-y-4">
       <Card className="border-border-base bg-bg-surface/70 space-y-3 border p-5">
         <span className="font-heading text-primary text-xs font-semibold italic">
-          Sanctuary Ready
+          Space Ready
         </span>
         <div className="space-y-1">
           <p className="font-heading text-text-primary text-base font-medium">
@@ -49,7 +49,7 @@ export function PreviewStepSidebar({
           size="md"
           className="flex-1 cursor-pointer"
         >
-          <Link to={ROUTES.DASHBOARD}>Publish Sanctuary</Link>
+          <Link to={ROUTES.DASHBOARD}>Publish Space</Link>
         </Button>
       </div>
     </div>

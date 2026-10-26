@@ -41,7 +41,7 @@ export function ShareSpaceModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Share Your Sanctuary"
+      aria-label="Share Your Space"
       className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 p-3 backdrop-blur-md sm:p-6"
     >
       <div className="relative my-auto max-h-[92vh] w-full max-w-4xl scrollbar-none overflow-y-auto rounded-3xl border border-[#3B302A] bg-[#16120F] p-5 text-[#FAF6F0] shadow-2xl sm:p-8">
@@ -49,7 +49,7 @@ export function ShareSpaceModal({
         <div className="flex items-start justify-between border-b border-[#3B302A] pb-4">
           <div className="space-y-1">
             <h2 className="font-heading text-xl font-medium tracking-tight text-[#FAF6F0] sm:text-2xl">
-              Share Your Sanctuary
+              Share Your Space
             </h2>
             <p className="font-sans text-xs text-[#A99B90]">
               Copy your customized keepsake card to paste directly into

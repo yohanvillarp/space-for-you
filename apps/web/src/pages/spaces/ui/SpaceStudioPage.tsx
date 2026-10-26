@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import type { SpaceTemplateId } from '@/entities/space'
 import { FullscreenSpatialEditor } from '@/features/create-space/ui/FullscreenSpatialEditor'
+import { ProtectedRoute } from '@/features/auth'
 
 const STORAGE_KEY = 'sfy_selected_template'
 
@@ -35,11 +36,15 @@ export function SpaceStudioPage() {
   const validTemplateId = resolveInitialTemplate(rawParam)
 
   return (
-    <FullscreenSpatialEditor
-      key={`${validTemplateId}_${rawSpaceId ?? 'default'}_${rawScene ?? 'default'}`}
-      templateId={validTemplateId}
-      initialSceneId={rawScene}
-      spaceId={rawSpaceId}
-    />
+    <ProtectedRoute>
+      {() => (
+        <FullscreenSpatialEditor
+          key={`${validTemplateId}_${rawSpaceId ?? 'default'}_${rawScene ?? 'default'}`}
+          templateId={validTemplateId}
+          initialSceneId={rawScene}
+          spaceId={rawSpaceId}
+        />
+      )}
+    </ProtectedRoute>
   )
 }

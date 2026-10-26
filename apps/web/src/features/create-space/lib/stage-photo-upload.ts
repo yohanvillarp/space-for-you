@@ -1,10 +1,13 @@
 import { ID, Permission, Role } from 'appwrite'
 import { storage } from '@/shared/api'
+import { ENV } from '@/shared/config/env'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { compressImageFile } from '@/features/create-space/lib/image-compression'
 
 export const SPACE_PHOTOS_BUCKET_ID =
-  (import.meta.env.VITE_APPWRITE_PHOTOS_BUCKET_ID as string) || 'space-photos'
+  (import.meta.env.VITE_APPWRITE_PHOTOS_BUCKET_ID as string) ||
+  ENV.APPWRITE_PHOTOS_BUCKET_ID ||
+  '6ade87be001700e5c95b'
 
 /**
  * Uploads a single compressed keepsake photo to Appwrite Storage when saving the space.
@@ -62,6 +65,25 @@ export async function uploadAllPendingPhotos(
   )
 
   return results
+}
+
+/**
+ * Removes an uploaded asset from Appwrite Storage if it was uploaded to our bucket.
+ * Protects default preset assets like the instructional voice guide.
+ */
+export async function deleteStorageFileByUrl(url?: string): Promise<void> {
+  if (!url || !url.includes('storage/buckets')) return
+  const match = url.match(/\/files\/([a-zA-Z0-9_-]+)\/(view|download)/)
+  if (!match || !match[1]) return
+  const fileId = match[1]
+  // Never delete the default ElevenLabs sample audio guide
+  if (fileId === '6ade885600247e215323') return
+
+  try {
+    await storage.deleteFile(SPACE_PHOTOS_BUCKET_ID, fileId)
+  } catch (err) {
+    console.warn('Could not delete file from Appwrite Storage:', err)
+  }
 }
 
 /**

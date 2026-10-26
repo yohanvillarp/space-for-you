@@ -14,6 +14,15 @@ import { LettersContextMenu } from '@/features/create-space/ui/letters/LettersCo
 import { useLettersDragReorder } from '@/features/create-space/ui/letters/useLettersDragReorder'
 import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { cn, playSpatialSfx } from '@/shared/lib'
+import '@/features/space-themes/birthday/birthday.css'
+import '@/features/space-themes/romantic/romantic.css'
+import '@/features/space-themes/friendship/friendship.css'
+
+const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
+}
 
 export interface LettersSceneProps {
   scene: LettersSceneType
@@ -120,6 +129,7 @@ export function LettersScene(props: LettersSceneProps) {
     <div
       className={cn(
         'relative h-full w-full overflow-hidden select-none',
+        SURFACE_CLASSES[templateId] ?? 'celebration-table-surface',
         className,
       )}
     >
@@ -209,7 +219,6 @@ export function LettersScene(props: LettersSceneProps) {
           </div>
         </div>
 
-        {/* Bottom Floating Return Button (Visible strictly in user mode) */}
         {!isEffectiveEditor && (
           <div className="relative z-10 mt-10 pt-4">
             <button

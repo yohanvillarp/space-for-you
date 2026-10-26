@@ -4,6 +4,7 @@ import type {
   LettersScene,
   SceneType,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 
@@ -17,6 +18,7 @@ export abstract class SpaceSceneEntity {
   public subtitle: string
   public icon: string
   public order: number
+  public schedule?: SceneScheduleConfig
 
   constructor(data: {
     id: string
@@ -24,12 +26,14 @@ export abstract class SpaceSceneEntity {
     subtitle: string
     icon: string
     order: number
+    schedule?: SceneScheduleConfig
   }) {
     this.id = data.id
     this.title = data.title
     this.subtitle = data.subtitle
     this.icon = data.icon
     this.order = data.order
+    this.schedule = data.schedule
   }
 
   abstract readonly type: SceneType
@@ -74,6 +78,7 @@ export class FreeCanvasSceneEntity extends SpaceSceneEntity {
       subtitle: dto.subtitle,
       icon: dto.icon,
       order: dto.order,
+      schedule: dto.schedule,
     })
     this.items = [...dto.items]
   }
@@ -97,6 +102,7 @@ export class FreeCanvasSceneEntity extends SpaceSceneEntity {
       subtitle: this.subtitle,
       icon: this.icon,
       order: this.order + 1,
+      schedule: this.schedule ? { ...this.schedule } : undefined,
       items: clonedItems,
     })
   }
@@ -117,6 +123,7 @@ export class FreeCanvasSceneEntity extends SpaceSceneEntity {
       subtitle: this.subtitle,
       icon: this.icon,
       order: this.order,
+      schedule: this.schedule ? { ...this.schedule } : undefined,
       items: [...this.items],
     }
   }
@@ -137,6 +144,7 @@ export class LettersSceneEntity extends SpaceSceneEntity {
       subtitle: dto.subtitle,
       icon: dto.icon,
       order: dto.order,
+      schedule: dto.schedule,
     })
     this.letters = [...dto.letters]
   }
@@ -160,6 +168,7 @@ export class LettersSceneEntity extends SpaceSceneEntity {
       subtitle: this.subtitle,
       icon: this.icon,
       order: this.order + 1,
+      schedule: this.schedule ? { ...this.schedule } : undefined,
       letters: clonedLetters,
     })
   }
@@ -196,6 +205,7 @@ export class LettersSceneEntity extends SpaceSceneEntity {
       subtitle: this.subtitle,
       icon: this.icon,
       order: this.order,
+      schedule: this.schedule ? { ...this.schedule } : undefined,
       letters: [...this.letters],
     }
   }

@@ -13,6 +13,7 @@ export type SpatialItemType =
   | 'vinyl-player'
   | 'cassette-tape'
   | 'music-box'
+  | 'vintage-radio'
   | 'polaroid'
   | 'greeting-card'
   | 'airmail-postcard'
@@ -58,6 +59,12 @@ export interface SpatialItemData {
   artist?: string
   /** Additional subtitle info. */
   subtitle?: string
+  /** Indicates whether the audio is a personal voice note. */
+  isVoiceNote?: boolean
+  /** Indicates whether the voice note is an instructional sample that shouldn't appear for recipients. */
+  isVoiceNoteSample?: boolean
+  /** Duration in seconds. */
+  duration?: number
 }
 
 /**

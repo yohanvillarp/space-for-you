@@ -27,6 +27,14 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         }
       } catch {
         if (isMounted) {
+          try {
+            const current = window.location.pathname + window.location.search
+            if (current && current !== ROUTES.AUTH) {
+              sessionStorage.setItem('sfy_auth_return', current)
+            }
+          } catch {
+            // ignore storage error
+          }
           navigate(ROUTES.AUTH, { replace: true })
         }
       }
@@ -43,7 +51,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
         <GiftLoader
-          label="Opening your sanctuary..."
+          label="Opening your spaces..."
           hint="Gathering your spaces and cherished memories."
         />
       </div>

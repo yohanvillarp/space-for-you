@@ -72,6 +72,18 @@ export interface LetterItem {
 }
 
 /**
+ * Configuration for scheduled scene release date (Time Capsule / Advent reveal).
+ */
+export interface SceneScheduleConfig {
+  /** Whether the time lock is actively enforced. */
+  enabled: boolean
+  /** ISO 8601 unlock date-time string (e.g. '2026-10-31T00:00:00'). */
+  unlockAt: string
+  /** Optional personal teasing / anticipation message from the sender. */
+  teaserMessage?: string
+}
+
+/**
  * Common base properties shared by all scenes in a space.
  */
 export interface BaseScene {
@@ -87,6 +99,8 @@ export interface BaseScene {
   icon: string
   /** Sequential zero-indexed display order. */
   order: number
+  /** Optional schedule restricting scene access until a specific date. */
+  schedule?: SceneScheduleConfig
 }
 
 /**
@@ -124,6 +138,8 @@ export interface SpaceMeta {
   title: string
   /** Long-form dedication message. */
   dedicationMessage?: string
+  /** Publication lifecycle state. */
+  status?: 'draft' | 'ready' | 'published'
 }
 
 export const INITIAL_LETTERS_DATA: LetterItem[] = [
@@ -149,4 +165,5 @@ export const DEFAULT_SPACE_META: SpaceMeta = {
   title: '',
   dedicationMessage:
     'An intimate collection of moments, letters, and memories curated just for you.',
+  status: 'draft',
 }

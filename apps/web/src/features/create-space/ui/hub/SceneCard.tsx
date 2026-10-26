@@ -1,12 +1,24 @@
-import { Sparkles, Mail, ArrowRight, GripVertical } from 'lucide-react'
+import { CalendarClock, Lock } from 'lucide-react'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
+import type { SpaceTemplateId } from '@/entities/space'
+import { SCENE_CARD_THEMES } from '@/features/create-space/ui/hub/scene-card-themes'
+import { MemoryCanvasCardContent } from '@/features/create-space/ui/hub/MemoryCanvasCardContent'
+import { HeartfeltLettersCardContent } from '@/features/create-space/ui/hub/HeartfeltLettersCardContent'
+import {
+  isSceneTimeLocked,
+  formatUnlockDate,
+} from '@/features/create-space/lib/scene-schedule-utils'
 import { cn, playSpatialSfx } from '@/shared/lib'
 
 export interface SceneCardProps {
   scene: SpaceScene
   index?: number
+  templateId?: SpaceTemplateId
   accentColor?: string
+  isEditor?: boolean
   onOpenScene: (sceneId: string) => void
+  onOpenSchedule?: (scene: SpaceScene) => void
+  onOpenTeaser?: (scene: SpaceScene) => void
   onContextMenu?: (e: React.MouseEvent) => void
   isDraggable?: boolean
   onDragStart?: (e: React.DragEvent, index: number) => void
@@ -22,8 +34,12 @@ export interface SceneCardProps {
 export function SceneCard({
   scene,
   index = 0,
-  accentColor = '#CF7056',
+  templateId = 'birthday',
+  accentColor,
+  isEditor = false,
   onOpenScene,
+  onOpenSchedule,
+  onOpenTeaser,
   onContextMenu,
   isDraggable = false,
   onDragStart,
@@ -35,33 +51,24 @@ export function SceneCard({
   isDragOver = false,
   className,
 }: SceneCardProps) {
-  const getSceneIcon = () => {
-    switch (scene.type) {
-      case 'letters':
-        return <Mail className="h-6 w-6" style={{ color: accentColor }} />
-      case 'free-canvas':
-      default:
-        return <Sparkles className="h-6 w-6" style={{ color: accentColor }} />
-    }
-  }
-
-  const getItemsCountLabel = () => {
-    if (scene.type === 'letters') {
-      const count = scene.letters.length
-      return `${count} ${count === 1 ? 'letter' : 'letters'}`
-    }
-    if (scene.type === 'free-canvas') {
-      const count = scene.items.length
-      return `${count} ${count === 1 ? 'keepsake' : 'keepsakes'}`
-    }
-    return 'Special chapter'
-  }
+  const theme = SCENE_CARD_THEMES[templateId] ?? SCENE_CARD_THEMES.birthday
+  const resolvedAccent = accentColor || theme.accentColor
+  const isLocked = !isEditor && isSceneTimeLocked(scene)
 
   const handleClick = () => {
     if (isDragging) return
     playSpatialSfx('tactile-tap')
-    onOpenScene(scene.id)
+    if (isLocked) {
+      onOpenTeaser?.(scene)
+    } else {
+      onOpenScene(scene.id)
+    }
   }
+
+  const containerThemeClasses =
+    scene.type === 'letters'
+      ? `${theme.lettersBg} ${theme.lettersBorder}`
+      : `${theme.canvasBg} ${theme.canvasBorder}`
 
   return (
     <div
@@ -82,11 +89,12 @@ export function SceneCard({
       }}
       onContextMenu={onContextMenu}
       className={cn(
-        'group relative flex min-h-[170px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#1E1815]/90 p-6 text-left shadow-xl backdrop-blur-md transition-all duration-200 select-none sm:min-h-[190px] sm:p-7',
+        'group relative flex min-h-[175px] w-full flex-col justify-between overflow-hidden rounded-2xl border p-6 text-left shadow-xl backdrop-blur-md transition-all duration-300 select-none sm:min-h-[195px] sm:p-7',
+        containerThemeClasses,
         isDraggable ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer',
         !isDragging &&
           !isDragOver &&
-          'hover:-translate-y-1 hover:border-white/25 hover:shadow-2xl',
+          'hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/40',
         isDragging &&
           'pointer-events-none scale-95 opacity-35 shadow-2xl ring-2 ring-amber-400/60',
         isDragOver &&
@@ -94,46 +102,69 @@ export function SceneCard({
         className,
       )}
     >
-      {/* Subtle Ambient Hover Glow */}
+      {/* Dynamic Ambient Hover Glow */}
       <div
         className="pointer-events-none absolute -inset-8 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-20"
-        style={{ backgroundColor: accentColor }}
+        style={{ backgroundColor: resolvedAccent }}
         aria-hidden="true"
       />
 
-      {/* Top Header: Icon & Item Count Badge */}
-      <div className="relative z-10 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-[#28211D] shadow-inner transition-transform duration-300 group-hover:scale-105">
-            {getSceneIcon()}
-          </div>
-          {isDraggable && (
-            <div
-              title="Drag to reorder scene"
-              className="flex h-7 w-5 items-center justify-center rounded text-white/30 transition-colors group-hover:text-amber-300/80"
-            >
-              <GripVertical className="h-4 w-4" />
-            </div>
-          )}
-        </div>
+      {/* Polymorphic Content by Scene Type */}
+      {scene.type === 'letters' ? (
+        <HeartfeltLettersCardContent
+          scene={scene}
+          templateId={templateId}
+          theme={theme}
+          accentColor={resolvedAccent}
+          isDraggable={isDraggable}
+          isEditor={isEditor}
+        />
+      ) : (
+        <MemoryCanvasCardContent
+          scene={scene}
+          templateId={templateId}
+          theme={theme}
+          accentColor={resolvedAccent}
+          isDraggable={isDraggable}
+          isEditor={isEditor}
+        />
+      )}
 
-        <span className="rounded-full border border-white/10 bg-black/30 px-3 py-1 font-sans text-[11px] font-medium text-stone-300">
-          {getItemsCountLabel()}
-        </span>
-      </div>
-
-      {/* Bottom Content: Title & Subtitle */}
-      <div className="relative z-10 mt-4 space-y-1">
-        <div className="flex items-center justify-between">
-          <h3 className="font-heading text-lg font-semibold tracking-tight text-[#FAF6F0] transition-colors group-hover:text-amber-200 sm:text-xl">
-            {scene.title}
-          </h3>
-          <ArrowRight className="h-4 w-4 text-stone-500 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-amber-300" />
+      {/* Time-Lock Status / Schedule Action */}
+      {isLocked && (
+        <div className="relative z-10 mt-3 flex items-center gap-1.5 rounded-lg border border-amber-400/30 bg-amber-950/50 px-2.5 py-1.5 text-[11px] text-amber-200">
+          <Lock className="h-3.5 w-3.5 shrink-0 text-amber-400" />
+          <span className="truncate">
+            Unlocks {formatUnlockDate(scene.schedule?.unlockAt)} • Touch for
+            countdown
+          </span>
         </div>
-        <p className="line-clamp-2 font-sans text-xs text-[#A99B90]">
-          {scene.subtitle}
-        </p>
-      </div>
+      )}
+
+      {isEditor && (
+        <div className="relative z-20 mt-3 flex items-center justify-between border-t border-white/5 pt-2">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenSchedule?.(scene)
+            }}
+            className={cn(
+              'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors',
+              scene.schedule?.enabled
+                ? 'border border-amber-400/40 bg-amber-950/60 text-amber-200 hover:bg-amber-900/60'
+                : 'text-stone-400 hover:bg-white/5 hover:text-stone-200',
+            )}
+          >
+            <CalendarClock className="h-3.5 w-3.5 text-amber-400/80" />
+            <span>
+              {scene.schedule?.enabled
+                ? `Unlocks ${formatUnlockDate(scene.schedule.unlockAt)}`
+                : 'Schedule release'}
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   )
 }

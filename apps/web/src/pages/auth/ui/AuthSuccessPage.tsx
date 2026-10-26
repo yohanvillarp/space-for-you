@@ -54,7 +54,10 @@ export function AuthSuccessPage() {
           const user = await appwriteAccount.get()
           if (user) {
             setSessionHint(true)
-            window.location.replace(ROUTES.DASHBOARD)
+            const returnPath =
+              sessionStorage.getItem('sfy_auth_return') || ROUTES.DASHBOARD
+            sessionStorage.removeItem('sfy_auth_return')
+            window.location.replace(returnPath)
             return
           }
         } catch {

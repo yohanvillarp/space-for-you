@@ -167,7 +167,7 @@ export function LockGateSidebar({
 
             {activeCategory === 'atmospheres' && (
               <BackgroundAtmosphereGrid
-                currentTheme={config.backgroundTheme}
+                currentTheme={config.backgroundTheme || 'midnight-sanctuary'}
                 onSelectTheme={(bg) => onChangeConfig({ backgroundTheme: bg })}
                 items={filteredAtmospheres}
                 searchQuery={searchQuery}

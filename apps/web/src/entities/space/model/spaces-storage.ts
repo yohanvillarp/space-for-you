@@ -203,7 +203,7 @@ export function duplicateSpace(
 
 export function createNewSpace(
   templateId: SpaceTemplateId,
-  title = 'My Sanctuary Space',
+  title = 'My Dedicated Space',
   recipientName = 'Someone Special',
 ): UserSpace {
   const newId = `space_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`

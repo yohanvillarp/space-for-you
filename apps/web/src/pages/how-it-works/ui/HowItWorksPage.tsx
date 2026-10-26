@@ -30,8 +30,8 @@ export function HowItWorksPage() {
             A Gentle, Intentional Process
           </h1>
           <p className="text-text-secondary mx-auto max-w-xl font-sans text-sm leading-relaxed sm:text-base">
-            Creating a personalized digital sanctuary takes only a few
-            thoughtful steps.
+            Creating a personalized digital space takes only a few thoughtful
+            steps.
           </p>
         </div>
 

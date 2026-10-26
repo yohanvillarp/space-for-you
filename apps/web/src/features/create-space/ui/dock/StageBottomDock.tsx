@@ -70,7 +70,7 @@ export function StageBottomDock({
   return (
     <>
       <nav
-        aria-label="Sanctuary scene navigation dock"
+        aria-label="Scene navigation dock"
         onContextMenu={(e) => openMenu(e, { type: 'dock' })}
         className={cn(
           'pointer-events-auto absolute bottom-3.5 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 scrollbar-none items-center gap-1 overflow-x-auto rounded-full border border-white/15 bg-[#140F0D]/95 px-2 py-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.65)] backdrop-blur-xl select-none',
@@ -83,7 +83,7 @@ export function StageBottomDock({
             type="button"
             onClick={() => handleSwitch('hub')}
             onContextMenu={(e) => openMenu(e, { type: 'hub' })}
-            title="Space Hub: Central Sanctuary Portal"
+            title="Space Hub: Central Portal"
             className={dockBtnClass(activeSceneId === 'hub')}
           >
             <Home className="h-3.5 w-3.5 shrink-0" />
@@ -118,7 +118,7 @@ export function StageBottomDock({
         {/* Divider 1 */}
         <div className="mx-0.5 h-4 w-px shrink-0 bg-white/15" />
 
-        {/* Section 2: Sanctuary Scenes (Creative Content) */}
+        {/* Section 2: Creative Scenes */}
         <div className="flex shrink-0 items-center gap-1">
           {scenes.map((scene, index) => {
             const isSelected = activeSceneId === scene.id
@@ -237,7 +237,6 @@ export function StageBottomDock({
         </div>
       </nav>
 
-      {/* Dock Context Menu */}
       <DockContextMenu
         state={menuState}
         totalScenes={scenes.length}
@@ -252,14 +251,13 @@ export function StageBottomDock({
         onToggleProtection={onToggleProtection}
       />
 
-      {/* Rename Scene Modal */}
       {renamingScene && (
         <RenameSceneModal
           key={renamingScene.id}
           isOpen={true}
           currentTitle={renamingScene.title}
           onClose={() => setRenamingScene(null)}
-          onSave={(newTitle) => onRenameScene?.(renamingScene.id, newTitle)}
+          onSave={(title) => onRenameScene?.(renamingScene.id, title)}
         />
       )}
     </>

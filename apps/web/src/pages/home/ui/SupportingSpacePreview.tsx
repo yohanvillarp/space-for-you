@@ -4,26 +4,31 @@ export interface SupportingSpacePreviewProps {
   className?: string
 }
 
-export function SupportingSpacePreview({ className }: SupportingSpacePreviewProps) {
+export function SupportingSpacePreview({
+  className,
+}: SupportingSpacePreviewProps) {
   return (
     <article
       aria-label="Preview of a personalized digital space: To Julian"
       className={cn(
-        'relative rounded-2xl border border-border-base bg-bg-surface p-5 sm:p-6 shadow-xs',
-        'transition-all duration-300 ease-out hover:shadow-md hover:-translate-y-1',
-        'motion-reduce:transition-none motion-reduce:transform-none',
+        'border-border-base bg-bg-surface relative rounded-2xl border p-5 shadow-xs sm:p-6',
+        'transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md',
+        'motion-reduce:transform-none motion-reduce:transition-none',
         className,
       )}
     >
       {/* Supporting Space Header */}
-      <header className="flex items-center justify-between border-b border-border-subtle pb-3">
+      <header className="border-border-subtle flex items-center justify-between border-b pb-3">
         <div className="flex items-center gap-2">
-          <span className="font-heading text-base font-normal text-text-primary italic">
+          <span className="font-heading text-text-primary text-base font-normal italic">
             To Julian
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
+          <span
+            className="bg-accent h-1.5 w-1.5 rounded-full"
+            aria-hidden="true"
+          />
         </div>
-        <span className="font-sans text-[11px] text-text-muted">
+        <span className="text-text-muted font-sans text-[11px]">
           Our little room
         </span>
       </header>
@@ -32,10 +37,10 @@ export function SupportingSpacePreview({ className }: SupportingSpacePreviewProp
       <div className="my-4 space-y-3">
         <div className="flex items-center gap-3">
           {/* Minimalist Horizon Mark */}
-          <div className="w-10 h-10 shrink-0 rounded-lg bg-bg-subtle border border-border-subtle flex items-center justify-center">
+          <div className="bg-bg-subtle border-border-subtle flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border">
             <svg
               viewBox="0 0 24 24"
-              className="w-5 h-5 stroke-primary"
+              className="stroke-primary h-5 w-5"
               fill="none"
               strokeWidth="1.5"
               strokeLinecap="round"
@@ -47,18 +52,18 @@ export function SupportingSpacePreview({ className }: SupportingSpacePreviewProp
             </svg>
           </div>
 
-          <p className="font-sans text-xs sm:text-sm text-text-secondary leading-snug">
+          <p className="text-text-secondary font-sans text-xs leading-snug sm:text-sm">
             &ldquo;Wherever you are today, this little room is yours.&rdquo;
           </p>
         </div>
       </div>
 
       {/* Subtle Bottom Accent Tag */}
-      <footer className="pt-1 flex items-center justify-between text-[11px] text-text-muted">
-        <span className="font-sans">Private sanctuary</span>
+      <footer className="text-text-muted flex items-center justify-between pt-1 text-[11px]">
+        <span className="font-sans">Dedicated space</span>
         <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-arcilla" />
-          <span className="w-2 h-2 rounded-full bg-primary" />
+          <span className="bg-arcilla h-2 w-2 rounded-full" />
+          <span className="bg-primary h-2 w-2 rounded-full" />
         </div>
       </footer>
     </article>

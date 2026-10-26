@@ -5,8 +5,6 @@
       "release-type": "node",
       "package-name": "space-for-you",
       "changelog-path": "CHANGELOG.md",
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
       "extra-files": ["apps/web/package.json"]
     }
   }

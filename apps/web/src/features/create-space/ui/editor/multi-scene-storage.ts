@@ -97,7 +97,13 @@ export interface UseMultiSceneStateReturn {
   /** Updates scene properties. */
   handleUpdateScene: (
     sceneId: string,
-    updates: { title?: string; subtitle?: string },
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?:
+        | import('@/features/create-space/model/scenes.types').SceneScheduleConfig
+        | null
+    },
   ) => void
   /** Duplicates an existing scene. */
   handleDuplicateScene: (sceneId: string) => void

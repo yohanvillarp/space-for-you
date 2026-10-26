@@ -1,0 +1,10 @@
+{
+  "name": "unlock-space",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Appwrite Cloud Function for server-side space unlocking and zero-exposure passcode validation",
+  "main": "index.js",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}

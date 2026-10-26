@@ -4,6 +4,7 @@ import type {
   SpaceScene,
   SpaceMeta,
   LetterItem,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import type {
   SpatialItem,
@@ -30,7 +31,11 @@ export interface EditorStageViewportProps {
   onRenameScene: (sceneId: string, newTitle: string) => void
   onUpdateScene?: (
     sceneId: string,
-    updates: { title?: string; subtitle?: string },
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?: SceneScheduleConfig | null
+    },
   ) => void
   onDuplicateScene: (sceneId: string) => void
   onMoveScene: (sceneId: string, direction: 'left' | 'right') => void
@@ -42,6 +47,8 @@ export interface EditorStageViewportProps {
   copiedItem: SpatialItem | null
   onSelectItem: (id: string | null) => void
   onUpdateItemPosition: (id: string, x: number, y: number) => void
+  onStartDragItem?: (id: string) => void
+  onCommitItemPosition?: () => void
   onRotateItem: (id: string, delta: number) => void
   onSetRotation: (id: string, rotation: number) => void
   onResetRotation: (id: string) => void
@@ -71,7 +78,11 @@ export interface EditorStageViewportProps {
   onDeleteLetter?: (id: string) => void
   onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateLetter: (updated: LetterItem) => void
+  spaceId?: string
   shareUrl?: string
+  isPublished?: boolean
+  isDirty?: boolean
+  onOpenPublish?: () => void
   shareCustomizer?: {
     customization: import('@/features/create-space/ui/share/share-customizer.types').ShareCardCustomization
     selectedTarget: import('@/features/create-space/ui/share/share-customizer.types').ShareColorTarget
@@ -129,18 +140,20 @@ export function EditorStageViewport(props: EditorStageViewportProps) {
         {...rendererProps}
       />
 
-      <StageBottomDock
-        activeSceneId={activeSceneId}
-        scenes={scenes}
-        onSelectScene={onOpenScene}
-        onOpenAddScene={onOpenAddScene}
-        isProtectionEnabled={protectionConfig.enabled}
-        onRenameScene={onRenameScene}
-        onDuplicateScene={onDuplicateScene}
-        onMoveScene={onMoveScene}
-        onDeleteScene={onDeleteScene}
-        onToggleProtection={onToggleProtection}
-      />
+      {!rendererProps.openLetterId && (
+        <StageBottomDock
+          activeSceneId={activeSceneId}
+          scenes={scenes}
+          onSelectScene={onOpenScene}
+          onOpenAddScene={onOpenAddScene}
+          isProtectionEnabled={protectionConfig.enabled}
+          onRenameScene={onRenameScene}
+          onDuplicateScene={onDuplicateScene}
+          onMoveScene={onMoveScene}
+          onDeleteScene={onDeleteScene}
+          onToggleProtection={onToggleProtection}
+        />
+      )}
     </main>
   )
 }

@@ -32,10 +32,12 @@ export function getLocalSpaceWithScenes(
 
   if (!space) {
     const allSpaces = getSavedSpaces()
+    const suffix = cleanId.split('-').pop() || cleanId
     space = allSpaces.find(
       (s) =>
         s.id === cleanId ||
-        (s as unknown as { slug?: string }).slug === cleanId,
+        s.slug === cleanId ||
+        (suffix && s.id.endsWith(suffix)),
     )
   }
 
@@ -63,6 +65,10 @@ export function getLocalSpaceWithScenes(
     ? serializeProtectionTheme(protection)
     : undefined
 
+  const resolvedPasscodeLength =
+    protection?.passcodeLength ??
+    (protection?.passcode ? protection.passcode.length : undefined)
+
   return {
     space,
     scenes,
@@ -73,5 +79,6 @@ export function getLocalSpaceWithScenes(
     passcodeSalt: protection?.enabled ? protection.passcodeSalt : undefined,
     passcodeHint: protection?.enabled ? protection.hint : undefined,
     protectionTheme,
+    passcodeLength: resolvedPasscodeLength,
   }
 }

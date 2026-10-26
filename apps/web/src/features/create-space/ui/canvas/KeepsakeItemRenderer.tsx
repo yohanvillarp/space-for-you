@@ -6,6 +6,7 @@ import {
   VinylPlayer,
   CassetteTape,
   MusicBox,
+  VintageRadio,
   WashiTape,
 } from '@/features/space-themes/shared'
 import { playSpatialSfx } from '@/shared/lib'
@@ -18,6 +19,8 @@ export interface KeepsakeItemRendererProps {
   onSaveText: () => void
   onStartEditText: () => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
+  onRecordVoiceNote?: (id: string) => void
+  isEditorMode?: boolean
 }
 
 export function KeepsakeItemRenderer({
@@ -28,6 +31,8 @@ export function KeepsakeItemRenderer({
   onSaveText,
   onStartEditText,
   onUpdateData,
+  onRecordVoiceNote,
+  isEditorMode,
 }: KeepsakeItemRendererProps) {
   switch (item.type) {
     case 'candle':
@@ -157,6 +162,12 @@ export function KeepsakeItemRenderer({
             label={item.data.title || 'Roadtrip Mixtape • Side A'}
             subtitle={item.data.subtitle || 'Memories & Melodies'}
             trackUrl={item.data.audioUrl}
+            duration={item.data.duration}
+            isVoiceNote={item.data.isVoiceNote ?? Boolean(item.data.audioUrl)}
+            onRecordClick={
+              onRecordVoiceNote ? () => onRecordVoiceNote(item.id) : undefined
+            }
+            isEditorMode={isEditorMode}
             className="shadow-2xl"
           />
         </div>
@@ -168,6 +179,18 @@ export function KeepsakeItemRenderer({
           <MusicBox
             title={item.data.title || 'Happy Birthday (Music Box)'}
             artist={item.data.artist || 'Oleg Kirilkov'}
+            trackUrl={item.data.audioUrl}
+            className="shadow-2xl"
+          />
+        </div>
+      )
+
+    case 'vintage-radio':
+      return (
+        <div className="w-64 sm:w-72">
+          <VintageRadio
+            title={item.data.title || 'Roadtrip Mixtape • Side A'}
+            artist={item.data.artist || 'Atelier Soundscape'}
             trackUrl={item.data.audioUrl}
             className="shadow-2xl"
           />

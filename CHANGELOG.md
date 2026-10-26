@@ -1,5 +1,64 @@
 # Changelog
 
+## [1.0.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.10.0...space-for-you-v1.0.0) (2026-10-26)
+
+
+### Features
+
+* **audio:** implement 60s voice note recorder and cassette keepsake ([629d0ff](https://github.com/yohanvillarp/space-for-you/commit/629d0ff7a8af577eb080ec850375f20b82ae8abe))
+* **audio:** upload recorded voice notes to space-assets bucket ([9ba64d9](https://github.com/yohanvillarp/space-for-you/commit/9ba64d9ac7b7e2a9986157e7a31cdf91dc9e7e2f))
+* **auth:** require authentication for space creation and studio editing ([62f62fd](https://github.com/yohanvillarp/space-for-you/commit/62f62fdd4eabbf7e05a4561eebf1d57fee183bb8))
+* **canvas:** add scale for laptops and mobile landscape ([a47c6e7](https://github.com/yohanvillarp/space-for-you/commit/a47c6e7c50717b3aaac236d0c4febb263baceb6c))
+* **copy:** align editorial voice to dedicated spaces ([fa0fcc8](https://github.com/yohanvillarp/space-for-you/commit/fa0fcc8d7b3e1347440e52744365fa4dd4358708))
+* **dashboard:** implement space lifecycle management and sync engine ([721c730](https://github.com/yohanvillarp/space-for-you/commit/721c73024f63c139a7c6a5f571f4c48355aff57e))
+* **editor:** implement 25-step bounded undo and redo control ([575fdb5](https://github.com/yohanvillarp/space-for-you/commit/575fdb5eaccd3956bfedea39c5617cece5be0277))
+* **editor:** implement sanctuary cloud publishing and preflight flow ([112a2c8](https://github.com/yohanvillarp/space-for-you/commit/112a2c8f13ee498cf084eaaf9a97920e9a1e8946))
+* **editor:** implement sanctuary cloud publishing and preflight flow ([6fefd02](https://github.com/yohanvillarp/space-for-you/commit/6fefd026ba0fdfcfe1d46a5b0845e8f84db6be61))
+* **hub:** add scheduled date unlock and teaser countdown for scenes ([97888a3](https://github.com/yohanvillarp/space-for-you/commit/97888a3bd6d012f8c8cff0af71e6015d4d89999a))
+* **hub:** apply template universe surface and accent styles ([02a4edc](https://github.com/yohanvillarp/space-for-you/commit/02a4edc13e2623153a5084f89d7a3d1183d1bb46))
+* **hub:** redesign scene cards with unique layouts and themes ([24a0722](https://github.com/yohanvillarp/space-for-you/commit/24a0722554af6b7a07742666dd32a600aad28c5d))
+* **hub:** scheduled scene unlock, hub redesign and canvas history ([106e0bc](https://github.com/yohanvillarp/space-for-you/commit/106e0bc492cdb7d9a9df11c59fbd435f674227eb))
+* **hub:** tailor card copy and hide item counts in public view ([8481e45](https://github.com/yohanvillarp/space-for-you/commit/8481e45d7ef44747c172883236dd0eb77ba85cf5))
+* **lock:** add backdrop selector defaulting to first theme in editor ([7151eeb](https://github.com/yohanvillarp/space-for-you/commit/7151eebc7c7c3d7951c25dd3ae5a733505cbc79d))
+* **lock:** make lock gate responsive and remove arbitrary vault drag ([26316b1](https://github.com/yohanvillarp/space-for-you/commit/26316b1b2f6918d5f03784ac7fcdf5f1c6345f46))
+* **publish:** add content fingerprinting and 10 daily updates limit ([094c81d](https://github.com/yohanvillarp/space-for-you/commit/094c81d11029a1043b5c0f1fbf5b9fb86b83e6ac))
+* **security:** harden lock gate and quotas with cloud functions ([b5b3641](https://github.com/yohanvillarp/space-for-you/commit/b5b36412926b2ebec565a38a19c9efa5f67612ce))
+* **security:** link cloud function ids to environment config ([cbf88cd](https://github.com/yohanvillarp/space-for-you/commit/cbf88cdf4d7ec1a61cd9dd9a72421184f3040615))
+* **share:** implement foldable keepsake card and 1-click sharing ([4f59bd8](https://github.com/yohanvillarp/space-for-you/commit/4f59bd801b4736b376ca7a8c86f2e317aa3a9e00))
+* **share:** improve draft flow and unpublished updates alert ([52449f0](https://github.com/yohanvillarp/space-for-you/commit/52449f08a2ec72592403a8ecac33098fc5b46970))
+* **storage:** add delete file cleanup on item deletion ([7edb57b](https://github.com/yohanvillarp/space-for-you/commit/7edb57b4f88c5bd1c98598f55c6e6f574b4361bf))
+* **storage:** link space-assets bucket and sample voice note ([cc5f7dc](https://github.com/yohanvillarp/space-for-you/commit/cc5f7dc8ac42138349883f9a592e7d22f2140c18))
+* **theme:** add friendship radio, fix cork contrast and sidebar ([57d1ec6](https://github.com/yohanvillarp/space-for-you/commit/57d1ec6884db20b98777b7cda189244a3e9c8fea))
+* **themes:** apply template universe surfaces across all scenes ([93b46c8](https://github.com/yohanvillarp/space-for-you/commit/93b46c8937c9cb4531a8e72f0742ca05150a867a))
+* **viewer:** add one-time welcome context screen before space hub ([bbb07e9](https://github.com/yohanvillarp/space-for-you/commit/bbb07e92971e18cf5a75ddd51f016bcadf179250))
+* **viewer:** add theme unboxing ceremonies and bloom transitions ([f048dda](https://github.com/yohanvillarp/space-for-you/commit/f048dda5147c2002c0f6d68104117b1600bae8ed))
+* **viewer:** filter empty scenes in public sanctuary viewer ([fd03e13](https://github.com/yohanvillarp/space-for-you/commit/fd03e131632fc9fcc9f31828db0653c9ada8a57a))
+* **viewer:** present space hub scene as primary public view ([f2682f1](https://github.com/yohanvillarp/space-for-you/commit/f2682f15d01e11848a9af10d18ad741aa8f9c1af))
+
+
+### Bug Fixes
+
+* **audio:** decouple voice notes from ambient soundtrack limit ([802e7b4](https://github.com/yohanvillarp/space-for-you/commit/802e7b4003158d29c19c8f0e1549ce457be2f2d3))
+* **dock:** resolve clipping and padding issues in scene selector dock ([fa59117](https://github.com/yohanvillarp/space-for-you/commit/fa591175ca83e8ca8821cde214bc7128a5a288f9))
+* **editor:** open sidebar by default on desktop viewports ([cc59ca7](https://github.com/yohanvillarp/space-for-you/commit/cc59ca7bbcd7f33b413a50266ec954af83009fad))
+* **editor:** restrict undo and redo exclusively to free canvas ([d01523a](https://github.com/yohanvillarp/space-for-you/commit/d01523afc8c3ccb360bbc5dff8c2116f69b1a726))
+* **functions:** add index.js re-export entrypoint for appwrite runtime ([6b9e032](https://github.com/yohanvillarp/space-for-you/commit/6b9e03263ecb816b673a3b74995ce54bfb470bdb))
+* **lock:** remove redundant floating backdrop selector from stage ([2cc731c](https://github.com/yohanvillarp/space-for-you/commit/2cc731cc3a93717d7492e855cc857801d487c497))
+* **lock:** synchronize passcode length between editor and public viewer ([734a2e4](https://github.com/yohanvillarp/space-for-you/commit/734a2e4a8f235dfa4a859bd4353fe92c5065ef82))
+* **navigation:** prevent duplicate space creation on browser back ([55b9c62](https://github.com/yohanvillarp/space-for-you/commit/55b9c622e52df0847502af45cf8bea31376c7ec0))
+* **share:** unify canonical slug resolution and share hub status ([8b6a1b8](https://github.com/yohanvillarp/space-for-you/commit/8b6a1b8b912f388ef5de001dd4d90742549f6666))
+* **stage:** restrict empty stage cue exclusively to editor mode ([96efa18](https://github.com/yohanvillarp/space-for-you/commit/96efa1846a01cf5e154e108dc2f3891d21b8c024))
+* **status:** enforce draft lifecycle and protect unpublished spaces ([a99763d](https://github.com/yohanvillarp/space-for-you/commit/a99763dd6dde34e37b6e4498a6c71397f03754fb))
+* **status:** enforce draft lifecycle and protect unpublished spaces ([ccb6d08](https://github.com/yohanvillarp/space-for-you/commit/ccb6d087cd088a866c6202d189fb4b8bdac99fb0))
+* **sync:** implement differential scenes sync and keypad animations ([f43e3aa](https://github.com/yohanvillarp/space-for-you/commit/f43e3aa922e2b9d7ba1cee36dc6abf5fd8fec7ed))
+* **toolbox:** make voice note cassette universal across all templates ([db961de](https://github.com/yohanvillarp/space-for-you/commit/db961de5bd1bbcfa51e0228947a98c078686bc81))
+* **viewer:** hide scene dock on open letter and fix auto audio play ([9c64316](https://github.com/yohanvillarp/space-for-you/commit/9c6431688474fdc6ac09a1e3bb7c729fcfd0ad47))
+
+
+### Miscellaneous Chores
+
+* graduate to official v1.0.0 release ([58a1903](https://github.com/yohanvillarp/space-for-you/commit/58a19033a1bc7f3fdc7e3233c9bd1b323b11edf6))
+
 ## [0.10.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.9.0...space-for-you-v0.10.0) (2026-10-25)
 
 

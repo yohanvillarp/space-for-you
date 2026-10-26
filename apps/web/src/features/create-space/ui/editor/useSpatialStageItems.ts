@@ -11,30 +11,40 @@ import {
 } from '@/features/create-space/lib/spatial-stage-defaults'
 import { getNextItemLabel } from '@/features/create-space/lib/stage-item-naming'
 import { canAddStagePhoto } from '@/features/create-space/lib/stage-photo-limit'
+import { deleteStorageFileByUrl } from '@/features/create-space/lib/stage-photo-upload'
+import { useUndoRedoHistory } from '@/features/create-space/ui/editor/useUndoRedoHistory'
 
-function normalizeAngle(a: number): number {
-  const n = ((a + 180) % 360) - 180
-  return Math.round((n < -180 ? n + 360 : n) * 10) / 10
-}
+const normalizeAngle = (a: number) =>
+  Math.round((((((a + 180) % 360) + 360) % 360) - 180) * 10) / 10
 
 /**
  * Custom hook managing interactive spatial items placed on the 2D diorama canvas.
- * Handles drag-and-drop coordinate updates (0-100%), rotation, z-index layering,
- * clipboard copy/paste, and in-memory deferred photo attachments.
- *
- * @param templateId - Theme template identifier ('birthday' | 'anniversary' | 'friendship').
- * @param initialItems - Optional initial stage items for the scene.
- * @returns State and event handlers for canvas stage interactions.
+ * Integrated with a 25-step bounded, non-saturating undo/redo history buffer.
  */
 export function useSpatialStageItems(
   templateId: SpaceTemplateId,
   initialItems?: SpatialItem[],
 ) {
-  const [items, setItems] = useState<SpatialItem[]>(() =>
+  const defaultItems =
     initialItems && initialItems.length > 0
       ? initialItems
-      : getDefaultItemsForTemplate(templateId),
-  )
+      : getDefaultItemsForTemplate(templateId)
+
+  const history = useUndoRedoHistory<SpatialItem[]>(defaultItems, {
+    maxHistory: 25,
+  })
+  const {
+    state: items,
+    commit,
+    updatePresent,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    startTransaction,
+    commitTransaction,
+  } = history
+
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [copiedItem, setCopiedItem] = useState<SpatialItem | null>(null)
   const [pendingPhotos, setPendingPhotos] = useState<Map<string, File>>(
@@ -42,13 +52,13 @@ export function useSpatialStageItems(
   )
 
   const handleUpdatePosition = (id: string, x: number, y: number) => {
-    setItems((prev) =>
+    updatePresent((prev) =>
       prev.map((it) => (it.id === id && !it.isLocked ? { ...it, x, y } : it)),
     )
   }
 
   const handleSetItemRotation = (id: string, angle: number) => {
-    setItems((prev) =>
+    commit((prev) =>
       prev.map((it) =>
         it.id === id && !it.isLocked
           ? { ...it, rotation: normalizeAngle(angle) }
@@ -58,7 +68,7 @@ export function useSpatialStageItems(
   }
 
   const handleRotateItem = (id: string, delta: number) => {
-    setItems((prev) =>
+    commit((prev) =>
       prev.map((it) =>
         it.id === id && !it.isLocked
           ? { ...it, rotation: normalizeAngle(it.rotation + delta) }
@@ -68,20 +78,20 @@ export function useSpatialStageItems(
   }
 
   const handleResetRotation = (id: string) => {
-    setItems((prev) =>
+    commit((prev) =>
       prev.map((item) => (item.id === id ? { ...item, rotation: 0 } : item)),
     )
   }
 
   const handleBringToFront = (id: string) => {
-    setItems((prev) => {
+    commit((prev) => {
       const maxZ = prev.reduce((max, it) => Math.max(max, it.zIndex), 0)
       return prev.map((it) => (it.id === id ? { ...it, zIndex: maxZ + 1 } : it))
     })
   }
 
   const handleSendToBack = (id: string) => {
-    setItems((prev) => {
+    commit((prev) => {
       const minZ = prev.reduce((min, it) => Math.min(min, it.zIndex), 10)
       return prev.map((it) =>
         it.id === id ? { ...it, zIndex: Math.max(1, minZ - 1) } : it,
@@ -90,7 +100,12 @@ export function useSpatialStageItems(
   }
 
   const handleDeleteItem = (id: string) => {
-    setItems((prev) => prev.filter((it) => it.id !== id))
+    const targetItem = items.find((it) => it.id === id)
+    if (targetItem?.data?.photoUrl)
+      deleteStorageFileByUrl(targetItem.data.photoUrl)
+    if (targetItem?.data?.audioUrl)
+      deleteStorageFileByUrl(targetItem.data.audioUrl)
+    commit((prev) => prev.filter((it) => it.id !== id))
     if (selectedId === id) setSelectedId(null)
     setPendingPhotos((prev) => {
       if (!prev.has(id)) return prev
@@ -101,7 +116,7 @@ export function useSpatialStageItems(
   }
 
   const handleToggleLock = (id: string) => {
-    setItems((prev) =>
+    commit((prev) =>
       prev.map((it) => (it.id === id ? { ...it, isLocked: !it.isLocked } : it)),
     )
   }
@@ -110,7 +125,7 @@ export function useSpatialStageItems(
     id: string,
     updates: Partial<SpatialItemData>,
   ) => {
-    setItems((prev) =>
+    commit((prev) =>
       prev.map((it) =>
         it.id === id ? { ...it, data: { ...it.data, ...updates } } : it,
       ),
@@ -139,7 +154,6 @@ export function useSpatialStageItems(
     const itemDef = TOOLBOX_ITEMS.find((it) => it.type === type)
     const newId = `${type}-${Date.now()}`
     const maxZ = items.reduce((max, it) => Math.max(max, it.zIndex), 10)
-
     const defaultX = dropX ?? Math.round(35 + Math.random() * 30)
     const defaultY = dropY ?? Math.round(40 + Math.random() * 25)
     const randomTilt = Math.round((Math.random() * 8 - 4) * 10) / 10
@@ -152,13 +166,10 @@ export function useSpatialStageItems(
       y: defaultY,
       rotation: randomTilt,
       zIndex: maxZ + 1,
-      data: {
-        ...(itemDef?.defaultData || {}),
-        ...(customData || {}),
-      },
+      data: { ...(itemDef?.defaultData || {}), ...(customData || {}) },
     }
 
-    setItems((prev) => [...prev, newItem])
+    commit((prev) => [...prev, newItem])
     setSelectedId(newId)
   }
 
@@ -180,12 +191,8 @@ export function useSpatialStageItems(
       data: JSON.parse(JSON.stringify(target.data)),
     }
 
-    setItems((prev) => [...prev, clone])
+    commit((prev) => [...prev, clone])
     setSelectedId(newId)
-  }
-
-  const handleCopyItem = (item: SpatialItem) => {
-    setCopiedItem(item)
   }
 
   const handlePasteItem = (x?: number, y?: number) => {
@@ -208,29 +215,25 @@ export function useSpatialStageItems(
       data: JSON.parse(JSON.stringify(copiedItem.data)),
     }
 
-    setItems((prev) => [...prev, newItem])
+    commit((prev) => [...prev, newItem])
     setSelectedId(newId)
-  }
-
-  const handleResetToDefaults = () => {
-    setItems(getDefaultItemsForTemplate(templateId))
-    setSelectedId(null)
-  }
-
-  const handleClearCanvas = () => {
-    setItems([])
-    setSelectedId(null)
   }
 
   return {
     items,
-    setItems,
+    setItems: commit,
     selectedId,
     setSelectedId,
     copiedItem,
     pendingPhotos,
     setPendingPhoto,
     clearPendingPhotos,
+    canUndo,
+    canRedo,
+    handleUndo: undo,
+    handleRedo: redo,
+    handleStartDragItem: startTransaction,
+    handleCommitItemPosition: commitTransaction,
     handleUpdatePosition,
     handleRotateItem,
     handleSetItemRotation,
@@ -243,9 +246,15 @@ export function useSpatialStageItems(
     handleAssignItemPhoto,
     handleAddItem,
     handleDuplicateItem,
-    handleCopyItem,
+    handleCopyItem: (item: SpatialItem) => setCopiedItem(item),
     handlePasteItem,
-    handleResetToDefaults,
-    handleClearCanvas,
+    handleResetToDefaults: () => {
+      commit(getDefaultItemsForTemplate(templateId))
+      setSelectedId(null)
+    },
+    handleClearCanvas: () => {
+      commit([])
+      setSelectedId(null)
+    },
   }
 }

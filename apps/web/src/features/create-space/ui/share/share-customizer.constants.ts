@@ -49,7 +49,7 @@ export const SHARE_FONT_OPTIONS: FontOption[] = [
     name: 'Lora Editorial',
     familyClass: 'font-serif',
     description: 'Warm literary serif with poetic rhythm',
-    sample: 'A quiet, private sanctuary',
+    sample: 'A quiet, private space',
     tags: ['editorial', 'lora', 'serif', 'classic', 'book'],
   },
   {
@@ -171,14 +171,14 @@ export const HARMONY_PALETTES: HarmonyPalette[] = [
     tags: ['rose', 'pink', 'romance', 'blush', 'tender'],
   },
   {
-    name: 'Sage Sanctuary',
+    name: 'Sage Haven',
     description:
       'Serene botanical mist with deep olive greenery and earth charcoal',
     qrColor: '#4A6B56',
     cardBg: '#F0F4F1',
     textColor: '#1E2D24',
     tapeColor: 'sage',
-    tags: ['sage', 'green', 'sanctuary', 'peace', 'nature'],
+    tags: ['sage', 'green', 'haven', 'peace', 'nature'],
   },
   {
     name: 'Royal Indigo',

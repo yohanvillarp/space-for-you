@@ -1,10 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
-import type {
-  SpatialItem,
-  SpatialItemType,
-} from '@/features/create-space/model/spatial-stage.types'
 import { SpatialCanvasItem } from './SpatialCanvasItem'
 import { SpatialStageAtmosphere } from './canvas/SpatialStageAtmosphere'
 import { useCanvasDragAndDrop } from './canvas/useCanvasDragAndDrop'
@@ -15,80 +11,61 @@ import {
   VIRTUAL_CANVAS_HEIGHT,
 } from './canvas/useVirtualCanvasScale'
 import { CanvasZoomControl } from './canvas/CanvasZoomControl'
+import { useStudioBehavior } from './editor/useStudioBehavior'
+import { VoiceNoteRecorderModal } from './canvas/inspector/VoiceNoteRecorderModal'
+import { countSpaceVoiceNotes } from '@/features/create-space/lib/voice-recorder/voice-note-types'
+import type { SpatialStageCanvasProps } from './canvas/spatial-stage-canvas.types'
 import { cn } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
 import '@/features/space-themes/romantic/romantic.css'
 import '@/features/space-themes/friendship/friendship.css'
 
-export interface SpatialStageCanvasProps {
-  templateId: SpaceTemplateId
-  items: SpatialItem[]
-  selectedId: string | null
-  copiedItem?: SpatialItem | null
-  onSelectItem: (id: string | null) => void
-  onUpdateItemPosition: (id: string, x: number, y: number) => void
-  onRotateItem: (id: string, delta: number) => void
-  onSetRotation?: (id: string, angle: number) => void
-  onResetRotation?: (id: string) => void
-  onBringToFront: (id: string) => void
-  onSendToBack?: (id: string) => void
-  onDeleteItem: (id: string) => void
-  onDuplicateItem?: (id: string) => void
-  onToggleLock?: (id: string) => void
-  onCopyItem?: (item: SpatialItem) => void
-  onPasteItem?: (x?: number, y?: number) => void
-  onResetToDefaults?: () => void
-  onClearCanvas?: () => void
-  onUpdateItemData: (id: string, updates: Partial<SpatialItem['data']>) => void
-  onAddItem: (
-    type: SpatialItemType,
-    x?: number,
-    y?: number,
-    customData?: Partial<SpatialItem['data']>,
-  ) => void
-  onOpenPhotoPicker?: (item: SpatialItem) => void
-  className?: string
-}
+export type { SpatialStageCanvasProps }
 
 const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
-  birthday: 'celebration-table-surface',
-  anniversary: 'romantic-desk-surface',
-  friendship: 'corkboard-surface',
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
 }
 
-export function SpatialStageCanvas({
-  templateId,
-  items,
-  selectedId,
-  copiedItem = null,
-  onSelectItem,
-  onUpdateItemPosition,
-  onRotateItem,
-  onSetRotation,
-  onResetRotation,
-  onBringToFront,
-  onSendToBack,
-  onDeleteItem,
-  onDuplicateItem,
-  onToggleLock,
-  onCopyItem,
-  onPasteItem,
-  onResetToDefaults,
-  onClearCanvas,
-  onUpdateItemData,
-  onAddItem,
-  onOpenPhotoPicker,
-  className,
-}: SpatialStageCanvasProps) {
-  const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
+export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
+  const {
+    templateId,
+    items,
+    selectedId,
+    copiedItem = null,
+    onSelectItem,
+    onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
+    onRotateItem,
+    onSetRotation,
+    onResetRotation,
+    onBringToFront,
+    onSendToBack,
+    onDeleteItem,
+    onDuplicateItem,
+    onToggleLock,
+    onCopyItem,
+    onPasteItem,
+    onResetToDefaults,
+    onClearCanvas,
+    onUpdateItemData,
+    onAddItem,
+    onOpenPhotoPicker,
+    className,
+  } = props
 
-  // Automatically close context menu if the targeted item was deleted
+  const { isEditorMode } = useStudioBehavior()
+  const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
+  const [recordingCassetteId, setRecordingCassetteId] = useState<string | null>(
+    null,
+  )
+
   useEffect(() => {
     if (menuState.isOpen && menuState.target?.type === 'item') {
-      const targetId = menuState.target.item.id
-      if (!items.some((it) => it.id === targetId)) {
-        closeMenu()
-      }
+      const targetItem = menuState.target.item
+      if (!items.some((it) => it.id === targetItem.id)) closeMenu()
     }
   }, [items, menuState, closeMenu])
 
@@ -116,6 +93,8 @@ export function SpatialStageCanvas({
     selectedId,
     onSelectItem,
     onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
     onDeleteItem: handleDeleteItem,
     onAddItem,
   })
@@ -135,10 +114,6 @@ export function SpatialStageCanvas({
     openMenu({ type: 'canvas', coords: { x, y } }, e.clientX, e.clientY)
   }
 
-  const handleItemContextMenu = (item: SpatialItem, e: ReactMouseEvent) => {
-    openMenu({ type: 'item', item }, e.clientX, e.clientY)
-  }
-
   const {
     containerRef: viewportRef,
     scale,
@@ -147,6 +122,9 @@ export function SpatialStageCanvas({
     isMobile,
     scaledHeight,
   } = useVirtualCanvasScale()
+
+  const targetCassette = items.find((it) => it.id === recordingCassetteId)
+  const voiceNotesCount = countSpaceVoiceNotes(items)
 
   return (
     <div
@@ -162,7 +140,6 @@ export function SpatialStageCanvas({
           isMobile && zoomMode === 'fit' ? `${scaledHeight}px` : undefined,
       }}
     >
-      {/* Mobile Floating Zoom Mode Pill */}
       {isMobile && (
         <div className="absolute top-2.5 right-2.5 z-30">
           <CanvasZoomControl
@@ -173,7 +150,6 @@ export function SpatialStageCanvas({
         </div>
       )}
 
-      {/* Main Draggable Canvas Stage */}
       <div
         ref={containerRef}
         onDragOver={handleDragOver}
@@ -200,9 +176,9 @@ export function SpatialStageCanvas({
           templateId={templateId}
           isDragOver={isDragOver}
           isEmpty={items.length === 0}
+          isEditor={isEditorMode}
         />
 
-        {/* Render All Draggable Items on the Stage */}
         {items.map((item) => (
           <SpatialCanvasItem
             key={item.id}
@@ -217,12 +193,17 @@ export function SpatialStageCanvas({
             onBringToFront={onBringToFront}
             onDelete={handleDeleteItem}
             onUpdateData={onUpdateItemData}
-            onContextMenu={handleItemContextMenu}
+            onContextMenu={(it, e) =>
+              openMenu({ type: 'item', item: it }, e.clientX, e.clientY)
+            }
             onOpenPhotoPicker={onOpenPhotoPicker}
+            onRecordVoiceNote={
+              isEditorMode ? (id) => setRecordingCassetteId(id) : undefined
+            }
+            isEditorMode={isEditorMode}
           />
         ))}
 
-        {/* Stage Context Menu for Items and Canvas */}
         <StageContextMenu
           state={menuState}
           menuRef={menuRef}
@@ -244,6 +225,25 @@ export function SpatialStageCanvas({
           onClearCanvas={onClearCanvas || (() => {})}
         />
       </div>
+
+      {recordingCassetteId && (
+        <VoiceNoteRecorderModal
+          isOpen={Boolean(recordingCassetteId)}
+          onClose={() => setRecordingCassetteId(null)}
+          currentVoiceNotesCount={voiceNotesCount}
+          initialLabel={targetCassette?.data?.title || 'Personal Voice Message'}
+          onSaveVoiceNote={(audioUrl, durationSeconds, label) => {
+            onUpdateItemData(recordingCassetteId, {
+              audioUrl,
+              duration: durationSeconds,
+              title: label,
+              isVoiceNote: true,
+              isVoiceNoteSample: false,
+            })
+            setRecordingCassetteId(null)
+          }}
+        />
+      )}
     </div>
   )
 }

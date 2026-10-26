@@ -7,7 +7,12 @@ const COLLAPSE_THRESHOLD = 160
 const SIDEBAR_STORAGE_KEY = 'sfy_spatial_sidebar_width'
 
 export function useSidebarResize() {
-  const [showSidebar, setShowSidebar] = useState(true)
+  const [showSidebar, setShowSidebar] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768
+    }
+    return true
+  })
 
   // Initialize sidebar width from local storage
   const [sidebarWidth, setSidebarWidth] = useState(() => {

@@ -26,6 +26,8 @@ export interface SpatialCanvasItemProps {
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onContextMenu?: (item: SpatialItem, e: ReactMouseEvent) => void
   onOpenPhotoPicker?: (item: SpatialItem) => void
+  onRecordVoiceNote?: (id: string) => void
+  isEditorMode?: boolean
 }
 
 export function SpatialCanvasItem({
@@ -42,6 +44,8 @@ export function SpatialCanvasItem({
   onUpdateData,
   onContextMenu,
   onOpenPhotoPicker,
+  onRecordVoiceNote,
+  isEditorMode,
 }: SpatialCanvasItemProps) {
   const itemRef = useRef<HTMLDivElement | null>(null)
   const [isEditingText, setIsEditingText] = useState(false)
@@ -63,7 +67,8 @@ export function SpatialCanvasItem({
     item.type === 'wax-envelope' ||
     item.type === 'vinyl-player' ||
     item.type === 'cassette-tape' ||
-    item.type === 'music-box'
+    item.type === 'music-box' ||
+    item.type === 'vintage-radio'
 
   const isEphemera =
     item.type === 'rose-petals' ||
@@ -125,11 +130,13 @@ export function SpatialCanvasItem({
       {isSelected && (
         <CanvasItemToolbar
           itemId={item.id}
+          itemType={item.type}
           currentRotation={item.rotation}
           onRotate={onRotate}
           onResetRotation={onResetRotation}
           onBringToFront={onBringToFront}
           onDelete={onDelete}
+          onRecordVoiceNote={onRecordVoiceNote}
         />
       )}
 
@@ -146,6 +153,8 @@ export function SpatialCanvasItem({
             setIsEditingText(true)
           }}
           onUpdateData={onUpdateData}
+          onRecordVoiceNote={onRecordVoiceNote}
+          isEditorMode={isEditorMode}
         />
       )}
 

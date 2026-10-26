@@ -31,6 +31,8 @@ export function SpatialStageStudio({
     selectedId,
     setSelectedId,
     handleUpdatePosition,
+    handleStartDragItem,
+    handleCommitItemPosition,
     handleRotateItem,
     handleSetItemRotation,
     handleResetRotation,
@@ -49,7 +51,7 @@ export function SpatialStageStudio({
   const isMusicSelected =
     selectedItem?.type === 'music-box' ||
     selectedItem?.type === 'vinyl-player' ||
-    selectedItem?.type === 'cassette-tape'
+    selectedItem?.type === 'vintage-radio'
   const selectedMusicItem = isMusicSelected ? selectedItem : null
 
   const isPhotoSelected = selectedItem?.type === 'polaroid'
@@ -183,6 +185,8 @@ export function SpatialStageStudio({
             selectedId={selectedId}
             onSelectItem={setSelectedId}
             onUpdateItemPosition={handleUpdatePosition}
+            onStartDragItem={handleStartDragItem}
+            onCommitItemPosition={handleCommitItemPosition}
             onRotateItem={handleRotateItem}
             onSetRotation={handleSetItemRotation}
             onResetRotation={handleResetRotation}

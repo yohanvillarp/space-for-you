@@ -9,12 +9,15 @@ import {
   Save,
   Share2,
   Loader2,
+  Sparkles,
+  Globe,
 } from 'lucide-react'
 import type { ThemeRegistryEntry } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
 import { Button } from '@/shared/ui'
 import { StudioModeSwitch } from '@/features/create-space/ui/editor/StudioModeSwitch'
+import { UndoRedoControls } from '@/features/create-space/ui/editor/UndoRedoControls'
 
 export interface EditorTopHeaderProps {
   activeTheme: ThemeRegistryEntry
@@ -24,9 +27,16 @@ export interface EditorTopHeaderProps {
   selectedId: string | null
   onDeleteSelected: (id: string) => void
   onResetToDefaults: () => void
+  showUndoRedo?: boolean
+  canUndo?: boolean
+  canRedo?: boolean
+  onUndo?: () => void
+  onRedo?: () => void
   onOpenShare?: () => void
+  onOpenPublish?: () => void
   onSave?: () => void
   onBackToDashboard?: () => void
+  isPublished?: boolean
   isSaved?: boolean
   isSaving?: boolean
   isDirty?: boolean
@@ -40,13 +50,28 @@ export function EditorTopHeader({
   selectedId,
   onDeleteSelected,
   onResetToDefaults,
+  showUndoRedo = false,
+  canUndo = false,
+  canRedo = false,
+  onUndo,
+  onRedo,
   onOpenShare,
+  onOpenPublish,
   onSave,
   onBackToDashboard,
+  isPublished = false,
   isSaved = false,
   isSaving = false,
   isDirty = false,
 }: EditorTopHeaderProps) {
+  const saveLabel = isSaving
+    ? 'Saving...'
+    : isSaved
+      ? 'Saved'
+      : isDirty
+        ? 'Save'
+        : 'Saved'
+
   return (
     <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-white/10 bg-black/90 px-3 py-3 backdrop-blur-md sm:px-6">
       <div className="flex items-center gap-2 sm:gap-3">
@@ -55,7 +80,6 @@ export function EditorTopHeader({
             type="button"
             onClick={onBackToDashboard}
             title="Back to Dashboard"
-            aria-label="Back to Dashboard"
             className="group inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-white/10 p-2 font-sans text-xs text-stone-200 transition-colors hover:bg-white/20 sm:px-3 sm:py-1.5"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
@@ -65,7 +89,6 @@ export function EditorTopHeader({
           <Link
             to={ROUTES.DASHBOARD}
             title="Back to Dashboard"
-            aria-label="Back to Dashboard"
             className="group inline-flex items-center gap-1.5 rounded-full bg-white/10 p-2 font-sans text-xs text-stone-200 transition-colors hover:bg-white/20 sm:px-3 sm:py-1.5"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
@@ -83,11 +106,25 @@ export function EditorTopHeader({
             {activeTheme.title} — {activeTheme.stageName}
           </span>
         </div>
+
+        {/* Publication Status Pill */}
+        <div className="hidden items-center sm:flex">
+          {isPublished ? (
+            <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
+              <Globe className="h-3 w-3 text-emerald-400" />
+              <span>Live</span>
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[11px] font-medium text-stone-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80" />
+              <span>Draft</span>
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Center / Right Pro Controls */}
       <div className="flex items-center gap-1.5 sm:gap-2.5">
-        {/* Studio Mode Switcher */}
         <StudioModeSwitch />
 
         {/* Toggle Studio Library Sidebar Button */}
@@ -97,7 +134,6 @@ export function EditorTopHeader({
           size="sm"
           onClick={onToggleSidebar}
           title={showSidebar ? 'Hide Library' : 'Open Library'}
-          aria-label={showSidebar ? 'Hide Library' : 'Open Library'}
           className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-stone-300 transition-colors hover:bg-white/10 sm:px-3"
         >
           <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -117,15 +153,22 @@ export function EditorTopHeader({
           <button
             type="button"
             onClick={() => onDeleteSelected(selectedId)}
-            title="Delete selected element (Delete or Backspace key)"
+            title="Delete selected element"
             className="animate-fade-in inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/20 px-2.5 py-1.5 font-sans text-xs text-rose-300 shadow-xs transition-colors hover:bg-rose-500 hover:text-white"
           >
             <Trash2 className="h-3.5 w-3.5" />
             <span>Delete</span>
-            <kbd className="py-0.2 hidden rounded bg-black/40 px-1 font-mono text-[9px] text-rose-200 sm:inline-block">
-              Del
-            </kbd>
           </button>
+        )}
+
+        {/* Undo / Redo History Controls */}
+        {showUndoRedo && (
+          <UndoRedoControls
+            canUndo={canUndo}
+            canRedo={canRedo}
+            onUndo={onUndo}
+            onRedo={onRedo}
+          />
         )}
 
         {/* Reset Stage to Defaults */}
@@ -135,7 +178,6 @@ export function EditorTopHeader({
           size="sm"
           onClick={onResetToDefaults}
           title="Reset stage to theme defaults"
-          aria-label="Reset stage to theme defaults"
           className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-stone-300 transition-colors hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-300 sm:px-3"
         >
           <RotateCcw className="h-3.5 w-3.5" />
@@ -149,24 +191,7 @@ export function EditorTopHeader({
           size="sm"
           onClick={onSave}
           disabled={isSaving}
-          title={
-            isSaving
-              ? 'Syncing to cloud...'
-              : isSaved
-                ? 'All changes saved'
-                : isDirty
-                  ? 'Auto-saving soon (click to sync now)'
-                  : 'All changes saved'
-          }
-          aria-label={
-            isSaving
-              ? 'Syncing to cloud...'
-              : isSaved
-                ? 'All changes saved'
-                : isDirty
-                  ? 'Auto-saving soon (click to sync now)'
-                  : 'All changes saved'
-          }
+          title={isDirty ? 'Click to sync now' : 'All changes saved'}
           className={cn(
             'cursor-pointer gap-1.5 px-2.5 text-xs shadow-xs transition-all sm:px-3',
             isSaved
@@ -185,27 +210,32 @@ export function EditorTopHeader({
           ) : (
             <Save className="h-3.5 w-3.5 text-[#CF7056]" />
           )}
-          <span className="hidden md:inline">
-            {isSaving
-              ? 'Saving...'
-              : isSaved
-                ? 'Saved'
-                : isDirty
-                  ? 'Save'
-                  : 'Saved'}
-          </span>
+          <span className="hidden md:inline">{saveLabel}</span>
         </Button>
 
-        {/* Share Sanctuary Keepsake Card Button */}
+        {/* Publish Space Button */}
+        {onOpenPublish && (
+          <Button
+            type="button"
+            size="sm"
+            onClick={onOpenPublish}
+            style={{ backgroundColor: activeTheme.accentColor }}
+            className="cursor-pointer gap-1.5 border-none font-medium text-[#1A120B] shadow-md transition-all hover:brightness-110 sm:px-3.5"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>{isPublished ? 'Publish Updates' : 'Publish Space'}</span>
+          </Button>
+        )}
+
+        {/* Share Keepsake Card Button */}
         {onOpenShare && (
           <Button
             type="button"
-            variant="primary"
+            variant="outline"
             size="sm"
             onClick={onOpenShare}
-            title="Share Sanctuary Card"
-            aria-label="Share Sanctuary Card"
-            className="cursor-pointer gap-1.5 border-none bg-[#CF7056] px-2.5 text-xs text-white shadow-md transition-all hover:bg-[#B85F47] sm:px-3"
+            title="Share Keepsake Card"
+            className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-[#F3EAE1] hover:bg-white/10 sm:px-3"
           >
             <Share2 className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Share</span>

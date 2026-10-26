@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import type { UserSpace } from '@/entities/space'
-import { SpaceCard, useUserSpaces } from '@/entities/space'
+import {
+  SpaceCard,
+  useUserSpaces,
+  resolveSpaceDisplayStatus,
+} from '@/entities/space'
 import {
   ProtectedRoute,
   CreateSpaceModal,
@@ -9,8 +13,9 @@ import {
 } from '@/features'
 import { signOut } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
-import { Button, Card, Container, useConfirmDialog } from '@/shared/ui'
-import { Logomark } from '@/shared/ui/logo'
+import { Button, Container, useConfirmDialog } from '@/shared/ui'
+import { DashboardFilters, type DashboardFilterId } from './DashboardFilters'
+import { DashboardEmptyState } from './DashboardEmptyState'
 
 export function DashboardPage() {
   const { confirm } = useConfirmDialog()
@@ -18,8 +23,16 @@ export function DashboardPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [duplicateTarget, setDuplicateTarget] = useState<UserSpace | null>(null)
   const [renameTarget, setRenameTarget] = useState<UserSpace | null>(null)
+  const [activeFilter, setActiveFilter] = useState<DashboardFilterId>('all')
 
-  const { spaces, deleteSpace, duplicateSpace, renameSpace } = useUserSpaces()
+  const {
+    spaces,
+    deleteSpace,
+    duplicateSpace,
+    renameSpace,
+    archiveSpace,
+    restoreSpace,
+  } = useUserSpaces()
 
   const handleSignOut = async () => {
     try {
@@ -33,6 +46,9 @@ export function DashboardPage() {
 
   const handleOpenCreateModal = () => {
     if (!validateSpaceCreation(spaces.length, confirm)) return
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('sfy_active_creation_draft')
+    }
     setDuplicateTarget(null)
     setIsCreateModalOpen(true)
   }
@@ -48,10 +64,35 @@ export function DashboardPage() {
 
   const handleRenameRequest = (id: string) => {
     const target = spaces.find((s) => s.id === id)
-    if (target) {
-      setRenameTarget(target)
-    }
+    if (target) setRenameTarget(target)
   }
+
+  const counts = useMemo(() => {
+    const res = { all: 0, published: 0, scheduled: 0, draft: 0, archived: 0 }
+    for (const s of spaces) {
+      if (s.status === 'archived') {
+        res.archived += 1
+      } else {
+        res.all += 1
+        const status = resolveSpaceDisplayStatus(s)
+        if (status === 'published') res.published += 1
+        else if (status === 'scheduled') res.scheduled += 1
+        else if (status === 'draft') res.draft += 1
+      }
+    }
+    return res
+  }, [spaces])
+
+  const filteredSpaces = useMemo(() => {
+    return spaces.filter((space) => {
+      const isArchived = space.status === 'archived'
+      if (activeFilter === 'archived') return isArchived
+      if (isArchived) return false
+
+      if (activeFilter === 'all') return true
+      return resolveSpaceDisplayStatus(space) === activeFilter
+    })
+  }, [spaces, activeFilter])
 
   return (
     <ProtectedRoute>
@@ -61,7 +102,7 @@ export function DashboardPage() {
         return (
           <div className="animate-fade-in py-8 sm:py-12 md:py-16">
             <Container className="max-w-5xl space-y-10">
-              {/* Header section with user greeting and actions */}
+              {/* Header section with greeting and primary actions */}
               <div className="border-border-base flex flex-col gap-6 border-b pb-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1.5">
                   <span className="font-heading text-primary text-lg italic">
@@ -71,7 +112,7 @@ export function DashboardPage() {
                     {displayName}
                   </h1>
                   <p className="text-text-secondary font-sans text-sm">
-                    Manage your personal spaces, invitations, and sanctuary
+                    Manage your personal spaces, invitations, and keepsake
                     settings.
                   </p>
                 </div>
@@ -98,9 +139,9 @@ export function DashboardPage() {
                 </div>
               </div>
 
-              {/* Spaces Overview */}
+              {/* Spaces Overview with Granular Filters */}
               <div className="space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="font-heading text-text-primary text-xl font-medium">
                       Your Spaces
@@ -121,43 +162,35 @@ export function DashboardPage() {
                   )}
                 </div>
 
-                {spaces.length > 0 ? (
+                {spaces.length > 0 && (
+                  <DashboardFilters
+                    activeFilter={activeFilter}
+                    onSelectFilter={setActiveFilter}
+                    counts={counts}
+                  />
+                )}
+
+                {filteredSpaces.length > 0 ? (
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {spaces.map((space) => (
+                    {filteredSpaces.map((space) => (
                       <SpaceCard
                         key={space.id}
                         space={space}
                         onDelete={deleteSpace}
                         onDuplicate={handleDuplicateRequest}
                         onRename={handleRenameRequest}
+                        onArchive={archiveSpace}
+                        onRestore={restoreSpace}
                       />
                     ))}
                   </div>
                 ) : (
-                  <Card className="space-y-4 border-2 border-dashed px-6 py-16 text-center">
-                    <div className="bg-secondary/20 text-primary mx-auto flex h-14 w-14 items-center justify-center rounded-2xl">
-                      <Logomark className="h-7 w-7" />
-                    </div>
-                    <div className="mx-auto max-w-md space-y-1.5">
-                      <h3 className="font-heading text-text-primary text-xl font-medium">
-                        No spaces created yet
-                      </h3>
-                      <p className="text-text-secondary font-sans text-sm leading-relaxed">
-                        Start crafting an intimate digital space with heartfelt
-                        notes, photographs, and thoughtful music.
-                      </p>
-                    </div>
-                    <div className="pt-3">
-                      <Button
-                        type="button"
-                        variant="primary"
-                        size="md"
-                        onClick={handleOpenCreateModal}
-                      >
-                        Start your first space
-                      </Button>
-                    </div>
-                  </Card>
+                  <DashboardEmptyState
+                    isTotalEmpty={spaces.length === 0}
+                    activeFilter={activeFilter}
+                    onCreateSpace={handleOpenCreateModal}
+                    onResetFilter={() => setActiveFilter('all')}
+                  />
                 )}
               </div>
             </Container>

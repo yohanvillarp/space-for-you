@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type {
   SpaceScene,
   SpaceMeta,
+  SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
@@ -12,9 +13,20 @@ import { AddSceneCard } from '@/features/create-space/ui/hub/AddSceneCard'
 import { useSpaceHubContextMenu } from '@/features/create-space/ui/hub/useSpaceHubContextMenu'
 import { SpaceHubContextMenu } from '@/features/create-space/ui/hub/SpaceHubContextMenu'
 import { RenameSceneModal } from '@/features/create-space/ui/dock/RenameSceneModal'
+import { SceneScheduleModal } from '@/features/create-space/ui/hub/SceneScheduleModal'
+import { SceneTeaserModal } from '@/features/create-space/ui/public/SceneTeaserModal'
 import { useScenesDragReorder } from '@/features/create-space/ui/hub/useScenesDragReorder'
 import { useStudioBehavior } from '@/features/create-space/ui/editor/useStudioBehavior'
 import { cn } from '@/shared/lib'
+import '@/features/space-themes/birthday/birthday.css'
+import '@/features/space-themes/romantic/romantic.css'
+import '@/features/space-themes/friendship/friendship.css'
+
+const SURFACE_CLASSES: Record<SpaceTemplateId, string> = {
+  birthday: 'universe-birthday celebration-table-surface',
+  anniversary: 'universe-romantic romantic-desk-surface',
+  friendship: 'universe-friendship corkboard-surface',
+}
 
 export interface SpaceHubSceneProps {
   templateId?: SpaceTemplateId
@@ -28,6 +40,14 @@ export interface SpaceHubSceneProps {
   onOpenVault?: () => void
   onAddScene?: (scene: SpaceScene) => void
   onRenameScene?: (sceneId: string, newTitle: string) => void
+  onUpdateScene?: (
+    sceneId: string,
+    updates: {
+      title?: string
+      subtitle?: string
+      schedule?: SceneScheduleConfig | null
+    },
+  ) => void
   onDuplicateScene?: (sceneId: string) => void
   onMoveScene?: (sceneId: string, direction: 'left' | 'right') => void
   onDeleteScene?: (sceneId: string) => void
@@ -48,6 +68,7 @@ export function SpaceHubScene({
   onOpenVault,
   onAddScene,
   onRenameScene,
+  onUpdateScene,
   onDuplicateScene,
   onMoveScene,
   onDeleteScene,
@@ -58,6 +79,10 @@ export function SpaceHubScene({
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const { state: menuState, openMenu, closeMenu } = useSpaceHubContextMenu()
   const [renamingScene, setRenamingScene] = useState<SpaceScene | null>(null)
+  const [schedulingScene, setSchedulingScene] = useState<SpaceScene | null>(
+    null,
+  )
+  const [teaserScene, setTeaserScene] = useState<SpaceScene | null>(null)
   const { isEditorMode } = useStudioBehavior()
   const isEffectiveEditor = Boolean(isStudioPreview) && isEditorMode
   const {
@@ -90,6 +115,7 @@ export function SpaceHubScene({
         onContextMenu={(e) => openMenu(e, { type: 'background' })}
         className={cn(
           '@container relative flex h-full min-h-full w-full flex-col items-center justify-start overflow-y-auto px-4 py-8 pb-24 sm:px-6 sm:py-12 sm:pb-28 lg:px-12',
+          SURFACE_CLASSES[templateId] ?? 'celebration-table-surface',
           className,
         )}
       >
@@ -107,6 +133,7 @@ export function SpaceHubScene({
           {/* Editorial Dedication Hero */}
           <SpaceHubHero
             meta={meta}
+            templateId={templateId}
             accentColor={activeTheme.accentColor}
             onChangeMeta={onChangeMeta}
             onContextMenu={(e) => openMenu(e, { type: 'hero' })}
@@ -119,6 +146,8 @@ export function SpaceHubScene({
                 key={scene.id}
                 scene={scene}
                 index={index}
+                templateId={templateId}
+                isEditor={isEffectiveEditor}
                 isDraggable={isEffectiveEditor}
                 onDragStart={handleDragStart}
                 onDragOver={handleDragOver}
@@ -129,18 +158,22 @@ export function SpaceHubScene({
                 isDragOver={dragOverIndex === index}
                 accentColor={activeTheme.accentColor}
                 onOpenScene={onOpenScene}
+                onOpenSchedule={(target) => setSchedulingScene(target)}
+                onOpenTeaser={(target) => setTeaserScene(target)}
                 onContextMenu={(e) =>
                   openMenu(e, { type: 'scene', scene, index })
                 }
               />
             ))}
 
-            {/* Add Scene Card */}
-            <AddSceneCard
-              accentColor={activeTheme.accentColor}
-              onAddScene={onOpenAddScene}
-              onContextMenu={(e) => openMenu(e, { type: 'add-card' })}
-            />
+            {/* Add Scene Card (editor mode only) */}
+            {isEffectiveEditor && (
+              <AddSceneCard
+                accentColor={activeTheme.accentColor}
+                onAddScene={onOpenAddScene}
+                onContextMenu={(e) => openMenu(e, { type: 'add-card' })}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -153,6 +186,7 @@ export function SpaceHubScene({
         onClose={closeMenu}
         onOpenScene={onOpenScene}
         onStartRename={(scene) => setRenamingScene(scene)}
+        onOpenSchedule={(scene) => setSchedulingScene(scene)}
         onDuplicateScene={onDuplicateScene}
         onMoveScene={onMoveScene}
         onDeleteScene={onDeleteScene}
@@ -172,6 +206,30 @@ export function SpaceHubScene({
           onSave={(newTitle) => {
             onRenameScene?.(renamingScene.id, newTitle)
           }}
+        />
+      )}
+
+      {/* Schedule Release Modal for Scene */}
+      {schedulingScene && (
+        <SceneScheduleModal
+          key={schedulingScene.id}
+          isOpen={true}
+          scene={schedulingScene}
+          onClose={() => setSchedulingScene(null)}
+          onSave={(sceneId, schedule) => {
+            onUpdateScene?.(sceneId, { schedule })
+            setSchedulingScene(null)
+          }}
+        />
+      )}
+
+      {/* Recipient Teaser Modal */}
+      {teaserScene && (
+        <SceneTeaserModal
+          key={teaserScene.id}
+          isOpen={true}
+          scene={teaserScene}
+          onClose={() => setTeaserScene(null)}
         />
       )}
     </>

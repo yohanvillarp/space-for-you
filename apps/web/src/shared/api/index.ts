@@ -10,6 +10,8 @@ export {
   databases as appwriteDatabases,
   storage,
   storage as appwriteStorage,
+  functions,
+  functions as appwriteFunctions,
   APPWRITE_ENDPOINT,
   APPWRITE_PROJECT_ID,
   APPWRITE_PROJECT_NAME,

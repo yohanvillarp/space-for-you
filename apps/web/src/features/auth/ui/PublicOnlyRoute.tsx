@@ -23,7 +23,10 @@ export function PublicOnlyRoute({ children }: PublicOnlyRouteProps) {
         await appwriteAccount.get()
         if (isMounted) {
           setSessionHint(true)
-          navigate(ROUTES.DASHBOARD, { replace: true })
+          const returnPath =
+            sessionStorage.getItem('sfy_auth_return') || ROUTES.DASHBOARD
+          sessionStorage.removeItem('sfy_auth_return')
+          navigate(returnPath, { replace: true })
         }
       } catch {
         if (isMounted) {
@@ -44,8 +47,8 @@ export function PublicOnlyRoute({ children }: PublicOnlyRouteProps) {
     return (
       <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
         <GiftLoader
-          label="Entering your sanctuary..."
-          hint="Opening the doors to your digital workshop."
+          label="Opening your spaces..."
+          hint="Opening your personalized spaces."
         />
       </div>
     )
