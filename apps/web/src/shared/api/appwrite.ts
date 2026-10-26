@@ -137,12 +137,42 @@ export async function getCurrentUser(): Promise<AppwriteUser | null> {
   }
 }
 
+function clearLocalSpacesCacheOnSignOut(): void {
+  try {
+    const keysToRemove: string[] = []
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const key = localStorage.key(i)
+      if (
+        key &&
+        (key === 'sfy_user_spaces_v1' ||
+          key === 'sfy_pending_cloud_sync_v1' ||
+          key === 'sfy_active_user_id_v1' ||
+          key.startsWith('sfy_space_') ||
+          key.startsWith('sfy_scenes_') ||
+          key.startsWith('sfy_meta_') ||
+          key.startsWith('sfy_active_scene_') ||
+          key.startsWith('sfy_protection_'))
+      ) {
+        keysToRemove.push(key)
+      }
+    }
+    for (const key of keysToRemove) {
+      localStorage.removeItem(key)
+    }
+    sessionStorage.removeItem('sfy_active_creation_draft')
+  } catch {
+    // ignore storage errors
+  }
+}
+
 export async function signOut(): Promise<void> {
   setSessionHint(false)
+  clearLocalSpacesCacheOnSignOut()
   try {
     await account.deleteSession({ sessionId: 'current' })
   } finally {
     setSessionHint(false)
+    clearLocalSpacesCacheOnSignOut()
     window.location.assign('/auth')
   }
 }
