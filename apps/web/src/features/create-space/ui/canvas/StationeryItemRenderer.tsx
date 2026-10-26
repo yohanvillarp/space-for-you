@@ -23,7 +23,7 @@ export function StationeryItemRenderer({
   switch (item.type) {
     case 'polaroid':
       return (
-        <div className="max-w-[220px] sm:max-w-[240px]">
+        <div className="max-w-[240px]">
           <PolaroidFrame
             caption={item.data.caption || 'Special Memory'}
             date={item.data.date || 'A moment in time'}
@@ -77,7 +77,7 @@ export function StationeryItemRenderer({
 
     case 'greeting-card':
       return (
-        <div className="deckled-card relative w-64 space-y-3 rounded-2xl p-5 shadow-2xl sm:w-72">
+        <div className="deckled-card relative w-72 space-y-3 rounded-2xl p-5 shadow-2xl">
           <div className="absolute -top-3 left-6">
             <WashiTape color="gold" tilt="left" />
           </div>
@@ -105,7 +105,7 @@ export function StationeryItemRenderer({
 
     case 'airmail-postcard':
       return (
-        <div className="relative w-64 sm:w-72">
+        <div className="relative w-72">
           <div
             onClick={(e) => {
               e.stopPropagation()
@@ -120,7 +120,7 @@ export function StationeryItemRenderer({
             onClick={() => playSpatialSfx('pin-thud')}
             className="airmail-border cursor-pointer shadow-2xl transition-transform hover:scale-[1.01]"
           >
-            <div className="postcard-inner space-y-3 p-4 sm:p-5">
+            <div className="postcard-inner space-y-3 p-5">
               <div className="border-border-base/40 flex items-center justify-between border-b pb-2">
                 <span className="font-heading text-xs font-semibold text-teal-700 italic dark:text-teal-400">
                   {item.data.title || 'Travel Postcard'}
@@ -150,11 +150,8 @@ export function StationeryItemRenderer({
     case 'sticky-note':
       return (
         <div
-          onClick={(e) => {
-            e.stopPropagation()
-            playSpatialSfx('note-peel')
-          }}
-          className="relative w-52 cursor-pointer rounded-xl border border-amber-300/60 bg-amber-50/95 p-4 shadow-xl backdrop-blur-xs transition-transform hover:scale-[1.02] active:scale-[0.99] sm:w-56 dark:border-amber-700/60 dark:bg-[#2A231C]"
+          onClick={() => playSpatialSfx('note-peel')}
+          className="relative w-56 cursor-pointer rounded-xl border border-amber-300/60 bg-amber-50/95 p-4 shadow-xl backdrop-blur-xs transition-transform hover:scale-[1.02] active:scale-[0.99] dark:border-amber-700/60 dark:bg-[#2A231C]"
         >
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <PushPin color="brass" />

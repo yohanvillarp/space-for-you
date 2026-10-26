@@ -195,6 +195,7 @@ export function SpatialStageStudio({
             onUpdateItemData={handleUpdateItemData}
             onAddItem={handleAddItem}
             onOpenPhotoPicker={(item) => setSelectedId(item.id)}
+            fitToHeight={false}
           />
         </div>
 

@@ -76,8 +76,8 @@ export function useCanvasDragAndDrop({
       const rawNewX = activeDragRef.current.itemStartX + deltaXPercent
       const rawNewY = activeDragRef.current.itemStartY + deltaYPercent
 
-      const clampedX = Math.max(10, Math.min(90, Math.round(rawNewX * 10) / 10))
-      const clampedY = Math.max(12, Math.min(88, Math.round(rawNewY * 10) / 10))
+      const clampedX = Math.max(12, Math.min(88, Math.round(rawNewX * 10) / 10))
+      const clampedY = Math.max(14, Math.min(86, Math.round(rawNewY * 10) / 10))
 
       onUpdateItemPosition(activeDragRef.current.id, clampedX, clampedY)
     }
@@ -146,12 +146,12 @@ export function useCanvasDragAndDrop({
       const rect = containerRef.current.getBoundingClientRect()
 
       const dropX = Math.max(
-        10,
-        Math.min(90, ((e.clientX - rect.left) / rect.width) * 100),
+        12,
+        Math.min(88, ((e.clientX - rect.left) / rect.width) * 100),
       )
       const dropY = Math.max(
-        12,
-        Math.min(88, ((e.clientY - rect.top) / rect.height) * 100),
+        14,
+        Math.min(86, ((e.clientY - rect.top) / rect.height) * 100),
       )
 
       onAddItem(

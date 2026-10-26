@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.1.0...space-for-you-v1.2.0) (2026-10-26)
+
+
+### Features
+
+* **canvas:** unify 1280x720 wysiwyg stage and add card reader modal ([6ff6f9c](https://github.com/yohanvillarp/space-for-you/commit/6ff6f9c54ad106c98b957049e204878f96f2278a))
+* **canvas:** unify 1280x720 wysiwyg stage and add card reader modal ([a89ace0](https://github.com/yohanvillarp/space-for-you/commit/a89ace0e9a216083918fa518542d35343aba859c))
+
 ## [1.1.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.0.0...space-for-you-v1.1.0) (2026-10-26)
 
 

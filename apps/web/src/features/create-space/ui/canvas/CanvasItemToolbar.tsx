@@ -50,7 +50,11 @@ export function CanvasItemToolbar({
   return (
     <div
       onPointerDown={(e) => e.stopPropagation()}
-      className="bg-bg-surface/95 border-border-base/80 text-text-primary animate-fade-in absolute -top-11 left-1/2 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border px-2 py-1 shadow-lg backdrop-blur-md"
+      style={{
+        transform: 'translateX(-50%) scale(var(--stage-inv-scale, 1))',
+        transformOrigin: 'bottom center',
+      }}
+      className="bg-bg-surface/95 border-border-base/80 text-text-primary animate-fade-in absolute -top-11 left-1/2 z-50 flex items-center gap-1 rounded-full border px-2 py-1 shadow-lg backdrop-blur-md"
     >
       {/* Drag Handle Indicator */}
       <div className="text-text-muted px-1" title="Selected item toolbar">

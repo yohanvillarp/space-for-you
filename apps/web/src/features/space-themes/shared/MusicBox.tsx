@@ -40,7 +40,7 @@ export function MusicBox({
   return (
     <div
       className={cn(
-        'group relative flex w-full max-w-sm items-center justify-between gap-3.5 rounded-2xl border-2 border-amber-600/30 bg-gradient-to-b from-[#2A1D15] via-[#1E140E] to-[#150E0A] p-3.5 shadow-2xl transition-all select-none hover:border-amber-500/50 hover:shadow-[0_12px_32px_rgba(245,158,11,0.18)] sm:p-4',
+        'group relative flex w-full max-w-sm items-center justify-between gap-3.5 rounded-2xl border-2 border-amber-600/30 bg-gradient-to-b from-[#2A1D15] via-[#1E140E] to-[#150E0A] p-4 shadow-2xl transition-all select-none hover:border-amber-500/50 hover:shadow-[0_12px_32px_rgba(245,158,11,0.18)]',
         className,
       )}
       {...props}
@@ -141,7 +141,7 @@ export function MusicBox({
       {/* Middle: Track Title, Artist & Equalizer */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="font-heading truncate text-xs font-semibold tracking-wide text-amber-100 italic sm:text-sm">
+          <p className="font-heading truncate text-sm font-semibold tracking-wide text-amber-100 italic">
             {title}
           </p>
           {isPlaying && (
