@@ -110,32 +110,32 @@ export function BirthdayUniverse() {
             </div>
 
             <p className="font-heading pt-1 text-xs leading-relaxed text-stone-700 italic sm:text-sm dark:text-stone-300">
-              &ldquo;This is where your handwritten birthday letter, warm
-              wishes, and celebration tribute will be penned in Step 2.&rdquo;
+              &ldquo;May this year bring you quiet mornings, loud laughter, and
+              every dream you have been patiently building toward.&rdquo;
             </p>
 
             <div className="flex items-center gap-2 pt-2 font-sans text-[11px] text-amber-700/80 dark:text-amber-400/80">
               <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-              <span>Personalized with your private message</span>
+              <span>Happy Birthday, Elena</span>
             </div>
           </div>
 
           {/* Propped Polaroid Photo Frame */}
           <div className="flex justify-center sm:justify-end">
             <PolaroidFrame
-              caption="Milestone Memories"
-              date="Ready for your photo"
+              caption="Golden Hour by the Coast"
+              date="October 14"
               rotation="right"
               tapeColor="gold"
               className="max-w-[260px] shadow-2xl"
             >
               <div className="flex h-full w-full flex-col items-center justify-center space-y-1.5 bg-gradient-to-tr from-amber-600/30 via-orange-500/20 to-yellow-200/30 p-5 text-center">
-                <span className="text-3xl drop-shadow-xs">📷</span>
+                <span className="text-3xl drop-shadow-xs">🌅</span>
                 <p className="font-heading text-xs font-medium text-stone-700 italic dark:text-stone-200">
-                  Add Your Special Photo
+                  Sunset at Miramar
                 </p>
                 <span className="font-sans text-[10px] text-stone-500 dark:text-stone-400">
-                  Step 2 Upload
+                  Polaroid Keepsake
                 </span>
               </div>
             </PolaroidFrame>

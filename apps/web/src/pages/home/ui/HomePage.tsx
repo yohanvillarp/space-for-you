@@ -1,13 +1,15 @@
 import { Container } from '@/shared/ui'
 import { PublicOnlyRoute } from '@/features'
 import { HeroSection } from './HeroSection.tsx'
+import { HomeSanctuaryPillars } from './HomeSanctuaryPillars.tsx'
 
 export function HomePage() {
   return (
     <PublicOnlyRoute>
       <section className="flex flex-1 flex-col justify-center">
-        <Container>
+        <Container className="divide-border-base/50 divide-y">
           <HeroSection />
+          <HomeSanctuaryPillars />
         </Container>
       </section>
     </PublicOnlyRoute>

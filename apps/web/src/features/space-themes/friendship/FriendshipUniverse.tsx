@@ -51,14 +51,15 @@ export function FriendshipUniverse() {
 
                 {/* Postcard Body Prompt */}
                 <p className="font-heading pt-1 text-xs leading-relaxed text-stone-700 italic sm:text-sm dark:text-stone-200">
-                  &ldquo;This postcard will hold your shared roadtrip memories,
-                  inside jokes, and gratitude notes in Step 2.&rdquo;
+                  &ldquo;No matter how many miles or time zones sit between us,
+                  you are still the first person I want to tell good news
+                  to.&rdquo;
                 </p>
 
                 <div className="border-border-base/30 flex items-center justify-between border-t pt-3 font-sans text-[11px]">
                   <div className="flex items-center gap-1.5 font-medium text-teal-700 dark:text-teal-400">
                     <Smile className="h-3.5 w-3.5" />
-                    <span>Inside jokes & stories</span>
+                    <span>Always in your corner</span>
                   </div>
                   <Compass className="h-3.5 w-3.5 text-stone-400" />
                 </div>
@@ -74,8 +75,8 @@ export function FriendshipUniverse() {
             </div>
 
             <PolaroidFrame
-              caption="Our Greatest Roadtrip"
-              date="Ready for your photo"
+              caption="Highway 1 Roadtrip"
+              date="August 22"
               rotation="right"
               tapeColor="sage"
               className="max-w-[260px] shadow-2xl"
@@ -83,10 +84,10 @@ export function FriendshipUniverse() {
               <div className="flex h-full w-full flex-col items-center justify-center space-y-1.5 bg-gradient-to-tr from-teal-500/30 via-emerald-400/20 to-amber-200/20 p-5 text-center">
                 <Users className="h-9 w-9 text-teal-600 dark:text-teal-400" />
                 <p className="font-heading text-xs font-medium text-stone-700 italic dark:text-stone-200">
-                  Add Your Adventure Photo
+                  Campfire by the Lake
                 </p>
                 <span className="font-sans text-[10px] text-stone-500 dark:text-stone-400">
-                  Step 2 Upload
+                  Polaroid Keepsake
                 </span>
               </div>
             </PolaroidFrame>
@@ -97,7 +98,7 @@ export function FriendshipUniverse() {
         <div className="flex justify-center pt-6">
           <CassetteTape
             label="Roadtrip Mixtape • Side A"
-            subtitle="Waiting for your 14 songs in Step 2"
+            subtitle="Acoustic guitar & late-night drive classics"
           />
         </div>
       </div>

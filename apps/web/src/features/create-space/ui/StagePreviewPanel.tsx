@@ -1,4 +1,4 @@
-import { ExternalLink, Sparkles } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
@@ -49,12 +49,8 @@ export function StagePreviewPanel({
             </div>
           </div>
 
-          {/* Top Actions: Interactive hint badge & subtle external studio link */}
+          {/* Top Action: subtle external studio link */}
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-medium text-amber-300 shadow-xs select-none">
-              <Sparkles className="h-3 w-3 text-amber-400" />
-              <span>Interactive Preview</span>
-            </div>
             <a
               href={studioPath}
               target="_blank"
