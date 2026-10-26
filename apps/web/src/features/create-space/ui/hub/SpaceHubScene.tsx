@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type {
   SpaceScene,
   SpaceMeta,
@@ -12,7 +12,7 @@ import { SceneCard } from '@/features/create-space/ui/hub/SceneCard'
 import { AddSceneCard } from '@/features/create-space/ui/hub/AddSceneCard'
 import { useSpaceHubContextMenu } from '@/features/create-space/ui/hub/useSpaceHubContextMenu'
 import { SpaceHubContextMenu } from '@/features/create-space/ui/hub/SpaceHubContextMenu'
-import { RenameSceneModal } from '@/features/create-space/ui/dock/RenameSceneModal'
+import { EditSceneDetailsModal } from '@/features/create-space/ui/hub/EditSceneDetailsModal'
 import { SceneScheduleModal } from '@/features/create-space/ui/hub/SceneScheduleModal'
 import { SceneTeaserModal } from '@/features/create-space/ui/public/SceneTeaserModal'
 import { useScenesDragReorder } from '@/features/create-space/ui/hub/useScenesDragReorder'
@@ -67,7 +67,6 @@ export function SpaceHubScene({
   onOpenAddScene,
   onOpenVault,
   onAddScene,
-  onRenameScene,
   onUpdateScene,
   onDuplicateScene,
   onMoveScene,
@@ -78,13 +77,17 @@ export function SpaceHubScene({
 }: SpaceHubSceneProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const { state: menuState, openMenu, closeMenu } = useSpaceHubContextMenu()
-  const [renamingScene, setRenamingScene] = useState<SpaceScene | null>(null)
+  const [editingScene, setEditingScene] = useState<SpaceScene | null>(null)
   const [schedulingScene, setSchedulingScene] = useState<SpaceScene | null>(
     null,
   )
   const [teaserScene, setTeaserScene] = useState<SpaceScene | null>(null)
+  const [highlightedSceneId, setHighlightedSceneId] = useState<string | null>(
+    null,
+  )
   const { isEditorMode } = useStudioBehavior()
   const isEffectiveEditor = Boolean(isStudioPreview) && isEditorMode
+
   const {
     draggedIndex,
     dragOverIndex,
@@ -93,20 +96,38 @@ export function SpaceHubScene({
     handleDragLeave,
     handleDrop,
     handleDragEnd,
-  } = useScenesDragReorder({
-    onReorderScenes,
-    enabled: isEffectiveEditor,
-  })
+  } = useScenesDragReorder({ onReorderScenes, enabled: isEffectiveEditor })
+
+  const [prevCount, setPrevCount] = useState(scenes.length)
+  if (scenes.length !== prevCount) {
+    setPrevCount(scenes.length)
+    if (scenes.length > prevCount && isEffectiveEditor) {
+      const newest = scenes[scenes.length - 1]
+      if (newest) {
+        setHighlightedSceneId(newest.id)
+        setEditingScene(newest)
+        setTimeout(() => {
+          document
+            .getElementById(`scene-card-${newest.id}`)
+            ?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }, 100)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (highlightedSceneId) {
+      const timer = setTimeout(() => setHighlightedSceneId(null), 2600)
+      return () => clearTimeout(timer)
+    }
+  }, [highlightedSceneId])
 
   const handleAddQuickScene = (type: 'free-canvas' | 'letters') => {
     const template = sceneTemplateRegistry.getByType(type)
     if (!template) return
     const newScene = template.createInstance(scenes.length)
-    if (onAddScene) {
-      onAddScene(newScene)
-    } else {
-      onOpenAddScene()
-    }
+    if (onAddScene) onAddScene(newScene)
+    else onOpenAddScene()
   }
 
   return (
@@ -119,7 +140,6 @@ export function SpaceHubScene({
           className,
         )}
       >
-        {/* Theme Ambient Radial Glow */}
         <div
           className={cn(
             'pointer-events-none absolute inset-0 -z-10 bg-radial opacity-30 blur-3xl transition-all duration-1000',
@@ -128,9 +148,7 @@ export function SpaceHubScene({
           aria-hidden="true"
         />
 
-        {/* Main Hub Content */}
         <div className="relative z-10 w-full max-w-4xl space-y-8 sm:space-y-12">
-          {/* Editorial Dedication Hero */}
           <SpaceHubHero
             meta={meta}
             templateId={templateId}
@@ -139,7 +157,6 @@ export function SpaceHubScene({
             onContextMenu={(e) => openMenu(e, { type: 'hero' })}
           />
 
-          {/* Dynamic Scenes Grid */}
           <div className="grid grid-cols-1 gap-4 @xl:grid-cols-2 @xl:gap-6">
             {scenes.map((scene, index) => (
               <SceneCard
@@ -149,6 +166,7 @@ export function SpaceHubScene({
                 templateId={templateId}
                 isEditor={isEffectiveEditor}
                 isDraggable={isEffectiveEditor}
+                isHighlighted={highlightedSceneId === scene.id}
                 onDragStart={handleDragStart}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -158,6 +176,7 @@ export function SpaceHubScene({
                 isDragOver={dragOverIndex === index}
                 accentColor={activeTheme.accentColor}
                 onOpenScene={onOpenScene}
+                onEditDetails={(target) => setEditingScene(target)}
                 onOpenSchedule={(target) => setSchedulingScene(target)}
                 onOpenTeaser={(target) => setTeaserScene(target)}
                 onContextMenu={(e) =>
@@ -166,7 +185,6 @@ export function SpaceHubScene({
               />
             ))}
 
-            {/* Add Scene Card (editor mode only) */}
             {isEffectiveEditor && (
               <AddSceneCard
                 accentColor={activeTheme.accentColor}
@@ -178,14 +196,13 @@ export function SpaceHubScene({
         </div>
       </div>
 
-      {/* Space Hub Context Menu */}
       <SpaceHubContextMenu
         state={menuState}
         totalScenes={scenes.length}
         isProtectionEnabled={isProtectionEnabled}
         onClose={closeMenu}
         onOpenScene={onOpenScene}
-        onStartRename={(scene) => setRenamingScene(scene)}
+        onStartRename={(scene) => setEditingScene(scene)}
         onOpenSchedule={(scene) => setSchedulingScene(scene)}
         onDuplicateScene={onDuplicateScene}
         onMoveScene={onMoveScene}
@@ -196,20 +213,23 @@ export function SpaceHubScene({
         onToggleProtection={onToggleProtection}
       />
 
-      {/* Rename Scene Modal for Space Hub */}
-      {renamingScene && (
-        <RenameSceneModal
-          key={renamingScene.id}
+      {editingScene && (
+        <EditSceneDetailsModal
+          key={editingScene.id}
           isOpen={true}
-          currentTitle={renamingScene.title}
-          onClose={() => setRenamingScene(null)}
-          onSave={(newTitle) => {
-            onRenameScene?.(renamingScene.id, newTitle)
+          currentTitle={editingScene.title}
+          currentSubtitle={editingScene.subtitle}
+          onClose={() => setEditingScene(null)}
+          onSave={(newTitle, newSubtitle) => {
+            onUpdateScene?.(editingScene.id, {
+              title: newTitle,
+              subtitle: newSubtitle,
+            })
+            setEditingScene(null)
           }}
         />
       )}
 
-      {/* Schedule Release Modal for Scene */}
       {schedulingScene && (
         <SceneScheduleModal
           key={schedulingScene.id}
@@ -223,7 +243,6 @@ export function SpaceHubScene({
         />
       )}
 
-      {/* Recipient Teaser Modal */}
       {teaserScene && (
         <SceneTeaserModal
           key={teaserScene.id}

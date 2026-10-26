@@ -101,7 +101,7 @@ export function useEditorStageWorkflow({
 
       handleAddScene(newScene)
 
-      if (newScene.type === 'free-canvas') {
+      if (newScene.type === 'free-canvas' && activeSceneId !== 'hub') {
         setItems(newScene.items || [])
         setSelectedId(null)
       }

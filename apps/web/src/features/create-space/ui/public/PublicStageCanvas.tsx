@@ -12,6 +12,7 @@ import {
 } from '@/features/create-space/ui/canvas/useVirtualCanvasScale'
 import { CanvasOrientationPrompt } from '@/features/create-space/ui/canvas/CanvasOrientationPrompt'
 import { PublicPhotoLightbox } from '@/features/create-space/ui/public/PublicPhotoLightbox'
+import { filterPublicItems } from '@/features/create-space/lib/stage-public-filter'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
 import '@/features/space-themes/romantic/romantic.css'
@@ -44,19 +45,6 @@ const EPHEMERA_TYPES = new Set([
   'washi-tape',
   'confetti-stars',
 ])
-
-function filterPublicItems(rawItems: SpatialItem[]): SpatialItem[] {
-  return rawItems.filter((item) => {
-    if (item.type === 'cassette-tape') {
-      const isSample =
-        item.data?.isVoiceNoteSample ||
-        !item.data?.audioUrl ||
-        item.data.audioUrl.includes('6ade885600247e215323')
-      return !isSample
-    }
-    return true
-  })
-}
 
 export function PublicStageCanvas({
   templateId,
@@ -151,7 +139,6 @@ export function PublicStageCanvas({
         {items.map((item) => {
           const isKeepsake = KEEPSAKE_TYPES.has(item.type)
           const isEphemera = EPHEMERA_TYPES.has(item.type)
-          const localText = item.data?.text || item.data?.caption || ''
 
           return (
             <div
@@ -168,12 +155,8 @@ export function PublicStageCanvas({
               {isKeepsake && (
                 <KeepsakeItemRenderer
                   item={item}
-                  isEditingText={false}
-                  localText={localText}
-                  onSetLocalText={() => {}}
-                  onSaveText={() => {}}
-                  onStartEditText={() => {}}
                   onUpdateData={handleUpdateItemData}
+                  isEditorMode={false}
                 />
               )}
 
@@ -182,12 +165,8 @@ export function PublicStageCanvas({
               {!isKeepsake && !isEphemera && (
                 <StationeryItemRenderer
                   item={item}
-                  isEditingText={false}
-                  localText={localText}
-                  onSetLocalText={() => {}}
-                  onSaveText={() => {}}
-                  onStartEditText={() => {}}
                   onOpenPhotoPicker={() => setActivePhoto(item)}
+                  isEditorMode={false}
                 />
               )}
             </div>

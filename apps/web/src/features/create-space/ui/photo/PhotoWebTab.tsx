@@ -7,6 +7,7 @@ import { playSpatialSfx } from '@/shared/lib'
 export interface PhotoWebTabProps {
   currentPhotoUrl?: string
   onSelectPhoto: (photoUrl: string) => void
+  isLimitReached?: boolean
 }
 
 const CATEGORIES = [
@@ -21,6 +22,7 @@ const CATEGORIES = [
 export function PhotoWebTab({
   currentPhotoUrl,
   onSelectPhoto,
+  isLimitReached = false,
 }: PhotoWebTabProps) {
   const [selectedCat, setSelectedCat] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -47,6 +49,7 @@ export function PhotoWebTab({
   }, [searchQuery, selectedCat])
 
   const handleSelect = (photo: WebPhotoSpecimen) => {
+    if (isLimitReached) return
     playSpatialSfx('camera-shutter')
     onSelectPhoto(photo.url)
   }

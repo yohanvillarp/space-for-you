@@ -13,11 +13,7 @@ import { playSpatialSfx } from '@/shared/lib'
 
 export interface KeepsakeItemRendererProps {
   item: SpatialItem
-  isEditingText: boolean
-  localText: string
-  onSetLocalText: (text: string) => void
-  onSaveText: () => void
-  onStartEditText: () => void
+  onStartEditText?: () => void
   onUpdateData: (id: string, updates: Partial<SpatialItem['data']>) => void
   onRecordVoiceNote?: (id: string) => void
   isEditorMode?: boolean
@@ -25,14 +21,10 @@ export interface KeepsakeItemRendererProps {
 
 export function KeepsakeItemRenderer({
   item,
-  isEditingText,
-  localText,
-  onSetLocalText,
-  onSaveText,
   onStartEditText,
   onUpdateData,
   onRecordVoiceNote,
-  isEditorMode,
+  isEditorMode = false,
 }: KeepsakeItemRendererProps) {
   switch (item.type) {
     case 'candle':
@@ -50,9 +42,6 @@ export function KeepsakeItemRenderer({
               onUpdateData(item.id, { isLit: !item.data.isLit })
             }}
             className="group/candle flex cursor-pointer flex-col items-center transition-transform outline-none hover:scale-105"
-            title={
-              item.data.isLit ? 'Click to make a wish' : 'Click to relight'
-            }
           >
             {item.data.isLit ? (
               <CandleFlame size="md" />
@@ -99,34 +88,16 @@ export function KeepsakeItemRenderer({
             </div>
           ) : (
             <div className="animate-fade-in space-y-2 py-1">
-              {isEditingText ? (
-                <div className="space-y-1.5">
-                  <textarea
-                    value={localText}
-                    onChange={(e) => onSetLocalText(e.target.value)}
-                    rows={3}
-                    className="font-heading focus:ring-primary w-full rounded-md border border-rose-500/30 bg-white/70 p-1.5 text-xs text-stone-800 italic outline-none focus:ring-1 dark:bg-stone-900/70 dark:text-stone-200"
-                  />
-                  <div className="flex justify-end gap-1">
-                    <button
-                      type="button"
-                      onClick={onSaveText}
-                      className="bg-primary text-text-inverse rounded-md px-2 py-0.5 font-sans text-[10px] font-medium"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <p
-                  onDoubleClick={onStartEditText}
-                  className="font-heading cursor-text text-xs leading-relaxed text-stone-800 italic dark:text-stone-200"
-                  title="Double click to edit note"
-                >
-                  &ldquo;{item.data.text || 'Write your private note here...'}
-                  &rdquo;
-                </p>
-              )}
+              <p
+                onDoubleClick={isEditorMode ? onStartEditText : undefined}
+                className="font-heading text-xs leading-relaxed text-stone-800 italic dark:text-stone-200"
+              >
+                {item.data.text
+                  ? `\u201C${item.data.text}\u201D`
+                  : isEditorMode
+                    ? '\u201CDouble-click to write private letter...\u201D'
+                    : ''}
+              </p>
             </div>
           )}
 
@@ -159,7 +130,7 @@ export function KeepsakeItemRenderer({
       return (
         <div className="w-64 sm:w-72">
           <CassetteTape
-            label={item.data.title || 'Roadtrip Mixtape • Side A'}
+            label={item.data.title || 'Personal Voice Message'}
             subtitle={item.data.subtitle || 'Memories & Melodies'}
             trackUrl={item.data.audioUrl}
             duration={item.data.duration}
@@ -189,7 +160,7 @@ export function KeepsakeItemRenderer({
       return (
         <div className="w-64 sm:w-72">
           <VintageRadio
-            title={item.data.title || 'Roadtrip Mixtape • Side A'}
+            title={item.data.title || 'Personal Playlist'}
             artist={item.data.artist || 'Atelier Soundscape'}
             trackUrl={item.data.audioUrl}
             className="shadow-2xl"

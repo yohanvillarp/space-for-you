@@ -35,6 +35,7 @@ export interface SpatialToolboxSidebarProps {
   selectedPhotoItem?: SpatialItem | null
   onAssignPhoto?: (photoUrl: string, file?: File) => void
   photoCount?: number
+  uploadedPhotoCount?: number
   isCompact?: boolean
   className?: string
 }
@@ -49,6 +50,7 @@ export function SpatialToolboxSidebar({
   selectedPhotoItem,
   onAssignPhoto,
   photoCount = 0,
+  uploadedPhotoCount = 0,
   isCompact = false,
   className,
 }: SpatialToolboxSidebarProps) {
@@ -62,11 +64,10 @@ export function SpatialToolboxSidebar({
     'all' | 'stage' | 'universal'
   >('all')
 
-  // Auto-switch to Music when a music item is selected
-  const [prevSelectedMusicItem, setPrevSelectedMusicItem] =
-    useState(selectedMusicItem)
-  if (selectedMusicItem !== prevSelectedMusicItem) {
-    setPrevSelectedMusicItem(selectedMusicItem)
+  // Auto-switch to Music when a music item is selected on the canvas
+  const [prevMusicItemId, setPrevMusicItemId] = useState(selectedMusicItem?.id)
+  if (selectedMusicItem?.id !== prevMusicItemId) {
+    setPrevMusicItemId(selectedMusicItem?.id)
     setSearchQuery('')
     if (selectedMusicItem) {
       setActiveCategory('music')
@@ -75,11 +76,10 @@ export function SpatialToolboxSidebar({
     }
   }
 
-  // Auto-switch to Photos when a Polaroid item is selected
-  const [prevSelectedPhotoItem, setPrevSelectedPhotoItem] =
-    useState(selectedPhotoItem)
-  if (selectedPhotoItem !== prevSelectedPhotoItem) {
-    setPrevSelectedPhotoItem(selectedPhotoItem)
+  // Auto-switch to Photos when a Polaroid item is selected on the canvas
+  const [prevPhotoItemId, setPrevPhotoItemId] = useState(selectedPhotoItem?.id)
+  if (selectedPhotoItem?.id !== prevPhotoItemId) {
+    setPrevPhotoItemId(selectedPhotoItem?.id)
     setSearchQuery('')
     if (selectedPhotoItem) {
       setActiveCategory('photos')
@@ -131,7 +131,7 @@ export function SpatialToolboxSidebar({
   return (
     <aside
       className={cn(
-        'flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] select-none',
+        'flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] transition-all select-none',
         className,
       )}
     >
@@ -174,6 +174,7 @@ export function SpatialToolboxSidebar({
             selectedItemName={selectedPhotoItem?.label}
             currentPhotoUrl={selectedPhotoItem?.data?.photoUrl}
             photoCount={photoCount}
+            uploadedPhotoCount={uploadedPhotoCount}
             isPolaroidSelected={Boolean(selectedPhotoItem)}
             onAssignPhoto={(url, file) => onAssignPhoto?.(url, file)}
             onAddPolaroidWithPhoto={(url) => {
