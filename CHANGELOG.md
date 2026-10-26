@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.5](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.4...space-for-you-v1.2.5) (2026-10-26)
+
+
+### Bug Fixes
+
+* **seo:** add png open graph card, author schema, and route meta ([f4b824c](https://github.com/yohanvillarp/space-for-you/commit/f4b824c8a87a0a26fdc559e3ef6531f0a87051c4))
+* **seo:** add png open graph card, author schema, and route meta ([47fe6fd](https://github.com/yohanvillarp/space-for-you/commit/47fe6fd58098ba43642ea97a6742671fe1cfe3b3))
+
 ## [1.2.4](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.3...space-for-you-v1.2.4) (2026-10-26)
 
 
