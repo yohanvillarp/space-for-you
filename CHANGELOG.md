@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.0.0...space-for-you-v1.1.0) (2026-10-26)
+
+
+### Features
+
+* **canvas:** edit text on stage items and filter empty media ([9b6ed43](https://github.com/yohanvillarp/space-for-you/commit/9b6ed43082189791d4efde5d685bfd3d4893e4aa))
+* **hub:** add scene description editing, glow pulse and photo limits ([28a99df](https://github.com/yohanvillarp/space-for-you/commit/28a99df45b0f9c41ae4ab8ee84c90d9e1666052a))
+* **studio:** stage text editing, sidebar pulse cues and photo limits ([a2ec036](https://github.com/yohanvillarp/space-for-you/commit/a2ec036c9ff00f5129436bc1c3c72385bdc656f0))
+
+
+### Bug Fixes
+
+* **canvas:** remove fake text and prevent sidebar modal overlap ([2090769](https://github.com/yohanvillarp/space-for-you/commit/209076932aec0a7eca13716baa224c7a76f6a4f0))
+* **studio:** avoid tinyurl cors block and fix audio reset uri error ([590a8a3](https://github.com/yohanvillarp/space-for-you/commit/590a8a397dea7d7e4a97348a7c37d365c0eb9e84))
+* **studio:** pulse sidebar on media selection and remove item glow ([e1e9b6e](https://github.com/yohanvillarp/space-for-you/commit/e1e9b6e3e0fcc0fa5068284c351efe9b192cbc48))
+
 ## [1.0.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v0.10.0...space-for-you-v1.0.0) (2026-10-26)
 
 
