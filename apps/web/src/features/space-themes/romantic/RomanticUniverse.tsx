@@ -64,8 +64,9 @@ export function RomanticUniverse() {
             {sealBroken ? (
               <div className="animate-fade-in space-y-2 pt-1">
                 <p className="font-heading text-xs leading-relaxed text-stone-800 italic sm:text-sm dark:text-stone-200">
-                  &ldquo;In Step 2, you will write your private love story,
-                  memories, and unspoken vows directly onto this letter.&rdquo;
+                  &ldquo;Every quiet evening with you still feels like the best
+                  part of my life. Thank you for every shared laugh and every
+                  tomorrow.&rdquo;
                 </p>
                 <p className="text-primary pt-1 font-sans text-[11px] font-medium">
                   — Yours, always & forever
@@ -77,7 +78,7 @@ export function RomanticUniverse() {
                   Protected by an unbroken wax seal.
                 </p>
                 <p className="font-sans text-[10px] text-stone-400">
-                  Tap seal below to preview opening
+                  Tap seal below to open letter
                 </p>
               </div>
             )}
@@ -90,7 +91,7 @@ export function RomanticUniverse() {
                 label={
                   sealBroken
                     ? 'Seal broken • Click to reseal'
-                    : 'Break wax seal & inspect'
+                    : 'Break wax seal & read'
                 }
                 defaultOpen={sealBroken}
                 onToggle={(open) => setSealBroken(open)}
@@ -101,8 +102,8 @@ export function RomanticUniverse() {
           {/* Propped Polaroid on Desk */}
           <div className="flex justify-center sm:justify-end">
             <PolaroidFrame
-              caption="Our Favorite Memory"
-              date="Ready for your photo"
+              caption="Autumn in Paris"
+              date="November 12"
               rotation="left"
               tapeColor="rose"
               className="max-w-[260px] shadow-2xl"
@@ -110,10 +111,10 @@ export function RomanticUniverse() {
               <div className="from-primary/30 flex h-full w-full flex-col items-center justify-center space-y-1.5 bg-gradient-to-tr via-rose-500/20 to-amber-200/20 p-5 text-center">
                 <Heart className="text-primary/80 fill-primary/30 h-9 w-9" />
                 <p className="font-heading text-xs font-medium text-stone-800 italic dark:text-stone-200">
-                  Add Your Couple Photo
+                  Late Night Coffee Walk
                 </p>
                 <span className="font-sans text-[10px] text-stone-500 dark:text-stone-400">
-                  Step 2 Upload
+                  Polaroid Keepsake
                 </span>
               </div>
             </PolaroidFrame>
@@ -123,8 +124,8 @@ export function RomanticUniverse() {
         {/* Tangible Spinning Vinyl Player on Desk */}
         <div className="pt-6">
           <VinylPlayer
-            trackTitle="Our Special Song"
-            artist="Waiting for your chosen song in Step 2"
+            trackTitle="Midnight Waltz for Two"
+            artist="Acoustic Vinyl Pressing"
             labelColor="#A34835"
           />
         </div>

@@ -1,18 +1,9 @@
 import type { AuthMode } from '@/features'
 import { EmailAuthForm, GoogleSignInButton, PublicOnlyRoute } from '@/features'
 import { ROUTES } from '@/shared/config'
-import { Badge, Card, Container, Logo } from '@/shared/ui'
+import { Card, Container, Logo } from '@/shared/ui'
 import { Logomark } from '@/shared/ui/logo'
-import {
-  ArrowLeft,
-  Heart,
-  Lock,
-  MapPin,
-  Music,
-  Palette,
-  ShieldCheck,
-  Sparkles,
-} from 'lucide-react'
+import { ArrowLeft, Camera, Layers, Lock, Mail, Mic } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
 
@@ -38,105 +29,97 @@ export function AuthPage() {
         {/* Main 2-Column Responsive Body */}
         <Container className="mx-auto my-auto w-full max-w-6xl py-4 sm:py-8">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center xl:gap-16">
-            {/* Left Column: Intimate Showcase (Desktop) */}
+            {/* Left Column: Minimalist Space Preview (Desktop) */}
             <div className="animate-fade-in hidden space-y-8 lg:col-span-6 lg:block xl:col-span-7">
-              {/* Brand Identity & Tagline */}
               <div className="space-y-3">
-                <div>
-                  <Logo markSize={36} textClassName="text-2xl font-medium" />
-                </div>
+                <Logo markSize={36} textClassName="text-2xl font-medium" />
 
-                <h1 className="font-heading text-text-primary text-3xl leading-tight font-medium tracking-tight xl:text-4xl">
+                <h1 className="font-heading text-text-primary max-w-lg text-3xl leading-tight font-medium tracking-tight xl:text-4xl">
                   A dedicated digital space. Created just for them.
                 </h1>
-                <p className="text-text-secondary max-w-lg font-sans text-sm leading-relaxed xl:text-base">
-                  Craft an intimate space to hold letters, photographs, music,
-                  and quiet memories that outlast social feeds.
+                <p className="text-text-secondary max-w-md font-sans text-sm leading-relaxed xl:text-base">
+                  Arrange dynamic objects on an interactive canvas, record
+                  personal voice messages, seal letters, and share through a
+                  private link or QR card.
                 </p>
               </div>
 
-              {/* Miniature Space Preview Card */}
-              <div className="group relative max-w-lg">
-                {/* Ambient glow */}
-                <div className="from-primary/15 via-accent/15 to-arcilla/25 absolute -inset-1.5 rounded-2xl bg-gradient-to-r opacity-70 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+              {/* Clean, Visual Miniature Space Card */}
+              <div className="relative max-w-lg">
+                <div className="from-primary/15 via-accent/10 to-arcilla/20 pointer-events-none absolute -inset-1.5 rounded-2xl bg-gradient-to-r opacity-70 blur-xl" />
 
-                <div className="border-border-base bg-bg-surface/90 relative rounded-2xl border p-6 shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-lg">
-                  {/* Space mini header */}
-                  <div className="border-border-subtle flex items-center justify-between border-b pb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-primary/10 text-primary font-heading flex h-10 w-10 items-center justify-center rounded-full text-base font-medium">
-                        S
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <h2 className="font-heading text-text-primary text-sm font-semibold">
-                            For Sophia — Our Little Corner
-                          </h2>
-                          <Heart className="fill-primary text-primary h-3.5 w-3.5" />
-                        </div>
-                        <p className="text-text-muted font-sans text-xs">
-                          Curated with care • Since 2022
-                        </p>
-                      </div>
+                <div className="border-border-base bg-bg-surface/90 relative space-y-5 rounded-2xl border p-6 shadow-md backdrop-blur-sm">
+                  {/* Minimal Header */}
+                  <div className="border-border-subtle flex items-center justify-between border-b pb-3.5">
+                    <div>
+                      <h2 className="font-heading text-text-primary text-sm font-medium">
+                        For Elena — Interactive Space
+                      </h2>
+                      <p className="text-text-muted font-sans text-xs">
+                        2 scenes • Memory Canvas & Letters
+                      </p>
                     </div>
-                    <Badge variant="secondary" className="text-[10px]">
-                      Private Space
-                    </Badge>
+                    <span className="text-text-muted inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-sans text-[11px]">
+                      <Lock className="text-primary h-3 w-3" />
+                      Passcode locked
+                    </span>
                   </div>
 
-                  {/* Letter snippet */}
-                  <div className="py-4">
-                    <p className="font-heading text-text-secondary text-xs leading-relaxed italic xl:text-sm">
-                      “Some memories don’t belong on public feeds, but in the
-                      quiet warmth of those who lived them. This little space is
-                      just for you.”
-                    </p>
+                  {/* Visual Tabletop Trio (Polaroid + Voice Recording + Sealed Letter) */}
+                  <div className="grid grid-cols-3 gap-3 py-1">
+                    {/* Mini Polaroid */}
+                    <div className="-rotate-2 rounded-xl border border-white/10 bg-[#FAF6F0] p-2 text-center shadow-md">
+                      <div className="flex h-16 items-center justify-center rounded-md bg-gradient-to-tr from-amber-600/30 via-orange-500/20 to-amber-200/30">
+                        <Camera className="h-5 w-5 text-stone-700" />
+                      </div>
+                      <p className="font-heading mt-1.5 truncate text-[10px] text-stone-700 italic">
+                        October 14
+                      </p>
+                    </div>
+
+                    {/* Mini Voice Recording Player */}
+                    <div className="flex flex-col items-center justify-center rounded-xl border border-amber-500/20 bg-black/25 p-2 text-center">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-400/30 bg-amber-500/10 text-amber-300">
+                        <Mic className="h-4 w-4" />
+                      </div>
+                      <div className="mt-2 flex items-end gap-0.5">
+                        <span className="h-1.5 w-0.5 rounded-full bg-amber-400/70" />
+                        <span className="h-3 w-0.5 rounded-full bg-amber-400" />
+                        <span className="h-2 w-0.5 rounded-full bg-amber-400/80" />
+                        <span className="h-3.5 w-0.5 rounded-full bg-amber-400" />
+                        <span className="h-1.5 w-0.5 rounded-full bg-amber-400/70" />
+                      </div>
+                      <span className="text-text-muted mt-1 font-sans text-[10px]">
+                        Voice note
+                      </span>
+                    </div>
+
+                    {/* Mini Sealed Letter */}
+                    <div className="flex rotate-2 flex-col items-center justify-center rounded-xl border border-rose-500/20 bg-[#241A16] p-2 text-center shadow-md">
+                      <span className="bg-primary flex h-7 w-7 items-center justify-center rounded-full text-white shadow-inner">
+                        <Mail className="h-3.5 w-3.5" />
+                      </span>
+                      <p className="font-heading mt-2 text-[10px] text-amber-100/90 italic">
+                        Sealed Letter
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Tactile memory pills */}
-                  <div className="border-border-subtle flex flex-wrap items-center gap-2 border-t pt-2">
+                  {/* Concise Capabilities Footer */}
+                  <div className="border-border-subtle flex flex-wrap items-center gap-2 border-t pt-3.5">
                     <span className="bg-bg-subtle text-text-secondary inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-sans text-[11px]">
-                      <Music className="text-primary h-3 w-3" /> Our favorite
-                      song
+                      <Layers className="text-primary h-3 w-3" /> Dynamic
+                      objects
                     </span>
                     <span className="bg-bg-subtle text-text-secondary inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-sans text-[11px]">
-                      <MapPin className="text-accent h-3 w-3" /> Paris & Lima
+                      <Mic className="h-3 w-3 text-amber-400" /> Voice
+                      recordings
                     </span>
                     <span className="bg-bg-subtle text-text-secondary inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-sans text-[11px]">
-                      <Sparkles className="text-primary h-3 w-3" /> 12 saved
+                      <Mail className="text-primary h-3 w-3" /> Wax-sealed
                       letters
                     </span>
                   </div>
-                </div>
-              </div>
-
-              {/* Three Value Pillars (Zero Dev Jargon) */}
-              <div className="grid max-w-lg grid-cols-3 gap-4 pt-2">
-                <div className="space-y-1">
-                  <div className="text-text-primary flex items-center gap-1.5 font-sans text-xs font-semibold">
-                    <Lock className="text-primary h-3.5 w-3.5" /> Total Privacy
-                  </div>
-                  <p className="text-text-muted font-sans text-[11px] leading-snug">
-                    Only you and your chosen person have access.
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-text-primary flex items-center gap-1.5 font-sans text-xs font-semibold">
-                    <Palette className="text-accent h-3.5 w-3.5" /> Artisan
-                    Touch
-                  </div>
-                  <p className="text-text-muted font-sans text-[11px] leading-snug">
-                    Handcrafted to feel calm and enduring.
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-text-primary flex items-center gap-1.5 font-sans text-xs font-semibold">
-                    <ShieldCheck className="text-primary h-3.5 w-3.5" />{' '}
-                    End-to-End
-                  </div>
-                  <p className="text-text-muted font-sans text-[11px] leading-snug">
-                    No feeds, no ads, no public algorithms.
-                  </p>
                 </div>
               </div>
             </div>
@@ -150,7 +133,7 @@ export function AuthPage() {
 
               <Card className="border-border-base/80 p-6 shadow-md backdrop-blur-xs sm:p-8 xl:p-10">
                 <div className="space-y-6 text-center">
-                  {/* Brand mark badge with subtle micro-hover */}
+                  {/* Brand mark */}
                   <div className="group relative mx-auto inline-flex items-center justify-center">
                     <div className="bg-primary/20 absolute -inset-1 rounded-2xl opacity-50 blur-md transition-opacity group-hover:opacity-100" />
                     <div className="bg-primary/10 text-primary relative flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-105">
@@ -165,8 +148,8 @@ export function AuthPage() {
                     </h2>
                     <p className="text-text-secondary mx-auto max-w-xs font-sans text-xs leading-relaxed sm:text-sm">
                       {mode === 'signup'
-                        ? 'Sign up to design an intimate digital space for someone special.'
-                        : 'Sign in to continue cultivating your personal spaces.'}
+                        ? 'Sign up to design a personal digital space for someone special.'
+                        : 'Sign in to continue crafting and managing your spaces.'}
                     </p>
                   </div>
 
@@ -186,10 +169,9 @@ export function AuthPage() {
                   {/* Email & Password Authentication Form */}
                   <EmailAuthForm initialMode={mode} onModeChange={setMode} />
 
-                  {/* Clean privacy reassurance (No dev jargon) */}
+                  {/* Clean privacy reassurance */}
                   <p className="text-text-muted border-border-base/50 border-t pt-4 font-sans text-[11px] leading-relaxed">
-                    Your personal spaces and memories are always private and
-                    encrypted.
+                    Your personal spaces and memories are always private.
                   </p>
                 </div>
               </Card>
