@@ -6,7 +6,7 @@ import { StagePreviewPanel } from '@/features/create-space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { ROUTES } from '@/shared/config'
 import { Container, Card, Button } from '@/shared/ui'
-import { cn } from '@/shared/lib'
+import { cn, usePageSeo } from '@/shared/lib'
 
 interface SpaceExampleMeta {
   id: SpaceTemplateId
@@ -63,6 +63,13 @@ const SPACE_EXAMPLES: SpaceExampleMeta[] = [
 ]
 
 export function ExamplesPage() {
+  usePageSeo({
+    title: 'Explore Interactive Space Stages & Examples',
+    description:
+      'Interact live with the Candlelit Celebration Table, Love Letter Desk, and Memory Corkboard stages featuring Polaroid photos, voice notes, and dynamic objects.',
+    canonicalPath: '/examples',
+  })
+
   const [selectedId, setSelectedId] = useState<SpaceTemplateId>('birthday')
   const activeExample =
     SPACE_EXAMPLES.find((ex) => ex.id === selectedId) ?? SPACE_EXAMPLES[0]

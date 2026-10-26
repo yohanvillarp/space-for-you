@@ -1,6 +1,7 @@
 import type { AuthMode } from '@/features'
 import { EmailAuthForm, GoogleSignInButton, PublicOnlyRoute } from '@/features'
 import { ROUTES } from '@/shared/config'
+import { usePageSeo } from '@/shared/lib'
 import { Card, Container, Logo } from '@/shared/ui'
 import { Logomark } from '@/shared/ui/logo'
 import { ArrowLeft, Camera, Layers, Lock, Mail, Mic } from 'lucide-react'
@@ -11,6 +12,13 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 export function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('signin')
+
+  usePageSeo({
+    title: mode === 'signup' ? 'Create Your Account' : 'Sign In',
+    description:
+      'Sign in or create an account to craft personalized interactive digital spaces with Polaroid canvases, voice recordings, and wax-sealed letters.',
+    canonicalPath: '/auth',
+  })
 
   return (
     <PublicOnlyRoute>
