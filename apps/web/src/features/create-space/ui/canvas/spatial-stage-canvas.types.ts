@@ -34,5 +34,6 @@ export interface SpatialStageCanvasProps {
     customData?: Partial<SpatialItemData>,
   ) => void
   onOpenPhotoPicker?: (item: SpatialItem) => void
+  fitToHeight?: boolean
   className?: string
 }

@@ -32,6 +32,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
     hasSanctuaryBeenUnboxed(space.id),
   )
   const [teaserScene, setTeaserScene] = useState<SpaceScene | null>(null)
+  const [isCanvasRotated, setIsCanvasRotated] = useState(false)
 
   const presetTrack = getPresetTrackForTemplate(templateId)
   const { isPlaying, togglePlay } = useSpatialAudioPlayer({
@@ -215,6 +216,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                 <PublicStageCanvas
                   templateId={templateId}
                   items={activeScene.items || []}
+                  onVirtualLandscapeChange={setIsCanvasRotated}
                 />
               )}
           </>
@@ -222,7 +224,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
       </main>
 
       {/* Floating Bottom Scene Dock (rendered only after entering and when no letter is open) */}
-      {hasSeenWelcome && !openLetterId && (
+      {hasSeenWelcome && !openLetterId && !isCanvasRotated && (
         <PublicSceneDock
           scenes={visibleScenes}
           activeSceneId={activeSceneId}

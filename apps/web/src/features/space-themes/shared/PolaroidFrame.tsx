@@ -54,7 +54,7 @@ export function PolaroidFrame({
       {(caption || date) && (
         <div className="flex items-baseline justify-between px-1 pt-2.5 text-left">
           {caption && (
-            <p className="font-heading text-text-primary/90 truncate text-xs font-medium italic sm:text-sm">
+            <p className="font-heading text-text-primary/90 truncate text-sm font-medium italic">
               {caption}
             </p>
           )}

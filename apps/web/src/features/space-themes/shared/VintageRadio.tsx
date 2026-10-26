@@ -40,7 +40,7 @@ export function VintageRadio({
   return (
     <div
       className={cn(
-        'group relative flex w-full max-w-[340px] flex-col rounded-2xl border-2 border-[#523321] bg-gradient-to-b from-[#3D2519] via-[#2A180F] to-[#1C100A] p-3.5 shadow-2xl transition-all select-none hover:border-amber-600/50 hover:shadow-[0_12px_36px_rgba(202,138,4,0.18)] sm:p-4',
+        'group relative flex w-full max-w-[340px] flex-col rounded-2xl border-2 border-[#523321] bg-gradient-to-b from-[#3D2519] via-[#2A180F] to-[#1C100A] p-4 shadow-2xl transition-all select-none hover:border-amber-600/50 hover:shadow-[0_12px_36px_rgba(202,138,4,0.18)]',
         className,
       )}
       {...props}

@@ -1,9 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-export const VIRTUAL_CANVAS_WIDTH = 960
-export const VIRTUAL_CANVAS_HEIGHT = 600
+/** Fixed logical stage size shared by the editor and the public viewer */
+export const VIRTUAL_CANVAS_WIDTH = 1280
+export const VIRTUAL_CANVAS_HEIGHT = 720
 
 export type CanvasZoomMode = 'fit' | 'full'
+
+export interface UseVirtualCanvasScaleOptions {
+  /** Horizontal space reserved inside the container (px, both sides) */
+  insetX?: number
+  /** Vertical space reserved inside the container (px, both sides) */
+  insetY?: number
+  /** When false, scale only by available width (height grows with stage) */
+  fitToHeight?: boolean
+  /** Upper bound for the visual scale */
+  maxScale?: number
+}
 
 export interface UseVirtualCanvasScaleReturn {
   containerRef: React.RefObject<HTMLDivElement | null>
@@ -14,110 +26,82 @@ export interface UseVirtualCanvasScaleReturn {
   isMobile: boolean
   isPortrait: boolean
   isVirtualLandscape: boolean
+  /** True when the stage is rendered rotated 90deg inside a portrait phone */
+  isRotated: boolean
   toggleVirtualLandscape: () => void
   scaledHeight: number
   scaledWidth: number
 }
 
-export function useVirtualCanvasScale(): UseVirtualCanvasScaleReturn {
+interface ViewportState {
+  width: number
+  height: number
+  isMobile: boolean
+  isPortrait: boolean
+}
+
+const readViewport = (el: HTMLElement | null): ViewportState => {
+  const winW = typeof window !== 'undefined' ? window.innerWidth : 1280
+  const winH = typeof window !== 'undefined' ? window.innerHeight : 800
+  return {
+    width: el?.clientWidth ?? winW,
+    height: el?.clientHeight ?? winH,
+    isMobile: winW < 768,
+    isPortrait: winH >= winW,
+  }
+}
+
+/**
+ * Contain-fit scaling for the fixed 1280x720 stage. Every device renders the
+ * exact same composition; only the visual scale (and optional rotation) changes.
+ */
+export function useVirtualCanvasScale({
+  insetX = 16,
+  insetY = 16,
+  fitToHeight = true,
+  maxScale = 1.5,
+}: UseVirtualCanvasScaleOptions = {}): UseVirtualCanvasScaleReturn {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [scale, setScale] = useState(1)
   const [zoomMode, setZoomMode] = useState<CanvasZoomMode>('fit')
   const [isVirtualLandscape, setIsVirtualLandscape] = useState(false)
-  const [isMobile, setIsMobile] = useState<boolean>(() =>
-    typeof window !== 'undefined' ? window.innerWidth < 768 : false,
-  )
-  const [isPortrait, setIsPortrait] = useState<boolean>(() =>
-    typeof window !== 'undefined'
-      ? window.innerHeight >= window.innerWidth
-      : true,
+  const [viewport, setViewport] = useState<ViewportState>(() =>
+    readViewport(null),
   )
 
-  const updateScale = useCallback(() => {
-    if (!containerRef.current) return
-
-    const containerWidth = containerRef.current.clientWidth
-    const containerHeight = containerRef.current.clientHeight
-    const winWidth = window.innerWidth
-    const winHeight = window.innerHeight
-
-    const mobileCheck = winWidth < 768
-    const portraitCheck = winHeight >= winWidth
-    setIsMobile(mobileCheck)
-    setIsPortrait(portraitCheck)
-
-    // Reset virtual landscape if physically rotated to landscape
-    if (!portraitCheck && isVirtualLandscape) {
-      setIsVirtualLandscape(false)
-    }
-
-    if (zoomMode === 'full') {
-      setScale(1)
-      return
-    }
-
-    // 1. Desktop / Laptop Bidirectional Scale:
-    // Ensures the canvas never cuts off vertically on 1366x768, laptops or scaling > 100%
-    if (!mobileCheck) {
-      const paddingX = 32
-      const paddingY = 24
-      const availW = Math.max(320, containerWidth - paddingX)
-      const availH = Math.max(280, containerHeight - paddingY)
-      const scaleW = availW / VIRTUAL_CANVAS_WIDTH
-      const scaleH = availH / VIRTUAL_CANVAS_HEIGHT
-      const optimalScale = Math.min(scaleW, scaleH, 1.05)
-      setScale(Math.round(optimalScale * 1000) / 1000)
-      return
-    }
-
-    // 2. Mobile in Virtual Landscape (90deg CSS rotation inside portrait phone)
-    if (isVirtualLandscape && portraitCheck) {
-      // In 90deg rotation: 960px width fits in container height, 600px height fits in container width
-      const availH = Math.max(320, containerHeight - 32)
-      const availW = Math.max(260, containerWidth - 20)
-      const scaleW = availH / VIRTUAL_CANVAS_WIDTH
-      const scaleH = availW / VIRTUAL_CANVAS_HEIGHT
-      const computedScale = Math.min(scaleW, scaleH, 1)
-      setScale(Math.round(computedScale * 1000) / 1000)
-      return
-    }
-
-    // 3. Mobile in Native Landscape (Physical rotation)
-    if (!portraitCheck) {
-      const availW = Math.max(320, containerWidth - 24)
-      const availH = Math.max(220, containerHeight - 16)
-      const scaleW = availW / VIRTUAL_CANVAS_WIDTH
-      const scaleH = availH / VIRTUAL_CANVAS_HEIGHT
-      const computedScale = Math.min(scaleW, scaleH, 1)
-      setScale(Math.round(computedScale * 1000) / 1000)
-      return
-    }
-
-    // 4. Mobile in Default Portrait 'fit' mode
-    const horizontalPadding = 16
-    const availableWidth = Math.max(300, containerWidth - horizontalPadding)
-    const computedScale = Math.min(1, availableWidth / VIRTUAL_CANVAS_WIDTH)
-    setScale(Math.round(computedScale * 1000) / 1000)
-  }, [zoomMode, isVirtualLandscape])
+  const measure = useCallback(() => {
+    setViewport(readViewport(containerRef.current))
+  }, [])
 
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
-
-    const observer = new ResizeObserver(() => {
-      updateScale()
-    })
-
+    const observer = new ResizeObserver(measure)
     observer.observe(el)
-    window.addEventListener('resize', updateScale)
-    window.addEventListener('orientationchange', updateScale)
-
+    window.addEventListener('resize', measure)
+    window.addEventListener('orientationchange', measure)
     return () => {
       observer.disconnect()
-      window.removeEventListener('resize', updateScale)
-      window.removeEventListener('orientationchange', updateScale)
+      window.removeEventListener('resize', measure)
+      window.removeEventListener('orientationchange', measure)
     }
-  }, [updateScale])
+  }, [measure])
+
+  const { width, height, isMobile, isPortrait } = viewport
+  // Virtual landscape only applies while the phone is physically in portrait
+  const isRotated = isVirtualLandscape && isMobile && isPortrait
+
+  const stageW = isRotated ? VIRTUAL_CANVAS_HEIGHT : VIRTUAL_CANVAS_WIDTH
+  const stageH = isRotated ? VIRTUAL_CANVAS_WIDTH : VIRTUAL_CANVAS_HEIGHT
+  const availW = Math.max(160, width - insetX * 2)
+  const availH = Math.max(120, height - insetY * 2)
+
+  const fitScale = Math.min(
+    availW / stageW,
+    fitToHeight ? availH / stageH : Number.POSITIVE_INFINITY,
+    maxScale,
+  )
+  const rawScale = zoomMode === 'full' ? Math.max(fitScale, 0.75) : fitScale
+  const scale = Math.max(0.1, Math.round(rawScale * 1000) / 1000)
 
   const toggleZoomMode = useCallback(() => {
     setZoomMode((prev) => (prev === 'fit' ? 'full' : 'fit'))
@@ -127,9 +111,6 @@ export function useVirtualCanvasScale(): UseVirtualCanvasScaleReturn {
     setIsVirtualLandscape((prev) => !prev)
   }, [])
 
-  const scaledHeight = Math.round(VIRTUAL_CANVAS_HEIGHT * scale)
-  const scaledWidth = Math.round(VIRTUAL_CANVAS_WIDTH * scale)
-
   return {
     containerRef,
     scale,
@@ -138,9 +119,10 @@ export function useVirtualCanvasScale(): UseVirtualCanvasScaleReturn {
     toggleZoomMode,
     isMobile,
     isPortrait,
-    isVirtualLandscape,
+    isVirtualLandscape: isRotated,
+    isRotated,
     toggleVirtualLandscape,
-    scaledHeight,
-    scaledWidth,
+    scaledHeight: Math.round(stageH * scale),
+    scaledWidth: Math.round(stageW * scale),
   }
 }

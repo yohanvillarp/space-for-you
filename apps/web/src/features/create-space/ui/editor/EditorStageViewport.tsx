@@ -120,7 +120,7 @@ export function EditorStageViewport(props: EditorStageViewportProps) {
       className={cn(
         'relative min-h-0 flex-1',
         activeScene?.type === 'free-canvas'
-          ? 'overflow-auto p-2 pb-24 sm:p-6 sm:pb-16 lg:p-8'
+          ? 'flex flex-col overflow-hidden p-2 pb-16 sm:p-4 sm:pb-16 lg:p-6 lg:pb-16'
           : 'overflow-hidden p-0',
         className,
       )}

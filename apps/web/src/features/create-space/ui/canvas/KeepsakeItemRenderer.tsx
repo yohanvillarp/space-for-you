@@ -65,7 +65,7 @@ export function KeepsakeItemRenderer({
 
     case 'wax-envelope':
       return (
-        <div className="linen-envelope relative w-64 space-y-3 rounded-2xl p-4 shadow-2xl sm:w-72 sm:p-5">
+        <div className="linen-envelope relative w-72 space-y-3 rounded-2xl p-5 shadow-2xl">
           <div className="absolute -top-3 left-6">
             <WashiTape color="rose" tilt="right" />
           </div>
@@ -115,7 +115,7 @@ export function KeepsakeItemRenderer({
 
     case 'vinyl-player':
       return (
-        <div className="w-64 sm:w-72">
+        <div className="w-72">
           <VinylPlayer
             trackTitle={item.data.title || 'Our Special Song'}
             artist={item.data.artist || 'Atelier Soundscape'}
@@ -128,7 +128,7 @@ export function KeepsakeItemRenderer({
 
     case 'cassette-tape':
       return (
-        <div className="w-64 sm:w-72">
+        <div className="w-72">
           <CassetteTape
             label={item.data.title || 'Personal Voice Message'}
             subtitle={item.data.subtitle || 'Memories & Melodies'}
@@ -146,7 +146,7 @@ export function KeepsakeItemRenderer({
 
     case 'music-box':
       return (
-        <div className="w-64 sm:w-72">
+        <div className="w-72">
           <MusicBox
             title={item.data.title || 'Happy Birthday (Music Box)'}
             artist={item.data.artist || 'Oleg Kirilkov'}
@@ -158,7 +158,7 @@ export function KeepsakeItemRenderer({
 
     case 'vintage-radio':
       return (
-        <div className="w-64 sm:w-72">
+        <div className="w-72">
           <VintageRadio
             title={item.data.title || 'Personal Playlist'}
             artist={item.data.artist || 'Atelier Soundscape'}

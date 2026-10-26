@@ -1,17 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
 import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { KeepsakeItemRenderer } from '@/features/create-space/ui/canvas/KeepsakeItemRenderer'
 import { StationeryItemRenderer } from '@/features/create-space/ui/canvas/StationeryItemRenderer'
 import { EphemeraItemRenderer } from '@/features/create-space/ui/canvas/EphemeraItemRenderer'
 import { SpatialStageAtmosphere } from '@/features/create-space/ui/canvas/SpatialStageAtmosphere'
-import {
-  useVirtualCanvasScale,
-  VIRTUAL_CANVAS_WIDTH,
-  VIRTUAL_CANVAS_HEIGHT,
-} from '@/features/create-space/ui/canvas/useVirtualCanvasScale'
+import { useVirtualCanvasScale } from '@/features/create-space/ui/canvas/useVirtualCanvasScale'
+import { ScaledStageFrame } from '@/features/create-space/ui/canvas/ScaledStageFrame'
 import { CanvasOrientationPrompt } from '@/features/create-space/ui/canvas/CanvasOrientationPrompt'
 import { PublicPhotoLightbox } from '@/features/create-space/ui/public/PublicPhotoLightbox'
+import { PublicCardReaderModal } from '@/features/create-space/ui/public/PublicCardReaderModal'
 import { filterPublicItems } from '@/features/create-space/lib/stage-public-filter'
 import { cn, playSpatialSfx } from '@/shared/lib'
 import '@/features/space-themes/birthday/birthday.css'
@@ -21,6 +19,7 @@ import '@/features/space-themes/friendship/friendship.css'
 export interface PublicStageCanvasProps {
   templateId: SpaceTemplateId
   items: SpatialItem[]
+  onVirtualLandscapeChange?: (isRotated: boolean) => void
   className?: string
 }
 
@@ -46,9 +45,17 @@ const EPHEMERA_TYPES = new Set([
   'confetti-stars',
 ])
 
+const TEXT_READER_TYPES = new Set([
+  'greeting-card',
+  'airmail-postcard',
+  'sticky-note',
+  'wax-envelope',
+])
+
 export function PublicStageCanvas({
   templateId,
   items: initialItems,
+  onVirtualLandscapeChange,
   className,
 }: PublicStageCanvasProps) {
   const [prevInitialItems, setPrevInitialItems] = useState(initialItems)
@@ -60,15 +67,23 @@ export function PublicStageCanvas({
     setPrevInitialItems(initialItems)
     setItems(filterPublicItems(initialItems))
   }
+
   const [activePhoto, setActivePhoto] = useState<SpatialItem | null>(null)
+  const [activeCard, setActiveCard] = useState<SpatialItem | null>(null)
+
   const {
     containerRef,
     scale,
     isMobile,
     isPortrait,
-    isVirtualLandscape,
+    isRotated,
     toggleVirtualLandscape,
-  } = useVirtualCanvasScale()
+  } = useVirtualCanvasScale({ insetX: 8, insetY: 8 })
+
+  useEffect(() => {
+    onVirtualLandscapeChange?.(isRotated)
+    return () => onVirtualLandscapeChange?.(false)
+  }, [isRotated, onVirtualLandscapeChange])
 
   const handleUpdateItemData = (
     id: string,
@@ -97,6 +112,13 @@ export function PublicStageCanvas({
       const nextLit = item.data?.isLit === false
       handleUpdateItemData(item.id, { isLit: nextLit })
       playSpatialSfx(nextLit ? 'candle-spark' : 'candle-blow')
+      return
+    }
+
+    if (TEXT_READER_TYPES.has(item.type) && item.data?.text) {
+      if (item.type === 'wax-envelope' && item.data?.isSealed) return
+      playSpatialSfx('tactile-tap')
+      setActiveCard(item)
     }
   }
 
@@ -105,27 +127,22 @@ export function PublicStageCanvas({
       ref={containerRef}
       className={cn(
         'relative flex h-full w-full flex-1 items-center justify-center overflow-hidden select-none',
+        isRotated ? 'p-1 pb-2' : 'p-2 pb-16 sm:p-4 sm:pb-16 lg:p-6 lg:pb-16',
         className,
       )}
     >
       <CanvasOrientationPrompt
         isMobile={isMobile}
         isPortrait={isPortrait}
-        isVirtualLandscape={isVirtualLandscape}
+        isVirtualLandscape={isRotated}
         onToggleVirtualLandscape={toggleVirtualLandscape}
       />
 
-      <div
-        style={{
-          width: VIRTUAL_CANVAS_WIDTH,
-          height: VIRTUAL_CANVAS_HEIGHT,
-          transform: isVirtualLandscape
-            ? `rotate(90deg) scale(${scale})`
-            : `scale(${scale})`,
-          transformOrigin: 'center center',
-        }}
+      <ScaledStageFrame
+        scale={scale}
+        rotated={isRotated}
         className={cn(
-          'relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 ease-out',
+          'rounded-3xl border border-black/15 shadow-2xl transition-colors duration-300 dark:border-white/10',
           SURFACE_CLASSES[templateId] ?? 'celebration-table-surface',
         )}
       >
@@ -172,11 +189,16 @@ export function PublicStageCanvas({
             </div>
           )
         })}
-      </div>
+      </ScaledStageFrame>
 
       <PublicPhotoLightbox
         item={activePhoto}
         onClose={() => setActivePhoto(null)}
+      />
+
+      <PublicCardReaderModal
+        item={activeCard}
+        onClose={() => setActiveCard(null)}
       />
     </div>
   )

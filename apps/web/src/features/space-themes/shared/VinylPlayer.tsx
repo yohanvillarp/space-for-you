@@ -37,7 +37,7 @@ export function VinylPlayer({
   return (
     <div
       className={cn(
-        'relative flex items-center justify-between gap-4 rounded-2xl border border-black/10 bg-[#FAF7F2] p-3 shadow-md select-none sm:p-4 dark:border-white/10 dark:bg-[#251E1B]',
+        'relative flex items-center justify-between gap-4 rounded-2xl border border-black/10 bg-[#FAF7F2] p-4 shadow-md select-none dark:border-white/10 dark:bg-[#251E1B]',
         className,
       )}
       {...props}
@@ -91,7 +91,7 @@ export function VinylPlayer({
       {/* Track Info */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="font-heading text-text-primary truncate text-xs font-medium italic sm:text-sm">
+          <p className="font-heading text-text-primary truncate text-sm font-medium italic">
             {trackTitle}
           </p>
           {isPlaying && (
