@@ -1,7 +1,7 @@
 {
   "name": "space-for-you",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.5",
   "type": "module",
   "scripts": {
     "dev": "npm --prefix apps/web run dev",

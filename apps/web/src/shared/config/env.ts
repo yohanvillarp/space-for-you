@@ -36,4 +36,8 @@ export const ENV = {
   APPWRITE_FUNCTION_VALIDATE_VOICE_QUOTA_ID:
     import.meta.env.VITE_APPWRITE_FUNCTION_VALIDATE_VOICE_QUOTA_ID ||
     '6ade5a36002b8f002ca9',
+  HERO_YOUTUBE_VIDEO_ID:
+    import.meta.env.VITE_HERO_YOUTUBE_VIDEO_ID ||
+    import.meta.env.APPWRITE_HERO_YOUTUBE_VIDEO_ID ||
+    '',
 } as const

@@ -18,4 +18,8 @@ export const MAIN_NAV_ITEMS: readonly NavItem[] = [
     label: 'Privacy',
     path: ROUTES.PRIVACY,
   },
+  {
+    label: 'Attributions',
+    path: ROUTES.ATTRIBUTIONS,
+  },
 ] as const

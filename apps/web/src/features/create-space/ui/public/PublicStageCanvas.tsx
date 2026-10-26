@@ -193,11 +193,13 @@ export function PublicStageCanvas({
 
       <PublicPhotoLightbox
         item={activePhoto}
+        isRotated={isRotated}
         onClose={() => setActivePhoto(null)}
       />
 
       <PublicCardReaderModal
         item={activeCard}
+        isRotated={isRotated}
         onClose={() => setActiveCard(null)}
       />
     </div>

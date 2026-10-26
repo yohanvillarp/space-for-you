@@ -8,9 +8,20 @@ export function Footer() {
   return (
     <footer className="border-border-base bg-bg-surface mt-auto border-t py-6">
       <Container className="text-text-muted flex flex-col items-center justify-between gap-4 text-xs sm:flex-row">
-        <p>&copy; {CURRENT_YEAR} Space For You. All rights reserved.</p>
+        <p className="text-center sm:text-left">
+          &copy; {CURRENT_YEAR} Space for You. Crafted by{' '}
+          <a
+            href="https://github.com/yohanvillarp"
+            target="_blank"
+            rel="author noopener noreferrer"
+            className="text-text-secondary hover:text-text-primary font-medium transition-colors"
+          >
+            Yohan Nikel Villar Presentación (@yohanvillarp)
+          </a>
+          .
+        </p>
 
-        <nav className="flex items-center gap-6 font-sans">
+        <nav className="flex flex-wrap items-center justify-center gap-6 font-sans">
           <Link
             to={ROUTES.EXAMPLES}
             className="hover:text-text-primary transition-colors"

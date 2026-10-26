@@ -1,8 +1,10 @@
 import { X, Calendar } from 'lucide-react'
 import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
+import { cn } from '@/shared/lib'
 
 export interface PublicPhotoLightboxProps {
   item: SpatialItem | null
+  isRotated?: boolean
   onClose: () => void
 }
 
@@ -11,6 +13,7 @@ export interface PublicPhotoLightboxProps {
  */
 export function PublicPhotoLightbox({
   item,
+  isRotated = false,
   onClose,
 }: PublicPhotoLightboxProps) {
   if (!item) return null
@@ -27,7 +30,12 @@ export function PublicPhotoLightbox({
       onClick={onClose}
     >
       <div
-        className="relative flex max-h-[90vh] max-w-xl flex-col items-center overflow-hidden rounded-2xl border border-white/10 bg-[#191411] p-5 shadow-2xl transition-transform"
+        className={cn(
+          'relative flex flex-col items-center overflow-hidden rounded-2xl border border-white/10 bg-[#191411] p-5 shadow-2xl transition-transform',
+          isRotated
+            ? 'max-h-[88vw] w-[85vh] max-w-[540px] rotate-90'
+            : 'max-h-[90vh] max-w-xl',
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -39,12 +47,20 @@ export function PublicPhotoLightbox({
           <X className="h-5 w-5" />
         </button>
 
-        <div className="relative flex max-h-[70vh] w-full items-center justify-center overflow-hidden rounded-lg bg-black/40">
+        <div
+          className={cn(
+            'relative flex w-full items-center justify-center overflow-hidden rounded-lg bg-black/40',
+            isRotated ? 'max-h-[58vw]' : 'max-h-[70vh]',
+          )}
+        >
           {photoUrl ? (
             <img
               src={photoUrl}
               alt={caption || 'Dedicated space memory'}
-              className="max-h-[65vh] w-auto max-w-full rounded-md object-contain shadow-md"
+              className={cn(
+                'w-auto max-w-full rounded-md object-contain shadow-md',
+                isRotated ? 'max-h-[54vw]' : 'max-h-[65vh]',
+              )}
             />
           ) : (
             <div className="flex h-64 w-full items-center justify-center text-stone-400">

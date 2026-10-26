@@ -9,6 +9,7 @@ import {
   Link2,
 } from 'lucide-react'
 import { Container, Card } from '@/shared/ui'
+import { usePageSeo } from '@/shared/lib'
 
 interface AttributionResource {
   name: string
@@ -84,6 +85,13 @@ const ATTRIBUTIONS: AttributionResource[] = [
 ]
 
 export function AttributionsPage() {
+  usePageSeo({
+    title: 'Attributions & Creator',
+    description:
+      'Open-source resources, creative foundations, and creator attribution for Space for You by Yohan Nikel Villar Presentación (yohanvillarp / nikelyh).',
+    canonicalPath: '/attributions',
+  })
+
   return (
     <div className="animate-fade-in py-12 sm:py-20">
       <Container className="max-w-5xl space-y-12">
@@ -159,13 +167,30 @@ export function AttributionsPage() {
             </div>
             <div className="space-y-1">
               <h3 className="font-heading text-text-primary text-sm font-medium">
-                Intellectual Property & Creator Recognition
+                Creator & Intellectual Property Recognition
               </h3>
               <p className="text-text-muted font-sans text-xs leading-relaxed">
-                All trademarks, product names, previews, and creative assets
-                remain the exclusive property of their respective owners. Space
-                for You is an independent digital space crafted with deep
-                respect for the creative commons and open developer ecosystem.
+                Space for You is designed and developed by{' '}
+                <a
+                  href="https://github.com/yohanvillarp"
+                  target="_blank"
+                  rel="author noopener noreferrer"
+                  className="text-text-primary hover:text-accent font-medium underline underline-offset-2 transition-colors"
+                >
+                  Yohan Nikel Villar Presentación
+                </a>{' '}
+                (GitHub:{' '}
+                <a
+                  href="https://github.com/yohanvillarp/space-for-you"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-secondary hover:text-accent transition-colors"
+                >
+                  @yohanvillarp
+                </a>{' '}
+                / alias: <span className="text-text-secondary">nikelyh</span>).
+                All third-party trademarks, previews, and creative assets remain
+                the property of their respective owners.
               </p>
             </div>
           </div>

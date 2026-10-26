@@ -5,7 +5,14 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import type { UserSpace } from '@/entities/space'
-import { getSpaceById, saveSpace, saveSpaceToDatabase } from '@/entities/space'
+import {
+  getSpaceById,
+  saveSpace,
+  saveSpaceToDatabase,
+  getPendingCloudSyncIds,
+  markPendingCloudSync,
+  clearPendingCloudSync,
+} from '@/entities/space'
 import { getCurrentUser } from '@/shared/api'
 import { getSpaceStorageKeys, saveToStorage } from './multi-scene-storage'
 import { serializeProtectionTheme } from '@/features/space-lock'
@@ -140,6 +147,7 @@ export function useStudioSave({
             passcodeHint: protectionConfig?.hint,
             protectionTheme,
           })
+          clearPendingCloudSync(localSaved.id)
         }
         setIsDirty(false)
         setIsSaved(true)
@@ -200,13 +208,19 @@ export function useStudioSave({
     if (isInitialMount.current) {
       isInitialMount.current = false
       lastPersistedPayloadRef.current = currentPayload
-      persistLocally(targetId)
+      if (getPendingCloudSyncIds().has(targetId)) {
+        const localSaved = persistLocally(targetId)
+        setTimeout(() => {
+          syncToCloud(localSaved).catch(() => {})
+        }, 0)
+      }
       return
     }
 
     if (currentPayload === lastPersistedPayloadRef.current) return
 
     lastPersistedPayloadRef.current = currentPayload
+    markPendingCloudSync(targetId)
     persistLocally(targetId)
     setIsDirty(true)
 

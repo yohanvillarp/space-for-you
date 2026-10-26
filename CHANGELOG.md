@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.2.5](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.4...space-for-you-v1.2.5) (2026-10-26)
+
+
+### Bug Fixes
+
+* **seo:** add png open graph card, author schema, and route meta ([f4b824c](https://github.com/yohanvillarp/space-for-you/commit/f4b824c8a87a0a26fdc559e3ef6531f0a87051c4))
+* **seo:** add png open graph card, author schema, and route meta ([47fe6fd](https://github.com/yohanvillarp/space-for-you/commit/47fe6fd58098ba43642ea97a6742671fe1cfe3b3))
+
+## [1.2.4](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.3...space-for-you-v1.2.4) (2026-10-26)
+
+
+### Bug Fixes
+
+* **landing:** align public pages with real stages and youtube hero ([0892869](https://github.com/yohanvillarp/space-for-you/commit/0892869f2bfee06d4574efa3f3ae00dd2c5af86e))
+* **landing:** align public pages with real stages and youtube hero ([d7262f4](https://github.com/yohanvillarp/space-for-you/commit/d7262f453bcaca18523d3ef73ecd2eba430c8e5f))
+
+## [1.2.3](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.2...space-for-you-v1.2.3) (2026-10-26)
+
+
+### Bug Fixes
+
+* **spaces:** sync cloud deletions and studio scenes across devices ([b78cd29](https://github.com/yohanvillarp/space-for-you/commit/b78cd29e16ed032e324c305794b530be4955e060))
+
+## [1.2.2](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.1...space-for-you-v1.2.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* **viewer:** rotate photo and card modals in virtual landscape ([d9e4642](https://github.com/yohanvillarp/space-for-you/commit/d9e4642ebdaee9eb4212ad6d31c27a1b0b3558e7))
+
+## [1.2.1](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.0...space-for-you-v1.2.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* **release:** configure patch bump rules for release-please ([94339fc](https://github.com/yohanvillarp/space-for-you/commit/94339fc43e85d6f81ce2ca2a7874bbca2720bb54))
+* **release:** configure patch bump rules for release-please ([d486a8a](https://github.com/yohanvillarp/space-for-you/commit/d486a8a50f11823d42e8a3de91ed02ed010f9c01))
+
 ## [1.2.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.1.0...space-for-you-v1.2.0) (2026-10-26)
 
 
