@@ -68,6 +68,6 @@ Space for You allows users to craft intimate, interactive, and beautifully desig
 2. **No Hardcoded Credentials:** Appwrite IDs and secrets belong strictly in `apps/web/.env` (and documented in `apps/web/.env.example`).
 3. **Strict Path Aliases (`@/`):** Always use `@/` path alias for all internal imports (e.g. `@/features/...`, `@/entities/...`, `@/shared/...`). Deep relative paths (e.g. `../../model/...`) are strictly forbidden.
 4. **File Length Limit (Max 250 LOC):** No source file may exceed 250 lines of code. Decompose into modular hooks, sub-views, and shared primitives.
-5. **Conventional Commits:** Maximum 72 characters header length, lowercase, no trailing period (e.g., `feat(viewer): implement responsive public stage`).
+5. **Conventional Commits & SemVer Discipline:** Maximum 72 characters header length, lowercase, no trailing period. Use `fix(...)`, `perf(...)`, or `refactor(...)` for bug fixes, UI/UX adjustments, and incremental improvements so Release Please bumps **PATCH (`x.y.Z`)**. Reserve `feat(...)` strictly for major new feature modules that warrant a **MINOR (`x.Y.0`)** bump.
 6. **Branching Model:** `main` is production; `develop` is integration. Create `feature/<name>` or `fix/<name>` branches and merge via Pull Requests towards `develop`.
 7. **Editorial Copy Standards:** All user-facing UI text must be in fluent, intimate English without technical jargon (never mention Vite, Appwrite, FSD, or tokens in UI) and without meta/process badges (e.g., `"Step 1 of 3"`, `"Creator Workshop"`).
