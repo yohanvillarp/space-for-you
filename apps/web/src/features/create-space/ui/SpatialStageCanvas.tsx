@@ -6,11 +6,8 @@ import { SpatialCanvasItem } from './SpatialCanvasItem'
 import { SpatialStageAtmosphere } from './canvas/SpatialStageAtmosphere'
 import { useCanvasDragAndDrop } from './canvas/useCanvasDragAndDrop'
 import { StageContextMenu, useContextMenu } from './context-menu'
-import {
-  useVirtualCanvasScale,
-  VIRTUAL_CANVAS_WIDTH,
-  VIRTUAL_CANVAS_HEIGHT,
-} from './canvas/useVirtualCanvasScale'
+import { useVirtualCanvasScale } from './canvas/useVirtualCanvasScale'
+import { ScaledStageFrame } from './canvas/ScaledStageFrame'
 import { CanvasZoomControl } from './canvas/CanvasZoomControl'
 import { useStudioBehavior } from './editor/useStudioBehavior'
 import { VoiceNoteRecorderModal } from './canvas/inspector/VoiceNoteRecorderModal'
@@ -54,6 +51,7 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
     onUpdateItemData,
     onAddItem,
     onOpenPhotoPicker,
+    fitToHeight = true,
     className,
   } = props
 
@@ -65,6 +63,9 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
   const [editingTextItem, setEditingTextItem] = useState<SpatialItem | null>(
     null,
   )
+  const handleStartEditText = isEditorMode
+    ? (it: SpatialItem) => setEditingTextItem(it)
+    : undefined
 
   useEffect(() => {
     if (menuState.isOpen && menuState.target?.type === 'item') {
@@ -124,25 +125,22 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
     zoomMode,
     toggleZoomMode,
     isMobile,
-    scaledHeight,
-  } = useVirtualCanvasScale()
+  } = useVirtualCanvasScale({ insetX: 4, insetY: 4, fitToHeight })
 
   const targetCassette = items.find((it) => it.id === recordingCassetteId)
   const voiceNotesCount = countSpaceVoiceNotes(items)
+  const isScrollZoom = isMobile && zoomMode === 'full'
 
   return (
     <div
       ref={viewportRef}
       className={cn(
-        'relative w-full transition-all duration-200',
-        isMobile && zoomMode === 'full'
-          ? 'overflow-x-auto overflow-y-hidden pb-4'
-          : 'overflow-visible',
+        'relative flex w-full',
+        fitToHeight && 'h-full min-h-[240px]',
+        isScrollZoom
+          ? 'items-start justify-start overflow-auto pb-4'
+          : 'items-center justify-center overflow-hidden',
       )}
-      style={{
-        height:
-          isMobile && zoomMode === 'fit' ? `${scaledHeight}px` : undefined,
-      }}
     >
       {isMobile && (
         <div className="absolute top-2.5 right-2.5 z-30">
@@ -154,23 +152,16 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
         </div>
       )}
 
-      <div
-        ref={containerRef}
+      <ScaledStageFrame
+        scale={scale}
+        stageRef={containerRef}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => onSelectItem(null)}
         onContextMenu={handleCanvasContextMenu}
-        style={{
-          width: isMobile ? `${VIRTUAL_CANVAS_WIDTH}px` : '100%',
-          height: isMobile ? `${VIRTUAL_CANVAS_HEIGHT}px` : undefined,
-          transform:
-            isMobile && zoomMode === 'fit' ? `scale(${scale})` : undefined,
-          transformOrigin: 'top center',
-        }}
         className={cn(
-          'relative overflow-hidden rounded-3xl border border-black/15 shadow-2xl transition-transform duration-200 dark:border-white/10',
-          !isMobile && 'min-h-[580px] w-full sm:min-h-[640px]',
+          'rounded-3xl border border-black/15 shadow-2xl dark:border-white/10',
           SURFACE_CLASSES[templateId] ?? 'celebration-table-surface',
           isDragOver && 'ring-primary/70 ring-4 ring-inset',
           className,
@@ -196,9 +187,7 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
             onBringToFront={onBringToFront}
             onDelete={handleDeleteItem}
             onUpdateData={onUpdateItemData}
-            onStartEditText={
-              isEditorMode ? (it) => setEditingTextItem(it) : undefined
-            }
+            onStartEditText={handleStartEditText}
             onContextMenu={(it, e) =>
               openMenu({ type: 'item', item: it }, e.clientX, e.clientY)
             }
@@ -209,31 +198,29 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
             isEditorMode={isEditorMode}
           />
         ))}
+      </ScaledStageFrame>
 
-        <StageContextMenu
-          state={menuState}
-          menuRef={menuRef}
-          items={items}
-          copiedItem={copiedItem}
-          onClose={closeMenu}
-          onBringToFront={onBringToFront}
-          onSendToBack={onSendToBack || onBringToFront}
-          onDuplicate={onDuplicateItem || (() => {})}
-          onResetRotation={onResetRotation || (() => {})}
-          onToggleLock={onToggleLock || (() => {})}
-          onCopyItem={onCopyItem || (() => {})}
-          onDelete={handleDeleteItem}
-          onUpdateData={onUpdateItemData}
-          onStartEditText={
-            isEditorMode ? (it) => setEditingTextItem(it) : undefined
-          }
-          onChangePhoto={onOpenPhotoPicker}
-          onAddItem={(type, x, y) => onAddItem(type, x, y)}
-          onPasteItem={(x, y) => onPasteItem?.(x, y)}
-          onResetToDefaults={onResetToDefaults || (() => {})}
-          onClearCanvas={onClearCanvas || (() => {})}
-        />
-      </div>
+      <StageContextMenu
+        state={menuState}
+        menuRef={menuRef}
+        items={items}
+        copiedItem={copiedItem}
+        onClose={closeMenu}
+        onBringToFront={onBringToFront}
+        onSendToBack={onSendToBack || onBringToFront}
+        onDuplicate={onDuplicateItem || (() => {})}
+        onResetRotation={onResetRotation || (() => {})}
+        onToggleLock={onToggleLock || (() => {})}
+        onCopyItem={onCopyItem || (() => {})}
+        onDelete={handleDeleteItem}
+        onUpdateData={onUpdateItemData}
+        onStartEditText={handleStartEditText}
+        onChangePhoto={onOpenPhotoPicker}
+        onAddItem={(type, x, y) => onAddItem(type, x, y)}
+        onPasteItem={(x, y) => onPasteItem?.(x, y)}
+        onResetToDefaults={onResetToDefaults || (() => {})}
+        onClearCanvas={onClearCanvas || (() => {})}
+      />
 
       {recordingCassetteId && (
         <VoiceNoteRecorderModal
