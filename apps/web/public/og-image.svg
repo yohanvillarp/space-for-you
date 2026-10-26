@@ -2,18 +2,22 @@
   <!-- Background: Warm Ivory -->
   <rect width="1200" height="630" fill="#FAF6F0" />
 
+  <!-- Subtle Ambient Glows -->
+  <circle cx="220" cy="140" r="240" fill="#EACABC" fill-opacity="0.28" />
+  <circle cx="980" cy="490" r="260" fill="#A34835" fill-opacity="0.08" />
+
   <!-- Subtle Border / Frame: Arena -->
-  <rect x="24" y="24" width="1152" height="582" rx="20" stroke="#E8DED2" stroke-width="2" />
-  <rect x="36" y="36" width="1128" height="558" rx="14" stroke="#F1E9DE" stroke-width="1" />
+  <rect x="28" y="28" width="1144" height="574" rx="24" stroke="#E8DED2" stroke-width="2" />
+  <rect x="42" y="42" width="1116" height="546" rx="18" stroke="#F1E9DE" stroke-width="1.5" />
 
   <!-- Decorative Corner Accents -->
-  <circle cx="56" cy="56" r="3" fill="#A34835" />
-  <circle cx="1144" cy="56" r="3" fill="#A34835" />
-  <circle cx="56" cy="574" r="3" fill="#A34835" />
-  <circle cx="1144" cy="574" r="3" fill="#A34835" />
+  <circle cx="64" cy="64" r="4" fill="#A34835" />
+  <circle cx="1136" cy="64" r="4" fill="#A34835" />
+  <circle cx="64" cy="566" r="4" fill="#A34835" />
+  <circle cx="1136" cy="566" r="4" fill="#A34835" />
 
   <!-- Logomark (Centered, Scaled) -->
-  <g transform="translate(540, 110) scale(2.0)">
+  <g transform="translate(504, 88) scale(2.0)">
     <!-- Upper-Left Maker Frame (Espresso) -->
     <path fill="#302621" d="
       M 18.0 26.0
@@ -62,13 +66,36 @@
     " />
   </g>
 
-  <!-- Brand Title: Space For You -->
-  <text x="600" y="360" text-anchor="middle" font-family="'Lora', Georgia, 'Times New Roman', serif" font-size="52" font-weight="500" fill="#302621" letter-spacing="-0.5">
-    Space For You
+  <!-- Brand Title: Space for You -->
+  <text x="600" y="345" text-anchor="middle" font-family="'Lora', Georgia, 'Times New Roman', serif" font-size="58" font-weight="600" fill="#302621" letter-spacing="-0.8">
+    Space for You
   </text>
 
-  <!-- Motto / Tagline -->
-  <text x="600" y="430" text-anchor="middle" font-family="'DM Sans', system-ui, -apple-system, sans-serif" font-size="24" font-weight="400" fill="#57463E" letter-spacing="0.2">
-    A platform to create personalized digital spaces for someone special.
+  <!-- Tagline -->
+  <text x="600" y="405" text-anchor="middle" font-family="'DM Sans', 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="25" font-weight="400" fill="#57463E">
+    Interactive digital spaces with polaroid canvases, voice notes &amp; sealed letters.
+  </text>
+
+  <!-- Feature Pills Row -->
+  <g transform="translate(235, 442)">
+    <rect x="0" y="0" width="220" height="40" rx="20" fill="#F3ECE2" stroke="#E4D7C7" stroke-width="1" />
+    <text x="110" y="25" text-anchor="middle" font-family="'DM Sans', 'Segoe UI', sans-serif" font-size="15" font-weight="500" fill="#302621">
+      Interactive Canvas
+    </text>
+
+    <rect x="245" y="0" width="220" height="40" rx="20" fill="#F3ECE2" stroke="#E4D7C7" stroke-width="1" />
+    <text x="355" y="25" text-anchor="middle" font-family="'DM Sans', 'Segoe UI', sans-serif" font-size="15" font-weight="500" fill="#302621">
+      Voice Recordings
+    </text>
+
+    <rect x="490" y="0" width="240" height="40" rx="20" fill="#F3ECE2" stroke="#E4D7C7" stroke-width="1" />
+    <text x="610" y="25" text-anchor="middle" font-family="'DM Sans', 'Segoe UI', sans-serif" font-size="15" font-weight="500" fill="#302621">
+      Wax-Sealed Letters &amp; QR
+    </text>
+  </g>
+
+  <!-- Domain & Author Signature -->
+  <text x="600" y="542" text-anchor="middle" font-family="'DM Sans', 'Segoe UI', system-ui, sans-serif" font-size="15" font-weight="500" fill="#8C766B" letter-spacing="0.4">
+    spaceforyou.nikelyh.tech  •  Crafted by Yohan Nikel Villar Presentación (@yohanvillarp)
   </text>
 </svg>

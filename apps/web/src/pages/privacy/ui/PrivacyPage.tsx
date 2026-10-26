@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from 'lucide-react'
 import { ROUTES } from '@/shared/config'
+import { usePageSeo } from '@/shared/lib'
 import { Container, Card, Button } from '@/shared/ui'
 
 const PRIVACY_PILLARS = [
@@ -37,6 +38,13 @@ const PRIVACY_PILLARS = [
 ]
 
 export function PrivacyPage() {
+  usePageSeo({
+    title: 'Privacy & Passcode Protection',
+    description:
+      'Discover how Space for You protects personal spaces with interactive passcode vaults, time-locked scenes, unlisted URLs, and account-free recipient viewing.',
+    canonicalPath: '/privacy',
+  })
+
   return (
     <div className="animate-fade-in py-12 sm:py-16">
       <Container className="max-w-5xl space-y-12">

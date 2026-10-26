@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '@/shared/config'
+import { usePageSeo } from '@/shared/lib'
 import { Container, Card, Button } from '@/shared/ui'
 import { Home, Loader2, Compass } from 'lucide-react'
 import { unlockSpaceViaFunction } from '@/entities/space'
@@ -71,6 +72,17 @@ export function PublicSpacePage() {
   )
 
   const space = data?.space
+
+  usePageSeo({
+    title: space?.recipientName
+      ? `For ${space.recipientName} — ${space.title || 'A Special Space'}`
+      : space?.title || 'A Dedicated Digital Space',
+    description: space?.recipientName
+      ? `A personalized interactive digital space created especially for ${space.recipientName} on Space for You.`
+      : 'Open this personalized interactive digital space on Space for You.',
+    canonicalPath: slug ? `/s/${slug}` : '/',
+    noindex: true,
+  })
 
   const protectionConfig: SpaceProtectionConfig = useMemo(() => {
     let parsedTheme: Partial<SpaceProtectionConfig> = {}

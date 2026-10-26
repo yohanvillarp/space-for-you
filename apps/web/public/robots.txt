@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /examples
+Allow: /how-it-works
+Allow: /privacy
+Allow: /attributions
+Allow: /auth
+Disallow: /dashboard
+Disallow: /studio
+
+Sitemap: https://spaceforyou.nikelyh.tech/sitemap.xml

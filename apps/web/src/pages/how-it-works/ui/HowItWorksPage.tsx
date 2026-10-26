@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { Sparkles, Image, Mail, QrCode, ArrowRight } from 'lucide-react'
 import { ROUTES } from '@/shared/config'
+import { usePageSeo } from '@/shared/lib'
 import { Container, Card, Button } from '@/shared/ui'
 
 const WORKFLOW_STEPS = [
@@ -35,6 +36,13 @@ const WORKFLOW_STEPS = [
 ]
 
 export function HowItWorksPage() {
+  usePageSeo({
+    title: 'How It Works — Create & Share Digital Spaces',
+    description:
+      'Learn how to choose a tactile stage, arrange Polaroid photos and voice recordings on the interactive canvas, seal letters, and share via link or QR card.',
+    canonicalPath: '/how-it-works',
+  })
+
   return (
     <div className="animate-fade-in py-12 sm:py-16">
       <Container className="max-w-5xl space-y-12">
