@@ -72,7 +72,7 @@ export function BirthdayUnboxing({
         className="font-heading text-xs font-semibold tracking-widest uppercase sm:text-sm"
         style={{ color: accentColor }}
       >
-        A Birthday Sanctuary
+        A Birthday Space for {recipientName || 'Someone Special'}
       </span>
 
       <h1 className="font-heading mt-2 text-3xl font-medium tracking-tight text-[#FAF6F0] sm:text-4xl">
@@ -80,7 +80,7 @@ export function BirthdayUnboxing({
       </h1>
 
       <p className="mt-3 max-w-md font-sans text-sm text-stone-300 sm:text-base">
-        A celebratory universe wrapped with love for{' '}
+        A special space crafted with love for{' '}
         <strong className="font-medium text-white">
           {recipientName || 'Someone Special'}
         </strong>
@@ -104,7 +104,7 @@ export function BirthdayUnboxing({
           className="group inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-amber-400/60 bg-gradient-to-r from-amber-500/20 via-amber-500/30 to-amber-500/20 px-8 py-3.5 font-sans text-sm font-semibold text-amber-100 shadow-2xl transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none"
         >
           <Sparkles className="h-4 w-4 text-amber-300 transition-transform duration-300 group-hover:rotate-12" />
-          <span>Make a Wish & Open</span>
+          <span>Open Your Space</span>
         </button>
       </div>
     </div>

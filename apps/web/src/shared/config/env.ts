@@ -29,7 +29,7 @@ export const ENV = {
   APPWRITE_PHOTOS_BUCKET_ID:
     import.meta.env.VITE_APPWRITE_PHOTOS_BUCKET_ID ||
     import.meta.env.APPWRITE_PHOTOS_BUCKET_ID ||
-    'space-photos',
+    '6ade87be001700e5c95b',
   APPWRITE_FUNCTION_UNLOCK_SPACE_ID:
     import.meta.env.VITE_APPWRITE_FUNCTION_UNLOCK_SPACE_ID ||
     '6ade5950002e352b5179',

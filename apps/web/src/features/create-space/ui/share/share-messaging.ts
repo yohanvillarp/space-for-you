@@ -8,7 +8,7 @@ export function getWhatsAppShareMessage({
   url,
 }: ShareMessageContext): string {
   const target = recipientName.trim() ? recipientName.trim() : 'you'
-  return `✨ For ${target}: I crafted an intimate digital sanctuary just for you. Step inside: ${url}`
+  return `✨ For ${target}: I made a dedicated digital space just for you. Open it here: ${url}`
 }
 
 export function getTelegramShareMessage({
@@ -16,7 +16,7 @@ export function getTelegramShareMessage({
   url,
 }: ShareMessageContext): string {
   const target = recipientName.trim() ? recipientName.trim() : 'you'
-  return `✨ A private digital sanctuary crafted for ${target}: ${url}`
+  return `✨ A special digital space crafted for ${target}: ${url}`
 }
 
 export function getInstagramStoryCaption({
@@ -24,7 +24,7 @@ export function getInstagramStoryCaption({
   url,
 }: ShareMessageContext): string {
   const target = recipientName.trim() ? recipientName.trim() : 'you'
-  return `I crafted a quiet little universe for ${target} ✦ Step inside: ${url}`
+  return `I made a dedicated space for ${target} ✦ Open it here: ${url}`
 }
 
 export function openWhatsAppShare(ctx: ShareMessageContext): void {
@@ -61,7 +61,7 @@ export async function shareViaWebShareOrClipboard(options: {
         canvas.toBlob(resolve, 'image/png'),
       )
       if (blob) {
-        const file = new File([blob], 'sanctuary-keepsake.png', {
+        const file = new File([blob], 'space-dedication-card.png', {
           type: 'image/png',
         })
         if (

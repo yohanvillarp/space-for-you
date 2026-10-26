@@ -26,6 +26,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const [activeSceneId, setActiveSceneId] = useState<string>('hub')
+  const [openLetterId, setOpenLetterId] = useState<string | null>(null)
   const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(() =>
     hasSanctuaryBeenUnboxed(space.id),
   )
@@ -52,6 +53,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   }, [scenes])
 
   const handleSelectScene = (sceneId: string) => {
+    setOpenLetterId(null)
     if (sceneId === 'hub') {
       setActiveSceneId('hub')
       return
@@ -67,9 +69,6 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const handleEnterSanctuary = () => {
     setHasSeenWelcome(true)
     setActiveSceneId('hub')
-    if (presetTrack && !isPlaying) {
-      togglePlay()
-    }
   }
 
   // Dynamic Document Title
@@ -116,12 +115,12 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                 playSpatialSfx('tactile-tap')
                 setHasSeenWelcome(false)
               }}
-              title="Relive unboxing ceremony"
+              title="Replay welcome intro"
               className="flex cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-stone-400 transition-colors hover:border-white/20 hover:text-white"
             >
               <Gift className="h-3.5 w-3.5 text-amber-300/80" />
               <span className="hidden font-sans text-xs sm:inline">
-                Relive Intro
+                Replay Intro
               </span>
             </button>
           )}
@@ -133,7 +132,9 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                 playSpatialSfx('tactile-tap')
                 togglePlay()
               }}
-              title={isPlaying ? 'Mute ambient sound' : 'Play ambient sound'}
+              title={
+                isPlaying ? 'Mute background music' : 'Play background music'
+              }
               className={cn(
                 'flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 font-sans text-xs font-medium transition-all',
                 isPlaying
@@ -148,7 +149,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                     <span className="h-3.5 w-0.5 animate-pulse rounded-full bg-amber-300" />
                     <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-amber-300" />
                   </div>
-                  <span className="hidden sm:inline">Soundscape</span>
+                  <span className="hidden sm:inline">Music</span>
                 </>
               ) : (
                 <>
@@ -203,6 +204,8 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                   scene={activeScene}
                   templateId={templateId}
                   isStudioPreview={false}
+                  openLetterId={openLetterId}
+                  onOpenLetter={setOpenLetterId}
                   onBackToHub={() => setActiveSceneId('hub')}
                 />
               )}
@@ -219,8 +222,8 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
         )}
       </main>
 
-      {/* Floating Bottom Scene Dock (rendered only after entering) */}
-      {hasSeenWelcome && (
+      {/* Floating Bottom Scene Dock (rendered only after entering and when no letter is open) */}
+      {hasSeenWelcome && !openLetterId && (
         <PublicSceneDock
           scenes={visibleScenes}
           activeSceneId={activeSceneId}

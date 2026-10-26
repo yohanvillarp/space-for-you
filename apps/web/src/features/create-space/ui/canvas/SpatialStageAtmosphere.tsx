@@ -69,7 +69,7 @@ export function SpatialStageAtmosphere({
             </h4>
             <p className="text-text-secondary mt-1 font-sans text-xs">
               Drag elements from the sidebar or click &ldquo;Add to Stage&rdquo;
-              to begin crafting your sanctuary.
+              to begin crafting your space.
             </p>
           </div>
         </div>

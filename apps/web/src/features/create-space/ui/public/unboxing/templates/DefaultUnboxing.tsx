@@ -37,7 +37,7 @@ export function DefaultUnboxing({
         className="font-heading text-xs font-semibold tracking-widest uppercase sm:text-sm"
         style={{ color: accentColor }}
       >
-        A Private Digital Sanctuary
+        A Special Dedicated Space
       </span>
 
       <h1 className="font-heading mt-2 text-3xl font-medium tracking-tight text-[#FAF6F0] sm:text-4xl">
@@ -72,7 +72,7 @@ export function DefaultUnboxing({
           }}
         >
           <Sparkles className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-          <span>Open Sanctuary</span>
+          <span>Open Your Space</span>
         </button>
       </div>
     </div>

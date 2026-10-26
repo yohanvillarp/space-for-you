@@ -78,8 +78,10 @@ export interface EditorStageViewportProps {
   onDeleteLetter?: (id: string) => void
   onReorderLetters?: (fromIndex: number, toIndex: number) => void
   onUpdateLetter: (updated: LetterItem) => void
+  spaceId?: string
   shareUrl?: string
   isPublished?: boolean
+  isDirty?: boolean
   onOpenPublish?: () => void
   shareCustomizer?: {
     customization: import('@/features/create-space/ui/share/share-customizer.types').ShareCardCustomization
@@ -138,18 +140,20 @@ export function EditorStageViewport(props: EditorStageViewportProps) {
         {...rendererProps}
       />
 
-      <StageBottomDock
-        activeSceneId={activeSceneId}
-        scenes={scenes}
-        onSelectScene={onOpenScene}
-        onOpenAddScene={onOpenAddScene}
-        isProtectionEnabled={protectionConfig.enabled}
-        onRenameScene={onRenameScene}
-        onDuplicateScene={onDuplicateScene}
-        onMoveScene={onMoveScene}
-        onDeleteScene={onDeleteScene}
-        onToggleProtection={onToggleProtection}
-      />
+      {!rendererProps.openLetterId && (
+        <StageBottomDock
+          activeSceneId={activeSceneId}
+          scenes={scenes}
+          onSelectScene={onOpenScene}
+          onOpenAddScene={onOpenAddScene}
+          isProtectionEnabled={protectionConfig.enabled}
+          onRenameScene={onRenameScene}
+          onDuplicateScene={onDuplicateScene}
+          onMoveScene={onMoveScene}
+          onDeleteScene={onDeleteScene}
+          onToggleProtection={onToggleProtection}
+        />
+      )}
     </main>
   )
 }

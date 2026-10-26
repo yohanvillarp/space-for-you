@@ -15,7 +15,7 @@ export function ShareStatusBanner({
   if (isPublished) {
     return (
       <aside
-        aria-label="Sanctuary Status"
+        aria-label="Space Status"
         className={cn(
           'flex w-full max-w-xl items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-950/30 px-4 py-3 text-emerald-200 backdrop-blur-md transition-all',
           className,
@@ -26,7 +26,7 @@ export function ShareStatusBanner({
         </div>
         <div className="min-w-0 flex-1 text-left">
           <p className="font-heading text-xs font-medium text-emerald-100 sm:text-sm">
-            Sanctuary is Published & Live
+            Your Space is Live & Ready to Share
           </p>
           <p className="font-sans text-[11px] text-emerald-300/80">
             Your link and keepsake QR code are active and ready for your
@@ -39,7 +39,7 @@ export function ShareStatusBanner({
 
   return (
     <aside
-      aria-label="Draft Sanctuary Notice"
+      aria-label="Draft Space Notice"
       className={cn(
         'flex w-full max-w-xl flex-col items-center justify-between gap-3 rounded-2xl border border-amber-500/30 bg-[#1D1612]/90 p-3.5 shadow-lg backdrop-blur-md transition-all sm:flex-row sm:px-4 sm:py-3',
         className,
@@ -54,8 +54,8 @@ export function ShareStatusBanner({
             Draft Preview Mode
           </p>
           <p className="font-sans text-[11px] text-amber-200/70">
-            Publish this sanctuary before printing or sending so your recipient
-            can open it.
+            Publish this space before printing or sending so your recipient can
+            open it.
           </p>
         </div>
       </div>
@@ -70,7 +70,7 @@ export function ShareStatusBanner({
           className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border border-amber-400/40 bg-amber-500/20 px-3 py-1.5 font-sans text-xs font-medium text-amber-200 transition-all hover:bg-amber-500/30 hover:text-amber-100 active:scale-95"
         >
           <CloudUpload className="h-3.5 w-3.5" />
-          <span>Publish Sanctuary</span>
+          <span>Publish Space</span>
         </button>
       )}
     </aside>

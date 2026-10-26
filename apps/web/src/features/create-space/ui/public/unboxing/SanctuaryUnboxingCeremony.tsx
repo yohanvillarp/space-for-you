@@ -93,8 +93,8 @@ export function SanctuaryUnboxingCeremony({
             )}
             <span>
               {isPlayingAudio
-                ? 'Soundscape active'
-                : 'Tap to enable ambient soundscape'}
+                ? 'Background music playing'
+                : 'Tap to enable background music'}
             </span>
           </button>
         </div>

@@ -43,7 +43,7 @@ export function PublicPhotoLightbox({
           {photoUrl ? (
             <img
               src={photoUrl}
-              alt={caption || 'Sanctuary memory'}
+              alt={caption || 'Dedicated space memory'}
               className="max-h-[65vh] w-auto max-w-full rounded-md object-contain shadow-md"
             />
           ) : (

@@ -155,7 +155,7 @@ export function BirthdayUniverse() {
 
       {/* Subtle discreet note on table edge */}
       <div className="pt-8 text-center font-sans text-[11px] text-stone-500">
-        <p>A private keepsake sanctuary crafted with Space for You</p>
+        <p>A private keepsake space crafted with Space for You</p>
       </div>
     </div>
   )

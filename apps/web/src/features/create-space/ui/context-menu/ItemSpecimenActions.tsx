@@ -28,6 +28,7 @@ export function ItemSpecimenActions({
   const isMusic =
     item.type === 'music-box' ||
     item.type === 'vinyl-player' ||
+    item.type === 'vintage-radio' ||
     item.type === 'cassette-tape'
   const isCandle = item.type === 'candle'
   const isPhoto = item.type === 'polaroid'

@@ -73,7 +73,7 @@ export function RomanticUnboxing({
       </h1>
 
       <p className="mt-3 max-w-md font-sans text-sm text-stone-300 sm:text-base">
-        A private sanctuary written solely for{' '}
+        An intimate space created solely for{' '}
         <strong className="font-medium text-white">
           {recipientName || 'My Beloved'}
         </strong>

@@ -11,12 +11,11 @@ import {
 } from '@/features/create-space/lib/spatial-stage-defaults'
 import { getNextItemLabel } from '@/features/create-space/lib/stage-item-naming'
 import { canAddStagePhoto } from '@/features/create-space/lib/stage-photo-limit'
+import { deleteStorageFileByUrl } from '@/features/create-space/lib/stage-photo-upload'
 import { useUndoRedoHistory } from '@/features/create-space/ui/editor/useUndoRedoHistory'
 
-function normalizeAngle(a: number): number {
-  const n = ((a + 180) % 360) - 180
-  return Math.round((n < -180 ? n + 360 : n) * 10) / 10
-}
+const normalizeAngle = (a: number) =>
+  Math.round((((((a + 180) % 360) + 360) % 360) - 180) * 10) / 10
 
 /**
  * Custom hook managing interactive spatial items placed on the 2D diorama canvas.
@@ -101,6 +100,11 @@ export function useSpatialStageItems(
   }
 
   const handleDeleteItem = (id: string) => {
+    const targetItem = items.find((it) => it.id === id)
+    if (targetItem?.data?.photoUrl)
+      deleteStorageFileByUrl(targetItem.data.photoUrl)
+    if (targetItem?.data?.audioUrl)
+      deleteStorageFileByUrl(targetItem.data.audioUrl)
     commit((prev) => prev.filter((it) => it.id !== id))
     if (selectedId === id) setSelectedId(null)
     setPendingPhotos((prev) => {

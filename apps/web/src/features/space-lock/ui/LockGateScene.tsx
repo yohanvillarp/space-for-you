@@ -30,7 +30,6 @@ export function LockGateScene({
   onVerifyPasscode,
 }: LockGateSceneProps) {
   const [isUnlocked, setIsUnlocked] = useState(() => !config.enabled)
-  const [isSelected, setIsSelected] = useState(false)
   const [showHint, setShowHint] = useState(false)
 
   // Keep lock state synchronized with configuration toggle
@@ -56,47 +55,29 @@ export function LockGateScene({
 
   const defaultSubtitle = config.enabled
     ? 'Enter the secret combination to unlock'
-    : 'Sanctuary is unlocked and open'
+    : 'Space is unlocked and open'
   const displaySubtitle =
     config.customSubtitle !== undefined && config.customSubtitle !== ''
       ? config.customSubtitle
       : defaultSubtitle
 
-  const vaultX = config.vaultX ?? 32
-  const vaultY = config.vaultY ?? 50
-  const vaultRotation = config.vaultRotation ?? 0
-
   return (
-    <div
-      onClick={() => setIsSelected(false)}
-      className="relative flex h-full min-h-full w-full items-center justify-center overflow-hidden px-4 py-8 pb-24 select-none sm:px-6 sm:py-10 sm:pb-28 lg:px-12 lg:pb-24"
-    >
+    <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center overflow-y-auto px-4 py-6 select-none sm:px-6 sm:py-8 lg:px-12">
       <GateAtmosphereBackdrop theme={config.backgroundTheme} />
 
-      <div className="relative z-10 flex h-full w-full max-w-5xl flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
-        {/* Interactive Spatial Vault Stage Area */}
-        <div className="relative flex h-72 w-full flex-1 items-center justify-center sm:h-96 lg:h-[480px]">
+      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center justify-center gap-4 lg:flex-row lg:items-center lg:justify-center lg:gap-14">
+        {/* Responsive Spatial Vault Medallion */}
+        <div className="flex shrink-0 items-center justify-center py-1 sm:py-2 lg:py-0">
           <SpatialVaultObject
             vaultTheme={config.vaultTheme}
             isUnlocked={isUnlocked}
-            x={vaultX}
-            y={vaultY}
-            rotation={vaultRotation}
-            isSelected={isSelected}
-            isStudioPreview={isStudioPreview}
-            onSelect={() => setIsSelected(true)}
-            onUpdatePosition={(x, y) =>
-              onChangeConfig?.({ vaultX: x, vaultY: y })
-            }
-            onSetRotation={(angle) =>
-              onChangeConfig?.({ vaultRotation: angle })
-            }
+            className="scale-75 transition-transform duration-300 sm:scale-90 lg:scale-105"
           />
         </div>
 
         {/* Right Station: Keypad & Inline Editable Greetings */}
-        <div className="flex w-full max-w-sm shrink-0 flex-col items-center space-y-5 text-center sm:max-w-md lg:items-center">
-          <div className="w-full space-y-2">
+        <div className="flex w-full max-w-sm shrink-0 flex-col items-center space-y-4 text-center sm:max-w-md">
+          <div className="w-full space-y-1.5">
             {isStudioPreview &&
             onChangeConfig &&
             (!isUnlocked || !config.enabled) ? (
@@ -109,7 +90,7 @@ export function LockGateScene({
                   }
                   placeholder="Enter space title..."
                   aria-label="Edit Entrance Title"
-                  className="font-heading w-full rounded-lg border border-transparent bg-transparent px-2 py-1 text-center text-2xl font-medium tracking-tight text-white transition-all hover:border-white/20 hover:bg-white/5 focus:border-amber-400/80 focus:bg-black/40 focus:outline-hidden sm:text-3xl lg:text-4xl"
+                  className="font-heading w-full rounded-lg border border-transparent bg-transparent px-2 py-1 text-center text-xl font-medium tracking-tight text-white transition-all hover:border-white/20 hover:bg-white/5 focus:border-amber-400/80 focus:bg-black/40 focus:outline-hidden sm:text-2xl lg:text-3xl"
                 />
                 <input
                   type="text"
@@ -119,17 +100,17 @@ export function LockGateScene({
                   }
                   placeholder="Enter entrance instructions..."
                   aria-label="Edit Entrance Message"
-                  className="w-full rounded-lg border border-transparent bg-transparent px-2 py-1 text-center font-sans text-xs leading-relaxed text-stone-300 transition-all hover:border-white/20 hover:bg-white/5 focus:border-amber-400/80 focus:bg-black/40 focus:outline-hidden"
+                  className="w-full rounded-lg border border-transparent bg-transparent px-2 py-0.5 text-center font-sans text-xs leading-relaxed text-stone-300 transition-all hover:border-white/20 hover:bg-white/5 focus:border-amber-400/80 focus:bg-black/40 focus:outline-hidden"
                 />
               </div>
             ) : (
               <>
-                <h2 className="font-heading text-2xl font-medium tracking-tight text-white sm:text-3xl lg:text-4xl">
+                <h2 className="font-heading text-xl font-medium tracking-tight text-white sm:text-2xl lg:text-3xl">
                   {displayTitle}
                 </h2>
                 <p className="font-sans text-xs leading-relaxed text-stone-400">
                   {isUnlocked
-                    ? 'Combination confirmed — Sanctuary unlocked'
+                    ? 'Combination confirmed — Space unlocked'
                     : displaySubtitle}
                 </p>
               </>
@@ -138,9 +119,9 @@ export function LockGateScene({
 
           {/* Conditional Gate Station Content */}
           {!config.enabled ? (
-            <div className="animate-fade-in flex w-full flex-col items-center space-y-4 rounded-2xl border border-white/10 bg-black/40 p-6 text-center backdrop-blur-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300">
-                <LockOpen className="h-6 w-6" />
+            <div className="animate-fade-in flex w-full flex-col items-center space-y-3.5 rounded-2xl border border-white/10 bg-black/40 p-5 text-center backdrop-blur-md">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300">
+                <LockOpen className="h-5 w-5" />
               </div>
               <div className="space-y-1">
                 <h4 className="font-heading text-sm font-semibold text-amber-100">
@@ -168,7 +149,7 @@ export function LockGateScene({
               )}
             </div>
           ) : !isUnlocked ? (
-            <div className="w-full space-y-3 pt-1">
+            <div className="w-full space-y-2.5 pt-0.5">
               <LockKeypad
                 key={`${config.passcode}-${config.passcodeHash}-${config.passcodeLength}-${config.keypadTheme || 'classic'}`}
                 expectedPasscode={config.passcode}
@@ -183,7 +164,7 @@ export function LockGateScene({
               />
 
               {config.hint && (
-                <div className="pt-1">
+                <div className="pt-0.5">
                   {!showHint ? (
                     <button
                       type="button"
@@ -206,7 +187,7 @@ export function LockGateScene({
               )}
             </div>
           ) : (
-            <div className="animate-scale-in flex flex-col items-center space-y-4 pt-4">
+            <div className="animate-scale-in flex flex-col items-center space-y-3 pt-2">
               {onProceedToStage && (
                 <Button
                   type="button"
@@ -217,7 +198,7 @@ export function LockGateScene({
                   }}
                   className="cursor-pointer gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 font-sans text-sm font-semibold text-stone-900 shadow-xl transition-all hover:scale-105"
                 >
-                  <span>Enter Sanctuary</span>
+                  <span>Enter Space</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               )}

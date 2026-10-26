@@ -5,12 +5,7 @@ import type {
   LetterItem,
   SceneScheduleConfig,
 } from '@/features/create-space/model/scenes.types'
-import type { SpaceTemplateId } from '@/entities/space'
-import type {
-  SpatialItem,
-  SpatialItemType,
-  SpatialItemData,
-} from '@/features/create-space/model/spatial-stage.types'
+import type { SpatialStageCanvasProps } from '@/features/create-space/ui/canvas/spatial-stage-canvas.types'
 import { LockGateScene } from '@/features/space-lock'
 import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
@@ -21,7 +16,11 @@ import type {
   ShareColorTarget,
 } from '@/features/create-space/ui/share/share-customizer.types'
 
-export interface EditorSceneRendererProps {
+export interface EditorSceneRendererProps extends Omit<
+  SpatialStageCanvasProps,
+  'className'
+> {
+  spaceId?: string
   activeSceneId: string
   protectionConfig: SpaceProtectionConfig
   onChangeProtectionConfig: (updates: Partial<SpaceProtectionConfig>) => void
@@ -47,38 +46,10 @@ export interface EditorSceneRendererProps {
   onDeleteScene?: (sceneId: string) => void
   onReorderScenes?: (fromIndex: number, toIndex: number) => void
   onToggleProtection?: () => void
-  templateId: SpaceTemplateId
   isPublished?: boolean
+  isDirty?: boolean
   onOpenPublish?: () => void
-  // Spatial Stage Canvas props
-  items: SpatialItem[]
-  selectedId: string | null
-  copiedItem: SpatialItem | null
-  onSelectItem: (id: string | null) => void
-  onUpdateItemPosition: (id: string, x: number, y: number) => void
-  onStartDragItem?: (id: string) => void
-  onCommitItemPosition?: () => void
-  onRotateItem: (id: string, delta: number) => void
-  onSetRotation: (id: string, rotation: number) => void
-  onResetRotation: (id: string) => void
-  onBringToFront: (id: string) => void
-  onSendToBack: (id: string) => void
-  onDeleteItem: (id: string) => void
-  onDuplicateItem: (id: string) => void
-  onToggleLock: (id: string) => void
-  onCopyItem: (item: SpatialItem) => void
-  onPasteItem: () => void
-  onResetToDefaults: () => void
-  onClearCanvas: () => void
-  onUpdateItemData: (id: string, data: Partial<SpatialItemData>) => void
-  onAddItem: (
-    type: SpatialItemType,
-    x?: number,
-    y?: number,
-    customData?: Partial<SpatialItemData>,
-  ) => void
-  onOpenPhotoPicker: (item: SpatialItem) => void
-  // Letters props
+  // Letters
   selectedLetterId: string | null
   openLetterId?: string | null
   onSelectLetter: (id: string | null) => void
@@ -97,62 +68,66 @@ export interface EditorSceneRendererProps {
   }
 }
 
-export function EditorSceneRenderer({
-  activeSceneId,
-  protectionConfig,
-  onChangeProtectionConfig,
-  spaceMeta,
-  onChangeSpaceMeta,
-  scenes,
-  activeScene,
-  onOpenScene,
-  onOpenAddScene,
-  onOpenVault,
-  onAddScene,
-  onRenameScene,
-  onUpdateScene,
-  onDuplicateScene,
-  onMoveScene,
-  onDeleteScene,
-  onReorderScenes,
-  onToggleProtection,
-  templateId,
-  items,
-  selectedId,
-  copiedItem,
-  onSelectItem,
-  onUpdateItemPosition,
-  onStartDragItem,
-  onCommitItemPosition,
-  onRotateItem,
-  onSetRotation,
-  onResetRotation,
-  onBringToFront,
-  onSendToBack,
-  onDeleteItem,
-  onDuplicateItem,
-  onToggleLock,
-  onCopyItem,
-  onPasteItem,
-  onResetToDefaults,
-  onClearCanvas,
-  onUpdateItemData,
-  onAddItem,
-  onOpenPhotoPicker,
-  selectedLetterId,
-  openLetterId,
-  onSelectLetter,
-  onOpenLetter,
-  onAddLetter,
-  onDuplicateLetter,
-  onDeleteLetter,
-  onReorderLetters,
-  onUpdateLetter,
-  shareUrl,
-  shareCustomizer,
-  isPublished,
-  onOpenPublish,
-}: EditorSceneRendererProps) {
+export function EditorSceneRenderer(props: EditorSceneRendererProps) {
+  const {
+    spaceId,
+    activeSceneId,
+    protectionConfig,
+    onChangeProtectionConfig,
+    spaceMeta,
+    onChangeSpaceMeta,
+    scenes,
+    activeScene,
+    onOpenScene,
+    onOpenAddScene,
+    onOpenVault,
+    onAddScene,
+    onRenameScene,
+    onUpdateScene,
+    onDuplicateScene,
+    onMoveScene,
+    onDeleteScene,
+    onReorderScenes,
+    onToggleProtection,
+    templateId,
+    items,
+    selectedId,
+    copiedItem,
+    onSelectItem,
+    onUpdateItemPosition,
+    onStartDragItem,
+    onCommitItemPosition,
+    onRotateItem,
+    onSetRotation,
+    onResetRotation,
+    onBringToFront,
+    onSendToBack,
+    onDeleteItem,
+    onDuplicateItem,
+    onToggleLock,
+    onCopyItem,
+    onPasteItem,
+    onResetToDefaults,
+    onClearCanvas,
+    onUpdateItemData,
+    onAddItem,
+    onOpenPhotoPicker,
+    selectedLetterId,
+    openLetterId,
+    onSelectLetter,
+    onOpenLetter,
+    onAddLetter,
+    onDuplicateLetter,
+    onDeleteLetter,
+    onReorderLetters,
+    onUpdateLetter,
+    shareUrl,
+    shareCustomizer,
+    isPublished,
+    isDirty,
+    onOpenPublish,
+  } = props
+
   if (activeSceneId === 'gate') {
     return (
       <LockGateScene
@@ -169,12 +144,11 @@ export function EditorSceneRenderer({
   if (activeSceneId === 'hub') {
     return (
       <SpaceHubScene
-        templateId={templateId}
         meta={spaceMeta}
         scenes={scenes}
-        isStudioPreview={true}
-        isProtectionEnabled={protectionConfig.enabled}
+        isProtectionEnabled={Boolean(protectionConfig.enabled)}
         onChangeMeta={onChangeSpaceMeta}
+        templateId={templateId}
         onOpenScene={onOpenScene}
         onOpenAddScene={onOpenAddScene}
         onOpenVault={onOpenVault}
@@ -193,6 +167,7 @@ export function EditorSceneRenderer({
   if (activeSceneId === 'share' && shareCustomizer) {
     return (
       <ShareScene
+        spaceId={spaceId}
         templateId={templateId}
         spaceMeta={spaceMeta}
         onChangeSpaceMeta={onChangeSpaceMeta}
@@ -204,6 +179,7 @@ export function EditorSceneRenderer({
         onBackToHub={() => onOpenScene('hub')}
         isStudioPreview={true}
         isPublished={isPublished}
+        isDirty={isDirty}
         onOpenPublish={onOpenPublish}
       />
     )

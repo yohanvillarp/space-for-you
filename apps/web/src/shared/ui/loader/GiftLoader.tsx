@@ -15,7 +15,7 @@ const SIZE_MAP = {
 }
 
 export function GiftLoader({
-  label = 'Preparing your sanctuary...',
+  label = 'Preparing your space...',
   hint = 'Crafted with care, just for someone special.',
   size = 'md',
   fullScreen = false,

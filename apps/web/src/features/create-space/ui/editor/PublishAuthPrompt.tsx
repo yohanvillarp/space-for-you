@@ -44,8 +44,8 @@ export function PublishAuthPrompt({
           <span>No work will be lost</span>
         </div>
         <p className="mt-1 font-sans text-[11px] text-stone-400">
-          After logging in, you will be brought right back to this sanctuary
-          with all your customizations intact.
+          After logging in, you will be brought right back to this space with
+          all your customizations intact.
         </p>
       </div>
 

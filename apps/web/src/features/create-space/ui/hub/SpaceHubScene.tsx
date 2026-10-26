@@ -133,6 +133,7 @@ export function SpaceHubScene({
           {/* Editorial Dedication Hero */}
           <SpaceHubHero
             meta={meta}
+            templateId={templateId}
             accentColor={activeTheme.accentColor}
             onChangeMeta={onChangeMeta}
             onContextMenu={(e) => openMenu(e, { type: 'hero' })}

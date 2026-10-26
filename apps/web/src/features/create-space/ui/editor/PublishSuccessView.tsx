@@ -51,7 +51,7 @@ export function PublishSuccessView({
           <Sparkles className="h-7 w-7 text-amber-300" />
         </div>
         <h2 className="font-heading text-2xl font-semibold tracking-tight text-[#FAF6F0]">
-          Sanctuary Published!
+          Space Published!
         </h2>
         <p className="max-w-md font-sans text-xs text-stone-300">
           Your gift is live and safely accessible to{' '}

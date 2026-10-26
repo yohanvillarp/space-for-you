@@ -9,6 +9,7 @@ import { verifyPasscode } from '@/shared/lib/crypto'
 import type { SpaceWithScenes } from './types'
 import { fetchSpaceBySlug, fetchSpaceById } from './space-database'
 import { getLocalSpaceWithScenes } from '../model/local-space-resolver'
+import { getSpaceById } from '../model/spaces-storage'
 
 export interface UnlockSpaceParams {
   slug: string
@@ -65,6 +66,17 @@ export async function unlockSpaceViaFunction({
         }
       }
 
+      if (execution.responseStatusCode === 403) {
+        return {
+          success: false,
+          isUnlocked: false,
+          isProtected: false,
+          error:
+            res.error || 'This space is still being prepared by its creator.',
+          data: res.space ? { space: res.space, scenes: [] } : undefined,
+        }
+      }
+
       if (
         execution.responseStatusCode === 401 ||
         execution.responseStatusCode === 429
@@ -95,7 +107,23 @@ export async function unlockSpaceViaFunction({
       success: false,
       isUnlocked: false,
       isProtected: false,
-      error: 'Sanctuary not found.',
+      error: 'Space not found.',
+    }
+  }
+
+  // If status is draft, allow access only to the creator's session
+  if (resolved.space?.status === 'draft') {
+    const isLocalCreator =
+      typeof window !== 'undefined' && Boolean(getSpaceById(resolved.space.id))
+    if (!isLocalCreator) {
+      return {
+        success: false,
+        isUnlocked: false,
+        isProtected: false,
+        error:
+          'This space is still being prepared by its creator and has not been published yet.',
+        data: { space: resolved.space, scenes: [] },
+      }
     }
   }
 

@@ -51,7 +51,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
         <GiftLoader
-          label="Opening your sanctuary..."
+          label="Opening your spaces..."
           hint="Gathering your spaces and cherished memories."
         />
       </div>

@@ -51,7 +51,7 @@ export function SpatialStageStudio({
   const isMusicSelected =
     selectedItem?.type === 'music-box' ||
     selectedItem?.type === 'vinyl-player' ||
-    selectedItem?.type === 'cassette-tape'
+    selectedItem?.type === 'vintage-radio'
   const selectedMusicItem = isMusicSelected ? selectedItem : null
 
   const isPhotoSelected = selectedItem?.type === 'polaroid'

@@ -213,7 +213,7 @@ export function EditorTopHeader({
           <span className="hidden md:inline">{saveLabel}</span>
         </Button>
 
-        {/* Publish Sanctuary Button */}
+        {/* Publish Space Button */}
         {onOpenPublish && (
           <Button
             type="button"
@@ -223,18 +223,18 @@ export function EditorTopHeader({
             className="cursor-pointer gap-1.5 border-none font-medium text-[#1A120B] shadow-md transition-all hover:brightness-110 sm:px-3.5"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            <span>{isPublished ? 'Publish Updates' : 'Publish'}</span>
+            <span>{isPublished ? 'Publish Updates' : 'Publish Space'}</span>
           </Button>
         )}
 
-        {/* Share Sanctuary Keepsake Card Button */}
+        {/* Share Keepsake Card Button */}
         {onOpenShare && (
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={onOpenShare}
-            title="Share Sanctuary Card"
+            title="Share Keepsake Card"
             className="cursor-pointer gap-1.5 border-white/20 px-2.5 text-xs text-[#F3EAE1] hover:bg-white/10 sm:px-3"
           >
             <Share2 className="h-3.5 w-3.5" />

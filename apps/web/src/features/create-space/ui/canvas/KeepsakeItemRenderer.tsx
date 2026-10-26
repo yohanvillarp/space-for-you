@@ -6,6 +6,7 @@ import {
   VinylPlayer,
   CassetteTape,
   MusicBox,
+  VintageRadio,
   WashiTape,
 } from '@/features/space-themes/shared'
 import { playSpatialSfx } from '@/shared/lib'
@@ -178,6 +179,18 @@ export function KeepsakeItemRenderer({
           <MusicBox
             title={item.data.title || 'Happy Birthday (Music Box)'}
             artist={item.data.artist || 'Oleg Kirilkov'}
+            trackUrl={item.data.audioUrl}
+            className="shadow-2xl"
+          />
+        </div>
+      )
+
+    case 'vintage-radio':
+      return (
+        <div className="w-64 sm:w-72">
+          <VintageRadio
+            title={item.data.title || 'Roadtrip Mixtape • Side A'}
+            artist={item.data.artist || 'Atelier Soundscape'}
             trackUrl={item.data.audioUrl}
             className="shadow-2xl"
           />

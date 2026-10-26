@@ -1,5 +1,8 @@
 import type { ToolboxItemDef } from '@/features/create-space/model/spatial-stage.types'
 
+export const DEFAULT_CASSETTE_GUIDE_AUDIO_URL =
+  'https://nyc.cloud.appwrite.io/v1/storage/buckets/6ade87be001700e5c95b/files/6ade885600247e215323/view?project=6adad55500193c6ac8ac'
+
 export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
   // --- Stage Specific Items ---
   {
@@ -62,7 +65,7 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
     defaultData: {
       isSealed: true,
       title: 'A Private Love Letter',
-      text: 'To the one who turned everyday moments into our favorite sanctuary.',
+      text: 'To the one who turned everyday moments into our favorite place.',
     },
   },
   {
@@ -101,15 +104,34 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
     },
   },
   {
-    type: 'cassette-tape',
-    label: 'Roadtrip Mixtape',
+    type: 'vintage-radio',
+    label: 'Roadtrip Radio',
     category: 'stage',
-    description: 'Vintage audio cassette with dual spinning reels',
-    iconName: 'CassetteTape',
+    description:
+      'Analog transistor radio tuned to friendship roadtrip melodies',
+    iconName: 'Radio',
     supportedTemplates: ['friendship'],
     defaultData: {
       isPlaying: true,
       title: 'Roadtrip Mixtape • Side A',
+      artist: 'Atelier Soundscape',
+    },
+  },
+  {
+    type: 'cassette-tape',
+    label: 'Voice Note Cassette',
+    category: 'universal',
+    description: 'Vintage audio cassette with live microphone voice recorder',
+    iconName: 'CassetteTape',
+    supportedTemplates: 'all',
+    defaultData: {
+      isPlaying: false,
+      title: 'Sample Guide • Tap Mic to Record',
+      subtitle: 'Voice Note Instructions',
+      audioUrl: DEFAULT_CASSETTE_GUIDE_AUDIO_URL,
+      isVoiceNote: true,
+      isVoiceNoteSample: true,
+      duration: 24,
     },
   },
 

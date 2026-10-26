@@ -104,7 +104,7 @@ export function FriendshipUniverse() {
 
       {/* Subtle discreet note pinned to the bottom corner */}
       <div className="pt-8 text-center font-sans text-[11px] text-stone-800/80 dark:text-stone-200/80">
-        <p>A private keepsake sanctuary crafted with Space for You</p>
+        <p>A private keepsake space crafted with Space for You</p>
       </div>
     </div>
   )

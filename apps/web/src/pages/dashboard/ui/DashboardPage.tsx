@@ -46,6 +46,9 @@ export function DashboardPage() {
 
   const handleOpenCreateModal = () => {
     if (!validateSpaceCreation(spaces.length, confirm)) return
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('sfy_active_creation_draft')
+    }
     setDuplicateTarget(null)
     setIsCreateModalOpen(true)
   }
@@ -109,7 +112,7 @@ export function DashboardPage() {
                     {displayName}
                   </h1>
                   <p className="text-text-secondary font-sans text-sm">
-                    Manage your personal spaces, invitations, and sanctuary
+                    Manage your personal spaces, invitations, and keepsake
                     settings.
                   </p>
                 </div>

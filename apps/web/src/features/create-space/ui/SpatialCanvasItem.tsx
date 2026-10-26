@@ -67,7 +67,8 @@ export function SpatialCanvasItem({
     item.type === 'wax-envelope' ||
     item.type === 'vinyl-player' ||
     item.type === 'cassette-tape' ||
-    item.type === 'music-box'
+    item.type === 'music-box' ||
+    item.type === 'vintage-radio'
 
   const isEphemera =
     item.type === 'rose-petals' ||

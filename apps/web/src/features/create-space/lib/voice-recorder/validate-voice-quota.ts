@@ -58,7 +58,7 @@ export async function validateVoiceQuotaWithServer({
   if (existingCount >= MAX_VOICE_NOTES_PER_SPACE) {
     return {
       allowed: false,
-      error: `Sanctuary voice note limit reached (maximum ${MAX_VOICE_NOTES_PER_SPACE} notes).`,
+      error: `Voice note limit reached (maximum ${MAX_VOICE_NOTES_PER_SPACE} notes).`,
     }
   }
 

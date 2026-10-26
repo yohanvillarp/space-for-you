@@ -164,8 +164,8 @@ export function AttributionsPage() {
               <p className="text-text-muted font-sans text-xs leading-relaxed">
                 All trademarks, product names, previews, and creative assets
                 remain the exclusive property of their respective owners. Space
-                for You is an independent sanctuary crafted with deep respect
-                for the creative commons and open developer ecosystem.
+                for You is an independent digital space crafted with deep
+                respect for the creative commons and open developer ecosystem.
               </p>
             </div>
           </div>

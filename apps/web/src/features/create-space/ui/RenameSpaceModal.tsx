@@ -57,7 +57,7 @@ export function RenameSpaceModal({
               Rename Space
             </h2>
             <p className="font-sans text-xs text-stone-400">
-              Update the title and recipient dedication for this sanctuary.
+              Update the title and recipient dedication for this space.
             </p>
           </div>
           <button

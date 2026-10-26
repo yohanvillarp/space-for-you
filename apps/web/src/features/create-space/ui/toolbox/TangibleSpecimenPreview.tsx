@@ -127,6 +127,21 @@ export function TangibleSpecimenPreview({ type }: { type: SpatialItemType }) {
         </div>
       )
 
+    case 'vintage-radio':
+      return (
+        <div className="relative flex items-center justify-center select-none">
+          <div className="relative flex h-10 w-14 items-center justify-between rounded-md border border-amber-900/60 bg-gradient-to-b from-[#3D2519] to-[#1C100A] p-1 shadow-md">
+            <div className="flex h-7 w-7 items-center justify-center rounded-sm border border-black/40 bg-[#120A06]">
+              <span className="text-[10px]">📻</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 pr-1">
+              <div className="h-1.5 w-4 rounded-full bg-orange-500/80" />
+              <div className="h-1.5 w-2 rounded-full bg-amber-400/80" />
+            </div>
+          </div>
+        </div>
+      )
+
     case 'polaroid':
       return (
         <div className="relative flex flex-col items-center justify-center select-none">

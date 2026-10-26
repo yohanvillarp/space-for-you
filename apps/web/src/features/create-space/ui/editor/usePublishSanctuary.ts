@@ -22,6 +22,11 @@ import {
   applyUploadedUrlsToScenes,
 } from '@/features/create-space/lib/stage-photo-upload'
 import { shortenSanctuaryUrl } from '@/features/create-space/lib/url-shortener'
+import {
+  computeSanctuaryFingerprint,
+  setPublishedFingerprint,
+} from '@/features/create-space/lib/sanctuary-fingerprint'
+import { recordPublishUpdate } from '@/features/create-space/lib/daily-publish-quota'
 
 export type PublishStep =
   | 'idle'
@@ -184,6 +189,11 @@ export function usePublishSanctuary({
       setShortenedUrl(resolvedShort)
 
       setPublishStep('success')
+      setPublishedFingerprint(
+        targetId,
+        computeSanctuaryFingerprint(spaceMeta, finalScenes, protectionConfig),
+      )
+      recordPublishUpdate(targetId)
       onPublishSuccess?.(persisted, resolvedShort)
     } catch (err) {
       console.error('Publishing failed:', err)

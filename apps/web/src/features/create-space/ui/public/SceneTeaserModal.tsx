@@ -140,7 +140,7 @@ export function SceneTeaserModal({
             }}
             className="mt-6 w-full cursor-pointer bg-white/10 text-stone-200 hover:bg-white/20 hover:text-white"
           >
-            Back to Sanctuary
+            Back to Space
           </Button>
         </div>
       </div>
