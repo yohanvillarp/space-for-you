@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.2...space-for-you-v1.2.3) (2026-10-26)
+
+
+### Bug Fixes
+
+* **spaces:** sync cloud deletions and studio scenes across devices ([b78cd29](https://github.com/yohanvillarp/space-for-you/commit/b78cd29e16ed032e324c305794b530be4955e060))
+
 ## [1.2.2](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.1...space-for-you-v1.2.2) (2026-10-26)
 
 
