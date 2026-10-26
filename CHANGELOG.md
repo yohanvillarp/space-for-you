@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.0...space-for-you-v1.2.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* **release:** configure patch bump rules for release-please ([94339fc](https://github.com/yohanvillarp/space-for-you/commit/94339fc43e85d6f81ce2ca2a7874bbca2720bb54))
+* **release:** configure patch bump rules for release-please ([d486a8a](https://github.com/yohanvillarp/space-for-you/commit/d486a8a50f11823d42e8a3de91ed02ed010f9c01))
+
 ## [1.2.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.1.0...space-for-you-v1.2.0) (2026-10-26)
 
 
