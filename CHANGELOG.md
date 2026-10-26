@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.1...space-for-you-v1.2.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* **viewer:** rotate photo and card modals in virtual landscape ([d9e4642](https://github.com/yohanvillarp/space-for-you/commit/d9e4642ebdaee9eb4212ad6d31c27a1b0b3558e7))
+
 ## [1.2.1](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.0...space-for-you-v1.2.1) (2026-10-26)
 
 
