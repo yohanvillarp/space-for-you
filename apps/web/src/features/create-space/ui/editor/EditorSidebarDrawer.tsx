@@ -11,6 +11,7 @@ export interface EditorSidebarDrawerProps {
   onResizeStart: (e: React.PointerEvent) => void
   children: ReactNode
   hideSidebarDrawer?: boolean
+  isPulsing?: boolean
 }
 
 export function EditorSidebarDrawer({
@@ -22,6 +23,7 @@ export function EditorSidebarDrawer({
   onResizeStart,
   children,
   hideSidebarDrawer = false,
+  isPulsing = false,
 }: EditorSidebarDrawerProps) {
   if (hideSidebarDrawer) return null
 
@@ -86,6 +88,13 @@ export function EditorSidebarDrawer({
         )}
 
         {children}
+
+        {isPulsing && (
+          <div
+            aria-hidden="true"
+            className="animate-pulse-twice-inset pointer-events-none absolute inset-0 z-50"
+          />
+        )}
 
         {/* Resizer Handle on Right Edge of Left Sidebar (Desktop Only) */}
         <div

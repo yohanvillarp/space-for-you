@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Camera,
   Globe,
@@ -12,7 +12,6 @@ import {
   MAX_TOTAL_PHOTOS,
   MAX_UPLOADED_PHOTOS,
 } from '@/features/create-space/lib/stage-photo-limit'
-import { cn } from '@/shared/lib'
 
 export interface PhotosTabContentProps {
   selectedItemName?: string
@@ -33,27 +32,11 @@ export function PhotosTabContent({
   isPolaroidSelected,
 }: PhotosTabContentProps) {
   const [subTab, setSubTab] = useState<'web' | 'upload'>('web')
-  const [isPulsing, setIsPulsing] = useState(false)
-  const [prevPolaroid, setPrevPolaroid] = useState(isPolaroidSelected)
-
-  if (isPolaroidSelected !== prevPolaroid) {
-    setPrevPolaroid(isPolaroidSelected)
-    if (isPolaroidSelected) setIsPulsing(true)
-  }
-
-  useEffect(() => {
-    if (isPulsing) {
-      const timer = setTimeout(() => setIsPulsing(false), 2400)
-      return () => clearTimeout(timer)
-    }
-  }, [isPulsing])
 
   const isTotalLimitReached = photoCount >= MAX_TOTAL_PHOTOS
   const isUploadLimitReached = uploadedPhotoCount >= MAX_UPLOADED_PHOTOS
 
   const handlePhotoSelect = (url: string, file?: File) => {
-    setIsPulsing(true)
-
     if (isPolaroidSelected) {
       onAssignPhoto(url, file)
     } else if (!isTotalLimitReached && onAddPolaroidWithPhoto) {
@@ -62,12 +45,7 @@ export function PhotosTabContent({
   }
 
   return (
-    <div
-      className={cn(
-        'space-y-3.5 rounded-2xl p-1 transition-all',
-        isPulsing && 'animate-pulse-twice ring-2 ring-amber-400/90',
-      )}
-    >
+    <div className="space-y-3.5 rounded-2xl p-1 transition-all">
       {/* Target Status Banner */}
       {isPolaroidSelected ? (
         <div className="flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
 import { EditorTopHeader } from '@/features/create-space/ui/editor/EditorTopHeader'
@@ -15,20 +14,13 @@ import {
   countStagePhotos,
   countUploadedPhotos,
 } from '@/features/create-space/lib/stage-photo-limit'
-import { countTotalArtifacts } from '@/features/create-space/lib/space-tier-limits'
 import { StudioBehaviorProvider } from '@/features/create-space/ui/editor/StudioBehaviorProvider'
 import { useStudioReset } from '@/features/create-space/ui/editor/useStudioReset'
-import { useShareCardCustomizer } from '@/features/create-space/ui/share/useShareCardCustomizer'
-import { useStudioSave } from '@/features/create-space/ui/editor/useStudioSave'
-import { usePublishSanctuary } from '@/features/create-space/ui/editor/usePublishSanctuary'
-import { useSanctuarySyncState } from '@/features/create-space/ui/editor/useSanctuarySyncState'
 import { useSpaceProtectionState } from '@/features/create-space/ui/editor/useSpaceProtectionState'
 import { useFullscreenEditorHandlers } from '@/features/create-space/ui/editor/useFullscreenEditorHandlers'
 import { useEditorStageWorkflow } from '@/features/create-space/ui/editor/useEditorStageWorkflow'
+import { useFullscreenStudioSync } from '@/features/create-space/ui/editor/useFullscreenStudioSync'
 import { useConfirmDialog } from '@/shared/ui'
-import { ROUTES } from '@/shared/config'
-import { getCanonicalPublicUrl } from '@/features/create-space/lib/url-shortener'
-import { generateSpaceSlug } from '@/entities/space/api/space-converters'
 import { cn } from '@/shared/lib'
 
 export interface FullscreenSpatialEditorProps {
@@ -72,6 +64,7 @@ export function FullscreenSpatialEditor({
     selectedId,
     onUpdateItemData: stage.handleUpdateItemData,
     onAssignItemPhoto: stage.handleAssignItemPhoto,
+    onOpenSidebar: handleOpenSidebar,
   })
 
   const workflow = useEditorStageWorkflow({
@@ -110,56 +103,21 @@ export function FullscreenSpatialEditor({
     onResetScene: () => handleOpenScene('hub'),
   })
 
-  const isPublished = spaceMeta.status === 'published'
-  const syncState = useSanctuarySyncState({
-    spaceId,
-    isPublished,
-    spaceMeta,
-    scenes: resolvedScenes,
-    protectionConfig,
-  })
-
-  const publishState = usePublishSanctuary({
-    spaceId,
-    templateId,
-    spaceMeta,
-    scenes: resolvedScenes,
-    protectionConfig,
-    pendingPhotos: stage.pendingPhotos,
-    onPhotosUploaded: handlePhotosUploaded,
-    onPublishSuccess: () => {
-      handleUpdateSpaceMeta({ status: 'published' })
-      syncState.markAsPublished()
-    },
-  })
-
-  const canonicalSlug = spaceId
-    ? generateSpaceSlug(spaceMeta.title, spaceMeta.recipientName, spaceId)
-    : undefined
-  const fallbackShareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
-  const shareUrl = canonicalSlug
-    ? getCanonicalPublicUrl(canonicalSlug)
-    : fallbackShareUrl
-  const shareCustomizer = useShareCardCustomizer(activeTheme.accentColor)
-
-  const navigate = useNavigate()
-  const { isSaved, isSaving, isDirty, handleSave, flushSave } = useStudioSave({
+  const sync = useFullscreenStudioSync({
     spaceId,
     templateId,
     spaceMeta,
     protectionConfig,
-    scenes: resolvedScenes,
+    resolvedScenes,
     scenesCount: scenes.length,
-    artifactsCount: countTotalArtifacts(resolvedScenes, items, activeSceneId),
-    fallbackTitle: `${activeTheme.title} Space`,
+    items,
+    activeSceneId,
     pendingPhotos: stage.pendingPhotos,
+    accentColor: activeTheme.accentColor,
+    themeTitle: activeTheme.title,
+    onUpdateSpaceMeta: handleUpdateSpaceMeta,
     onPhotosUploaded: handlePhotosUploaded,
   })
-
-  const handleBackToDashboard = async () => {
-    if (isDirty) await flushSave()
-    navigate(ROUTES.DASHBOARD)
-  }
 
   const commonSceneProps = {
     activeSceneId,
@@ -198,14 +156,14 @@ export function FullscreenSpatialEditor({
           onRedo={stage.handleRedo}
           onDeleteSelected={stage.handleDeleteItem}
           onResetToDefaults={handleResetToDefaults}
-          onOpenPublish={publishState.openPublishModal}
+          onOpenPublish={sync.publishState.openPublishModal}
           onOpenShare={() => handleOpenScene('share')}
-          onSave={handleSave}
-          onBackToDashboard={handleBackToDashboard}
-          isPublished={isPublished}
-          isSaved={isSaved}
-          isSaving={isSaving}
-          isDirty={isDirty}
+          onSave={sync.studioSave.handleSave}
+          onBackToDashboard={sync.handleBackToDashboard}
+          isPublished={sync.isPublished}
+          isSaved={sync.studioSave.isSaved}
+          isSaving={sync.studioSave.isSaving}
+          isDirty={sync.studioSave.isDirty}
         />
 
         <div className="relative flex flex-1 overflow-hidden">
@@ -216,7 +174,8 @@ export function FullscreenSpatialEditor({
             activeSceneId={activeSceneId}
             onToggleSidebar={handleToggleSidebar}
             onResizeStart={handleResizeStart}
-            hideSidebarDrawer={activeSceneId === 'share' && !isPublished}
+            hideSidebarDrawer={activeSceneId === 'share' && !sync.isPublished}
+            isPulsing={mediaAssignment.isSidebarPulsing}
           >
             <EditorSidebarRenderer
               {...commonSceneProps}
@@ -231,7 +190,7 @@ export function FullscreenSpatialEditor({
               photoCount={countStagePhotos(items)}
               uploadedPhotoCount={countUploadedPhotos(items)}
               isCompact={sidebarWidth < 280}
-              shareCustomizer={shareCustomizer}
+              shareCustomizer={sync.shareCustomizer}
             />
           </EditorSidebarDrawer>
 
@@ -248,19 +207,16 @@ export function FullscreenSpatialEditor({
             copiedItem={copiedItem}
             onSelectItem={setSelectedId}
             onResetToDefaults={handleResetToDefaults}
-            onOpenPhotoPicker={(it) => {
-              setSelectedId(it.id)
-              handleOpenSidebar()
-            }}
+            onOpenPhotoPicker={(it) => setSelectedId(it.id)}
             onDuplicateLetter={multiScene.handleDuplicateLetter}
             onReorderLetters={multiScene.handleReorderLetters}
             onReorderScenes={multiScene.handleReorderScenes}
             spaceId={spaceId}
-            shareUrl={shareUrl}
-            shareCustomizer={shareCustomizer}
-            isPublished={isPublished}
-            isDirty={syncState.hasUnpublishedChanges}
-            onOpenPublish={publishState.openPublishModal}
+            shareUrl={sync.shareUrl}
+            shareCustomizer={sync.shareCustomizer}
+            isPublished={sync.isPublished}
+            isDirty={sync.syncState.hasUnpublishedChanges}
+            onOpenPublish={sync.publishState.openPublishModal}
           />
         </div>
 
@@ -269,7 +225,7 @@ export function FullscreenSpatialEditor({
           onCloseAddScene={() => setIsAddSceneModalOpen(false)}
           onAddScene={workflow.handleGuardedAddScene}
           existingScenesCount={scenes.length}
-          publishState={publishState}
+          publishState={sync.publishState}
           onNavigateToScene={(sceneId) => handleOpenScene(sceneId)}
           accentColor={activeTheme.accentColor}
         />

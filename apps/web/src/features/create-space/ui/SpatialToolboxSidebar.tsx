@@ -63,33 +63,26 @@ export function SpatialToolboxSidebar({
   const [objectFilter, setObjectFilter] = useState<
     'all' | 'stage' | 'universal'
   >('all')
-  const [isSidebarPulsing, setIsSidebarPulsing] = useState(false)
 
-  // Auto-switch to Music when a music item is selected
-  const [prevSelectedMusicItem, setPrevSelectedMusicItem] =
-    useState(selectedMusicItem)
-  if (selectedMusicItem !== prevSelectedMusicItem) {
-    setPrevSelectedMusicItem(selectedMusicItem)
+  // Auto-switch to Music when a music item is selected on the canvas
+  const [prevMusicItemId, setPrevMusicItemId] = useState(selectedMusicItem?.id)
+  if (selectedMusicItem?.id !== prevMusicItemId) {
+    setPrevMusicItemId(selectedMusicItem?.id)
     setSearchQuery('')
     if (selectedMusicItem) {
       setActiveCategory('music')
-      setIsSidebarPulsing(true)
-      setTimeout(() => setIsSidebarPulsing(false), 2400)
     } else if (activeCategory === 'music') {
       setActiveCategory('objects')
     }
   }
 
-  // Auto-switch to Photos when a Polaroid item is selected
-  const [prevSelectedPhotoItem, setPrevSelectedPhotoItem] =
-    useState(selectedPhotoItem)
-  if (selectedPhotoItem !== prevSelectedPhotoItem) {
-    setPrevSelectedPhotoItem(selectedPhotoItem)
+  // Auto-switch to Photos when a Polaroid item is selected on the canvas
+  const [prevPhotoItemId, setPrevPhotoItemId] = useState(selectedPhotoItem?.id)
+  if (selectedPhotoItem?.id !== prevPhotoItemId) {
+    setPrevPhotoItemId(selectedPhotoItem?.id)
     setSearchQuery('')
     if (selectedPhotoItem) {
       setActiveCategory('photos')
-      setIsSidebarPulsing(true)
-      setTimeout(() => setIsSidebarPulsing(false), 2400)
     } else if (activeCategory === 'photos') {
       setActiveCategory('objects')
     }
@@ -139,7 +132,6 @@ export function SpatialToolboxSidebar({
     <aside
       className={cn(
         'flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#14110F] text-[#F3EAE1] transition-all select-none',
-        isSidebarPulsing && 'animate-pulse-twice ring-2 ring-amber-400/90',
         className,
       )}
     >
