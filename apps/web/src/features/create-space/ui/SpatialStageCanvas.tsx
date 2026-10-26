@@ -41,7 +41,6 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
     onStartDragItem,
     onCommitItemPosition,
     onRotateItem,
-    onSetRotation,
     onResetRotation,
     onBringToFront,
     onSendToBack,
@@ -193,7 +192,6 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
             onSelect={onSelectItem}
             onStartDrag={handleStartDrag}
             onRotate={onRotateItem}
-            onSetRotation={onSetRotation}
             onResetRotation={onResetRotation}
             onBringToFront={onBringToFront}
             onDelete={handleDeleteItem}

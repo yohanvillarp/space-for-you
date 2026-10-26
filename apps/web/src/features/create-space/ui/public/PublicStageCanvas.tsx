@@ -139,7 +139,6 @@ export function PublicStageCanvas({
         {items.map((item) => {
           const isKeepsake = KEEPSAKE_TYPES.has(item.type)
           const isEphemera = EPHEMERA_TYPES.has(item.type)
-          const localText = item.data?.text || item.data?.caption || ''
 
           return (
             <div
@@ -156,12 +155,8 @@ export function PublicStageCanvas({
               {isKeepsake && (
                 <KeepsakeItemRenderer
                   item={item}
-                  isEditingText={false}
-                  localText={localText}
-                  onSetLocalText={() => {}}
-                  onSaveText={() => {}}
-                  onStartEditText={() => {}}
                   onUpdateData={handleUpdateItemData}
+                  isEditorMode={false}
                 />
               )}
 
@@ -170,12 +165,8 @@ export function PublicStageCanvas({
               {!isKeepsake && !isEphemera && (
                 <StationeryItemRenderer
                   item={item}
-                  isEditingText={false}
-                  localText={localText}
-                  onSetLocalText={() => {}}
-                  onSaveText={() => {}}
-                  onStartEditText={() => {}}
                   onOpenPhotoPicker={() => setActivePhoto(item)}
+                  isEditorMode={false}
                 />
               )}
             </div>

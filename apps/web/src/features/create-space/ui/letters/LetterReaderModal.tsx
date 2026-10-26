@@ -16,6 +16,22 @@ export interface LetterReaderModalProps {
   onUpdateLetter?: (updated: LetterItem) => void
 }
 
+const FONT_CLASSES: Record<string, string> = {
+  handwriting: 'font-serif italic tracking-wide',
+  sans: 'font-sans',
+  mono: 'font-mono',
+}
+
+const ALIGN_CLASSES: Record<string, string> = {
+  center: 'text-center',
+  justify: 'text-justify',
+}
+
+const SIZE_CLASSES: Record<string, string> = {
+  sm: 'text-sm',
+  lg: 'text-lg sm:text-xl',
+}
+
 export function LetterReaderModal({
   letter,
   isOpen,
@@ -38,29 +54,11 @@ export function LetterReaderModal({
 
   const paper = PAPER_STYLES[letter.paperColor || 'ivory'] ?? PAPER_STYLES.ivory
   const blocksOrder = letter.blocksOrder ?? DEFAULT_LETTER_BLOCKS
-
   const fontClass =
-    letter.fontStyle === 'handwriting'
-      ? 'font-serif italic tracking-wide'
-      : letter.fontStyle === 'sans'
-        ? 'font-sans'
-        : letter.fontStyle === 'mono'
-          ? 'font-mono'
-          : 'font-heading font-serif'
-
-  const alignClass =
-    letter.textAlign === 'center'
-      ? 'text-center'
-      : letter.textAlign === 'justify'
-        ? 'text-justify'
-        : 'text-left'
-
+    FONT_CLASSES[letter.fontStyle || ''] ?? 'font-heading font-serif'
+  const alignClass = ALIGN_CLASSES[letter.textAlign || ''] ?? 'text-left'
   const sizeClass =
-    letter.fontSize === 'sm'
-      ? 'text-sm'
-      : letter.fontSize === 'lg'
-        ? 'text-lg sm:text-xl'
-        : 'text-base sm:text-lg'
+    SIZE_CLASSES[letter.fontSize || ''] ?? 'text-base sm:text-lg'
 
   const handleMoveBlock = (index: number, direction: 'up' | 'down') => {
     const targetIndex = direction === 'up' ? index - 1 : index + 1
@@ -145,8 +143,20 @@ export function LetterReaderModal({
   )
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs select-none sm:p-6">
-      {/* Stationery Parchment Card with Dynamic Paper Sheet Styling */}
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          playSpatialSfx('tactile-tap')
+          onClose()
+        }
+      }}
+      className={cn(
+        'animate-fade-in flex items-center justify-center p-4 select-none sm:p-6',
+        isStudioPreview
+          ? 'absolute inset-0 z-20 bg-black/40 backdrop-blur-xs'
+          : 'fixed inset-0 z-50 bg-black/60 backdrop-blur-xs',
+      )}
+    >
       <div
         className={cn(
           'relative max-h-[88vh] w-full max-w-xl overflow-y-auto rounded-2xl border p-6 shadow-2xl transition-all duration-300 sm:p-8',
@@ -155,7 +165,6 @@ export function LetterReaderModal({
           paper.text,
         )}
       >
-        {/* Subtle Paper Texture Top Header */}
         <div className="flex items-center justify-between border-b border-[#E3D6C6]/80 pb-4">
           <div className="mr-4 flex flex-1 items-center gap-2 text-[#A34835]">
             <Heart className="h-4 w-4 shrink-0 fill-current" />
@@ -190,14 +199,12 @@ export function LetterReaderModal({
           </button>
         </div>
 
-        {/* Letter Body Area with Dynamic Object Order */}
         <div className="my-6 space-y-4">
           {blocksOrder.map((blockId, index) => {
             if (blockId === 'photo' && !letter.imageUrl) return null
 
             return (
               <div key={blockId} className="group/block relative">
-                {/* Floating Reorder Actions on Block Hover (Studio Mode) */}
                 {isStudioPreview && onUpdateLetter && (
                   <div className="absolute -top-2.5 right-1 z-20 hidden items-center gap-0.5 rounded-md border border-[#D8C7B5] bg-white/95 px-1 py-0.5 shadow-xs group-hover/block:flex">
                     <button
@@ -229,7 +236,6 @@ export function LetterReaderModal({
           })}
         </div>
 
-        {/* Letter Footer */}
         <div className="flex items-center justify-between border-t border-[#E3D6C6]/80 pt-4 font-sans text-xs text-[#8B7367]">
           <span>Sealed with love</span>
           <button

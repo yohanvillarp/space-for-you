@@ -68,7 +68,7 @@ export function EditorSidebarDrawer({
         className={cn(
           'relative h-full overflow-hidden border-r border-[#3B302A] transition-all duration-200 ease-out',
           'absolute inset-y-0 left-0 z-40 max-w-[85vw] bg-[#16120F] shadow-2xl',
-          'md:relative md:inset-auto md:z-auto md:max-w-none md:shrink-0',
+          'md:relative md:inset-auto md:z-30 md:max-w-none md:shrink-0',
           !showSidebar &&
             'pointer-events-none invisible -translate-x-full border-none md:translate-x-0',
         )}
