@@ -145,7 +145,7 @@ export function LetterReaderModal({
   )
 
   return (
-    <div className="animate-fade-in absolute inset-0 z-30 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs select-none sm:p-6">
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs select-none sm:p-6">
       {/* Stationery Parchment Card with Dynamic Paper Sheet Styling */}
       <div
         className={cn(

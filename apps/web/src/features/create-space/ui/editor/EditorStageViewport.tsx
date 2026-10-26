@@ -140,18 +140,20 @@ export function EditorStageViewport(props: EditorStageViewportProps) {
         {...rendererProps}
       />
 
-      <StageBottomDock
-        activeSceneId={activeSceneId}
-        scenes={scenes}
-        onSelectScene={onOpenScene}
-        onOpenAddScene={onOpenAddScene}
-        isProtectionEnabled={protectionConfig.enabled}
-        onRenameScene={onRenameScene}
-        onDuplicateScene={onDuplicateScene}
-        onMoveScene={onMoveScene}
-        onDeleteScene={onDeleteScene}
-        onToggleProtection={onToggleProtection}
-      />
+      {!rendererProps.openLetterId && (
+        <StageBottomDock
+          activeSceneId={activeSceneId}
+          scenes={scenes}
+          onSelectScene={onOpenScene}
+          onOpenAddScene={onOpenAddScene}
+          isProtectionEnabled={protectionConfig.enabled}
+          onRenameScene={onRenameScene}
+          onDuplicateScene={onDuplicateScene}
+          onMoveScene={onMoveScene}
+          onDeleteScene={onDeleteScene}
+          onToggleProtection={onToggleProtection}
+        />
+      )}
     </main>
   )
 }

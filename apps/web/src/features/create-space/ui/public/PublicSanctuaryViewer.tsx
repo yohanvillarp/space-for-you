@@ -26,6 +26,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
 
   const [activeSceneId, setActiveSceneId] = useState<string>('hub')
+  const [openLetterId, setOpenLetterId] = useState<string | null>(null)
   const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean>(() =>
     hasSanctuaryBeenUnboxed(space.id),
   )
@@ -52,6 +53,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   }, [scenes])
 
   const handleSelectScene = (sceneId: string) => {
+    setOpenLetterId(null)
     if (sceneId === 'hub') {
       setActiveSceneId('hub')
       return
@@ -67,9 +69,6 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const handleEnterSanctuary = () => {
     setHasSeenWelcome(true)
     setActiveSceneId('hub')
-    if (presetTrack && !isPlaying) {
-      togglePlay()
-    }
   }
 
   // Dynamic Document Title
@@ -203,6 +202,8 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
                   scene={activeScene}
                   templateId={templateId}
                   isStudioPreview={false}
+                  openLetterId={openLetterId}
+                  onOpenLetter={setOpenLetterId}
                   onBackToHub={() => setActiveSceneId('hub')}
                 />
               )}
@@ -219,8 +220,8 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
         )}
       </main>
 
-      {/* Floating Bottom Scene Dock (rendered only after entering) */}
-      {hasSeenWelcome && (
+      {/* Floating Bottom Scene Dock (rendered only after entering and when no letter is open) */}
+      {hasSeenWelcome && !openLetterId && (
         <PublicSceneDock
           scenes={visibleScenes}
           activeSceneId={activeSceneId}
