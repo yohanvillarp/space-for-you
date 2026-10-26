@@ -7,6 +7,7 @@ import { THEME_REGISTRY } from '@/features/space-themes'
 import { LettersScene } from '@/features/create-space/ui/letters/LettersScene'
 import { SpaceHubScene } from '@/features/create-space/ui/hub/SpaceHubScene'
 import { PublicStageCanvas } from '@/features/create-space/ui/public/PublicStageCanvas'
+import { filterPublicItems } from '@/features/create-space/lib/stage-public-filter'
 import { PublicSceneDock } from '@/features/create-space/ui/public/PublicSceneDock'
 import {
   SanctuaryUnboxingCeremony,
@@ -42,7 +43,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
   const visibleScenes = useMemo(() => {
     const populated = scenes.filter((scene) => {
       if (scene.type === 'free-canvas') {
-        return Boolean(scene.items && scene.items.length > 0)
+        return filterPublicItems(scene.items || []).length > 0
       }
       if (scene.type === 'letters') {
         return Boolean(scene.letters && scene.letters.length > 0)
@@ -73,9 +74,7 @@ export function PublicSanctuaryViewer({ data }: PublicSanctuaryViewerProps) {
 
   // Dynamic Document Title
   useEffect(() => {
-    if (space?.title) {
-      document.title = `${space.title} • Space For You`
-    }
+    if (space?.title) document.title = `${space.title} • Space For You`
     return () => {
       document.title = 'Space For You'
     }

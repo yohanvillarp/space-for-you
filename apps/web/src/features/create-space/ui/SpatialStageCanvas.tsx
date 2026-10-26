@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
+import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
 import { SpatialCanvasItem } from './SpatialCanvasItem'
 import { SpatialStageAtmosphere } from './canvas/SpatialStageAtmosphere'
 import { useCanvasDragAndDrop } from './canvas/useCanvasDragAndDrop'
@@ -13,6 +14,7 @@ import {
 import { CanvasZoomControl } from './canvas/CanvasZoomControl'
 import { useStudioBehavior } from './editor/useStudioBehavior'
 import { VoiceNoteRecorderModal } from './canvas/inspector/VoiceNoteRecorderModal'
+import { EditItemTextModal } from './canvas/inspector/EditItemTextModal'
 import { countSpaceVoiceNotes } from '@/features/create-space/lib/voice-recorder/voice-note-types'
 import type { SpatialStageCanvasProps } from './canvas/spatial-stage-canvas.types'
 import { cn } from '@/shared/lib'
@@ -59,6 +61,9 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
   const { isEditorMode } = useStudioBehavior()
   const { menuState, menuRef, openMenu, closeMenu } = useContextMenu()
   const [recordingCassetteId, setRecordingCassetteId] = useState<string | null>(
+    null,
+  )
+  const [editingTextItem, setEditingTextItem] = useState<SpatialItem | null>(
     null,
   )
 
@@ -193,6 +198,9 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
             onBringToFront={onBringToFront}
             onDelete={handleDeleteItem}
             onUpdateData={onUpdateItemData}
+            onStartEditText={
+              isEditorMode ? (it) => setEditingTextItem(it) : undefined
+            }
             onContextMenu={(it, e) =>
               openMenu({ type: 'item', item: it }, e.clientX, e.clientY)
             }
@@ -218,6 +226,9 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
           onCopyItem={onCopyItem || (() => {})}
           onDelete={handleDeleteItem}
           onUpdateData={onUpdateItemData}
+          onStartEditText={
+            isEditorMode ? (it) => setEditingTextItem(it) : undefined
+          }
           onChangePhoto={onOpenPhotoPicker}
           onAddItem={(type, x, y) => onAddItem(type, x, y)}
           onPasteItem={(x, y) => onPasteItem?.(x, y)}
@@ -241,6 +252,18 @@ export function SpatialStageCanvas(props: SpatialStageCanvasProps) {
               isVoiceNoteSample: false,
             })
             setRecordingCassetteId(null)
+          }}
+        />
+      )}
+
+      {editingTextItem && (
+        <EditItemTextModal
+          isOpen={Boolean(editingTextItem)}
+          item={editingTextItem}
+          onClose={() => setEditingTextItem(null)}
+          onSave={(id, updates) => {
+            onUpdateItemData(id, updates)
+            setEditingTextItem(null)
           }}
         />
       )}

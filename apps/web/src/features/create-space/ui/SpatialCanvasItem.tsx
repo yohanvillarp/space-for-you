@@ -27,6 +27,7 @@ export interface SpatialCanvasItemProps {
   onContextMenu?: (item: SpatialItem, e: ReactMouseEvent) => void
   onOpenPhotoPicker?: (item: SpatialItem) => void
   onRecordVoiceNote?: (id: string) => void
+  onStartEditText?: (item: SpatialItem) => void
   isEditorMode?: boolean
 }
 
@@ -45,6 +46,7 @@ export function SpatialCanvasItem({
   onContextMenu,
   onOpenPhotoPicker,
   onRecordVoiceNote,
+  onStartEditText,
   isEditorMode,
 }: SpatialCanvasItemProps) {
   const itemRef = useRef<HTMLDivElement | null>(null)
@@ -85,6 +87,12 @@ export function SpatialCanvasItem({
       onClick={(e) => {
         e.stopPropagation()
         onSelect(item.id)
+      }}
+      onDoubleClick={(e) => {
+        if (isEditorMode && onStartEditText) {
+          e.stopPropagation()
+          onStartEditText(item)
+        }
       }}
       onContextMenu={(e: ReactMouseEvent) => {
         e.preventDefault()
@@ -137,6 +145,9 @@ export function SpatialCanvasItem({
           onBringToFront={onBringToFront}
           onDelete={onDelete}
           onRecordVoiceNote={onRecordVoiceNote}
+          onStartEditText={
+            onStartEditText ? () => onStartEditText(item) : undefined
+          }
         />
       )}
 
@@ -149,8 +160,12 @@ export function SpatialCanvasItem({
           onSetLocalText={setLocalText}
           onSaveText={handleSaveText}
           onStartEditText={() => {
-            playSpatialSfx('paper-rustle')
-            setIsEditingText(true)
+            if (onStartEditText) {
+              onStartEditText(item)
+            } else {
+              playSpatialSfx('paper-rustle')
+              setIsEditingText(true)
+            }
           }}
           onUpdateData={onUpdateData}
           onRecordVoiceNote={onRecordVoiceNote}
@@ -170,8 +185,12 @@ export function SpatialCanvasItem({
           onSetLocalText={setLocalText}
           onSaveText={handleSaveText}
           onStartEditText={() => {
-            playSpatialSfx('paper-rustle')
-            setIsEditingText(true)
+            if (onStartEditText) {
+              onStartEditText(item)
+            } else {
+              playSpatialSfx('paper-rustle')
+              setIsEditingText(true)
+            }
           }}
           onOpenPhotoPicker={onOpenPhotoPicker}
         />
