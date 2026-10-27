@@ -48,6 +48,7 @@ export function useStudioSave({
   const [isDirty, setIsDirty] = useState(false)
 
   const isInitialMount = useRef(true)
+  const fallbackIdRef = useRef<string>(spaceId || 'space_draft_singleton')
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const lastPersistedPayloadRef = useRef<string>('')
 
@@ -176,7 +177,7 @@ export function useStudioSave({
     }
 
     const existing = spaceId ? getSpaceById(spaceId) : undefined
-    const targetId = spaceId ?? existing?.id ?? `space_${Date.now()}`
+    const targetId = spaceId ?? existing?.id ?? fallbackIdRef.current
     const localSaved = persistLocally(targetId)
     syncToCloud(localSaved).catch(() => {})
     return localSaved
@@ -189,7 +190,7 @@ export function useStudioSave({
     }
 
     const existing = spaceId ? getSpaceById(spaceId) : undefined
-    const targetId = spaceId ?? existing?.id ?? `space_${Date.now()}`
+    const targetId = spaceId ?? existing?.id ?? fallbackIdRef.current
     const localSaved = persistLocally(targetId)
     await syncToCloud(localSaved)
     return localSaved
@@ -197,7 +198,7 @@ export function useStudioSave({
 
   useEffect(() => {
     const existing = spaceId ? getSpaceById(spaceId) : undefined
-    const targetId = spaceId ?? existing?.id ?? `space_${Date.now()}`
+    const targetId = spaceId ?? existing?.id ?? fallbackIdRef.current
 
     const currentPayload = JSON.stringify({
       scenes,

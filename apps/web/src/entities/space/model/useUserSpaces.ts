@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import type { UserSpace } from './types'
 import {
   getSavedSpaces,
@@ -14,6 +14,8 @@ import {
   getPendingCloudSyncIds,
   markPendingCloudSync,
   clearPendingCloudSync,
+  getPendingCloudDeleteIds,
+  clearPendingCloudDelete,
   getLastSyncedUserId,
   setLastSyncedUserId,
 } from './space-sync-engine'
@@ -27,7 +29,10 @@ import {
   getSpaceStorageKeys,
   loadFromStorage,
 } from '@/features/create-space/ui/editor/multi-scene-storage'
-import type { SpaceScene } from '@/features/create-space/model/scenes.types'
+import type {
+  SpaceScene,
+  SpaceMeta,
+} from '@/features/create-space/model/scenes.types'
 
 export interface UseUserSpacesReturn {
   spaces: UserSpace[]
@@ -50,19 +55,24 @@ export interface UseUserSpacesReturn {
   refreshSpaces: () => void
 }
 
-function loadLocalScenesForSpace(space: UserSpace): SpaceScene[] {
+async function pushSpaceWithLocalData(space: UserSpace, userId: string) {
   const keys = getSpaceStorageKeys(space.id, space.templateId)
-  return loadFromStorage<SpaceScene[]>(keys.scenesKey, [])
+  const scenes = loadFromStorage<SpaceScene[]>(keys.scenesKey, [])
+  const meta = loadFromStorage<Partial<SpaceMeta>>(keys.metaKey, {})
+  await saveSpaceToDatabase({
+    space,
+    scenes,
+    userId,
+    senderName: meta.senderName,
+    dedicationMessage: meta.dedicationMessage,
+  })
+  clearPendingCloudSync(space.id)
 }
 
 function syncSpaceToCloudAsync(space: UserSpace): void {
   getCurrentUser()
     .then(async (user) => {
-      if (user) {
-        const scenes = loadLocalScenesForSpace(space)
-        await saveSpaceToDatabase({ space, scenes, userId: user.$id })
-        clearPendingCloudSync(space.id)
-      }
+      if (user) await pushSpaceWithLocalData(space, user.$id)
     })
     .catch(() => {})
 }
@@ -71,12 +81,14 @@ export function useUserSpaces(): UseUserSpacesReturn {
   const [spaces, setSpaces] = useState<UserSpace[]>(() => getSavedSpaces())
   const [isLoading, setIsLoading] = useState(false)
   const [isCloudConnected, setIsCloudConnected] = useState(false)
+  const isSyncingRef = useRef(false)
 
-  const refreshSpaces = useCallback(() => {
-    setSpaces(getSavedSpaces())
-  }, [])
+  const refreshSpaces = useCallback(() => setSpaces(getSavedSpaces()), [])
 
   const syncWithCloud = useCallback(() => {
+    if (isSyncingRef.current) return
+    isSyncingRef.current = true
+
     getCurrentUser()
       .then(async (user) => {
         if (!user) {
@@ -88,22 +100,19 @@ export function useUserSpaces(): UseUserSpacesReturn {
         }
 
         const previousUserId = getLastSyncedUserId()
-        if (previousUserId && previousUserId !== user.$id) {
-          clearAllLocalSpaces()
-        }
+        if (previousUserId && previousUserId !== user.$id) clearAllLocalSpaces()
         setLastSyncedUserId(user.$id)
         setIsCloudConnected(true)
         setIsLoading(true)
 
         try {
           const cloudSpaces = await fetchUserSpaces(user.$id)
-          const pendingIds = getPendingCloudSyncIds()
           const reconciled = reconcileSpacesWithCloud(
             getSavedSpaces(),
             cloudSpaces,
-            pendingIds,
+            getPendingCloudSyncIds(),
+            getPendingCloudDeleteIds(),
           )
-
           setSpaces(reconciled)
           try {
             localStorage.setItem(SPACES_STORAGE_KEY, JSON.stringify(reconciled))
@@ -111,16 +120,23 @@ export function useUserSpaces(): UseUserSpacesReturn {
             // ignore quota
           }
 
-          const cloudIdSet = new Set(cloudSpaces.map((s) => s.id))
+          for (const delId of getPendingCloudDeleteIds()) {
+            try {
+              await deleteSpaceFromDatabase(delId)
+              clearPendingCloudDelete(delId)
+            } catch {
+              // retry on next sync
+            }
+          }
+
+          const activePendingIds = getPendingCloudSyncIds()
           for (const item of reconciled) {
-            if (pendingIds.has(item.id) && !cloudIdSet.has(item.id)) {
-              saveSpaceToDatabase({
-                space: item,
-                scenes: loadLocalScenesForSpace(item),
-                userId: user.$id,
-              })
-                .then(() => clearPendingCloudSync(item.id))
-                .catch(() => {})
+            if (activePendingIds.has(item.id)) {
+              try {
+                await pushSpaceWithLocalData(item, user.$id)
+              } catch {
+                // retry on next sync
+              }
             }
           }
         } catch {
@@ -129,34 +145,34 @@ export function useUserSpaces(): UseUserSpacesReturn {
           setIsLoading(false)
         }
       })
-      .catch(() => {
-        setIsCloudConnected(false)
+      .catch(() => setIsCloudConnected(false))
+      .finally(() => {
+        isSyncingRef.current = false
       })
   }, [])
 
   useEffect(() => {
     syncWithCloud()
-    const handleVisibility = () => {
+    const onVis = () => {
       if (document.visibilityState === 'visible') syncWithCloud()
     }
     window.addEventListener('focus', syncWithCloud)
-    document.addEventListener('visibilitychange', handleVisibility)
+    document.addEventListener('visibilitychange', onVis)
     return () => {
       window.removeEventListener('focus', syncWithCloud)
-      document.removeEventListener('visibilitychange', handleVisibility)
+      document.removeEventListener('visibilitychange', onVis)
     }
   }, [syncWithCloud])
 
   useEffect(() => {
-    const handleCustomChange = () => refreshSpaces()
-    const handleStorageChange = (e: StorageEvent) => {
+    const onStorage = (e: StorageEvent) => {
       if (e.key === null || e.key === SPACES_STORAGE_KEY) refreshSpaces()
     }
-    window.addEventListener(SPACES_CHANGED_EVENT, handleCustomChange)
-    window.addEventListener('storage', handleStorageChange)
+    window.addEventListener(SPACES_CHANGED_EVENT, refreshSpaces)
+    window.addEventListener('storage', onStorage)
     return () => {
-      window.removeEventListener(SPACES_CHANGED_EVENT, handleCustomChange)
-      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener(SPACES_CHANGED_EVENT, refreshSpaces)
+      window.removeEventListener('storage', onStorage)
     }
   }, [refreshSpaces])
 
@@ -175,44 +191,42 @@ export function useUserSpaces(): UseUserSpacesReturn {
     (id: string) => {
       deleteSpaceFromStorage(id)
       refreshSpaces()
-      deleteSpaceFromDatabase(id).catch(() => {})
+      deleteSpaceFromDatabase(id)
+        .then(() => clearPendingCloudDelete(id))
+        .catch(() => {})
     },
     [refreshSpaces],
   )
 
   const duplicateSpace = useCallback(
     (id: string, customTitle?: string, customRecipient?: string) => {
-      const duplicated = duplicateSpaceInStorage(
-        id,
-        customTitle,
-        customRecipient,
-      )
+      const dup = duplicateSpaceInStorage(id, customTitle, customRecipient)
       refreshSpaces()
-      if (duplicated) syncSpaceToCloudAsync(duplicated)
-      return duplicated
+      if (dup) syncSpaceToCloudAsync(dup)
+      return dup
     },
     [refreshSpaces],
   )
 
   const archiveSpace = useCallback(
     (id: string) => {
-      const target = spaces.find((s) => s.id === id)
+      const target = getSavedSpaces().find((s) => s.id === id)
       if (target) saveSpace({ ...target, status: 'archived' })
     },
-    [spaces, saveSpace],
+    [saveSpace],
   )
 
   const restoreSpace = useCallback(
     (id: string) => {
-      const target = spaces.find((s) => s.id === id)
+      const target = getSavedSpaces().find((s) => s.id === id)
       if (target) saveSpace({ ...target, status: 'draft' })
     },
-    [spaces, saveSpace],
+    [saveSpace],
   )
 
   const renameSpace = useCallback(
     (id: string, newTitle: string, newRecipient?: string) => {
-      const target = spaces.find((s) => s.id === id)
+      const target = getSavedSpaces().find((s) => s.id === id)
       if (!target) return undefined
       const updated: UserSpace = {
         ...target,
@@ -222,10 +236,11 @@ export function useUserSpaces(): UseUserSpacesReturn {
       try {
         const metaRaw = localStorage.getItem(`sfy_meta_${id}`)
         if (metaRaw) {
+          const parsed = JSON.parse(metaRaw)
           localStorage.setItem(
             `sfy_meta_${id}`,
             JSON.stringify({
-              ...JSON.parse(metaRaw),
+              ...parsed,
               title: updated.title,
               recipientName: updated.recipientName,
             }),
@@ -236,7 +251,7 @@ export function useUserSpaces(): UseUserSpacesReturn {
       }
       return saveSpace(updated)
     },
-    [spaces, saveSpace],
+    [saveSpace],
   )
 
   return {

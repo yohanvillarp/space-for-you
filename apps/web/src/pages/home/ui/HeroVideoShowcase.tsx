@@ -9,7 +9,8 @@ import { ENV } from '@/shared/config'
  * - "https://youtu.be/dQw4w9WgXcQ"
  * - "dQw4w9WgXcQ"
  */
-export const HERO_YOUTUBE_URL_OR_ID = ''
+export const HERO_YOUTUBE_URL_OR_ID =
+  'https://youtu.be/OR3d29nMJt8?si=zrVLw27DrumuWl22'
 
 function extractYouTubeVideoId(raw: string): string | null {
   const input = raw.trim()

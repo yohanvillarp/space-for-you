@@ -11,12 +11,15 @@ import type {
 } from '@/features/create-space/model/scenes.types'
 import {
   PENDING_CLOUD_SYNC_KEY,
+  PENDING_CLOUD_DELETE_KEY,
   clearPendingCloudSync,
   markPendingCloudSync,
+  markPendingCloudDelete,
 } from './space-sync-engine'
 
 export const SPACES_STORAGE_KEY = 'sfy_user_spaces_v1'
 export const SPACES_CHANGED_EVENT = 'sfy:spaces_changed'
+const MAX_STORED_SPACES = 3
 
 const LEGACY_SEED_SPACE_IDS = new Set([
   'space_sophia_birthday',
@@ -39,6 +42,8 @@ export function clearAllLocalSpaces(): void {
         k &&
         (k === SPACES_STORAGE_KEY ||
           k === PENDING_CLOUD_SYNC_KEY ||
+          k === PENDING_CLOUD_DELETE_KEY ||
+          k === 'sfy_active_creation_draft' ||
           k.startsWith('sfy_space_') ||
           k.startsWith('sfy_scenes_') ||
           k.startsWith('sfy_meta_') ||
@@ -49,6 +54,7 @@ export function clearAllLocalSpaces(): void {
       }
     }
     for (const k of keysToRemove) localStorage.removeItem(k)
+    sessionStorage.removeItem('sfy_active_creation_draft')
   } catch {
     // ignore
   }
@@ -78,12 +84,22 @@ export function getSpaceById(id: string): UserSpace | undefined {
   return getSavedSpaces().find((s) => s.id === id)
 }
 
-export function saveSpace(space: UserSpace): UserSpace {
+export function saveSpace(
+  space: UserSpace,
+  options?: { preserveTimestamp?: boolean },
+): UserSpace {
   const current = getSavedSpaces()
   const existingIndex = current.findIndex((s) => s.id === space.id)
   const spaceWithTimestamp: UserSpace = {
     ...space,
-    updatedAt: new Date().toISOString(),
+    updatedAt:
+      options?.preserveTimestamp && space.updatedAt
+        ? space.updatedAt
+        : new Date().toISOString(),
+  }
+
+  if (existingIndex < 0 && current.length >= MAX_STORED_SPACES) {
+    return current[0] ?? spaceWithTimestamp
   }
 
   const updated =
@@ -117,6 +133,7 @@ export function purgeSpaceStorageKeys(id: string): void {
 }
 
 export function deleteSpace(id: string): void {
+  markPendingCloudDelete(id)
   const updated = getSavedSpaces().filter((s) => s.id !== id)
   try {
     localStorage.setItem(SPACES_STORAGE_KEY, JSON.stringify(updated))
@@ -132,7 +149,9 @@ export function duplicateSpace(
   customTitle?: string,
   customRecipient?: string,
 ): UserSpace | undefined {
-  const target = getSpaceById(id)
+  const current = getSavedSpaces()
+  if (current.length >= MAX_STORED_SPACES) return undefined
+  const target = current.find((s) => s.id === id)
   if (!target) return undefined
 
   const newId = `space_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`
@@ -197,6 +216,11 @@ export function createNewSpace(
   title = 'My Dedicated Space',
   recipientName = 'Someone Special',
 ): UserSpace {
+  const existing = getSavedSpaces()
+  if (existing.length >= MAX_STORED_SPACES) {
+    return existing[0]
+  }
+
   const newId = `space_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`
   const initialScenes = createInitialScenesForTemplate(templateId)
   const targetKeys = getSpaceStorageKeys(newId)

@@ -1,7 +1,5 @@
-import { ExternalLink } from 'lucide-react'
 import type { SpaceTemplateId } from '@/entities/space'
 import { THEME_REGISTRY } from '@/features/space-themes'
-import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
 import './stage-preview.css'
 
@@ -16,7 +14,6 @@ export function StagePreviewPanel({
 }: StagePreviewPanelProps) {
   const activeTheme = THEME_REGISTRY[templateId] ?? THEME_REGISTRY.birthday
   const ThemeUniverse = activeTheme.component
-  const studioPath = `${ROUTES.STUDIO}?template=${encodeURIComponent(templateId)}`
 
   return (
     <div className={cn('relative w-full space-y-4', className)}>
@@ -47,20 +44,6 @@ export function StagePreviewPanel({
                 {activeTheme.mood}
               </p>
             </div>
-          </div>
-
-          {/* Top Action: subtle external studio link */}
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <a
-              href={studioPath}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open Studio in new tab"
-              aria-label="Open Studio in new tab"
-              className="border-border-base/70 bg-bg-surface text-text-secondary hover:border-border-base hover:text-text-primary inline-flex items-center justify-center rounded-lg border p-1.5 transition-colors"
-            >
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
           </div>
         </div>
 
