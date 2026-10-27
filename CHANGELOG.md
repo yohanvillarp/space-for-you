@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.6](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.5...space-for-you-v1.2.6) (2026-10-27)
+
+
+### Bug Fixes
+
+* enforce space limit, fix cloud sync overflow, and set hero video ([726bde9](https://github.com/yohanvillarp/space-for-you/commit/726bde9a7fd5e68d86be6693ba60fd589c1d4fb5))
+* enforce space limit, fix cloud sync overflow, and set hero video ([17854ac](https://github.com/yohanvillarp/space-for-you/commit/17854ac9e703eef23406dde3e2fe336caa7ed890))
+
 ## [1.2.5](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.4...space-for-you-v1.2.5) (2026-10-26)
 
 

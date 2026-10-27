@@ -53,6 +53,7 @@ export async function fetchUserSpaces(userId: string): Promise<UserSpace[]> {
   const res = await databases.listDocuments(DB_ID, SPACES_COLL, [
     Query.equal('userId', userId),
     Query.orderDesc('$updatedAt'),
+    Query.limit(100),
   ])
   return res.documents.map(toUserSpace)
 }
@@ -157,9 +158,9 @@ export async function saveSpaceToDatabase({
   space,
   scenes = [],
   userId,
-  senderName = '',
-  dedicationMessage = '',
-  themeConfig = '',
+  senderName,
+  dedicationMessage,
+  themeConfig,
   slug,
   passcodeHash,
   passcodeSalt,
@@ -169,22 +170,25 @@ export async function saveSpaceToDatabase({
   const isPublished = space.status === 'published'
   const perms = buildPermissions(userId, isPublished)
   const resolvedSlug =
-    slug || generateSpaceSlug(space.title, space.recipientName)
+    slug ||
+    space.slug ||
+    generateSpaceSlug(space.title, space.recipientName, space.id)
 
   const spacePayload: Record<string, unknown> = {
     title: space.title,
     recipientName: space.recipientName,
-    senderName,
     templateId: space.templateId,
     status: space.status,
     slug: resolvedSlug,
-    dedicationMessage,
     scenesCount: scenes.length > 0 ? scenes.length : space.scenesCount,
     artifactsCount: space.artifactsCount,
-    themeConfig,
     isProtected: Boolean(space.isProtected),
     userId,
   }
+  if (senderName !== undefined) spacePayload.senderName = senderName
+  if (dedicationMessage !== undefined)
+    spacePayload.dedicationMessage = dedicationMessage
+  if (themeConfig !== undefined) spacePayload.themeConfig = themeConfig
   if (passcodeHash !== undefined) spacePayload.passcodeHash = passcodeHash
   if (passcodeSalt !== undefined) spacePayload.passcodeSalt = passcodeSalt
   if (passcodeHint !== undefined) spacePayload.passcodeHint = passcodeHint
@@ -214,7 +218,9 @@ export async function saveSpaceToDatabase({
     )
   }
 
-  await saveScenesToDatabase(savedDoc.$id, scenes, perms)
+  if (scenes.length > 0) {
+    await saveScenesToDatabase(savedDoc.$id, scenes, perms)
+  }
   return toUserSpace(savedDoc)
 }
 

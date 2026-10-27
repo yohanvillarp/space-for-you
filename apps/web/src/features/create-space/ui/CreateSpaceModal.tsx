@@ -1,7 +1,7 @@
 import { useState, useId } from 'react'
 import { useNavigate } from 'react-router'
 import { X, Heart, Sparkles, ArrowRight, CopyPlus } from 'lucide-react'
-import { useUserSpaces } from '@/entities/space'
+import { getSavedSpaces, useUserSpaces } from '@/entities/space'
 import { validateSpaceCreation } from '@/features/create-space/lib/space-tier-limits'
 import { ROUTES } from '@/shared/config'
 import { Button, useConfirmDialog } from '@/shared/ui'
@@ -41,7 +41,8 @@ export function CreateSpaceModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validateSpaceCreation(spaces.length, confirm, isDuplicating)) {
+    const liveCount = Math.max(spaces.length, getSavedSpaces().length)
+    if (!validateSpaceCreation(liveCount, confirm, isDuplicating)) {
       onClose()
       return
     }
@@ -56,6 +57,7 @@ export function CreateSpaceModal({
     }
 
     if (typeof window !== 'undefined') {
+      localStorage.removeItem('sfy_active_creation_draft')
       sessionStorage.removeItem('sfy_active_creation_draft')
     }
     onClose()

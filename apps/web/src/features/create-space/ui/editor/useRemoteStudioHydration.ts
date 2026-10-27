@@ -1,6 +1,11 @@
 import { useEffect, useRef } from 'react'
 import type { SpaceTemplateId } from '@/entities/space'
-import { fetchSpaceById, saveSpace } from '@/entities/space'
+import {
+  fetchSpaceById,
+  saveSpace,
+  getPendingCloudSyncIds,
+  clearPendingCloudSync,
+} from '@/entities/space'
 import type {
   SpaceMeta,
   SpaceScene,
@@ -112,7 +117,12 @@ export function useRemoteStudioHydration({
             return nextProtection
           })
 
-          saveSpace(remote.space)
+          const wasPendingBeforeHydration =
+            getPendingCloudSyncIds().has(spaceId)
+          saveSpace(remote.space, { preserveTimestamp: true })
+          if (!wasPendingBeforeHydration) {
+            setTimeout(() => clearPendingCloudSync(spaceId), 50)
+          }
         }
       })
       .catch(() => {})

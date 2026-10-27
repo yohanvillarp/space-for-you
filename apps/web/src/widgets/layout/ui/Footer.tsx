@@ -16,7 +16,7 @@ export function Footer() {
             rel="author noopener noreferrer"
             className="text-text-secondary hover:text-text-primary font-medium transition-colors"
           >
-            Yohan Nikel Villar Presentación (@yohanvillarp)
+            @yohanvillarp
           </a>
           .
         </p>

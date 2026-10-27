@@ -200,15 +200,14 @@ export function useEditorStageWorkflow({
     onOpenSidebar,
   })
 
-  const resolvedScenes = useMemo(
-    () =>
-      scenes.map((s) =>
-        s.id === activeSceneId && s.type === 'free-canvas'
-          ? { ...s, items }
-          : s,
-      ),
-    [scenes, activeSceneId, items],
-  )
+  const resolvedScenes = useMemo(() => {
+    const primaryCanvasId = scenes.find((s) => s.type === 'free-canvas')?.id
+    const targetCanvasId =
+      activeScene?.type === 'free-canvas' ? activeSceneId : primaryCanvasId
+    return scenes.map((s) =>
+      s.id === targetCanvasId && s.type === 'free-canvas' ? { ...s, items } : s,
+    )
+  }, [scenes, activeScene, activeSceneId, items])
 
   return {
     activeScene,

@@ -2,8 +2,8 @@ import type { SpaceTemplateId, UserSpace } from '@/entities/space'
 import {
   DEFAULT_TEMPLATE_ID,
   createNewSpace,
+  getSavedSpaces,
   getSpaceById,
-  saveSpace,
   useUserSpaces,
 } from '@/entities/space'
 import {
@@ -18,17 +18,20 @@ import {
   ThemeModeSelector,
   validateSpaceCreation,
 } from '@/features'
+import { MAX_USER_SPACES } from '@/features/create-space/lib/space-tier-limits'
 import { ROUTES } from '@/shared/config'
 import { cn } from '@/shared/lib'
 import { Button, Container, useConfirmDialog } from '@/shared/ui'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
+
+const ACTIVE_DRAFT_STORAGE_KEY = 'sfy_active_creation_draft'
 
 export function NewSpacePage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { spaces } = useUserSpaces()
+  const { spaces, saveSpace: syncSaveSpace } = useUserSpaces()
   const { confirm } = useConfirmDialog()
 
   const rawRecipient = searchParams.get('recipient')?.trim()
@@ -47,46 +50,60 @@ export function NewSpacePage() {
       ? `${rawRecipient}'s ${activeTheme.title} Space`
       : `${activeTheme.title} Space`)
 
+  const activeDraftId =
+    searchParams.get('spaceId')?.trim() ||
+    (typeof window !== 'undefined'
+      ? localStorage.getItem(ACTIVE_DRAFT_STORAGE_KEY)
+      : null)
+
+  const existingDraft = activeDraftId ? getSpaceById(activeDraftId) : undefined
+  const liveCount = Math.max(spaces.length, getSavedSpaces().length)
+
+  if (!existingDraft && liveCount >= MAX_USER_SPACES) {
+    return <Navigate to={ROUTES.DASHBOARD} replace />
+  }
+
   const handleStartCrafting = () => {
-    if (!validateSpaceCreation(spaces.length, confirm)) {
-      navigate(ROUTES.DASHBOARD)
+    const freshDraftId =
+      searchParams.get('spaceId')?.trim() ||
+      (typeof window !== 'undefined'
+        ? localStorage.getItem(ACTIVE_DRAFT_STORAGE_KEY)
+        : null)
+
+    const currentDraft = freshDraftId ? getSpaceById(freshDraftId) : undefined
+    const currentTotal = Math.max(spaces.length, getSavedSpaces().length)
+
+    if (!currentDraft && !validateSpaceCreation(currentTotal, confirm)) {
+      navigate(ROUTES.DASHBOARD, { replace: true })
       return
     }
 
-    const activeDraftId =
-      searchParams.get('spaceId')?.trim() ||
-      (typeof window !== 'undefined'
-        ? sessionStorage.getItem('sfy_active_creation_draft')
-        : null)
-
-    const existingDraft = activeDraftId
-      ? getSpaceById(activeDraftId)
-      : undefined
     let spaceToOpen: UserSpace
 
-    if (existingDraft && existingDraft.status === 'draft') {
-      const keys = getSpaceStorageKeys(existingDraft.id, selectedTemplateId)
-      if (existingDraft.templateId !== selectedTemplateId) {
+    if (currentDraft && currentDraft.status === 'draft') {
+      const keys = getSpaceStorageKeys(currentDraft.id, selectedTemplateId)
+      if (currentDraft.templateId !== selectedTemplateId) {
         saveToStorage(
           keys.scenesKey,
           createInitialScenesForTemplate(selectedTemplateId),
         )
       }
-      spaceToOpen = saveSpace({
-        ...existingDraft,
+      spaceToOpen = syncSaveSpace({
+        ...currentDraft,
         templateId: selectedTemplateId,
         title: spaceTitle,
         recipientName,
         updatedAt: new Date().toISOString(),
       })
     } else {
-      spaceToOpen = createNewSpace(
+      const created = createNewSpace(
         selectedTemplateId,
         spaceTitle,
         recipientName,
       )
+      spaceToOpen = syncSaveSpace(created)
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('sfy_active_creation_draft', spaceToOpen.id)
+        localStorage.setItem(ACTIVE_DRAFT_STORAGE_KEY, spaceToOpen.id)
       }
     }
 

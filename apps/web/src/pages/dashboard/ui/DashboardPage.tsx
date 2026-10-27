@@ -3,6 +3,7 @@ import type { UserSpace } from '@/entities/space'
 import {
   SpaceCard,
   useUserSpaces,
+  getSavedSpaces,
   resolveSpaceDisplayStatus,
 } from '@/entities/space'
 import {
@@ -45,8 +46,10 @@ export function DashboardPage() {
   }
 
   const handleOpenCreateModal = () => {
-    if (!validateSpaceCreation(spaces.length, confirm)) return
+    const liveCount = Math.max(spaces.length, getSavedSpaces().length)
+    if (!validateSpaceCreation(liveCount, confirm)) return
     if (typeof window !== 'undefined') {
+      localStorage.removeItem('sfy_active_creation_draft')
       sessionStorage.removeItem('sfy_active_creation_draft')
     }
     setDuplicateTarget(null)
@@ -54,7 +57,8 @@ export function DashboardPage() {
   }
 
   const handleDuplicateRequest = (id: string) => {
-    if (!validateSpaceCreation(spaces.length, confirm, true)) return
+    const liveCount = Math.max(spaces.length, getSavedSpaces().length)
+    if (!validateSpaceCreation(liveCount, confirm, true)) return
     const target = spaces.find((s) => s.id === id)
     if (target) {
       setDuplicateTarget(target)
