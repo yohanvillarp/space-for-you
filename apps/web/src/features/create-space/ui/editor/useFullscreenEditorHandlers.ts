@@ -93,18 +93,32 @@ export function useFullscreenEditorHandlers({
       ),
     )
     multiScene.setScenes((prev) =>
-      prev.map((sc) =>
-        sc.type === 'letters'
-          ? {
-              ...sc,
-              letters: sc.letters.map((letItem) =>
-                uploadedUrls.has(letItem.id)
-                  ? { ...letItem, imageUrl: uploadedUrls.get(letItem.id)! }
-                  : letItem,
-              ),
-            }
-          : sc,
-      ),
+      prev.map((sc) => {
+        if (sc.type === 'free-canvas') {
+          return {
+            ...sc,
+            items: sc.items.map((it) =>
+              uploadedUrls.has(it.id)
+                ? {
+                    ...it,
+                    data: { ...it.data, photoUrl: uploadedUrls.get(it.id)! },
+                  }
+                : it,
+            ),
+          }
+        }
+        if (sc.type === 'letters') {
+          return {
+            ...sc,
+            letters: sc.letters.map((letItem) =>
+              uploadedUrls.has(letItem.id)
+                ? { ...letItem, imageUrl: uploadedUrls.get(letItem.id)! }
+                : letItem,
+            ),
+          }
+        }
+        return sc
+      }),
     )
     stage.clearPendingPhotos()
   }

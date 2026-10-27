@@ -39,5 +39,5 @@ export const ENV = {
   HERO_YOUTUBE_VIDEO_ID:
     import.meta.env.VITE_HERO_YOUTUBE_VIDEO_ID ||
     import.meta.env.APPWRITE_HERO_YOUTUBE_VIDEO_ID ||
-    '',
+    'OR3d29nMJt8',
 } as const

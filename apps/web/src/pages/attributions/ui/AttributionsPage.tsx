@@ -86,9 +86,9 @@ const ATTRIBUTIONS: AttributionResource[] = [
 
 export function AttributionsPage() {
   usePageSeo({
-    title: 'Attributions & Creator',
+    title: 'Attributions & Open Resources',
     description:
-      'Open-source resources, creative foundations, and creator attribution for Space for You by Yohan Nikel Villar Presentación (yohanvillarp / nikelyh).',
+      'Open-source resources, creative foundations, and creator attribution for Space for You (@yohanvillarp).',
     canonicalPath: '/attributions',
   })
 
@@ -177,20 +177,10 @@ export function AttributionsPage() {
                   rel="author noopener noreferrer"
                   className="text-text-primary hover:text-accent font-medium underline underline-offset-2 transition-colors"
                 >
-                  Yohan Nikel Villar Presentación
-                </a>{' '}
-                (GitHub:{' '}
-                <a
-                  href="https://github.com/yohanvillarp/space-for-you"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-accent transition-colors"
-                >
                   @yohanvillarp
-                </a>{' '}
-                / alias: <span className="text-text-secondary">nikelyh</span>).
-                All third-party trademarks, previews, and creative assets remain
-                the property of their respective owners.
+                </a>
+                . All third-party trademarks, previews, and creative assets
+                remain the property of their respective owners.
               </p>
             </div>
           </div>
