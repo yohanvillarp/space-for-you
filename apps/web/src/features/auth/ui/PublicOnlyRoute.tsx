@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router'
-import { appwriteAccount, hasSessionHint, setSessionHint } from '@/shared/api'
+import { useSession } from '@/entities/session'
+import { getSafeAuthReturnPath } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
 import { GiftLoader } from '@/shared/ui'
 
@@ -10,40 +11,17 @@ interface PublicOnlyRouteProps {
 }
 
 export function PublicOnlyRoute({ children }: PublicOnlyRouteProps) {
-  // If the browser already knows an active session exists, start in checking state.
-  // If no session hint exists, render immediately for guests without layout lag.
-  const [isChecking, setIsChecking] = useState(() => hasSessionHint())
+  const { isAuthenticated, isLoading } = useSession()
   const navigate = useNavigate()
 
   useEffect(() => {
-    let isMounted = true
-
-    async function checkGuest() {
-      try {
-        await appwriteAccount.get()
-        if (isMounted) {
-          setSessionHint(true)
-          const returnPath =
-            sessionStorage.getItem('sfy_auth_return') || ROUTES.DASHBOARD
-          sessionStorage.removeItem('sfy_auth_return')
-          navigate(returnPath, { replace: true })
-        }
-      } catch {
-        if (isMounted) {
-          setSessionHint(false)
-          setIsChecking(false)
-        }
-      }
+    if (!isLoading && isAuthenticated) {
+      const returnPath = getSafeAuthReturnPath(ROUTES.DASHBOARD)
+      navigate(returnPath, { replace: true })
     }
+  }, [isLoading, isAuthenticated, navigate])
 
-    void checkGuest()
-
-    return () => {
-      isMounted = false
-    }
-  }, [navigate])
-
-  if (isChecking) {
+  if (isLoading) {
     return (
       <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
         <GiftLoader
@@ -52,6 +30,10 @@ export function PublicOnlyRoute({ children }: PublicOnlyRouteProps) {
         />
       </div>
     )
+  }
+
+  if (isAuthenticated) {
+    return null
   }
 
   return <>{children}</>

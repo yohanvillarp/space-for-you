@@ -76,39 +76,7 @@ export async function signInWithGoogle(): Promise<void> {
   })
 }
 
-export async function signInWithEmail({
-  email,
-  password,
-}: EmailAuthCredentials): Promise<void> {
-  await account.createEmailPasswordSession({
-    email,
-    password,
-  })
-  setSessionHint(true)
-  window.location.assign('/dashboard')
-}
-
-export async function signUpWithEmail({
-  email,
-  password,
-  name,
-}: EmailAuthCredentials): Promise<void> {
-  await account.create({
-    userId: ID.unique(),
-    email,
-    password,
-    name: name?.trim() || undefined,
-  })
-  // Immediately create a session for seamless onboarding
-  await account.createEmailPasswordSession({
-    email,
-    password,
-  })
-  setSessionHint(true)
-  window.location.assign('/dashboard')
-}
-
-export async function handleOAuthSuccess(): Promise<void> {
+export async function handleOAuthSuccess(): Promise<AppwriteUser | null> {
   const url = new URL(window.location.href)
   const secret = url.searchParams.get('secret')
   const userId = url.searchParams.get('userId')
@@ -121,9 +89,9 @@ export async function handleOAuthSuccess(): Promise<void> {
     }
   }
 
-  await account.get()
+  const user = await account.get()
   setSessionHint(true)
-  window.location.assign('/dashboard')
+  return user
 }
 
 export async function getCurrentUser(): Promise<AppwriteUser | null> {
@@ -137,7 +105,7 @@ export async function getCurrentUser(): Promise<AppwriteUser | null> {
   }
 }
 
-function clearLocalSpacesCacheOnSignOut(): void {
+export function clearLocalSpacesCacheOnSignOut(): void {
   try {
     const keysToRemove: string[] = []
     for (let i = 0; i < localStorage.length; i += 1) {
@@ -170,39 +138,10 @@ export async function signOut(): Promise<void> {
   clearLocalSpacesCacheOnSignOut()
   try {
     await account.deleteSession({ sessionId: 'current' })
+  } catch {
+    // Session may already be expired or deleted on server
   } finally {
     setSessionHint(false)
     clearLocalSpacesCacheOnSignOut()
-    window.location.assign('/auth')
   }
-}
-
-export function formatAuthError(error: unknown): string {
-  if (error && typeof error === 'object' && 'type' in error) {
-    const appwriteErr = error as {
-      type?: string
-      message?: string
-      code?: number
-    }
-    switch (appwriteErr.type) {
-      case 'user_invalid_credentials':
-        return 'Invalid email or password. Please check your credentials.'
-      case 'user_already_exists':
-        return 'An account with this email address already exists.'
-      case 'password_recently_used':
-        return 'Please choose a different password.'
-      case 'user_password_mismatch':
-        return 'Passwords do not match.'
-      case 'rate_limit_exceeded':
-        return 'Too many attempts. Please wait a moment and try again.'
-      default:
-        if (appwriteErr.message) return appwriteErr.message
-    }
-  }
-
-  if (error instanceof Error) {
-    return error.message
-  }
-
-  return 'An unexpected error occurred. Please try again.'
 }

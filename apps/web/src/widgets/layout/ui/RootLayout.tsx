@@ -18,6 +18,8 @@ export function RootLayout() {
     location.pathname === ROUTES.AUTH ||
     location.pathname === ROUTES.AUTH_SUCCESS ||
     location.pathname === ROUTES.AUTH_FAILURE ||
+    location.pathname === ROUTES.VERIFY_EMAIL ||
+    location.pathname === ROUTES.RESET_PASSWORD ||
     location.pathname === ROUTES.DASHBOARD ||
     location.pathname.startsWith('/spaces') ||
     location.pathname.startsWith('/s/')
