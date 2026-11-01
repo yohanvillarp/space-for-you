@@ -17,6 +17,24 @@ export function Footer() {
             className="text-text-secondary hover:text-text-primary font-medium transition-colors"
           >
             @yohanvillarp
+          </a>{' '}
+          &bull; Built with{' '}
+          <a
+            href="https://appwrite.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-text-secondary hover:text-text-primary font-medium transition-colors"
+          >
+            Appwrite
+          </a>{' '}
+          for the{' '}
+          <a
+            href="https://hackathon.appwrite.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-text-secondary hover:text-text-primary font-medium underline underline-offset-2 transition-colors"
+          >
+            Appwrite Databases Hackathon
           </a>
           .
         </p>
