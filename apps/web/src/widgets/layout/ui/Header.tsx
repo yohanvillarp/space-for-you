@@ -9,7 +9,7 @@ import {
   Heart,
   ArrowRight,
 } from 'lucide-react'
-import { getCurrentUser } from '@/shared/api'
+import { useSession } from '@/entities/session'
 import { ROUTES, MAIN_NAV_ITEMS } from '@/shared/config'
 import { Container, Button, Logo } from '@/shared/ui'
 import { cn } from '@/shared/lib'
@@ -29,22 +29,10 @@ function GitHubMark({ className }: { className?: string }) {
 }
 
 export function Header() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const { isAuthenticated } = useSession()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
-
-  useEffect(() => {
-    let isMounted = true
-    getCurrentUser()
-      .then((user) => {
-        if (isMounted) setIsAuthenticated(Boolean(user))
-      })
-      .catch(() => {})
-    return () => {
-      isMounted = false
-    }
-  }, [location.pathname])
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 12)

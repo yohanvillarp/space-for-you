@@ -3,6 +3,8 @@ export const ROUTES = {
   AUTH: '/auth',
   AUTH_SUCCESS: '/auth/success',
   AUTH_FAILURE: '/auth/failure',
+  VERIFY_EMAIL: '/verify-email',
+  RESET_PASSWORD: '/reset-password',
   DASHBOARD: '/dashboard',
   EXAMPLES: '/examples',
   HOW_IT_WORKS: '/how-it-works',
