@@ -57,6 +57,18 @@ export function LockKeypad({
       setIsValidating(true)
       setErrorMessage(null)
 
+      const rateStatus = checkPasscodeRateLimit(rateLimitKey)
+      if (!rateStatus.allowed) {
+        setLockoutRemaining(rateStatus.lockoutRemainingSeconds)
+        setErrorMessage(
+          `Too many attempts. Locked for ${rateStatus.lockoutRemainingSeconds}s`,
+        )
+        setDigits('')
+        setIsValidating(false)
+        isVerifyingRef.current = false
+        return
+      }
+
       if (onVerifyPasscode) {
         try {
           const res = await onVerifyPasscode(codeToTest)
@@ -66,7 +78,12 @@ export function LockKeypad({
             playSpatialSfx('pop-snap')
             onUnlockSuccess()
           } else {
-            setErrorMessage(res.errorMessage || 'Incorrect secret combination.')
+            const failure = recordFailedPasscodeAttempt(rateLimitKey)
+            setErrorMessage(
+              !failure.allowed
+                ? `Too many attempts. Locked for ${failure.lockoutRemainingSeconds}s`
+                : res.errorMessage || 'Incorrect secret combination.',
+            )
             playSpatialSfx('paper-rustle')
             setTimeout(() => setDigits(''), 500)
           }
@@ -78,18 +95,6 @@ export function LockKeypad({
           setIsValidating(false)
           isVerifyingRef.current = false
         }
-        return
-      }
-
-      const rateStatus = checkPasscodeRateLimit(rateLimitKey)
-      if (!rateStatus.allowed) {
-        setLockoutRemaining(rateStatus.lockoutRemainingSeconds)
-        setErrorMessage(
-          `Too many attempts. Locked for ${rateStatus.lockoutRemainingSeconds}s`,
-        )
-        setDigits('')
-        setIsValidating(false)
-        isVerifyingRef.current = false
         return
       }
 

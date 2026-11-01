@@ -1,4 +1,5 @@
-export const MAX_DAILY_UPDATES = 10
+import { MAX_DAILY_UPDATES } from '@/entities/space'
+export { MAX_DAILY_UPDATES }
 
 interface DailyPublishQuotaData {
   date: string

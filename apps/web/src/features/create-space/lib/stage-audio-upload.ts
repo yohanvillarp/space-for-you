@@ -12,6 +12,13 @@ export const SPACE_ASSETS_BUCKET_ID =
  * Falls back to Base64 DataURL on offline or network failure.
  */
 export async function uploadVoiceNoteAudio(blob: Blob): Promise<string> {
+  if (blob.size > 2.5 * 1024 * 1024) {
+    throw new Error('Voice note exceeds the 2.5MB size limit.')
+  }
+  if (blob.type && !blob.type.startsWith('audio/')) {
+    throw new Error('Invalid audio format.')
+  }
+
   try {
     const ext = blob.type.includes('mp4')
       ? 'mp4'
