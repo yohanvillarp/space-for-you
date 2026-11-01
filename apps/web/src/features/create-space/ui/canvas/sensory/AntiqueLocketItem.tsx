@@ -52,10 +52,10 @@ export function AntiqueLocketItem({
                 className="h-full w-full rounded-[50%] object-cover"
               />
             ) : (
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center px-1 text-center">
                 <span className="text-sm text-amber-300 drop-shadow-xs">♥</span>
-                <span className="font-serif text-[6px] text-amber-200/80">
-                  Always
+                <span className="font-serif text-[6px] leading-tight text-amber-200/90">
+                  {item.data.text || 'Always'}
                 </span>
               </div>
             )}
@@ -74,7 +74,7 @@ export function AntiqueLocketItem({
             <div className="flex h-12 w-10 flex-col items-center justify-center rounded-[50%] border border-amber-300/40 bg-amber-700/30">
               <span className="text-[10px] text-amber-200">✦</span>
               <span className="font-serif text-[8px] font-bold text-amber-100">
-                SFY
+                {item.data.title ? item.data.title.slice(0, 4) : 'SFY'}
               </span>
               <span className="text-[10px] text-amber-200">✦</span>
             </div>
@@ -83,10 +83,6 @@ export function AntiqueLocketItem({
           </div>
         </div>
       </div>
-
-      <span className="mt-1 font-serif text-[10px] tracking-wide text-amber-200/80">
-        {item.data.title || 'Antique Locket'}
-      </span>
     </div>
   )
 }

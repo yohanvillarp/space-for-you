@@ -54,10 +54,10 @@ export function KeepsakeTicketItem({
           {/* Header & Seat Info */}
           <div className="flex items-center justify-between border-b border-stone-300/80 pb-0.5 dark:border-stone-700/80">
             <span className="font-serif text-[7px] tracking-wider text-amber-900/70 uppercase dark:text-amber-200/70">
-              Passage No. 709
+              {item.data.title || 'Passage No. 709'}
             </span>
             <span className="font-mono text-[7px] text-stone-500">
-              FIRST CLASS
+              {item.data.date || 'FIRST CLASS'}
             </span>
           </div>
 
@@ -121,10 +121,6 @@ export function KeepsakeTicketItem({
           </span>
         </div>
       </div>
-
-      <span className="mt-1 font-serif text-[10px] tracking-wide text-amber-200/80">
-        {item.data.title || 'Journey Ticket'}
-      </span>
     </div>
   )
 }

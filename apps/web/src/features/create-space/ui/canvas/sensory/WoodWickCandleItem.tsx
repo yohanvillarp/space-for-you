@@ -91,17 +91,12 @@ export function WoodWickCandleItem({
         </div>
 
         {/* Minimalist Emblem Tag */}
-        <div className="mt-auto flex h-3 w-10 items-center justify-center rounded-xs border border-amber-300/20 bg-black/20">
-          <span className="text-[6px] tracking-widest text-amber-200/60 uppercase">
-            ATELIER
+        <div className="mt-auto flex h-3 w-12 items-center justify-center overflow-hidden rounded-xs border border-amber-300/20 bg-black/20 px-1">
+          <span className="truncate text-[5.5px] tracking-wider text-amber-200/80 uppercase">
+            {item.data.caption || item.data.title || 'ATELIER'}
           </span>
         </div>
       </div>
-
-      {/* Base Caption */}
-      <span className="mt-1 font-serif text-[10px] tracking-wide text-amber-200/80">
-        {item.data.title || 'Wood-Wick Candle'}
-      </span>
     </div>
   )
 }

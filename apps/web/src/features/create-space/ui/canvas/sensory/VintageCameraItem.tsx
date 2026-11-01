@@ -78,16 +78,12 @@ export function VintageCameraItem({
       {/* Ejected Instant Photo Print */}
       {hasEjectedPhoto && (
         <div className="animate-in slide-in-from-top-2 relative z-0 -mt-2 flex h-10 w-9 flex-col rounded-xs border border-stone-300 bg-white p-0.5 shadow-md duration-500">
-          <div className="rounded-2xs flex h-7 w-full items-center justify-center bg-stone-800 text-[8px] text-amber-200">
-            ♥
+          <div className="rounded-2xs flex h-7 w-full items-center justify-center overflow-hidden bg-stone-800 px-0.5 text-center text-[6px] text-amber-200">
+            {item.data.caption || '♥'}
           </div>
           <div className="mt-auto h-0.5 w-4 self-center rounded-full bg-stone-300" />
         </div>
       )}
-
-      <span className="text-text-secondary mt-1 font-mono text-[9px] font-medium tracking-wider uppercase">
-        {item.data.title || '35mm Camera'}
-      </span>
     </div>
   )
 }

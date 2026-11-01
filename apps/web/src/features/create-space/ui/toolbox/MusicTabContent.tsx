@@ -8,6 +8,7 @@ export interface MusicTabContentProps {
   isLoading: boolean
   previewTrackUrl?: string
   isPreviewPlaying: boolean
+  isPreviewLoading?: boolean
   assignedTrackId: string | null
   selectedItemName?: string
   currentTrackUrl?: string
@@ -22,6 +23,7 @@ export function MusicTabContent({
   isLoading,
   previewTrackUrl,
   isPreviewPlaying,
+  isPreviewLoading = false,
   assignedTrackId,
   selectedItemName,
   currentTrackUrl,
@@ -123,7 +125,9 @@ export function MusicTabContent({
                       : 'opacity-0 group-hover/btn:opacity-100',
                   )}
                 >
-                  {isPreviewingThis ? (
+                  {isPreviewingThis && isPreviewLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin text-amber-300 drop-shadow-xs" />
+                  ) : isPreviewingThis ? (
                     <Pause className="h-4 w-4 text-amber-300 drop-shadow-xs" />
                   ) : (
                     <Play className="ml-0.5 h-4 w-4 text-white drop-shadow-xs" />
@@ -144,7 +148,7 @@ export function MusicTabContent({
                   >
                     {track.title}
                   </p>
-                  {isPreviewingThis && (
+                  {isPreviewingThis && !isPreviewLoading && (
                     <span className="flex h-2.5 shrink-0 items-end gap-0.5">
                       <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-amber-400" />
                       <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-amber-400 [animation-delay:150ms]" />

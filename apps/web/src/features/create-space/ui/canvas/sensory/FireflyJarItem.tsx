@@ -35,7 +35,13 @@ export function FireflyJarItem({
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      title={isOpen ? 'Click to close the jar' : 'Click to release fireflies'}
+      title={
+        isOpen
+          ? item.data.text
+            ? `Wishing Jar opened • "${item.data.text}"`
+            : 'Click to close the jar'
+          : 'Click to release fireflies'
+      }
       className={cn(
         'group relative flex flex-col items-center justify-center p-3 transition-transform duration-300 select-none',
         !isEditorMode && 'cursor-pointer hover:scale-105',
@@ -125,9 +131,9 @@ export function FireflyJarItem({
           </span>
 
           {/* Miniature scrolled letter inside jar */}
-          <div className="mt-auto flex h-3.5 w-10 items-center justify-center rounded-xs border border-amber-900/30 bg-amber-100/70 shadow-xs">
-            <span className="font-serif text-[7px] text-amber-900/60">
-              wishes
+          <div className="mt-auto flex h-3.5 w-12 items-center justify-center overflow-hidden rounded-xs border border-amber-900/30 bg-amber-100/70 px-1 shadow-xs">
+            <span className="truncate font-serif text-[6.5px] text-amber-900/80">
+              {item.data.text || 'wishes'}
             </span>
           </div>
         </div>
@@ -135,11 +141,6 @@ export function FireflyJarItem({
         {/* Jar Thick Base Glass */}
         <div className="absolute right-0 bottom-0 left-0 h-2 border-t border-white/20 bg-white/20" />
       </div>
-
-      {/* Label Tag */}
-      <span className="mt-1.5 font-serif text-[10px] tracking-wider text-amber-200/80 uppercase">
-        {item.data.title || 'Firefly Jar'}
-      </span>
     </div>
   )
 }

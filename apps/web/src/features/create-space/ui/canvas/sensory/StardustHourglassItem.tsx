@@ -32,7 +32,13 @@ export function StardustHourglassItem({
       onClick={handleFlip}
       role="button"
       tabIndex={0}
-      title="Click to flip the hourglass"
+      title={
+        isFlipped
+          ? item.data.text ||
+            item.data.caption ||
+            'Hourglass inverted • Star seconds drifting'
+          : 'Click to flip the hourglass'
+      }
       className={cn(
         'group relative flex flex-col items-center justify-center p-2 transition-transform duration-300 select-none',
         !isEditorMode && 'cursor-pointer hover:scale-105',
@@ -80,10 +86,6 @@ export function StardustHourglassItem({
 
       {/* Turned Walnut Wood Bottom Stand */}
       <div className="relative z-20 flex h-2 w-16 items-center justify-center rounded-sm border border-amber-950 bg-gradient-to-r from-[#4A2D16] via-[#664020] to-[#4A2D16] shadow-md" />
-
-      <span className="mt-1 font-serif text-[10px] tracking-wide text-amber-200/80">
-        {item.data.title || 'Stardust Hourglass'}
-      </span>
     </div>
   )
 }

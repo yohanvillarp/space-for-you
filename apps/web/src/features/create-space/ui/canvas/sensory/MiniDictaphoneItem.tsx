@@ -87,10 +87,10 @@ export function MiniDictaphoneItem({
             </div>
 
             {/* Magnetic Tape Bridge */}
-            <div className="flex flex-col items-center">
+            <div className="flex max-w-[42px] flex-col items-center overflow-hidden">
               <div className="h-1 w-5 rounded-xs bg-[#4A3728]" />
-              <span className="text-[6px] tracking-tighter text-stone-400">
-                MICRO-TAPE
+              <span className="truncate text-[5.5px] tracking-tighter text-stone-400">
+                {item.data.caption || item.data.title || 'MICRO-TAPE'}
               </span>
             </div>
 
@@ -140,10 +140,6 @@ export function MiniDictaphoneItem({
           </span>
         </div>
       </div>
-
-      <span className="text-text-secondary mt-1 font-sans text-[10px] font-medium tracking-tight">
-        {item.data.title || 'Voice Memo'}
-      </span>
     </div>
   )
 }

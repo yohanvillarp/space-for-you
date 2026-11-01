@@ -106,15 +106,11 @@ export function PressedHerbariumItem({
         {/* Specimen Calligraphy Tag at Base */}
         <div className="relative z-10 flex h-4 w-full items-center justify-between border-t border-stone-400/40 bg-amber-50/80 px-1 dark:bg-stone-900/80">
           <span className="font-serif text-[7px] text-stone-700 italic dark:text-stone-300">
-            {item.data.caption || 'Herbarium No. 24'}
+            {item.data.caption || item.data.title || 'Herbarium No. 24'}
           </span>
           <span className="text-[6px] text-amber-700">★</span>
         </div>
       </div>
-
-      <span className="mt-1 font-serif text-[10px] tracking-wide text-amber-200/80">
-        {item.data.title || 'Pressed Wildflower'}
-      </span>
     </div>
   )
 }
