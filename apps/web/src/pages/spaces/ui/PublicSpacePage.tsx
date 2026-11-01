@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '@/shared/config'
 import { usePageSeo } from '@/shared/lib'
-import { Container, Card, Button } from '@/shared/ui'
-import { Home, Loader2, Compass } from 'lucide-react'
+import { Container, Card, Button, Logomark } from '@/shared/ui'
+import { Home, Compass } from 'lucide-react'
 import { unlockSpaceViaFunction } from '@/entities/space'
 import type { SpaceWithScenes } from '@/entities/space'
 import {
@@ -159,7 +159,12 @@ export function PublicSpacePage() {
           <div className="bg-primary/10 animate-glow absolute -inset-2 rounded-full blur-xl" />
           <div className="bg-primary/10 text-primary relative flex h-16 w-16 items-center justify-center rounded-full">
             {isLoading ? (
-              <Loader2 className="h-8 w-8 animate-spin" />
+              <div className="relative flex items-center justify-center">
+                <Logomark className="text-primary h-8 w-8 animate-pulse" />
+                <span className="absolute -top-1 -right-1 animate-ping text-xs text-amber-300">
+                  ✦
+                </span>
+              </div>
             ) : (
               <Compass className="text-primary h-8 w-8" />
             )}

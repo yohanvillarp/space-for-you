@@ -26,7 +26,10 @@ import {
   computeSanctuaryFingerprint,
   setPublishedFingerprint,
 } from '@/features/create-space/lib/sanctuary-fingerprint'
-import { recordPublishUpdate } from '@/features/create-space/lib/daily-publish-quota'
+import {
+  recordPublishUpdate,
+  getDailyPublishQuota,
+} from '@/features/create-space/lib/daily-publish-quota'
 
 export type PublishStep =
   | 'idle'
@@ -99,6 +102,13 @@ export function usePublishSanctuary({
 
   const performPublish = useCallback(async () => {
     setErrorMessage(null)
+    const quota = getDailyPublishQuota(spaceId)
+    if (quota.isLimitReached) {
+      setErrorMessage('Daily publish limit reached (10 updates per day).')
+      setPublishStep('error')
+      return
+    }
+
     const currentUser = await getCurrentUser()
     if (!currentUser) {
       setPublishStep('auth_prompt')
@@ -180,12 +190,9 @@ export function usePublishSanctuary({
       setCanonicalSlug(slug)
       setPublishedUrl(rawShareUrl)
 
-      let resolvedShort = rawShareUrl
-      try {
-        resolvedShort = await shortenSanctuaryUrl(rawShareUrl)
-      } catch {
-        resolvedShort = rawShareUrl
-      }
+      const resolvedShort = await shortenSanctuaryUrl(rawShareUrl).catch(
+        () => rawShareUrl,
+      )
       setShortenedUrl(resolvedShort)
 
       setPublishStep('success')

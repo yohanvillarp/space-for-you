@@ -1,4 +1,5 @@
 import type { ToolboxItemDef } from '@/features/create-space/model/spatial-stage.types'
+import { SENSORY_TOOLBOX_ITEMS } from './sensory-toolbox-items'
 
 export const DEFAULT_CASSETTE_GUIDE_AUDIO_URL =
   'https://nyc.cloud.appwrite.io/v1/storage/buckets/6ade87be001700e5c95b/files/6ade885600247e215323/view?project=6adad55500193c6ac8ac'
@@ -172,4 +173,6 @@ export const TOOLBOX_ITEMS: ToolboxItemDef[] = [
       tapeColor: 'gold',
     },
   },
+  // --- Sensory & Tangible Keepsakes ---
+  ...SENSORY_TOOLBOX_ITEMS,
 ]

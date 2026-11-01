@@ -209,6 +209,7 @@ export function useToolboxAssets(
     setIsSearchingMusic,
     previewTrackUrl,
     isPreviewPlaying: previewPlayer.isPlaying,
+    isPreviewLoading: previewPlayer.isLoading,
     assignedTrackId,
     handleTogglePreview,
     handleAssignTrackToStage,

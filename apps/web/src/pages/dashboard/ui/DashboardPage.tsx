@@ -14,7 +14,12 @@ import {
 } from '@/features'
 import { signOut } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
-import { Button, Container, useConfirmDialog } from '@/shared/ui'
+import {
+  Button,
+  Container,
+  useConfirmDialog,
+  SanctuaryGridLoader,
+} from '@/shared/ui'
 import { DashboardFilters, type DashboardFilterId } from './DashboardFilters'
 import { DashboardEmptyState } from './DashboardEmptyState'
 
@@ -28,6 +33,7 @@ export function DashboardPage() {
 
   const {
     spaces,
+    isLoading,
     deleteSpace,
     duplicateSpace,
     renameSpace,
@@ -174,7 +180,9 @@ export function DashboardPage() {
                   />
                 )}
 
-                {filteredSpaces.length > 0 ? (
+                {isLoading && spaces.length === 0 ? (
+                  <SanctuaryGridLoader />
+                ) : filteredSpaces.length > 0 ? (
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {filteredSpaces.map((space) => (
                       <SpaceCard

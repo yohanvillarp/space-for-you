@@ -6,7 +6,7 @@
 
 # Interface: SpatialItemData
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:28](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L28)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:38](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L38)
 
 Payload data customizer for spatial items (audio, visuals, state).
 
@@ -16,7 +16,7 @@ Payload data customizer for spatial items (audio, visuals, state).
 
 > `optional` **artist?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:58](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L58)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:68](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L68)
 
 Music artist name.
 
@@ -26,9 +26,19 @@ Music artist name.
 
 > `optional` **audioUrl?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:56](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L56)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:66](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L66)
 
 Ambient audio track URL.
+
+---
+
+### cameraFlashed?
+
+> `optional` **cameraFlashed?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:92](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L92)
+
+Micro-interaction flash state for vintage camera.
 
 ---
 
@@ -36,7 +46,7 @@ Ambient audio track URL.
 
 > `optional` **caption?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:32](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L32)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:42](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L42)
 
 Subtitle or photo caption.
 
@@ -46,7 +56,7 @@ Subtitle or photo caption.
 
 > `optional` **color?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:42](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L42)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:52](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L52)
 
 Color swatch hex for candle wax or sticky note.
 
@@ -56,9 +66,29 @@ Color swatch hex for candle wax or sticky note.
 
 > `optional` **date?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:48](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L48)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:58](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L58)
 
 Memorable date string.
+
+---
+
+### duration?
+
+> `optional` **duration?**: `number`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:76](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L76)
+
+Duration in seconds.
+
+---
+
+### herbariumFlower?
+
+> `optional` **herbariumFlower?**: `"lavender"` \| `"hydrangea"` \| `"ferns"` \| `"pressed-rose"`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:90](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L90)
+
+Preserved botanical specimen type for pressed herbarium.
 
 ---
 
@@ -66,9 +96,19 @@ Memorable date string.
 
 > `optional` **isLit?**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:36](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L36)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:46](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L46)
 
 Candle state: whether the flame is lit.
+
+---
+
+### isOpen?
+
+> `optional` **isOpen?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:78](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L78)
+
+Whether a jar, box, or container is opened.
 
 ---
 
@@ -76,9 +116,19 @@ Candle state: whether the flame is lit.
 
 > `optional` **isPlaying?**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:40](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L40)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:50](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L50)
 
 Vinyl player / cassette state: whether audio is playing.
+
+---
+
+### isPunched?
+
+> `optional` **isPunched?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:80](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L80)
+
+Whether a keepsake travel ticket has been hole-punched.
 
 ---
 
@@ -86,9 +136,39 @@ Vinyl player / cassette state: whether audio is playing.
 
 > `optional` **isSealed?**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:38](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L38)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:48](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L48)
 
 Wax envelope state: whether it is sealed.
+
+---
+
+### isVoiceNote?
+
+> `optional` **isVoiceNote?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:72](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L72)
+
+Indicates whether the audio is a personal voice note.
+
+---
+
+### isVoiceNoteSample?
+
+> `optional` **isVoiceNoteSample?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:74](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L74)
+
+Indicates whether the voice note is an instructional sample that shouldn't appear for recipients.
+
+---
+
+### locketOpen?
+
+> `optional` **locketOpen?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:88](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L88)
+
+Whether an antique keepsake locket is hinged open.
 
 ---
 
@@ -96,9 +176,19 @@ Wax envelope state: whether it is sealed.
 
 > `optional` **photoUrl?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:46](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L46)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:56](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L56)
 
 Photo URL for polaroids or cards.
+
+---
+
+### sandFlipped?
+
+> `optional` **sandFlipped?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:86](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L86)
+
+Whether an hourglass has been flipped upside down.
 
 ---
 
@@ -106,7 +196,7 @@ Photo URL for polaroids or cards.
 
 > `optional` **scale?**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:54](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L54)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:64](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L64)
 
 Scale factor (e.g. 1.0, 1.2).
 
@@ -116,7 +206,7 @@ Scale factor (e.g. 1.0, 1.2).
 
 > `optional` **stickerName?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:52](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L52)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:62](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L62)
 
 Sticker name identifier.
 
@@ -126,7 +216,7 @@ Sticker name identifier.
 
 > `optional` **subtitle?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:60](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L60)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:70](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L70)
 
 Additional subtitle info.
 
@@ -136,7 +226,7 @@ Additional subtitle info.
 
 > `optional` **svgUrl?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:50](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L50)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:60](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L60)
 
 SVG illustration asset URL.
 
@@ -146,7 +236,7 @@ SVG illustration asset URL.
 
 > `optional` **tapeColor?**: `"gold"` \| `"rose"` \| `"sage"` \| `"translucent"`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:44](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L44)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:54](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L54)
 
 Tape color variant.
 
@@ -156,9 +246,29 @@ Tape color variant.
 
 > `optional` **text?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:34](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L34)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:44](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L44)
 
 Text content for sticky notes or postcards.
+
+---
+
+### ticketDestination?
+
+> `optional` **ticketDestination?**: `string`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:84](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L84)
+
+Destination or sentimental destination for keepsake ticket.
+
+---
+
+### ticketFrom?
+
+> `optional` **ticketFrom?**: `string`
+
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:82](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L82)
+
+Departure location or origin for keepsake ticket.
 
 ---
 
@@ -166,6 +276,6 @@ Text content for sticky notes or postcards.
 
 > `optional` **title?**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:30](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/spatial-stage.types.ts#L30)
+Defined in: [apps/web/src/features/create-space/model/spatial-stage.types.ts:40](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/spatial-stage.types.ts#L40)
 
 Optional title or label.

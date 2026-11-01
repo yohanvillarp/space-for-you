@@ -7,6 +7,10 @@ import {
   Camera,
 } from 'lucide-react'
 import type { SpatialItem } from '@/features/create-space/model/spatial-stage.types'
+import {
+  supportsTextEdit,
+  supportsPhotoEdit,
+} from '@/features/create-space/model/spatial-item-capabilities'
 import { playSpatialSfx } from '@/shared/lib'
 import type { SpatialSfxName } from '@/shared/lib'
 
@@ -31,14 +35,8 @@ export function ItemSpecimenActions({
     item.type === 'vintage-radio' ||
     item.type === 'cassette-tape'
   const isCandle = item.type === 'candle'
-  const isPhoto = item.type === 'polaroid'
-  const hasText =
-    item.type === 'polaroid' ||
-    item.type === 'greeting-card' ||
-    item.type === 'sticky-note' ||
-    item.type === 'airmail-postcard' ||
-    item.type === 'wax-envelope' ||
-    item.type === 'cassette-tape'
+  const isPhoto = supportsPhotoEdit(item.type)
+  const hasText = supportsTextEdit(item.type)
 
   if (
     !isMusic &&
