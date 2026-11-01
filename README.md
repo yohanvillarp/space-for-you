@@ -3,6 +3,8 @@
 > A platform to create personalized digital spaces for someone special.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Appwrite Cloud](https://img.shields.io/badge/Appwrite-Cloud-FD366E?logo=appwrite&logoColor=white)](https://appwrite.io/)
+[![Appwrite Databases Hackathon](https://img.shields.io/badge/Built%20for-Appwrite%20Databases%20Hackathon-F02E65?style=flat&logo=appwrite&logoColor=white)](https://hackathon.appwrite.io/)
 [![React](https://img.shields.io/badge/React-19.3.1-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
@@ -25,6 +27,7 @@ Live production application: **[spaceforyou.nikelyh.tech](https://spaceforyou.ni
 
 | Category                 | Technology                                    | Version | Purpose                                                                               |
 | :----------------------- | :-------------------------------------------- | :------ | :------------------------------------------------------------------------------------ |
+| **Backend & Cloud**      | [Appwrite Cloud](https://appwrite.io/)        | 29.0.0  | Cloud Databases, Object Storage, and Auth session management                          |
 | **Runtime & UI**         | [React](https://react.dev/)                   | 19.3.1  | Core UI library with modern compiler support                                          |
 | **Language**             | [TypeScript](https://www.typescriptlang.org/) | 6.0.3   | Strict static typing with `verbatimModuleSyntax`                                      |
 | **Bundler & Tooling**    | [Vite](https://vite.dev/)                     | 8.3.4   | Development server with instant HMR and optimized production bundling                 |
@@ -93,6 +96,23 @@ The web application (`apps/web`) is structured following the **Feature-Sliced De
 - `src/features`: Interactive user features and behaviors (`create-space`, `theme-toggle`, `auth`).
 - `src/entities`: Business domain models and session entities.
 - `src/shared`: Reusable atomic UI components (`Button`, `Card`, `Badge`, `Container`), API clients, assets, and utility functions.
+
+---
+
+## Appwrite Integration & Architecture
+
+Space for You was built for the **[Appwrite Databases Hackathon](https://hackathon.appwrite.io/)**, leveraging **[Appwrite Cloud](https://appwrite.io)** as its unified serverless backend:
+
+- **Databases (`spaces` & `space_scenes` collections):**
+  - Persists sanctuary metadata, sender/recipient dedications, theme configurations, and multi-scene arrangements (`free-canvas`, `letters`, `share`).
+  - Implements granular permission modeling: published spaces automatically grant `Permission.read(Role.any())` for account-free recipient viewing, while passcode-protected sanctuaries restrict scene access to verified sessions.
+- **Storage (`space-photos` bucket):**
+  - Safely archives high-resolution keepsake photography with automatic WebP compression.
+  - Features a **Deferred Upload Pipeline**: user photos are staged and compressed in memory as transient Blobs during canvas crafting, uploading to Appwrite Storage only upon explicit publishing or sanctuary saving to eliminate orphan cloud files.
+- **Account & Authentication:**
+  - Manages anonymous guest sessions for zero-friction creation alongside persistent user accounts for long-term sanctuary preservation.
+- **Dual-Layer Persistence:**
+  - Local-first architecture caching drafts under `sfy_` namespaces in `localStorage` with zero latency, synchronizing seamlessly to Appwrite Cloud upon save or publish.
 
 ---
 

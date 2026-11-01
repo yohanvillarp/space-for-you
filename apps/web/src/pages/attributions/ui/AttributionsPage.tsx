@@ -19,6 +19,8 @@ interface AttributionResource {
   url: string
   icon: typeof Camera
   license: string
+  secondaryUrl?: string
+  secondaryLabel?: string
 }
 
 const ATTRIBUTIONS: AttributionResource[] = [
@@ -54,13 +56,15 @@ const ATTRIBUTIONS: AttributionResource[] = [
   },
   {
     name: 'Appwrite Cloud',
-    role: 'Secure Backend & Cloud Storage',
+    role: 'Secure Backend & Storage · Appwrite Databases Hackathon',
     category: 'Infrastructure',
     description:
-      'Private authentication sessions and developer-tier object storage for safely preserving personal keepsakes and memory archives.',
+      'Engineered for the Appwrite Databases Hackathon. Powers private authentication, dual-layer cloud persistence, and encrypted media storage for cherished memories.',
     url: 'https://appwrite.io',
     icon: Database,
     license: 'Open-source platform',
+    secondaryUrl: 'https://hackathon.appwrite.io/',
+    secondaryLabel: 'Hackathon',
   },
   {
     name: 'Google Fonts',
@@ -140,19 +144,32 @@ export function AttributionsPage() {
                   </p>
                 </div>
 
-                <div className="border-border-base/60 mt-6 flex items-center justify-between border-t pt-4">
+                <div className="border-border-base/60 mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
                   <span className="text-text-muted font-sans text-[11px]">
                     {item.license}
                   </span>
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:text-accent-hover inline-flex items-center gap-1.5 font-sans text-xs font-medium transition-colors"
-                  >
-                    <span>Visit provider</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
+                  <div className="flex items-center gap-3">
+                    {item.secondaryUrl && (
+                      <a
+                        href={item.secondaryUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-text-secondary hover:text-text-primary inline-flex items-center gap-1 font-sans text-xs font-medium transition-colors"
+                      >
+                        <span>{item.secondaryLabel ?? 'Details'}</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:text-accent-hover inline-flex items-center gap-1.5 font-sans text-xs font-medium transition-colors"
+                    >
+                      <span>Visit provider</span>
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </div>
                 </div>
               </Card>
             )
