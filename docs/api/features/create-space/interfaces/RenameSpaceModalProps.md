@@ -6,7 +6,7 @@
 
 # Interface: RenameSpaceModalProps
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L5)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:5](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L5)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:5](https
 
 > `optional` **currentRecipient?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L10)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L10)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:10](http
 
 > **currentTitle**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L9)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L9)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:9](https
 
 > **isOpen**: `boolean`
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L6)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:6](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L6)
 
 ---
 
@@ -38,7 +38,7 @@ Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:6](https
 
 > **onClose**: () => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L7)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:7](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L7)
 
 #### Returns
 
@@ -50,7 +50,7 @@ Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:7](https
 
 > **onRename**: (`spaceId`, `newTitle`, `newRecipient?`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L11)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L11)
 
 #### Parameters
 
@@ -76,4 +76,4 @@ Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:11](http
 
 > **spaceId**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L8)
+Defined in: [apps/web/src/features/create-space/ui/RenameSpaceModal.tsx:8](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/RenameSpaceModal.tsx#L8)

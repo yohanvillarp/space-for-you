@@ -70,3 +70,21 @@ Re-exports [toSpaceScene](../functions/toSpaceScene.md)
 ### toUserSpace
 
 Re-exports [toUserSpace](../functions/toUserSpace.md)
+
+---
+
+### UnlockSpaceParams
+
+Re-exports [UnlockSpaceParams](../interfaces/UnlockSpaceParams.md)
+
+---
+
+### UnlockSpaceResult
+
+Re-exports [UnlockSpaceResult](../interfaces/UnlockSpaceResult.md)
+
+---
+
+### unlockSpaceViaFunction
+
+Re-exports [unlockSpaceViaFunction](../functions/unlockSpaceViaFunction.md)

@@ -8,7 +8,7 @@
 
 > **isMusicItemType**(`type`): `boolean`
 
-Defined in: [apps/web/src/features/create-space/lib/space-tier-limits.ts:13](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/lib/space-tier-limits.ts#L13)
+Defined in: [apps/web/src/features/create-space/lib/space-tier-limits.ts:15](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/lib/space-tier-limits.ts#L15)
 
 ## Parameters
 

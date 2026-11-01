@@ -34,6 +34,7 @@
 - [APPWRITE\_PROJECT\_NAME](variables/APPWRITE_PROJECT_NAME.md)
 - [client](variables/client.md)
 - [databases](variables/databases.md)
+- [functions](variables/functions.md)
 - [storage](variables/storage.md)
 
 ## Functions
@@ -66,6 +67,12 @@ Renames and re-exports [client](variables/client.md)
 ### appwriteDatabases
 
 Renames and re-exports [databases](variables/databases.md)
+
+---
+
+### appwriteFunctions
+
+Renames and re-exports [functions](variables/functions.md)
 
 ---
 

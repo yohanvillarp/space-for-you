@@ -6,7 +6,7 @@
 
 # Interface: FreeCanvasScene
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:95](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L95)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:109](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L109)
 
 Scene representing an interactive 2D diorama with spatial items.
 
@@ -20,7 +20,7 @@ Scene representing an interactive 2D diorama with spatial items.
 
 > **icon**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:87](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L87)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:99](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L99)
 
 Lucide icon name for navigation.
 
@@ -34,7 +34,7 @@ Lucide icon name for navigation.
 
 > **id**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:79](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L79)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:91](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L91)
 
 Unique scene identifier.
 
@@ -48,7 +48,7 @@ Unique scene identifier.
 
 > **items**: [`SpatialItem`](SpatialItem.md)[]
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:98](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L98)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:112](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L112)
 
 Draggable spatial artifacts placed on the canvas.
 
@@ -58,7 +58,7 @@ Draggable spatial artifacts placed on the canvas.
 
 > **order**: `number`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:89](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L89)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:101](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L101)
 
 Sequential zero-indexed display order.
 
@@ -68,11 +68,25 @@ Sequential zero-indexed display order.
 
 ---
 
+### schedule?
+
+> `optional` **schedule?**: [`SceneScheduleConfig`](SceneScheduleConfig.md)
+
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:103](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L103)
+
+Optional schedule restricting scene access until a specific date.
+
+#### Inherited from
+
+[`BaseScene`](BaseScene.md).[`schedule`](BaseScene.md#schedule)
+
+---
+
 ### subtitle
 
 > **subtitle**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:85](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L85)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:97](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L97)
 
 Emotional subtitle or description.
 
@@ -86,7 +100,7 @@ Emotional subtitle or description.
 
 > **title**: `string`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:83](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L83)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:95](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L95)
 
 Tab and header title.
 
@@ -100,7 +114,7 @@ Tab and header title.
 
 > **type**: `"free-canvas"`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:96](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L96)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:110](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L110)
 
 Polymorphic scene discriminator.
 
