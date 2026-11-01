@@ -19,7 +19,7 @@ export function isMusicItemType(type: SpatialItemType): boolean {
 }
 
 export function isVoiceNoteItemType(type: SpatialItemType): boolean {
-  return type === 'cassette-tape'
+  return type === 'cassette-tape' || type === 'mini-dictaphone'
 }
 
 export function countTotalArtifacts(
