@@ -6,6 +6,8 @@ import {
   AuthPage,
   AuthSuccessPage,
   AuthFailurePage,
+  VerifyEmailPage,
+  ResetPasswordPage,
   DashboardPage,
   ExamplesPage,
   HowItWorksPage,
@@ -49,6 +51,14 @@ export const appRouter = createBrowserRouter([
       {
         path: ROUTES.AUTH_FAILURE,
         element: <AuthFailurePage />,
+      },
+      {
+        path: ROUTES.VERIFY_EMAIL,
+        element: <VerifyEmailPage />,
+      },
+      {
+        path: ROUTES.RESET_PASSWORD,
+        element: <ResetPasswordPage />,
       },
       {
         path: ROUTES.DASHBOARD,

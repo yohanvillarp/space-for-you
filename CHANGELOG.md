@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.3.0...space-for-you-v1.4.0) (2026-11-01)
+
+
+### Features
+
+* **auth:** implement centralized session and verification flows ([f0ae98c](https://github.com/yohanvillarp/space-for-you/commit/f0ae98cddad906d5e23586a8d199e5ac56678ebb))
+* **auth:** implement centralized session and verification flows ([ee123a5](https://github.com/yohanvillarp/space-for-you/commit/ee123a56a05a68e675378b048214e6fff253beee))
+
 ## [1.3.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.6...space-for-you-v1.3.0) (2026-11-01)
 
 

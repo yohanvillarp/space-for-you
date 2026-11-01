@@ -20,13 +20,24 @@ export {
   Permission,
   Role,
   signInWithGoogle,
-  signInWithEmail,
-  signUpWithEmail,
-  formatAuthError,
   handleOAuthSuccess,
   getCurrentUser,
   signOut,
   hasSessionHint,
   setSessionHint,
+  clearLocalSpacesCacheOnSignOut,
 } from './appwrite.ts'
 export type { AppwriteUser, EmailAuthCredentials } from './appwrite.ts'
+
+export {
+  signInWithEmail,
+  signUpWithEmail,
+  formatAuthError,
+  isUserAlreadyExistsError,
+  sendEmailVerification,
+  verifyEmail,
+  sendPasswordRecovery,
+  resetPassword,
+  getSafeAuthReturnPath,
+} from './auth-api.ts'
+export type { SignUpResult } from './auth-api.ts'

@@ -1,6 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router'
-import { appwriteAccount, setSessionHint } from '@/shared/api'
+import { Link, useNavigate } from 'react-router'
+import {
+  appwriteAccount,
+  setSessionHint,
+  getSafeAuthReturnPath,
+} from '@/shared/api'
+import { useSession } from '@/entities/session'
 import { ROUTES } from '@/shared/config'
 import { Card, Container, Button } from '@/shared/ui'
 
@@ -8,6 +13,8 @@ export function AuthSuccessPage() {
   const [error, setError] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(true)
   const isExecutingRef = useRef(false)
+  const { setSessionUser, refreshSession } = useSession()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isExecutingRef.current) return
@@ -54,10 +61,10 @@ export function AuthSuccessPage() {
           const user = await appwriteAccount.get()
           if (user) {
             setSessionHint(true)
-            const returnPath =
-              sessionStorage.getItem('sfy_auth_return') || ROUTES.DASHBOARD
-            sessionStorage.removeItem('sfy_auth_return')
-            window.location.replace(returnPath)
+            setSessionUser(user)
+            await refreshSession()
+            const returnPath = getSafeAuthReturnPath(ROUTES.DASHBOARD)
+            navigate(returnPath, { replace: true })
             return
           }
         } catch {
@@ -78,7 +85,7 @@ export function AuthSuccessPage() {
     }
 
     void processOAuthCallback()
-  }, [])
+  }, [navigate, refreshSession, setSessionUser])
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center py-12 sm:py-20">

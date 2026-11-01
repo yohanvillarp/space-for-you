@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router'
-import { appwriteAccount } from '@/shared/api'
+import { useSession } from '@/entities/session'
 import type { AppwriteUser } from '@/shared/api'
 import { ROUTES } from '@/shared/config'
 import { GiftLoader } from '@/shared/ui'
@@ -11,43 +11,24 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const [user, setUser] = useState<AppwriteUser | null>(null)
-  const [isChecking, setIsChecking] = useState(true)
+  const { user, isLoading, isAuthenticated } = useSession()
   const navigate = useNavigate()
 
   useEffect(() => {
-    let isMounted = true
-
-    async function checkAuth() {
+    if (!isLoading && (!isAuthenticated || !user)) {
       try {
-        const currentUser = await appwriteAccount.get()
-        if (isMounted) {
-          setUser(currentUser)
-          setIsChecking(false)
+        const current = window.location.pathname + window.location.search
+        if (current && current !== ROUTES.AUTH) {
+          sessionStorage.setItem('sfy_auth_return', current)
         }
       } catch {
-        if (isMounted) {
-          try {
-            const current = window.location.pathname + window.location.search
-            if (current && current !== ROUTES.AUTH) {
-              sessionStorage.setItem('sfy_auth_return', current)
-            }
-          } catch {
-            // ignore storage error
-          }
-          navigate(ROUTES.AUTH, { replace: true })
-        }
+        // ignore storage access error
       }
+      navigate(ROUTES.AUTH, { replace: true })
     }
+  }, [isLoading, isAuthenticated, user, navigate])
 
-    void checkAuth()
-
-    return () => {
-      isMounted = false
-    }
-  }, [navigate])
-
-  if (isChecking) {
+  if (isLoading) {
     return (
       <div className="flex min-h-screen w-full flex-1 flex-col items-center justify-center">
         <GiftLoader
@@ -58,7 +39,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     )
   }
 
-  if (!user) {
+  if (!isAuthenticated || !user) {
     return null
   }
 
