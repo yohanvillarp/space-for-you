@@ -36,6 +36,11 @@ export function KeepsakeItemRenderer({
 
           <button
             type="button"
+            title={
+              item.data.isLit
+                ? 'Tap candle to blow flame'
+                : 'Tap to light candle'
+            }
             onClick={(e) => {
               e.stopPropagation()
               playSpatialSfx(item.data.isLit ? 'candle-blow' : 'candle-spark')
@@ -56,10 +61,6 @@ export function KeepsakeItemRenderer({
             )}
             <div className="mt-1 h-3 w-20 rounded-full border border-stone-500/40 bg-gradient-to-r from-stone-600 via-stone-400 to-stone-600 shadow-md" />
           </button>
-
-          <span className="mt-1.5 font-sans text-[10px] font-medium text-amber-300/90 drop-shadow-xs">
-            {item.data.isLit ? 'Tap candle to blow flame' : 'Tap to relight'}
-          </span>
         </div>
       )
 

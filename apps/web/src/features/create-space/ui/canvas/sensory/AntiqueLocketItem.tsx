@@ -40,7 +40,10 @@ export function AntiqueLocketItem({
       <div className="relative z-20 -mb-1 flex h-4 w-1.5 rounded-t-full bg-gradient-to-b from-[#8B1E2B] to-[#5C141C] shadow-sm" />
 
       {/* Locket Container with 3D perspective */}
-      <div className="relative z-10 flex h-24 w-20 items-center justify-center [perspective:800px]">
+      <div
+        style={{ perspective: 800 }}
+        className="relative z-10 flex h-24 w-20 items-center justify-center"
+      >
         {/* Right Base Half (The Interior Compartment) */}
         <div className="relative flex h-20 w-16 flex-col items-center justify-center overflow-hidden rounded-[50%] border-2 border-amber-600 bg-gradient-to-br from-amber-700 via-amber-800 to-amber-950 p-1.5 shadow-2xl">
           {/* Internal Velvet Lining */}
@@ -64,10 +67,11 @@ export function AntiqueLocketItem({
 
         {/* Left Swinging Lid with 3D Hinged Rotation */}
         <div
-          className={cn(
-            'absolute inset-0 flex origin-left items-center justify-center transition-transform duration-700 ease-out',
-            isOpen ? '-rotate-y-120' : 'rotate-y-0',
-          )}
+          style={{
+            transform: isOpen ? 'rotateY(-130deg)' : 'rotateY(0deg)',
+            transformOrigin: 'left center',
+          }}
+          className="absolute inset-0 flex items-center justify-center transition-transform duration-700 ease-out"
         >
           <div className="relative flex h-20 w-16 flex-col items-center justify-center rounded-[50%] border-2 border-amber-400/90 bg-gradient-to-br from-amber-300 via-amber-600 to-amber-800 p-1.5 shadow-2xl">
             {/* Victorian Filigree Engraving Center */}
