@@ -4,6 +4,7 @@ import type { SpatialItem } from '@/features/create-space/model/spatial-stage.ty
 import { KeepsakeItemRenderer } from '@/features/create-space/ui/canvas/KeepsakeItemRenderer'
 import { StationeryItemRenderer } from '@/features/create-space/ui/canvas/StationeryItemRenderer'
 import { EphemeraItemRenderer } from '@/features/create-space/ui/canvas/EphemeraItemRenderer'
+import { SensoryItemRenderer } from '@/features/create-space/ui/canvas/SensoryItemRenderer'
 import { SpatialStageAtmosphere } from '@/features/create-space/ui/canvas/SpatialStageAtmosphere'
 import { useVirtualCanvasScale } from '@/features/create-space/ui/canvas/useVirtualCanvasScale'
 import { ScaledStageFrame } from '@/features/create-space/ui/canvas/ScaledStageFrame'
@@ -43,6 +44,17 @@ const EPHEMERA_TYPES = new Set([
   'rose-petals',
   'washi-tape',
   'confetti-stars',
+])
+
+const SENSORY_TYPES = new Set([
+  'firefly-jar',
+  'mini-dictaphone',
+  'pressed-herbarium',
+  'wood-wick-candle',
+  'stardust-hourglass',
+  'vintage-camera',
+  'keepsake-ticket',
+  'antique-locket',
 ])
 
 const TEXT_READER_TYPES = new Set([
@@ -156,6 +168,7 @@ export function PublicStageCanvas({
         {items.map((item) => {
           const isKeepsake = KEEPSAKE_TYPES.has(item.type)
           const isEphemera = EPHEMERA_TYPES.has(item.type)
+          const isSensory = SENSORY_TYPES.has(item.type)
 
           return (
             <div
@@ -177,9 +190,17 @@ export function PublicStageCanvas({
                 />
               )}
 
+              {isSensory && (
+                <SensoryItemRenderer
+                  item={item}
+                  onUpdateData={handleUpdateItemData}
+                  isEditorMode={false}
+                />
+              )}
+
               {isEphemera && <EphemeraItemRenderer item={item} />}
 
-              {!isKeepsake && !isEphemera && (
+              {!isKeepsake && !isEphemera && !isSensory && (
                 <StationeryItemRenderer
                   item={item}
                   onOpenPhotoPicker={() => setActivePhoto(item)}

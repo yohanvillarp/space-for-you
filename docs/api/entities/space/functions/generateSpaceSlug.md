@@ -6,11 +6,12 @@
 
 # Function: generateSpaceSlug()
 
-> **generateSpaceSlug**(`title`, `recipientName`): `string`
+> **generateSpaceSlug**(`title`, `recipientName`, `existingId?`): `string`
 
-Defined in: [apps/web/src/entities/space/api/space-converters.ts:90](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/space-converters.ts#L90)
+Defined in: [apps/web/src/entities/space/api/space-converters.ts:87](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/api/space-converters.ts#L87)
 
 Generates an URL-safe, human-readable unique slug for public sharing.
+Deterministic: Reuses existing stable spaceId hash if provided so URLs stay constant.
 
 ## Parameters
 
@@ -26,15 +27,14 @@ Space title (e.g., "Golden Memories").
 
 Recipient's name (e.g., "Sophia").
 
+### existingId?
+
+`string`
+
+Optional space identifier to derive a stable hash.
+
 ## Returns
 
 `string`
 
 Sanitized slug string formatted as `[recipient]-[title]-[hash]`.
-
-## Example
-
-```ts
-const slug = generateSpaceSlug('Birthday Sanctuary', 'Sophia')
-// Output: "sophia-birthday-sanctuary-a81f"
-```

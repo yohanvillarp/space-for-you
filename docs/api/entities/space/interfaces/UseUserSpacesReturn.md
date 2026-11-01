@@ -6,19 +6,33 @@
 
 # Interface: UseUserSpacesReturn
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:26](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L26)
-
-Return interface for the `useUserSpaces` hook.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:37](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L37)
 
 ## Properties
+
+### archiveSpace
+
+> **archiveSpace**: (`id`) => `void`
+
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:53](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L53)
+
+#### Parameters
+
+##### id
+
+`string`
+
+#### Returns
+
+`void`
+
+---
 
 ### deleteSpace
 
 > **deleteSpace**: (`id`) => `void`
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:36](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L36)
-
-Deletes a space by ID from local storage and Appwrite Databases.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:42](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L42)
 
 #### Parameters
 
@@ -36,9 +50,7 @@ Deletes a space by ID from local storage and Appwrite Databases.
 
 > **duplicateSpace**: (`id`, `customTitle?`, `customRecipient?`) => [`UserSpace`](UserSpace.md) \| `undefined`
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:38](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L38)
-
-Creates a clone of an existing space with optional custom title and recipient.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:43](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L43)
 
 #### Parameters
 
@@ -64,9 +76,7 @@ Creates a clone of an existing space with optional custom title and recipient.
 
 > **isCloudConnected**: `boolean`
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:32](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L32)
-
-Whether the user is authenticated and cloud sync is connected.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:40](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L40)
 
 ---
 
@@ -74,9 +84,7 @@ Whether the user is authenticated and cloud sync is connected.
 
 > **isLoading**: `boolean`
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:30](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L30)
-
-Whether spaces are currently being fetched from Appwrite Databases.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:39](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L39)
 
 ---
 
@@ -84,9 +92,7 @@ Whether spaces are currently being fetched from Appwrite Databases.
 
 > **refreshSpaces**: () => `void`
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:50](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L50)
-
-Re-reads spaces from local storage to sync UI state.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:55](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L55)
 
 #### Returns
 
@@ -98,9 +104,7 @@ Re-reads spaces from local storage to sync UI state.
 
 > **renameSpace**: (`id`, `newTitle`, `newRecipient?`) => [`UserSpace`](UserSpace.md) \| `undefined`
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:44](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L44)
-
-Renames a space with a new title and recipient.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:48](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L48)
 
 #### Parameters
 
@@ -122,13 +126,29 @@ Renames a space with a new title and recipient.
 
 ---
 
+### restoreSpace
+
+> **restoreSpace**: (`id`) => `void`
+
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:54](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L54)
+
+#### Parameters
+
+##### id
+
+`string`
+
+#### Returns
+
+`void`
+
+---
+
 ### saveSpace
 
 > **saveSpace**: (`space`) => [`UserSpace`](UserSpace.md)
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:34](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L34)
-
-Saves or updates a space, synchronizing to storage and cloud.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:41](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L41)
 
 #### Parameters
 
@@ -146,6 +166,4 @@ Saves or updates a space, synchronizing to storage and cloud.
 
 > **spaces**: [`UserSpace`](UserSpace.md)[]
 
-Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:28](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/model/useUserSpaces.ts#L28)
-
-Array of active spaces owned by or available to the user.
+Defined in: [apps/web/src/entities/space/model/useUserSpaces.ts:38](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/model/useUserSpaces.ts#L38)

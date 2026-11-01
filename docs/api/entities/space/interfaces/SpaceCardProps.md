@@ -6,7 +6,7 @@
 
 # Interface: SpaceCardProps
 
-Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:9](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/ui/SpaceCard.tsx#L9)
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L12)
 
 ## Properties
 
@@ -14,7 +14,25 @@ Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:9](https://github.com/
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/ui/SpaceCard.tsx#L14)
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:19](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L19)
+
+---
+
+### onArchive?
+
+> `optional` **onArchive?**: (`id`) => `void`
+
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:17](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L17)
+
+#### Parameters
+
+##### id
+
+`string`
+
+#### Returns
+
+`void`
 
 ---
 
@@ -22,7 +40,7 @@ Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:14](https://github.com
 
 > `optional` **onDelete?**: (`id`) => `void`
 
-Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:11](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/ui/SpaceCard.tsx#L11)
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:14](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L14)
 
 #### Parameters
 
@@ -40,7 +58,7 @@ Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:11](https://github.com
 
 > `optional` **onDuplicate?**: (`id`) => `void`
 
-Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:12](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/ui/SpaceCard.tsx#L12)
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:15](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L15)
 
 #### Parameters
 
@@ -58,7 +76,25 @@ Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:12](https://github.com
 
 > `optional` **onRename?**: (`id`) => `void`
 
-Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/ui/SpaceCard.tsx#L13)
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:16](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L16)
+
+#### Parameters
+
+##### id
+
+`string`
+
+#### Returns
+
+`void`
+
+---
+
+### onRestore?
+
+> `optional` **onRestore?**: (`id`) => `void`
+
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:18](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L18)
 
 #### Parameters
 
@@ -76,4 +112,4 @@ Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:13](https://github.com
 
 > **space**: [`UserSpace`](UserSpace.md)
 
-Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:10](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/ui/SpaceCard.tsx#L10)
+Defined in: [apps/web/src/entities/space/ui/SpaceCard.tsx:13](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/ui/SpaceCard.tsx#L13)

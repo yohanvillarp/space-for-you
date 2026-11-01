@@ -1,9 +1,13 @@
 import type { SpatialItemType } from '@/features/create-space/model/spatial-stage.types'
+import { renderSensorySpecimenPreview } from './SensorySpecimenPreview'
 
 /**
  * Dedicated visual thumbnail renderer that accurately represents each physical keepsake
  */
 export function TangibleSpecimenPreview({ type }: { type: SpatialItemType }) {
+  const sensoryPreview = renderSensorySpecimenPreview(type)
+  if (sensoryPreview) return sensoryPreview
+
   switch (type) {
     case 'candle':
       return (

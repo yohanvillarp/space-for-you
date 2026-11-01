@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.6...space-for-you-v1.3.0) (2026-11-01)
+
+
+### Features
+
+* **audio:** add procedural synthesis for sensory keepsakes ([3c464f6](https://github.com/yohanvillarp/space-for-you/commit/3c464f6f2d700ecc22f30f5d8b46e118d0c69aa3))
+* **canvas:** add interactive sensory keepsakes and procedural audio ([188c424](https://github.com/yohanvillarp/space-for-you/commit/188c4241498715754dae0e1dc9f3344da2f27545))
+* **canvas:** implement interactive sensory keepsakes renderers ([2449dc5](https://github.com/yohanvillarp/space-for-you/commit/2449dc51f5e937e2740485aab3ea76be1b0272f7))
+* **toolbox:** register sensory keepsakes catalog and previews ([235dcd1](https://github.com/yohanvillarp/space-for-you/commit/235dcd191aad3b8c4e235c4716ddc6206019421c))
+* **ui:** add animated sanctuary grid loader for dashboard loading ([68518eb](https://github.com/yohanvillarp/space-for-you/commit/68518eb19ee1f109b7dc5989047a5de9418e96b8))
+
+
+### Bug Fixes
+
+* **canvas:** correct hourglass rotation physics and 3d locket hinge ([52b31e3](https://github.com/yohanvillarp/space-for-you/commit/52b31e3f853183d9301daf3ac046b8fbfe3fa6f8))
+* **security:** enforce tier limits and lock rate limiting in data layer ([a20c185](https://github.com/yohanvillarp/space-for-you/commit/a20c185dba51643657fd7172407dae1e0c905e9a))
+
+
+### Code Refactoring
+
+* **canvas:** modularize object inspectors and optimize audio ([33661da](https://github.com/yohanvillarp/space-for-you/commit/33661da89a30469767b5aea1d6e6c4897e005a8f))
+
 ## [1.2.6](https://github.com/yohanvillarp/space-for-you/compare/space-for-you-v1.2.5...space-for-you-v1.2.6) (2026-10-27)
 
 

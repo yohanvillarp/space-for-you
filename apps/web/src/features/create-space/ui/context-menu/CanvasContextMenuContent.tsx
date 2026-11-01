@@ -126,6 +126,20 @@ export function CanvasContextMenuContent({
         <span>Birthday Candle</span>
       </button>
 
+      <button
+        type="button"
+        onClick={() =>
+          executeAction(
+            () => onAddItem('firefly-jar', coords.x, coords.y),
+            'cork-pop',
+          )
+        }
+        className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors hover:bg-[#2A221E] hover:text-amber-300"
+      >
+        <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+        <span>Firefly Jar</span>
+      </button>
+
       <div className="my-0.5 border-t border-[#3B302A]" />
 
       {/* Paste from Clipboard */}

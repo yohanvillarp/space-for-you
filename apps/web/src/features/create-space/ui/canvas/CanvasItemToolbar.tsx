@@ -8,19 +8,8 @@ import {
   PenLine,
 } from 'lucide-react'
 import type { SpatialItemType } from '@/features/create-space/model/spatial-stage.types'
+import { supportsTextEdit } from '@/features/create-space/model/spatial-item-capabilities'
 import { playSpatialSfx } from '@/shared/lib'
-
-const SUPPORTS_TEXT_EDIT = new Set<SpatialItemType>([
-  'greeting-card',
-  'airmail-postcard',
-  'sticky-note',
-  'wax-envelope',
-  'polaroid',
-  'cassette-tape',
-  'vinyl-player',
-  'music-box',
-  'vintage-radio',
-])
 
 export interface CanvasItemToolbarProps {
   itemId: string
@@ -124,7 +113,7 @@ export function CanvasItemToolbar({
       </button>
 
       {/* Edit Text for Text-Supported Keepsakes */}
-      {itemType && SUPPORTS_TEXT_EDIT.has(itemType) && onStartEditText && (
+      {itemType && supportsTextEdit(itemType) && onStartEditText && (
         <button
           type="button"
           onClick={(e) => {

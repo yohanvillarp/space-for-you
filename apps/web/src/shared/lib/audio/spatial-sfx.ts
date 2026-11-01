@@ -24,6 +24,15 @@ import {
   playPetalRustle,
   playSparkleChime,
 } from './sfx/organic-sfx'
+import {
+  playCorkPop,
+  playFireflyChime,
+  playWoodWickCrackle,
+  playHourglassCascade,
+  playTicketPunch,
+  playLocketClick,
+  playHerbariumRustle,
+} from './sfx/sensory-sfx'
 
 export type SpatialSfxName =
   | 'candle-blow'
@@ -41,6 +50,14 @@ export type SpatialSfxName =
   | 'sparkle-chime'
   | 'pop-snap'
   | 'tactile-tap'
+  // Sensory & tangible keepsakes
+  | 'cork-pop'
+  | 'firefly-chime'
+  | 'wood-wick'
+  | 'hourglass-cascade'
+  | 'ticket-punch'
+  | 'locket-click'
+  | 'herbarium-rustle'
 
 /**
  * Procedurally synthesizes and plays a tactile sound effect
@@ -96,6 +113,27 @@ export function playSpatialSfx(sfx: SpatialSfxName, volume = 0.5): void {
       break
     case 'tactile-tap':
       playTactileTap(ctx, now, volume)
+      break
+    case 'cork-pop':
+      playCorkPop(ctx, now, volume)
+      break
+    case 'firefly-chime':
+      playFireflyChime(ctx, now, volume)
+      break
+    case 'wood-wick':
+      playWoodWickCrackle(ctx, now, volume)
+      break
+    case 'hourglass-cascade':
+      playHourglassCascade(ctx, now, volume)
+      break
+    case 'ticket-punch':
+      playTicketPunch(ctx, now, volume)
+      break
+    case 'locket-click':
+      playLocketClick(ctx, now, volume)
+      break
+    case 'herbarium-rustle':
+      playHerbariumRustle(ctx, now, volume)
       break
     default:
       break

@@ -13,26 +13,17 @@ import {
   reconcileSpacesWithCloud,
   getPendingCloudSyncIds,
   markPendingCloudSync,
-  clearPendingCloudSync,
   getPendingCloudDeleteIds,
   clearPendingCloudDelete,
   getLastSyncedUserId,
   setLastSyncedUserId,
 } from './space-sync-engine'
+import {
+  pushSpaceWithLocalData,
+  syncSpaceToCloudAsync,
+} from './space-cloud-push'
 import { getCurrentUser } from '@/shared/api'
-import {
-  fetchUserSpaces,
-  deleteSpaceFromDatabase,
-  saveSpaceToDatabase,
-} from '@/entities/space/api'
-import {
-  getSpaceStorageKeys,
-  loadFromStorage,
-} from '@/features/create-space/ui/editor/multi-scene-storage'
-import type {
-  SpaceScene,
-  SpaceMeta,
-} from '@/features/create-space/model/scenes.types'
+import { fetchUserSpaces, deleteSpaceFromDatabase } from '@/entities/space/api'
 
 export interface UseUserSpacesReturn {
   spaces: UserSpace[]
@@ -55,31 +46,11 @@ export interface UseUserSpacesReturn {
   refreshSpaces: () => void
 }
 
-async function pushSpaceWithLocalData(space: UserSpace, userId: string) {
-  const keys = getSpaceStorageKeys(space.id, space.templateId)
-  const scenes = loadFromStorage<SpaceScene[]>(keys.scenesKey, [])
-  const meta = loadFromStorage<Partial<SpaceMeta>>(keys.metaKey, {})
-  await saveSpaceToDatabase({
-    space,
-    scenes,
-    userId,
-    senderName: meta.senderName,
-    dedicationMessage: meta.dedicationMessage,
-  })
-  clearPendingCloudSync(space.id)
-}
-
-function syncSpaceToCloudAsync(space: UserSpace): void {
-  getCurrentUser()
-    .then(async (user) => {
-      if (user) await pushSpaceWithLocalData(space, user.$id)
-    })
-    .catch(() => {})
-}
-
 export function useUserSpaces(): UseUserSpacesReturn {
   const [spaces, setSpaces] = useState<UserSpace[]>(() => getSavedSpaces())
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(
+    () => getSavedSpaces().length === 0,
+  )
   const [isCloudConnected, setIsCloudConnected] = useState(false)
   const isSyncingRef = useRef(false)
 
@@ -88,6 +59,7 @@ export function useUserSpaces(): UseUserSpacesReturn {
   const syncWithCloud = useCallback(() => {
     if (isSyncingRef.current) return
     isSyncingRef.current = true
+    setIsLoading(true)
 
     getCurrentUser()
       .then(async (user) => {
@@ -96,6 +68,7 @@ export function useUserSpaces(): UseUserSpacesReturn {
           clearAllLocalSpaces()
           setLastSyncedUserId(null)
           setSpaces([])
+          setIsLoading(false)
           return
         }
 

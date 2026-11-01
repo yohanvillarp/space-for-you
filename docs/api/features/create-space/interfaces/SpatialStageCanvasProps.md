@@ -6,7 +6,7 @@
 
 # Interface: SpatialStageCanvasProps
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:23](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L23)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:8](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L8)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:23](ht
 
 > `optional` **className?**: `string`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:50](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L50)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:38](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L38)
 
 ---
 
@@ -22,7 +22,15 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:50](ht
 
 > `optional` **copiedItem?**: [`SpatialItem`](SpatialItem.md) \| `null`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:27](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L27)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:12](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L12)
+
+---
+
+### fitToHeight?
+
+> `optional` **fitToHeight?**: `boolean`
+
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:37](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L37)
 
 ---
 
@@ -30,7 +38,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:27](ht
 
 > **items**: [`SpatialItem`](SpatialItem.md)[]
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:25](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L25)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:10](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L10)
 
 ---
 
@@ -38,7 +46,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:25](ht
 
 > **onAddItem**: (`type`, `x?`, `y?`, `customData?`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:43](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L43)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:30](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L30)
 
 #### Parameters
 
@@ -68,7 +76,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:43](ht
 
 > **onBringToFront**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:33](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L33)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:20](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L20)
 
 #### Parameters
 
@@ -86,7 +94,19 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:33](ht
 
 > `optional` **onClearCanvas?**: () => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:41](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L41)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:28](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L28)
+
+#### Returns
+
+`void`
+
+---
+
+### onCommitItemPosition?
+
+> `optional` **onCommitItemPosition?**: () => `void`
+
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:16](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L16)
 
 #### Returns
 
@@ -98,7 +118,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:41](ht
 
 > `optional` **onCopyItem?**: (`item`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:38](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L38)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:25](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L25)
 
 #### Parameters
 
@@ -116,7 +136,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:38](ht
 
 > **onDeleteItem**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:35](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L35)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:22](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L22)
 
 #### Parameters
 
@@ -134,7 +154,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:35](ht
 
 > `optional` **onDuplicateItem?**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:36](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L36)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:23](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L23)
 
 #### Parameters
 
@@ -152,7 +172,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:36](ht
 
 > `optional` **onOpenPhotoPicker?**: (`item`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:49](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L49)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:36](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L36)
 
 #### Parameters
 
@@ -170,7 +190,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:49](ht
 
 > `optional` **onPasteItem?**: (`x?`, `y?`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:39](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L39)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:26](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L26)
 
 #### Parameters
 
@@ -192,7 +212,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:39](ht
 
 > `optional` **onResetRotation?**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:32](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L32)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:19](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L19)
 
 #### Parameters
 
@@ -210,7 +230,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:32](ht
 
 > `optional` **onResetToDefaults?**: () => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:40](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L40)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:27](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L27)
 
 #### Returns
 
@@ -222,7 +242,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:40](ht
 
 > **onRotateItem**: (`id`, `delta`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:30](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L30)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:17](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L17)
 
 #### Parameters
 
@@ -244,7 +264,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:30](ht
 
 > **onSelectItem**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:28](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L28)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:13](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L13)
 
 #### Parameters
 
@@ -262,7 +282,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:28](ht
 
 > `optional` **onSendToBack?**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:34](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L34)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:21](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L21)
 
 #### Parameters
 
@@ -280,7 +300,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:34](ht
 
 > `optional` **onSetRotation?**: (`id`, `angle`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:31](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L31)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:18](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L18)
 
 #### Parameters
 
@@ -298,11 +318,29 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:31](ht
 
 ---
 
+### onStartDragItem?
+
+> `optional` **onStartDragItem?**: (`id`) => `void`
+
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:15](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L15)
+
+#### Parameters
+
+##### id
+
+`string`
+
+#### Returns
+
+`void`
+
+---
+
 ### onToggleLock?
 
 > `optional` **onToggleLock?**: (`id`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:37](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L37)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:24](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L24)
 
 #### Parameters
 
@@ -320,7 +358,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:37](ht
 
 > **onUpdateItemData**: (`id`, `updates`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:42](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L42)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:29](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L29)
 
 #### Parameters
 
@@ -330,7 +368,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:42](ht
 
 ##### updates
 
-`Partial`\<[`SpatialItem`](SpatialItem.md)\[`"data"`\]\>
+`Partial`\<[`SpatialItemData`](SpatialItemData.md)\>
 
 #### Returns
 
@@ -342,7 +380,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:42](ht
 
 > **onUpdateItemPosition**: (`id`, `x`, `y`) => `void`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:29](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L29)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:14](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L14)
 
 #### Parameters
 
@@ -368,7 +406,7 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:29](ht
 
 > **selectedId**: `string` \| `null`
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:26](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L26)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:11](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L11)
 
 ---
 
@@ -376,4 +414,4 @@ Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:26](ht
 
 > **templateId**: [`SpaceTemplateId`](../../../entities/space/type-aliases/SpaceTemplateId.md)
 
-Defined in: [apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx:24](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/ui/SpatialStageCanvas.tsx#L24)
+Defined in: [apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts:9](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/ui/canvas/spatial-stage-canvas.types.ts#L9)

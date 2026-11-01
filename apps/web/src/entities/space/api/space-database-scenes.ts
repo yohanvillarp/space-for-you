@@ -7,6 +7,10 @@ import { ID, Query } from 'appwrite'
 import { databases } from '@/shared/api'
 import { ENV } from '@/shared/config'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
+import {
+  MAX_SPACE_SCENES,
+  MAX_SPACE_ARTIFACTS,
+} from '@/entities/space/model/space-tier-config'
 
 const DB_ID = ENV.APPWRITE_DATABASE_ID
 const SCENES_COLL = ENV.APPWRITE_SCENES_COLLECTION_ID
@@ -36,9 +40,15 @@ export async function saveScenesToDatabase(
 
   const usedDocIds = new Set<string>()
 
-  // 2. Upsert each scene differentially
-  for (let index = 0; index < scenes.length; index++) {
-    const scene = scenes[index]
+  // 2. Upsert each scene differentially, enforcing tier quotas
+  const cappedScenes = scenes.slice(0, MAX_SPACE_SCENES)
+  for (let index = 0; index < cappedScenes.length; index++) {
+    const scene = cappedScenes[index]
+    const sanitizedItems =
+      scene.type === 'free-canvas'
+        ? (scene.items || []).slice(0, MAX_SPACE_ARTIFACTS)
+        : []
+
     const scenePayload = {
       spaceId,
       order: index,
@@ -47,7 +57,7 @@ export async function saveScenesToDatabase(
       subtitle: scene.subtitle || '',
       icon: scene.icon || 'Sparkles',
       payload: JSON.stringify(
-        scene.type === 'letters' ? scene.letters : scene.items,
+        scene.type === 'letters' ? scene.letters : sanitizedItems,
       ),
     }
 

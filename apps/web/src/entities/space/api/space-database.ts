@@ -7,6 +7,7 @@ import { ID, Permission, Query, Role } from 'appwrite'
 import { databases } from '@/shared/api'
 import { ENV } from '@/shared/config'
 import type { UserSpace } from '@/entities/space/model/types'
+import { MAX_USER_SPACES } from '@/entities/space/model/space-tier-config'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import type { SpaceWithScenes, AppwriteSpaceDocument } from './types'
 import {
@@ -168,7 +169,9 @@ export async function saveSpaceToDatabase({
   protectionTheme,
 }: SaveSpaceParams): Promise<UserSpace> {
   const isPublished = space.status === 'published'
+  const isProtected = Boolean(space.isProtected)
   const perms = buildPermissions(userId, isPublished)
+  const scenePerms = buildPermissions(userId, isPublished && !isProtected)
   const resolvedSlug =
     slug ||
     space.slug ||
@@ -182,18 +185,16 @@ export async function saveSpaceToDatabase({
     slug: resolvedSlug,
     scenesCount: scenes.length > 0 ? scenes.length : space.scenesCount,
     artifactsCount: space.artifactsCount,
-    isProtected: Boolean(space.isProtected),
+    isProtected,
     userId,
+    ...(senderName !== undefined && { senderName }),
+    ...(dedicationMessage !== undefined && { dedicationMessage }),
+    ...(themeConfig !== undefined && { themeConfig }),
+    ...(passcodeHash !== undefined && { passcodeHash }),
+    ...(passcodeSalt !== undefined && { passcodeSalt }),
+    ...(passcodeHint !== undefined && { passcodeHint }),
+    ...(protectionTheme !== undefined && { protectionTheme }),
   }
-  if (senderName !== undefined) spacePayload.senderName = senderName
-  if (dedicationMessage !== undefined)
-    spacePayload.dedicationMessage = dedicationMessage
-  if (themeConfig !== undefined) spacePayload.themeConfig = themeConfig
-  if (passcodeHash !== undefined) spacePayload.passcodeHash = passcodeHash
-  if (passcodeSalt !== undefined) spacePayload.passcodeSalt = passcodeSalt
-  if (passcodeHint !== undefined) spacePayload.passcodeHint = passcodeHint
-  if (protectionTheme !== undefined)
-    spacePayload.protectionTheme = protectionTheme
 
   let savedDoc
   try {
@@ -205,6 +206,14 @@ export async function saveSpaceToDatabase({
       perms,
     )
   } catch {
+    const userSpaces = await databases.listDocuments(DB_ID, SPACES_COLL, [
+      Query.equal('userId', userId),
+      Query.limit(MAX_USER_SPACES + 1),
+    ])
+    if (userSpaces.total >= MAX_USER_SPACES) {
+      throw new Error('SPACES_TIER_LIMIT_REACHED')
+    }
+
     const docId =
       space.id.startsWith('space_') && space.id.length <= 36
         ? space.id
@@ -219,7 +228,7 @@ export async function saveSpaceToDatabase({
   }
 
   if (scenes.length > 0) {
-    await saveScenesToDatabase(savedDoc.$id, scenes, perms)
+    await saveScenesToDatabase(savedDoc.$id, scenes, scenePerms)
   }
   return toUserSpace(savedDoc)
 }

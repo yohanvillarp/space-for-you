@@ -46,6 +46,9 @@ export function useSpatialAudioPlayer({
     setIsPlaying(false)
     setCurrentTime(0)
     setDuration(0)
+    if (autoPlay && trackUrl?.trim()) {
+      setIsLoading(true)
+    }
   }
 
   const onEndedRef = useRef(onEnded)
@@ -83,13 +86,20 @@ export function useSpatialAudioPlayer({
     }
 
     const audio = new Audio(cleanUrl)
-    audio.preload = 'metadata'
+    audio.preload = 'auto'
     audio.loop = loopRef.current
     audio.volume = volumeRef.current
     audioRef.current = audio
 
     const handleLoadedMetadata = () => {
       setDuration(audio.duration || 0)
+    }
+
+    const handleWaiting = () => {
+      setIsLoading(true)
+    }
+
+    const handleCanPlay = () => {
       setIsLoading(false)
     }
 
@@ -117,6 +127,7 @@ export function useSpatialAudioPlayer({
         activeSpatialPlayer = null
       }
       setIsPlaying(false)
+      setIsLoading(false)
     }
 
     const handleEnded = () => {
@@ -124,6 +135,7 @@ export function useSpatialAudioPlayer({
         activeSpatialPlayer = null
       }
       setIsPlaying(false)
+      setIsLoading(false)
       setCurrentTime(0)
       onEndedRef.current?.()
     }
@@ -138,6 +150,8 @@ export function useSpatialAudioPlayer({
     }
 
     audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('waiting', handleWaiting)
+    audio.addEventListener('canplay', handleCanPlay)
     audio.addEventListener('timeupdate', handleTimeUpdate)
     audio.addEventListener('play', handlePlay)
     audio.addEventListener('pause', handlePause)
@@ -146,7 +160,7 @@ export function useSpatialAudioPlayer({
 
     if (autoPlay) {
       audio.play().catch(() => {
-        // Autoplay blocked by browser policy, waiting for user gesture
+        setIsLoading(false)
       })
     }
 
@@ -156,6 +170,8 @@ export function useSpatialAudioPlayer({
       }
       audio.pause()
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('waiting', handleWaiting)
+      audio.removeEventListener('canplay', handleCanPlay)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('play', handlePlay)
       audio.removeEventListener('pause', handlePause)

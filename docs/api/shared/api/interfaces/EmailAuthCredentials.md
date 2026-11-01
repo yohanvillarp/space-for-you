@@ -6,7 +6,7 @@
 
 # Interface: EmailAuthCredentials
 
-Defined in: [apps/web/src/shared/api/appwrite.ts:36](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/shared/api/appwrite.ts#L36)
+Defined in: [apps/web/src/shared/api/appwrite.ts:38](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/shared/api/appwrite.ts#L38)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [apps/web/src/shared/api/appwrite.ts:36](https://github.com/yohanvil
 
 > **email**: `string`
 
-Defined in: [apps/web/src/shared/api/appwrite.ts:37](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/shared/api/appwrite.ts#L37)
+Defined in: [apps/web/src/shared/api/appwrite.ts:39](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/shared/api/appwrite.ts#L39)
 
 ---
 
@@ -22,7 +22,7 @@ Defined in: [apps/web/src/shared/api/appwrite.ts:37](https://github.com/yohanvil
 
 > `optional` **name?**: `string`
 
-Defined in: [apps/web/src/shared/api/appwrite.ts:39](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/shared/api/appwrite.ts#L39)
+Defined in: [apps/web/src/shared/api/appwrite.ts:41](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/shared/api/appwrite.ts#L41)
 
 ---
 
@@ -30,4 +30,4 @@ Defined in: [apps/web/src/shared/api/appwrite.ts:39](https://github.com/yohanvil
 
 > **password**: `string`
 
-Defined in: [apps/web/src/shared/api/appwrite.ts:38](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/shared/api/appwrite.ts#L38)
+Defined in: [apps/web/src/shared/api/appwrite.ts:40](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/shared/api/appwrite.ts#L40)

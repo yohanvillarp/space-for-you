@@ -1,5 +1,15 @@
 export { SPACE_TEMPLATES, DEFAULT_TEMPLATE_ID } from './model/templates'
 export {
+  MAX_USER_SPACES,
+  MAX_SPACE_SCENES,
+  MAX_SPACE_ARTIFACTS,
+  MAX_SPACE_PHOTOS,
+  MAX_UPLOADED_PHOTOS,
+  MAX_SPACE_MUSIC,
+  MAX_SPACE_VOICE_NOTES,
+  MAX_DAILY_UPDATES,
+} from './model/space-tier-config'
+export {
   getSavedSpaces,
   getSpaceById,
   saveSpace,

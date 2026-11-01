@@ -8,7 +8,7 @@
 
 > **SceneType** = `"free-canvas"` \| `"letters"`
 
-Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:12](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/features/create-space/model/scenes.types.ts#L12)
+Defined in: [apps/web/src/features/create-space/model/scenes.types.ts:12](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/features/create-space/model/scenes.types.ts#L12)
 
 Type of interactive room or viewport within a digital sanctuary.
 

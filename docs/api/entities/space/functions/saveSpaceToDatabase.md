@@ -6,38 +6,18 @@
 
 # Function: saveSpaceToDatabase()
 
-> **saveSpaceToDatabase**(`params`): `Promise`\<[`UserSpace`](../interfaces/UserSpace.md)\>
+> **saveSpaceToDatabase**(`__namedParameters`): `Promise`\<[`UserSpace`](../interfaces/UserSpace.md)\>
 
-Defined in: [apps/web/src/entities/space/api/space-database.ts:167](https://github.com/yohanvillarp/space-for-you/blob/20463d01b116b13735894bc05384fdcd0f861ca1/apps/web/src/entities/space/api/space-database.ts#L167)
+Defined in: [apps/web/src/entities/space/api/space-database.ts:157](https://github.com/yohanvillarp/space-for-you/blob/2449dc51f5e937e2740485aab3ea76be1b0272f7/apps/web/src/entities/space/api/space-database.ts#L157)
 
 Saves a space and all its scenes to Appwrite Databases with Document-Level Security.
-Performs idempotent update or creation of both space and scene documents.
 
 ## Parameters
 
-### params
+### \_\_namedParameters
 
 [`SaveSpaceParams`](../interfaces/SaveSpaceParams.md)
-
-Save parameters containing space, scenes, and owner info.
 
 ## Returns
 
 `Promise`\<[`UserSpace`](../interfaces/UserSpace.md)\>
-
-The persisted space model with updated timestamps.
-
-## Remarks
-
-This function persists the master space document and loops over scenes,
-serializing polymorphic payloads (diorama canvas items or letters).
-
-## Example
-
-```ts
-const savedSpace = await saveSpaceToDatabase({
-  space: currentSpace,
-  scenes: currentScenes,
-  userId: user.$id,
-})
-```

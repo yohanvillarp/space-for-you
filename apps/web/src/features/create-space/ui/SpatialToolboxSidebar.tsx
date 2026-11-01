@@ -96,6 +96,7 @@ export function SpatialToolboxSidebar({
     isSearchingMusic,
     previewTrackUrl,
     isPreviewPlaying,
+    isPreviewLoading,
     assignedTrackId,
     handleTogglePreview,
     handleAssignTrackToStage,
@@ -199,6 +200,7 @@ export function SpatialToolboxSidebar({
             isLoading={isSearchingMusic}
             previewTrackUrl={previewTrackUrl}
             isPreviewPlaying={isPreviewPlaying}
+            isPreviewLoading={isPreviewLoading}
             assignedTrackId={assignedTrackId}
             selectedItemName={selectedMusicItem?.label}
             currentTrackUrl={selectedMusicItem?.data?.audioUrl}

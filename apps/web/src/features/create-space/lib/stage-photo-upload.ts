@@ -1,6 +1,7 @@
 import { ID, Permission, Role } from 'appwrite'
 import { storage } from '@/shared/api'
 import { ENV } from '@/shared/config/env'
+import { MAX_UPLOADED_PHOTOS } from '@/entities/space'
 import type { SpaceScene } from '@/features/create-space/model/scenes.types'
 import { compressImageFile } from '@/features/create-space/lib/image-compression'
 
@@ -14,7 +15,17 @@ export const SPACE_PHOTOS_BUCKET_ID =
  * Gracefully falls back to optimized WebP DataURL if storage bucket is not configured.
  */
 export async function uploadKeepsakePhoto(file: File): Promise<string> {
+  if (file.size > 15 * 1024 * 1024) {
+    throw new Error('Image file exceeds the 15MB limit.')
+  }
+  if (!file.type.startsWith('image/')) {
+    throw new Error('Unsupported image format.')
+  }
+
   const compressed = await compressImageFile(file, 1200, 0.82)
+  if (compressed.blob.size > 2 * 1024 * 1024) {
+    throw new Error('Compressed image exceeds 2MB limit.')
+  }
 
   try {
     const fileToUpload = new File(
@@ -51,8 +62,10 @@ export async function uploadAllPendingPhotos(
   pendingPhotos: Map<string, File>,
 ): Promise<Map<string, string>> {
   const results = new Map<string, string>()
-
-  const entries = Array.from(pendingPhotos.entries())
+  const entries = Array.from(pendingPhotos.entries()).slice(
+    0,
+    MAX_UPLOADED_PHOTOS,
+  )
   await Promise.all(
     entries.map(async ([targetId, file]) => {
       try {

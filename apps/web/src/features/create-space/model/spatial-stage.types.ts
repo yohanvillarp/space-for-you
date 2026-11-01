@@ -22,6 +22,15 @@ export type SpatialItemType =
   | 'washi-tape'
   | 'confetti-stars'
   | 'vector-sticker'
+  // Sensory & interactive tangible keepsakes
+  | 'firefly-jar'
+  | 'mini-dictaphone'
+  | 'pressed-herbarium'
+  | 'wood-wick-candle'
+  | 'stardust-hourglass'
+  | 'vintage-camera'
+  | 'keepsake-ticket'
+  | 'antique-locket'
 
 /**
  * Payload data customizer for spatial items (audio, visuals, state).
@@ -65,6 +74,22 @@ export interface SpatialItemData {
   isVoiceNoteSample?: boolean
   /** Duration in seconds. */
   duration?: number
+  /** Whether a jar, box, or container is opened. */
+  isOpen?: boolean
+  /** Whether a keepsake travel ticket has been hole-punched. */
+  isPunched?: boolean
+  /** Departure location or origin for keepsake ticket. */
+  ticketFrom?: string
+  /** Destination or sentimental destination for keepsake ticket. */
+  ticketDestination?: string
+  /** Whether an hourglass has been flipped upside down. */
+  sandFlipped?: boolean
+  /** Whether an antique keepsake locket is hinged open. */
+  locketOpen?: boolean
+  /** Preserved botanical specimen type for pressed herbarium. */
+  herbariumFlower?: 'lavender' | 'hydrangea' | 'ferns' | 'pressed-rose'
+  /** Micro-interaction flash state for vintage camera. */
+  cameraFlashed?: boolean
 }
 
 /**
