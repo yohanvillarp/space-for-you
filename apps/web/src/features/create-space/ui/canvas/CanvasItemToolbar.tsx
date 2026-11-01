@@ -20,6 +20,14 @@ const SUPPORTS_TEXT_EDIT = new Set<SpatialItemType>([
   'vinyl-player',
   'music-box',
   'vintage-radio',
+  'firefly-jar',
+  'mini-dictaphone',
+  'keepsake-ticket',
+  'antique-locket',
+  'pressed-herbarium',
+  'wood-wick-candle',
+  'stardust-hourglass',
+  'vintage-camera',
 ])
 
 export interface CanvasItemToolbarProps {

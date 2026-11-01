@@ -8,6 +8,7 @@ import { CanvasItemToolbar } from './canvas/CanvasItemToolbar'
 import { KeepsakeItemRenderer } from './canvas/KeepsakeItemRenderer'
 import { StationeryItemRenderer } from './canvas/StationeryItemRenderer'
 import { EphemeraItemRenderer } from './canvas/EphemeraItemRenderer'
+import { SensoryItemRenderer } from './canvas/SensoryItemRenderer'
 import { cn } from '@/shared/lib'
 
 export interface SpatialCanvasItemProps {
@@ -60,6 +61,16 @@ export function SpatialCanvasItem({
     item.type === 'washi-tape' ||
     item.type === 'confetti-stars' ||
     item.type === 'vector-sticker'
+
+  const isSensory =
+    item.type === 'firefly-jar' ||
+    item.type === 'mini-dictaphone' ||
+    item.type === 'pressed-herbarium' ||
+    item.type === 'wood-wick-candle' ||
+    item.type === 'stardust-hourglass' ||
+    item.type === 'vintage-camera' ||
+    item.type === 'keepsake-ticket' ||
+    item.type === 'antique-locket'
 
   return (
     <div
@@ -131,7 +142,15 @@ export function SpatialCanvasItem({
 
       {isEphemera && <EphemeraItemRenderer item={item} />}
 
-      {!isKeepsake && !isEphemera && (
+      {isSensory && (
+        <SensoryItemRenderer
+          item={item}
+          onUpdateData={onUpdateData}
+          isEditorMode={isEditorMode}
+        />
+      )}
+
+      {!isKeepsake && !isEphemera && !isSensory && (
         <StationeryItemRenderer
           item={item}
           onStartEditText={
