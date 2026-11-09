@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.4",
     "appwrite": "^29.1.0",
     "lucide-react": "^1.61.0",
     "qr-code-styling": "^1.9.2",
