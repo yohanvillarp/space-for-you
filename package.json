@@ -22,7 +22,7 @@
     "@commitlint/config-conventional": "^21.2.4",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "sharp": "^0.35.5",
     "typedoc": "^0.28.20",
